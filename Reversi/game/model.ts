@@ -2,6 +2,8 @@
 
 module model {
 
+    import Dictionary = _.Dictionary;
+
     export class Square {
         constructor(public col: number, public row: number) {
             this.occupiedBy = null;
@@ -56,6 +58,10 @@ module model {
         }
 
         private squares: Square[];
+
+        public countPieces(): Dictionary<number>  {
+            return _.countBy(this.squares, sq => sq.occupiedBy);
+        }
 
         //If the coordinates lie outside of the board boundaries, returns 'undefined'
         public getSquare(col: number, row: number): Square {
@@ -148,24 +154,64 @@ module model {
 
     export class GameMaster {
 
-        public constructor(public board) {
+        public constructor(public board: Board) {
             this.sideToGoNext = Side.white;
+            this.updateStatus();
         }
 
         public sideToGoNext: Side;
+        public status: string;
+        public whiteCount: number;
+        public blackCount: number;
+        whiteHasSkippedTurn: boolean;
+        blackHasSkippedTurn: boolean;
+        public gameOver: boolean;
 
         //Returns all squares flipped as a result of the move.
-        public placePiece(sq: Square): Square[] {
+        public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.sideToGoNext)) {
                 const flips: Square[] = this.board.allSquaresThatWouldBeFlippedBy(sq, this.sideToGoNext);
                 sq.occupiedBy = this.sideToGoNext;
                 _.forEach(flips, sq => sq.occupiedBy = this.sideToGoNext);
                 //net turn
                 this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
-                return flips;
+                this.updateStatus();
+            } 
+        }
+
+        public updateStatus(): void {
+            //Update counts
+            this.whiteCount = this.board.countPieces()[Side.white];
+            this.blackCount = this.board.countPieces()[Side.black];
+            //Update status message
+            if ((this.whiteCount + this.blackCount == 64)
+                || (this.whiteHasSkippedTurn && this.blackHasSkippedTurn))
+            { 
+                this.gameOver = true;
+                if (this.whiteCount > this.blackCount) {
+                    this.status = 'GAME OVER. White has won!';
+                } else if (this.whiteCount < this.blackCount) {
+                    this.status = 'GAME OVER. Black has won!';
+                } else {
+                    this.status = 'GAME OVER. A draw!';
+                }
             } else {
-                return null;
-            }
+                switch (this.sideToGoNext) {
+                    case Side.black:
+                        this.status = 'Black to play';
+                        break;
+                    case Side.white:
+                        this.status = 'White to play';
+                        break;
+                }
+            }  
+        }
+
+        public skipTurn(): void {
+            if (this.sideToGoNext == Side.white) this.whiteHasSkippedTurn = true;
+            if (this.sideToGoNext == Side.black) this.blackHasSkippedTurn = true;
+            this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
+            this.updateStatus();
         }
     }
 }

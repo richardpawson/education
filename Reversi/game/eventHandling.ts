@@ -22,42 +22,35 @@
         cursorLocation = board.getSquare(0, 0);
         drawing.drawBoard(board, renderer);
         drawing.drawCursor(cursorLocation, board, game, renderer);
-        drawing.drawSideToGoNext(game, renderer);
+        drawing.updateStatus(game);
     }
 
     window.onkeypress = function (ke: KeyboardEvent) {
+        if (game.gameOver) return;  //Can't continue
         switch (ke.keyCode) {
-            case 53:
+            case 53: //5 - place piece
                 game.placePiece(cursorLocation);
                 drawing.drawBoard(board, renderer);
                 drawing.drawCursor(cursorLocation, board, game, renderer);
-                drawing.drawSideToGoNext(game, renderer);
+                drawing.updateStatus(game);
                 break;
-            case 52: //left
+            case 52: //4 - left
                 moveCursorBy(-1, 0);
                 break;
-            case 56: //up
+            case 56: //8 - up
                 moveCursorBy(0, -1);
                 break;
-            case 54: //right
+            case 54: //6 - right
                 moveCursorBy(1, 0);
                 break;
-            case 50: //down
+            case 50: //2 - down
                 moveCursorBy(0, 1);
                 break;
+            case 48: //0 -  Pass
+                game.skipTurn();
+                drawing.updateStatus(game);
+                break;
         }
-    }
-
-    window.onclick = function (e) {
-        e.preventDefault();
-        const bbox = canvas.getBoundingClientRect();
-        const xCanv: number = e.x - bbox.left * (canvas.width / bbox.width);
-        const yCanv: number = e.y - bbox.top * (canvas.height / bbox.height);
-        const col = Math.floor(xCanv / squareSide);
-        const row = Math.floor(yCanv / squareSide);
-        cursorLocation = board.getSquare(col, row);
-        drawing.drawBoard(board, renderer); 
-        drawing.drawCursor(cursorLocation, board, game, renderer);
     }
 
     //Moves the cursor by one or more squares relative to the current position

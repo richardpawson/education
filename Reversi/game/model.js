@@ -61,6 +61,9 @@ var model;
             this.getSquare(4, 3).occupiedBy = Side.white;
             this.getSquare(3, 4).occupiedBy = Side.white;
         }
+        Board.prototype.countPieces = function () {
+            return _.countBy(this.squares, function (sq) { return sq.occupiedBy; });
+        };
         //If the coordinates lie outside of the board boundaries, returns 'undefined'
         Board.prototype.getSquare = function (col, row) {
             return _.find(this.squares, function (sq) { return sq.col === col && sq.row == row; });
@@ -153,6 +156,7 @@ var model;
         function GameMaster(board) {
             this.board = board;
             this.sideToGoNext = Side.white;
+            this.updateStatus();
         }
         //Returns all squares flipped as a result of the move.
         GameMaster.prototype.placePiece = function (sq) {
@@ -163,11 +167,45 @@ var model;
                 _.forEach(flips, function (sq) { return sq.occupiedBy = _this.sideToGoNext; });
                 //net turn
                 this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
-                return flips;
+                this.updateStatus();
+            }
+        };
+        GameMaster.prototype.updateStatus = function () {
+            //Update counts
+            this.whiteCount = this.board.countPieces()[Side.white];
+            this.blackCount = this.board.countPieces()[Side.black];
+            //Update status message
+            if ((this.whiteCount + this.blackCount == 64)
+                || (this.whiteHasSkippedTurn && this.blackHasSkippedTurn)) {
+                this.gameOver = true;
+                if (this.whiteCount > this.blackCount) {
+                    this.status = 'GAME OVER. White has won!';
+                }
+                else if (this.whiteCount < this.blackCount) {
+                    this.status = 'GAME OVER. Black has won!';
+                }
+                else {
+                    this.status = 'GAME OVER. A draw!';
+                }
             }
             else {
-                return null;
+                switch (this.sideToGoNext) {
+                    case Side.black:
+                        this.status = 'Black to play';
+                        break;
+                    case Side.white:
+                        this.status = 'White to play';
+                        break;
+                }
             }
+        };
+        GameMaster.prototype.skipTurn = function () {
+            if (this.sideToGoNext == Side.white)
+                this.whiteHasSkippedTurn = true;
+            if (this.sideToGoNext == Side.black)
+                this.blackHasSkippedTurn = true;
+            this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
+            this.updateStatus();
         };
         return GameMaster;
     }());

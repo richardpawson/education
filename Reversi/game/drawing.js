@@ -12,20 +12,12 @@ var drawing;
         }
     }
     drawing.drawBoard = drawBoard;
-    function drawSideToGoNext(game, renderer) {
-        var colour = getColourForSide(game.sideToGoNext);
-        drawCircularPiece(540, 30, colour, renderer, true);
-    }
-    drawing.drawSideToGoNext = drawSideToGoNext;
-    function drawCircularPiece(centreX, centerY, colour, renderer, withOutline) {
-        if (withOutline === void 0) { withOutline = false; }
+    function drawCircularPiece(centreX, centerY, colour, renderer) {
         renderer.beginPath();
         renderer.strokeStyle = 'black';
         renderer.fillStyle = colour;
         renderer.arc(centreX, centerY, pieceRadius, 0, 2 * Math.PI);
         renderer.fill();
-        if (withOutline)
-            renderer.stroke();
     }
     drawing.drawCircularPiece = drawCircularPiece;
     function getColourForSide(side) {
@@ -38,6 +30,7 @@ var drawing;
                 return 'green';
         }
     }
+    drawing.getColourForSide = getColourForSide;
     function drawSquare(sq, renderer) {
         //Draw background
         renderer.fillStyle = 'green';
@@ -69,5 +62,11 @@ var drawing;
         drawSquareOutline(location, colour, renderer);
     }
     drawing.drawCursor = drawCursor;
+    function updateStatus(game) {
+        document.getElementById("status").innerHTML = game.status;
+        document.getElementById("white").innerHTML = game.whiteCount.toString();
+        document.getElementById("black").innerHTML = game.blackCount.toString();
+    }
+    drawing.updateStatus = updateStatus;
 })(drawing || (drawing = {}));
 //# sourceMappingURL=drawing.js.map

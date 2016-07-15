@@ -18,15 +18,17 @@ var eventHandling;
         cursorLocation = board.getSquare(0, 0);
         drawing.drawBoard(board, renderer);
         drawing.drawCursor(cursorLocation, board, game, renderer);
-        drawing.drawSideToGoNext(game, renderer);
+        drawing.updateStatus(game);
     };
     window.onkeypress = function (ke) {
+        if (game.gameOver)
+            return; //Can't continue
         switch (ke.keyCode) {
             case 53:
                 game.placePiece(cursorLocation);
                 drawing.drawBoard(board, renderer);
                 drawing.drawCursor(cursorLocation, board, game, renderer);
-                drawing.drawSideToGoNext(game, renderer);
+                drawing.updateStatus(game);
                 break;
             case 52:
                 moveCursorBy(-1, 0);
@@ -40,18 +42,11 @@ var eventHandling;
             case 50:
                 moveCursorBy(0, 1);
                 break;
+            case 48:
+                game.skipTurn();
+                drawing.updateStatus(game);
+                break;
         }
-    };
-    window.onclick = function (e) {
-        e.preventDefault();
-        var bbox = canvas.getBoundingClientRect();
-        var xCanv = e.x - bbox.left * (canvas.width / bbox.width);
-        var yCanv = e.y - bbox.top * (canvas.height / bbox.height);
-        var col = Math.floor(xCanv / squareSide);
-        var row = Math.floor(yCanv / squareSide);
-        cursorLocation = board.getSquare(col, row);
-        drawing.drawBoard(board, renderer);
-        drawing.drawCursor(cursorLocation, board, game, renderer);
     };
     //Moves the cursor by one or more squares relative to the current position
     //horizontally and/or vertically.  But keeps the cursor within the bounds of

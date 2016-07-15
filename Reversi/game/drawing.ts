@@ -15,28 +15,20 @@
             }
         }
     }
-
-    export function drawSideToGoNext(game: GameMaster, renderer: CanvasRenderingContext2D) {
-        var colour = getColourForSide(game.sideToGoNext);
-        drawCircularPiece(540, 30, colour, renderer, true);
-    }
-
     export function drawCircularPiece(
         centreX: number,
         centerY: number,
         colour: string,
-        renderer: CanvasRenderingContext2D,
-        withOutline: boolean = false)
+        renderer: CanvasRenderingContext2D)
     {
         renderer.beginPath();
         renderer.strokeStyle = 'black';
         renderer.fillStyle = colour;
         renderer.arc(centreX, centerY, pieceRadius, 0, 2 * Math.PI);
         renderer.fill();
-        if (withOutline) renderer.stroke();
     }
 
-    function getColourForSide(side: Side): string {
+    export function getColourForSide(side: Side): string {
         switch (side) {
             case Side.black:
                 return 'black';
@@ -76,5 +68,11 @@
             colour = 'red';
         }
         drawSquareOutline(location, colour, renderer);
+    }
+
+    export function updateStatus(game: GameMaster) {
+        document.getElementById("status").innerHTML = game.status;
+        document.getElementById("white").innerHTML = game.whiteCount.toString();
+        document.getElementById("black").innerHTML = game.blackCount.toString();
     }
 } 
