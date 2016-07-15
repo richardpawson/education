@@ -1,0 +1,12 @@
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TypeScriptHTMLApp1\TypeScriptHTMLApp1\obj\Debug\BlocksInTypeScript.csprojResolveAssemblyReference.cache
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TypeScriptHTMLApp1\TypeScriptHTMLApp1\bin\BlocksInTypeScript.dll.config
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TypeScriptHTMLApp1\TypeScriptHTMLApp1\bin\BlocksInTypeScript.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TypeScriptHTMLApp1\TypeScriptHTMLApp1\bin\BlocksInTypeScript.pdb
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TypeScriptHTMLApp1\TypeScriptHTMLApp1\obj\Debug\BlocksInTypeScript.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TypeScriptHTMLApp1\TypeScriptHTMLApp1\obj\Debug\BlocksInTypeScript.pdb
+C:\BlocksGame\BlocksOnTypeScript\bin\BlocksInTypeScript.dll
+C:\BlocksGame\BlocksOnTypeScript\bin\BlocksInTypeScript.pdb
+C:\BlocksGame\BlocksOnTypeScript\obj\Debug\BlocksInTypeScript.dll
+C:\BlocksGame\BlocksOnTypeScript\obj\Debug\BlocksInTypeScript.pdb
+C:\BlocksGame\BlocksOnTypeScript\obj\Debug\BlocksInTypeScript.csprojResolveAssemblyReference.cache
+C:\BlocksGame\BlocksOnTypeScript\bin\BlocksInTypeScript.dll.config

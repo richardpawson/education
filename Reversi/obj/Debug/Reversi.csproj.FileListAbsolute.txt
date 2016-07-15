@@ -1,0 +1,6 @@
+C:\education\Reversi\bin\Reversi.dll.config
+C:\education\Reversi\bin\Reversi.dll
+C:\education\Reversi\bin\Reversi.pdb
+C:\education\Reversi\obj\Debug\Reversi.csprojResolveAssemblyReference.cache
+C:\education\Reversi\obj\Debug\Reversi.dll
+C:\education\Reversi\obj\Debug\Reversi.pdb
