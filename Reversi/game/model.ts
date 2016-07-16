@@ -20,14 +20,6 @@ module model {
         public isEmpty(): boolean {
             return this.occupiedBy == null;
         }
-
-        public isEdgeSquare(): boolean {
-            return this.col == 0 || this.col == 7 || this.row == 0 || this.row == 7;
-        }
-
-        public isCornerSquare(): boolean {
-            return (this.col == 0 || this.col == 7) && (this.row == 0 || this.row == 7);
-        }
     }
 
     export enum Side { black, white }
@@ -46,10 +38,10 @@ module model {
                     this.squares.push(new Square(col, row));
                 }
             }
-            this.getSquare(3, 3).occupiedBy = Side.black;
-            this.getSquare(4, 4).occupiedBy = Side.black;
-            this.getSquare(4, 3).occupiedBy = Side.white;
-            this.getSquare(3, 4).occupiedBy = Side.white;
+            this.getSquare(3, 3).occupiedBy = Side.white;
+            this.getSquare(4, 4).occupiedBy = Side.white;
+            this.getSquare(4, 3).occupiedBy = Side.black;
+            this.getSquare(3, 4).occupiedBy = Side.black;
         }
 
         private squares: Square[];
@@ -148,7 +140,7 @@ module model {
                 for (var row: number = sq.row - 1; row <= sq.row + 1; row++) {
                     var neighbour = this.getSquare(col, row);
                     if (neighbour != undefined && neighbour != sq) {
-                        neighbours.push(sq);
+                        neighbours.push(neighbour);
                     }
                 }
             }
@@ -160,7 +152,7 @@ module model {
     export class GameMaster {
 
         public constructor(public board: Board) {
-            this.turn = Side.white;
+            this.turn = Side.black;
             this.updateStatus();
         }
 

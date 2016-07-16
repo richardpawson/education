@@ -15,12 +15,6 @@ var model;
         Square.prototype.isEmpty = function () {
             return this.occupiedBy == null;
         };
-        Square.prototype.isEdgeSquare = function () {
-            return this.col == 0 || this.col == 7 || this.row == 0 || this.row == 7;
-        };
-        Square.prototype.isCornerSquare = function () {
-            return (this.col == 0 || this.col == 7) && (this.row == 0 || this.row == 7);
-        };
         return Square;
     }());
     model.Square = Square;
@@ -51,10 +45,10 @@ var model;
                     this.squares.push(new Square(col, row));
                 }
             }
-            this.getSquare(3, 3).occupiedBy = Side.black;
-            this.getSquare(4, 4).occupiedBy = Side.black;
-            this.getSquare(4, 3).occupiedBy = Side.white;
-            this.getSquare(3, 4).occupiedBy = Side.white;
+            this.getSquare(3, 3).occupiedBy = Side.white;
+            this.getSquare(4, 4).occupiedBy = Side.white;
+            this.getSquare(4, 3).occupiedBy = Side.black;
+            this.getSquare(3, 4).occupiedBy = Side.black;
         }
         Board.prototype.countPieces = function () {
             return _.countBy(this.squares, function (sq) { return sq.occupiedBy; });
@@ -145,7 +139,7 @@ var model;
                 for (var row = sq.row - 1; row <= sq.row + 1; row++) {
                     var neighbour = this.getSquare(col, row);
                     if (neighbour != undefined && neighbour != sq) {
-                        neighbours.push(sq);
+                        neighbours.push(neighbour);
                     }
                 }
             }
@@ -157,7 +151,7 @@ var model;
     var GameMaster = (function () {
         function GameMaster(board) {
             this.board = board;
-            this.turn = Side.white;
+            this.turn = Side.black;
             this.updateStatus();
         }
         //Returns all squares flipped as a result of the move.

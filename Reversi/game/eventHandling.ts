@@ -25,28 +25,29 @@
         drawing.updateStatus(game);
     }
 
-    window.onkeypress = function (ke: KeyboardEvent) {
+    window.onkeydown = function (ke: KeyboardEvent) {
+        ke.preventDefault();
         if (game.gameOver) return;  //Can't continue
         switch (ke.keyCode) {
-            case 53: //5 - place piece
+            case 37: // left arrow
+                moveCursorBy(-1, 0);
+                break;
+            case 38: // up arrow
+                moveCursorBy(0, -1);
+                break;
+            case 39: // right arrow
+                moveCursorBy(1, 0);
+                break;
+            case 40: // down arrow
+                moveCursorBy(0, 1);
+                break;
+            case 13: //Enter - place piece
                 game.placePiece(cursorLocation);
                 drawing.drawBoard(board, renderer);
                 drawing.drawCursor(cursorLocation, board, game, renderer);
                 drawing.updateStatus(game);
                 break;
-            case 52: //4 - left
-                moveCursorBy(-1, 0);
-                break;
-            case 56: //8 - up
-                moveCursorBy(0, -1);
-                break;
-            case 54: //6 - right
-                moveCursorBy(1, 0);
-                break;
-            case 50: //2 - down
-                moveCursorBy(0, 1);
-                break;
-            case 48: //0 -  Pass
+            case 27: //Esc -  Pass
                 game.skipTurn();
                 drawing.updateStatus(game);
                 break;

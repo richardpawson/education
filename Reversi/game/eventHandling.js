@@ -20,29 +20,30 @@ var eventHandling;
         drawing.drawCursor(cursorLocation, board, game, renderer);
         drawing.updateStatus(game);
     };
-    window.onkeypress = function (ke) {
+    window.onkeydown = function (ke) {
+        ke.preventDefault();
         if (game.gameOver)
             return; //Can't continue
         switch (ke.keyCode) {
-            case 53:
+            case 37:
+                moveCursorBy(-1, 0);
+                break;
+            case 38:
+                moveCursorBy(0, -1);
+                break;
+            case 39:
+                moveCursorBy(1, 0);
+                break;
+            case 40:
+                moveCursorBy(0, 1);
+                break;
+            case 13:
                 game.placePiece(cursorLocation);
                 drawing.drawBoard(board, renderer);
                 drawing.drawCursor(cursorLocation, board, game, renderer);
                 drawing.updateStatus(game);
                 break;
-            case 52:
-                moveCursorBy(-1, 0);
-                break;
-            case 56:
-                moveCursorBy(0, -1);
-                break;
-            case 54:
-                moveCursorBy(1, 0);
-                break;
-            case 50:
-                moveCursorBy(0, 1);
-                break;
-            case 48:
+            case 27:
                 game.skipTurn();
                 drawing.updateStatus(game);
                 break;
