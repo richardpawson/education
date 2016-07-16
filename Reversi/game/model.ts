@@ -33,12 +33,7 @@ module model {
     export enum Side { black, white }
 
     function oppositeSideTo(side: Side): Side {
-        switch (side) {
-            case Side.black:
-                return Side.white;
-            case Side.white:
-                return Side.black;
-        }
+        return side === Side.black? Side.white:  Side.black;
     }
 
     export enum Direction { north, northEast, east, southEast, south, southWest, west, northWest }
@@ -68,21 +63,23 @@ module model {
             return _.find(this.squares, sq => sq.col === col && sq.row == row);
         }
 
-        public allSquaresThatWouldBeFlippedBy(placement: Square, piece: Side): Square[] {
+        //Returns a list of all squares that would be captured (ultimely to be flipped)
+        //by a given placement on a square
+        public allCapturedSquares(placement: Square, side: Side): Square[] {
             var results = [];
             _.forEach(Direction, d => {
-                var toAdd = this.bookendedSquares(placement, piece, d);
+                var toAdd = this.capturedSquaresInASingleDirection(placement, side, d);
                 _.forEach(toAdd, sq => results.push(sq));
             });
             return results;
         }
 
-        private bookendedSquares(placement: Square, bookend: Side, direction: Direction): Square[] {
+        private capturedSquaresInASingleDirection(placement: Square, side: Side, direction: Direction): Square[] {
             var coveredSquares = [];
-            var file = this.fileFrom(placement, direction);
+            var file = this.lineFrom(placement, direction);
             for (var i: number = 0; i < file.length; i++) {
                 const sq: Square = file[i];
-                if (sq.occupiedBy === bookend) {
+                if (sq.occupiedBy === side) {
                     return coveredSquares;;  //Terminate loop
                 }
                 if (sq.occupiedBy == undefined) {
@@ -93,73 +90,81 @@ module model {
             return []; //Didn't find a bookend so return no squares;
         }
 
-        //Returns an array representing the squares from the origin to the edge of
+        //Returns an array representing the line of squares from the given location to the edge of
         //the board in the given direction, nearest first.
-        private fileFrom(origin: Square, dir: Direction) {
-            var file: Square[] = [];
+        private lineFrom(location: Square, dir: Direction): Square[] {
+            var line: Square[] = [];
             for (var i = 1; i <= 7; i++) { //Maximum of 7 steps in any direction to edge
                 var sq: Square;
                 switch (dir) {
                     case Direction.north:
-                        sq = this.getSquare(origin.col, origin.row - i);
+                        sq = this.getSquare(location.col, location.row - i);
                         break;
                     case Direction.northEast:
-                        sq = this.getSquare(origin.col + i, origin.row - i);
+                        sq = this.getSquare(location.col + i, location.row - i);
                         break;
                     case Direction.east:
-                        sq = this.getSquare(origin.col + i, origin.row);
+                        sq = this.getSquare(location.col + i, location.row);
                         break;
                     case Direction.southEast:
-                        sq = this.getSquare(origin.col + i, origin.row + i);
+                        sq = this.getSquare(location.col + i, location.row + i);
                         break;
                     case Direction.south:
-                        sq = this.getSquare(origin.col, origin.row + i);
+                        sq = this.getSquare(location.col, location.row + i);
                         break;
                     case Direction.southWest:
-                        sq = this.getSquare(origin.col - i, origin.row + i);
+                        sq = this.getSquare(location.col - i, location.row + i);
                         break;
                     case Direction.west:
-                        sq = this.getSquare(origin.col - i, origin.row);
+                        sq = this.getSquare(location.col - i, location.row);
                         break;
                     case Direction.northWest:
-                        sq = this.getSquare(origin.col - i, origin.row - i);
+                        sq = this.getSquare(location.col - i, location.row - i);
                         break;
                 }
                 if (sq != undefined) {
-                    file.push(sq);
+                    line.push(sq);
                 }
             }
-            return file;
+            return line;
         }
 
         public wouldBeValidMove(sq: Square, forPiece: Side): boolean {
             return sq.isEmpty() &&
                 this.isAdjacentToPieceOfOppositeSide(sq, forPiece) &&
-                this.allSquaresThatWouldBeFlippedBy(sq, forPiece).length > 0;
+                this.allCapturedSquares(sq, forPiece).length > 0;
         }
 
         private isAdjacentToPieceOfOppositeSide(sq: Square, side: Side): boolean {
-            const otherSide = oppositeSideTo(side);
+            var neighbours = this.getAdjacentSquares(sq);
+            return _.some(neighbours, sq => sq.occupiedBy == oppositeSideTo(side));
+        }
+
+        //Returns all squares (on the board) that are immediate neighbours
+        //of the given square  -  between 3 and 8 of them.
+        private getAdjacentSquares(sq: Square): Square[] {
+            var neighbours: Square[] = [];
             for (var col: number = sq.col - 1; col <= sq.col + 1; col++) {
                 for (var row: number = sq.row - 1; row <= sq.row + 1; row++) {
-                    const neighbour = this.getSquare(col, row);
-                    if (neighbour != undefined &&
-                        neighbour != sq && 
-                        neighbour.occupiedBy == otherSide) return true; //exit loops early!
+                    var neighbour = this.getSquare(col, row);
+                    if (neighbour != undefined && neighbour != sq) {
+                        neighbours.push(sq);
+                    }
                 }
             }
-            return false; // as no match found
+            return neighbours;
         }
+
     }
 
     export class GameMaster {
 
         public constructor(public board: Board) {
-            this.sideToGoNext = Side.white;
+            this.turn = Side.white;
             this.updateStatus();
         }
 
-        public sideToGoNext: Side;
+        public turn: Side;
         public status: string;
         public whiteCount: number;
         public blackCount: number;
@@ -169,12 +174,12 @@ module model {
 
         //Returns all squares flipped as a result of the move.
         public placePiece(sq: Square): void {
-            if (this.board.wouldBeValidMove(sq, this.sideToGoNext)) {
-                const flips: Square[] = this.board.allSquaresThatWouldBeFlippedBy(sq, this.sideToGoNext);
-                sq.occupiedBy = this.sideToGoNext;
-                _.forEach(flips, sq => sq.occupiedBy = this.sideToGoNext);
+            if (this.board.wouldBeValidMove(sq, this.turn)) {
+                const flips: Square[] = this.board.allCapturedSquares(sq, this.turn);
+                sq.occupiedBy = this.turn;
+                _.forEach(flips, sq => sq.occupiedBy = this.turn);
                 //net turn
-                this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
+                this.turn = oppositeSideTo(this.turn);
                 this.updateStatus();
             } 
         }
@@ -196,7 +201,7 @@ module model {
                     this.status = 'GAME OVER. A draw!';
                 }
             } else {
-                switch (this.sideToGoNext) {
+                switch (this.turn) {
                     case Side.black:
                         this.status = 'Black to play';
                         break;
@@ -208,9 +213,9 @@ module model {
         }
 
         public skipTurn(): void {
-            if (this.sideToGoNext == Side.white) this.whiteHasSkippedTurn = true;
-            if (this.sideToGoNext == Side.black) this.blackHasSkippedTurn = true;
-            this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
+            if (this.turn == Side.white) this.whiteHasSkippedTurn = true;
+            if (this.turn == Side.black) this.blackHasSkippedTurn = true;
+            this.turn = oppositeSideTo(this.turn);
             this.updateStatus();
         }
     }

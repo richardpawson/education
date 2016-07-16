@@ -29,6 +29,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\packages.config" />
+    <Content Include="documentation\Model.docx" />
+    <Content Include="documentation\Stories.docx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

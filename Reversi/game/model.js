@@ -30,12 +30,7 @@ var model;
     })(model.Side || (model.Side = {}));
     var Side = model.Side;
     function oppositeSideTo(side) {
-        switch (side) {
-            case Side.black:
-                return Side.white;
-            case Side.white:
-                return Side.black;
-        }
+        return side === Side.black ? Side.white : Side.black;
     }
     (function (Direction) {
         Direction[Direction["north"] = 0] = "north";
@@ -68,21 +63,23 @@ var model;
         Board.prototype.getSquare = function (col, row) {
             return _.find(this.squares, function (sq) { return sq.col === col && sq.row == row; });
         };
-        Board.prototype.allSquaresThatWouldBeFlippedBy = function (placement, piece) {
+        //Returns a list of all squares that would be captured (ultimely to be flipped)
+        //by a given placement on a square
+        Board.prototype.allCapturedSquares = function (placement, side) {
             var _this = this;
             var results = [];
             _.forEach(Direction, function (d) {
-                var toAdd = _this.bookendedSquares(placement, piece, d);
+                var toAdd = _this.capturedSquaresInASingleDirection(placement, side, d);
                 _.forEach(toAdd, function (sq) { return results.push(sq); });
             });
             return results;
         };
-        Board.prototype.bookendedSquares = function (placement, bookend, direction) {
+        Board.prototype.capturedSquaresInASingleDirection = function (placement, side, direction) {
             var coveredSquares = [];
-            var file = this.fileFrom(placement, direction);
+            var file = this.lineFrom(placement, direction);
             for (var i = 0; i < file.length; i++) {
                 var sq = file[i];
-                if (sq.occupiedBy === bookend) {
+                if (sq.occupiedBy === side) {
                     return coveredSquares;
                     ; //Terminate loop
                 }
@@ -93,61 +90,66 @@ var model;
             }
             return []; //Didn't find a bookend so return no squares;
         };
-        //Returns an array representing the squares from the origin to the edge of
+        //Returns an array representing the line of squares from the given location to the edge of
         //the board in the given direction, nearest first.
-        Board.prototype.fileFrom = function (origin, dir) {
-            var file = [];
+        Board.prototype.lineFrom = function (location, dir) {
+            var line = [];
             for (var i = 1; i <= 7; i++) {
                 var sq;
                 switch (dir) {
                     case Direction.north:
-                        sq = this.getSquare(origin.col, origin.row - i);
+                        sq = this.getSquare(location.col, location.row - i);
                         break;
                     case Direction.northEast:
-                        sq = this.getSquare(origin.col + i, origin.row - i);
+                        sq = this.getSquare(location.col + i, location.row - i);
                         break;
                     case Direction.east:
-                        sq = this.getSquare(origin.col + i, origin.row);
+                        sq = this.getSquare(location.col + i, location.row);
                         break;
                     case Direction.southEast:
-                        sq = this.getSquare(origin.col + i, origin.row + i);
+                        sq = this.getSquare(location.col + i, location.row + i);
                         break;
                     case Direction.south:
-                        sq = this.getSquare(origin.col, origin.row + i);
+                        sq = this.getSquare(location.col, location.row + i);
                         break;
                     case Direction.southWest:
-                        sq = this.getSquare(origin.col - i, origin.row + i);
+                        sq = this.getSquare(location.col - i, location.row + i);
                         break;
                     case Direction.west:
-                        sq = this.getSquare(origin.col - i, origin.row);
+                        sq = this.getSquare(location.col - i, location.row);
                         break;
                     case Direction.northWest:
-                        sq = this.getSquare(origin.col - i, origin.row - i);
+                        sq = this.getSquare(location.col - i, location.row - i);
                         break;
                 }
                 if (sq != undefined) {
-                    file.push(sq);
+                    line.push(sq);
                 }
             }
-            return file;
+            return line;
         };
         Board.prototype.wouldBeValidMove = function (sq, forPiece) {
             return sq.isEmpty() &&
                 this.isAdjacentToPieceOfOppositeSide(sq, forPiece) &&
-                this.allSquaresThatWouldBeFlippedBy(sq, forPiece).length > 0;
+                this.allCapturedSquares(sq, forPiece).length > 0;
         };
         Board.prototype.isAdjacentToPieceOfOppositeSide = function (sq, side) {
-            var otherSide = oppositeSideTo(side);
+            var neighbours = this.getAdjacentSquares(sq);
+            return _.some(neighbours, function (sq) { return sq.occupiedBy == oppositeSideTo(side); });
+        };
+        //Returns all squares (on the board) that are immediate neighbours
+        //of the given square  -  between 3 and 8 of them.
+        Board.prototype.getAdjacentSquares = function (sq) {
+            var neighbours = [];
             for (var col = sq.col - 1; col <= sq.col + 1; col++) {
                 for (var row = sq.row - 1; row <= sq.row + 1; row++) {
                     var neighbour = this.getSquare(col, row);
-                    if (neighbour != undefined &&
-                        neighbour != sq &&
-                        neighbour.occupiedBy == otherSide)
-                        return true; //exit loops early!
+                    if (neighbour != undefined && neighbour != sq) {
+                        neighbours.push(sq);
+                    }
                 }
             }
-            return false; // as no match found
+            return neighbours;
         };
         return Board;
     }());
@@ -155,18 +157,18 @@ var model;
     var GameMaster = (function () {
         function GameMaster(board) {
             this.board = board;
-            this.sideToGoNext = Side.white;
+            this.turn = Side.white;
             this.updateStatus();
         }
         //Returns all squares flipped as a result of the move.
         GameMaster.prototype.placePiece = function (sq) {
             var _this = this;
-            if (this.board.wouldBeValidMove(sq, this.sideToGoNext)) {
-                var flips = this.board.allSquaresThatWouldBeFlippedBy(sq, this.sideToGoNext);
-                sq.occupiedBy = this.sideToGoNext;
-                _.forEach(flips, function (sq) { return sq.occupiedBy = _this.sideToGoNext; });
+            if (this.board.wouldBeValidMove(sq, this.turn)) {
+                var flips = this.board.allCapturedSquares(sq, this.turn);
+                sq.occupiedBy = this.turn;
+                _.forEach(flips, function (sq) { return sq.occupiedBy = _this.turn; });
                 //net turn
-                this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
+                this.turn = oppositeSideTo(this.turn);
                 this.updateStatus();
             }
         };
@@ -189,7 +191,7 @@ var model;
                 }
             }
             else {
-                switch (this.sideToGoNext) {
+                switch (this.turn) {
                     case Side.black:
                         this.status = 'Black to play';
                         break;
@@ -200,11 +202,11 @@ var model;
             }
         };
         GameMaster.prototype.skipTurn = function () {
-            if (this.sideToGoNext == Side.white)
+            if (this.turn == Side.white)
                 this.whiteHasSkippedTurn = true;
-            if (this.sideToGoNext == Side.black)
+            if (this.turn == Side.black)
                 this.blackHasSkippedTurn = true;
-            this.sideToGoNext = oppositeSideTo(this.sideToGoNext);
+            this.turn = oppositeSideTo(this.turn);
             this.updateStatus();
         };
         return GameMaster;

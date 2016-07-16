@@ -12,37 +12,16 @@ var drawing;
         }
     }
     drawing.drawBoard = drawBoard;
-    function drawCircularPiece(centreX, centerY, colour, renderer) {
-        renderer.beginPath();
-        renderer.strokeStyle = 'black';
-        renderer.fillStyle = colour;
-        renderer.arc(centreX, centerY, pieceRadius, 0, 2 * Math.PI);
-        renderer.fill();
-    }
-    drawing.drawCircularPiece = drawCircularPiece;
-    function getColourForSide(side) {
-        switch (side) {
-            case Side.black:
-                return 'black';
-            case Side.white:
-                return 'white';
-            case null:
-                return 'green';
-        }
-    }
-    drawing.getColourForSide = getColourForSide;
     function drawSquare(sq, renderer) {
         //Draw background
         renderer.fillStyle = 'green';
         renderer.fillRect(sq.col * squareSide, sq.row * squareSide, squareSide, squareSide);
         //Draw outline
         drawSquareOutline(sq, 'black', renderer);
-        //Draw piece if occupied
+        //Draw piece if square has one
         if (sq.occupiedBy != null) {
             var colour = getColourForSide(sq.occupiedBy);
-            var x = sq.col * squareSide + squareSide / 2;
-            var y = sq.row * squareSide + squareSide / 2;
-            drawCircularPiece(x, y, colour, renderer);
+            drawPiece(sq, colour, renderer);
         }
     }
     drawing.drawSquare = drawSquare;
@@ -51,14 +30,21 @@ var drawing;
         renderer.strokeRect(square.col * squareSide, square.row * squareSide, squareSide, squareSide);
     }
     drawing.drawSquareOutline = drawSquareOutline;
+    function drawPiece(sq, colour, renderer) {
+        var centreX = sq.col * squareSide + squareSide / 2;
+        var centerY = sq.row * squareSide + squareSide / 2;
+        renderer.fillStyle = colour;
+        renderer.beginPath();
+        renderer.arc(centreX, centerY, pieceRadius, 0, 2 * Math.PI);
+        renderer.fill();
+    }
+    drawing.drawPiece = drawPiece;
+    function getColourForSide(side) {
+        return side === Side.black ? 'black' : 'white';
+    }
+    drawing.getColourForSide = getColourForSide;
     function drawCursor(location, board, game, renderer) {
-        var colour;
-        if (board.wouldBeValidMove(location, game.sideToGoNext)) {
-            colour = 'yellow';
-        }
-        else {
-            colour = 'red';
-        }
+        var colour = board.wouldBeValidMove(location, game.turn) ? 'yellow' : 'red';
         drawSquareOutline(location, colour, renderer);
     }
     drawing.drawCursor = drawCursor;
