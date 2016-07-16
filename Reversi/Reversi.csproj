@@ -38,10 +38,11 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\typings\" />
+  </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="game\model.ts" />
-    <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
     <TypeScriptCompile Include="game\drawing.ts" />
     <TypeScriptCompile Include="game\eventHandling.ts" />
   </ItemGroup>
