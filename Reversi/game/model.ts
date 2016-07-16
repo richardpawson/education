@@ -8,7 +8,6 @@ module model {
         constructor(public col: number, public row: number) {
             this.occupiedBy = null;
         }
-        public foo: string
         public occupiedBy: Side;
 
         public flipPiece(): void {
