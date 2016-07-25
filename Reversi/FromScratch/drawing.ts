@@ -9,6 +9,7 @@
         //Draw outline
         renderer.strokeStyle = 'black';
         renderer.strokeRect(sq.col * squareSide, sq.row * squareSide, squareSide, squareSide);
+        drawSquareOutline(sq, 'black', renderer);
         if (sq.occupiedBy != null) {
             var colour: string = getColourForSide(sq.occupiedBy);
             drawPiece(sq, colour, renderer);
@@ -39,5 +40,10 @@
 
     export function getColourForSide(side: Side): string {
         return side === Side.black ? 'black' : 'white';
+    }
+
+    export function drawSquareOutline(square: Square, colour: string, renderer: CanvasRenderingContext2D) {
+        renderer.strokeStyle = colour;
+        renderer.strokeRect(square.col * squareSide, square.row * squareSide, squareSide, squareSide);
     }
 }
