@@ -4,7 +4,9 @@ namespace model {
 
     export class Square {
         constructor(public col: number, public row: number) {
+            this.occupiedBy = null;
         }
+        public occupiedBy: Side;
     }
 
     export class Board {
@@ -15,6 +17,10 @@ namespace model {
                     this.squares.push(new Square(col, row));
                 }
             }
+            this.getSquare(3, 3).occupiedBy = Side.white;
+            this.getSquare(4, 4).occupiedBy = Side.white;
+            this.getSquare(4, 3).occupiedBy = Side.black;
+            this.getSquare(3, 4).occupiedBy = Side.black;
         }
 
         private squares: Square[];
@@ -24,4 +30,6 @@ namespace model {
             return _.find(this.squares, sq => sq.col === col && sq.row == row);
         }
     }
+
+    export enum Side { black, white }
 }
