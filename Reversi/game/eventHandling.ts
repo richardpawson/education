@@ -7,7 +7,7 @@
     const squareSide = 60;
     const pieceRadius = 25;
 
-    //'Global' variables (undesirable!)
+    //'Global' variables
     var canvas: HTMLCanvasElement;
     var renderer: CanvasRenderingContext2D;
     var cursorLocation: Square;
@@ -15,7 +15,7 @@
     var board: Board;
 
     window.onload = function () {
-        canvas = document.getElementsByTagName("canvas")[0];
+        canvas = document.getElementById("board")[0];
         renderer = canvas.getContext("2d");
         board = new Board();
         game = new GameMaster(board);

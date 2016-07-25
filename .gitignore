@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Reversi/FromScratch/bin
+/Reversi/FromScratch/obj/Debug
+Reversi/FromScratch/app.js.map
+Reversi/FromScratch/drawing.js.map
+Reversi/FromScratch/app.js.map

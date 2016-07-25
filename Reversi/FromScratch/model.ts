@@ -1,6 +1,6 @@
 ﻿/// <reference path="../Scripts/typings/lodash/lodash.d.ts" />
 
-module model {
+namespace model {
 
     export class Square {
         constructor(public col: number, public row: number) {

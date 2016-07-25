@@ -1,4 +1,4 @@
-﻿module drawing {
+﻿namespace drawing {
     import Square = model.Square;
 
     export function drawSquare(sq: Square, renderer: CanvasRenderingContext2D) {
