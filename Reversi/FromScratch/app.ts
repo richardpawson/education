@@ -1,5 +1,6 @@
 ﻿import Square = model.Square;
 import Board = model.Board;
+import Side = model.Side;
 
 const squareSide: number = 60;
 const pieceRadius: number = 25;
@@ -44,6 +45,12 @@ window.onkeydown = function (ke: KeyboardEvent) {
         case 40: // down arrow
             moveCursorBy(0, 1);
             break;
+        case 66: // 'b'
+            placePiece(Side.black);
+            break;
+        case 87: // 'w'
+            placePiece(Side.white);
+            break;
     }
 }
 
@@ -52,4 +59,9 @@ function keepWithinBounds(value: number): number {
     if (value < 0) return 0;
     if (value > 7) return 7;
     return value;
+}
+
+function placePiece(side: Side) {
+    cursorLocation.occupiedBy = side;
+    moveCursorBy(0, 0);
 }
