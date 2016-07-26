@@ -76,8 +76,26 @@ namespace model {
                     case Direction.north:
                         sq = this.getSquare(location.col, location.row - i);
                         break;
+                    case Direction.northEast:
+                        sq = this.getSquare(location.col + i, location.row - i);
+                        break;
                     case Direction.east:
                         sq = this.getSquare(location.col + i, location.row);
+                        break;
+                    case Direction.southEast:
+                        sq = this.getSquare(location.col + i, location.row + i);
+                        break;
+                    case Direction.south:
+                        sq = this.getSquare(location.col, location.row + i);
+                        break;
+                    case Direction.southWest:
+                        sq = this.getSquare(location.col - i, location.row + i);
+                        break;
+                    case Direction.west:
+                        sq = this.getSquare(location.col - i, location.row);
+                        break;
+                    case Direction.northWest:
+                        sq = this.getSquare(location.col - i, location.row - i);
                         break;
                 }
                 if (sq != undefined) {
