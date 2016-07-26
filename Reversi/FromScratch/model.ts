@@ -131,6 +131,10 @@ namespace model {
             });
             return results;
         }
+
+        public countPieces(side: Side): number {
+            return _.filter(this.squares, sq => sq.occupiedBy == side).length;
+        }
     }
 
     export enum Side { black, white }
@@ -151,8 +155,10 @@ namespace model {
 
         public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
-                var flips: Square[] = this.board.allCapturedSquares(sq, this.turn);
+                //Place new piece
                 sq.occupiedBy = this.turn;
+                //Flip captured pieces
+                var flips: Square[] = this.board.allCapturedSquares(sq, this.turn);
                 _.forEach(flips, sq => sq.occupiedBy = this.turn);
                 //Now set the next turn
                 this.turn = oppositeSideTo(this.turn);

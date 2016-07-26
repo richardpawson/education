@@ -47,7 +47,9 @@
         renderer.strokeRect(square.col * squareSide, square.row * squareSide, squareSide, squareSide);
     }
 
-    export function updateText(game: GameManager) {
-        document.getElementById("status").innerHTML = game.status;
-    }
+export function updateText(game: GameManager) {
+    document.getElementById("status").innerHTML = game.status;
+    document.getElementById("black").innerHTML = board.countPieces(Side.black).toString();
+    document.getElementById("white").innerHTML = board.countPieces(Side.white).toString();
+}
 }
