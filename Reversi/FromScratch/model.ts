@@ -37,14 +37,39 @@ namespace model {
                 return value;
         }
 
-        public wouldBeValidMove(sq: Square): boolean {
-            return sq.occupiedBy == null;
+        public wouldBeValidMove(sq: Square, side: Side): boolean {
+            return sq.occupiedBy == null &&
+                this.isAdjacentToPiece(sq, oppositeSideTo(side));
+        }
+
+        public 
+
+        //Returns all squares (on the board) that are immediate neighbours
+        //of the given square  -  between 3 and 8 of them.
+        private getAdjacentSquares(sq: Square): Square[] {
+            var neighbours: Square[] = [];
+            for (var col: number = sq.col - 1; col <= sq.col + 1; col++) {
+                for (var row: number = sq.row - 1; row <= sq.row + 1; row++) {
+                    var neighbour = this.getSquare(col, row);
+                    if (neighbour != undefined && neighbour != sq) {
+                        neighbours.push(neighbour);
+                    }
+                }
+            }
+            return neighbours;
+        }
+
+        private isAdjacentToPiece(sq: Square, piece: Side): boolean {
+            var neighbours = this.getAdjacentSquares(sq);
+            return _.some(neighbours, sq => sq.occupiedBy == piece);
         }
     }
 
     export enum Side { black, white }
 
-
+    function oppositeSideTo(side: Side): Side {
+        return side === Side.black ? Side.white : Side.black;
+    }
 
     export class GameManager {
 
@@ -57,14 +82,10 @@ namespace model {
         public status: string;
 
         public placePiece(sq: Square): void {
-            if (this.board.wouldBeValidMove(sq)) {
+            if (this.board.wouldBeValidMove(sq, this.turn)) {
                 sq.occupiedBy = this.turn;
                 //Now set the next turn
-                if (this.turn == Side.black) {
-                    this.turn = Side.white
-                } else {
-                    this.turn = Side.black;
-                }
+                this.turn = oppositeSideTo(this.turn);
                 this.updateStatus();
             }
         }
