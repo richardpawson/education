@@ -31,10 +31,13 @@ function moveCursorBy(cols: number, rows: number) {
     var row = board.keepWithinBounds(cursorLocation.row + rows);
     cursorLocation = board.getSquare(col, row);
     drawing.drawBoard(board, renderer); //Re-drawing board clears the current cursor
-    var cursorColour = board.wouldBeValidMove(cursorLocation, game.turn) ? 'yellow' : 'red';
-    drawing.drawSquareOutline(cursorLocation, cursorColour, renderer);
-    var captured = board.allCapturedSquares(cursorLocation, game.turn);
-    _.forEach(captured, n => drawing.drawSquareOutline(n, 'blue', renderer));
+    if (board.wouldBeValidMove(cursorLocation, game.turn)) {
+        drawing.drawSquareOutline(cursorLocation, 'yellow', renderer);
+        var captured = board.allCapturedSquares(cursorLocation, game.turn);
+        _.forEach(captured, n => drawing.drawSquareOutline(n, 'blue', renderer));
+    } else {
+        drawing.drawSquareOutline(cursorLocation, 'red', renderer);
+    }
 }
 
 window.onkeydown = function (ke: KeyboardEvent) {
