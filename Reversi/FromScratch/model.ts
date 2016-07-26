@@ -9,6 +9,8 @@ namespace model {
         public occupiedBy: Side;
     }
 
+    export enum Direction { north, northEast, east, southEast, south, southWest, west, northWest }
+
     export class Board {
         constructor() {
             this.squares = [];
@@ -32,9 +34,9 @@ namespace model {
 
         //Limits the input value to the range 0-7
         public keepWithinBounds(value: number): number {
-                if (value < 0) return 0;
-                if (value > 7) return 7;
-                return value;
+            if (value < 0) return 0;
+            if (value > 7) return 7;
+            return value;
         }
 
         public wouldBeValidMove(sq: Square, side: Side): boolean {
@@ -42,7 +44,6 @@ namespace model {
                 this.isAdjacentToPiece(sq, oppositeSideTo(side));
         }
 
-        public 
 
         //Returns all squares (on the board) that are immediate neighbours
         //of the given square  -  between 3 and 8 of them.
@@ -62,6 +63,54 @@ namespace model {
         private isAdjacentToPiece(sq: Square, piece: Side): boolean {
             var neighbours = this.getAdjacentSquares(sq);
             return _.some(neighbours, sq => sq.occupiedBy == piece);
+        }
+
+        //Returns an array representing the line of squares from the given location to the edge of
+        //the board in the given direction, nearest first.
+        public squaresFrom(location: Square, dir: Direction): Square[] {
+            var squares: Square[] = [];
+            for (var i = 1; i <= 7; i++) { //Can only be maximum of 7 steps in any direction to edge
+                var sq: Square = this.getSquare(location.col, location.row - i);
+                var sq: Square;
+                switch (dir) {
+                    case Direction.north:
+                        sq = this.getSquare(location.col, location.row - i);
+                        break;
+                    case Direction.east:
+                        sq = this.getSquare(location.col + i, location.row);
+                        break;
+                }
+                if (sq != undefined) {
+                    squares.push(sq);
+                }
+            }
+            return squares;
+        }
+
+        public capturedSquares(placement: Square, side: Side, dir: Direction): Square[] {
+            var coveredSquares = [];
+            var squares = this.squaresFrom(placement, dir);
+            for (var i: number = 0; i < squares.length; i++) {
+                var sq: Square = squares[i];
+                if (sq.occupiedBy == side) {
+                    return coveredSquares;;  //Terminate loop
+                }
+                if (sq.occupiedBy == undefined) {
+                    return [];  //no squares are bookended
+                }
+                coveredSquares.push(sq);
+            }
+            return []; //Didn't find a bookend so return no squares;
+        }
+
+        //Returns a list of all squares that would be captured (ultimely to be flipped)
+        //by a given placement on a square
+        public allCapturedSquares(placement: Square, side: Side): Square[] {
+            var results = [];
+            _.forEach(Direction, d => {
+                results = results.concat(this.capturedSquares(placement, side, d));
+            });
+            return results;
         }
     }
 

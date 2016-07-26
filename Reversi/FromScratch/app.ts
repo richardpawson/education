@@ -33,6 +33,8 @@ function moveCursorBy(cols: number, rows: number) {
     drawing.drawBoard(board, renderer); //Re-drawing board clears the current cursor
     var cursorColour = board.wouldBeValidMove(cursorLocation, game.turn) ? 'yellow' : 'red';
     drawing.drawSquareOutline(cursorLocation, cursorColour, renderer);
+    var captured = board.allCapturedSquares(cursorLocation, game.turn);
+    _.forEach(captured, n => drawing.drawSquareOutline(n, 'blue', renderer));
 }
 
 window.onkeydown = function (ke: KeyboardEvent) {
