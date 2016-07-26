@@ -39,12 +39,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="game\" />
     <Folder Include="Scripts\typings\" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="game\model.ts" />
-    <TypeScriptCompile Include="game\drawing.ts" />
-    <TypeScriptCompile Include="game\eventHandling.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

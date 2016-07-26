@@ -29,7 +29,37 @@ namespace model {
         public getSquare(col: number, row: number): Square {
             return _.find(this.squares, sq => sq.col === col && sq.row == row);
         }
+
+        //Limits the input value to the range 0-7
+        public keepWithinBounds(value: number): number {
+                if (value < 0) return 0;
+                if (value > 7) return 7;
+                return value;
+        }
     }
 
     export enum Side { black, white }
+
+
+
+    export class GameManager {
+
+        public constructor(board: Board) {
+            this.turn = Side.black; //The rules state that Black always moves first
+        }
+
+        public turn: Side;
+
+        public placePiece(sq: Square): void {
+            sq.occupiedBy = this.turn;
+            //Now set the next turn
+            if (this.turn == Side.black) {
+                this.turn = Side.white
+            } else {
+                this.turn = Side.black;
+            }
+        }
+    }
+
+
 }

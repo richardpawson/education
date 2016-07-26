@@ -1,6 +1,7 @@
 ﻿import Square = model.Square;
 import Board = model.Board;
 import Side = model.Side;
+import GameManager = model.GameManager;
 
 const squareSide: number = 60;
 const pieceRadius: number = 25;
@@ -9,11 +10,13 @@ var canvas: HTMLCanvasElement;
 var renderer: CanvasRenderingContext2D;
 var cursorLocation: Square;
 var board: Board;
+var game: GameManager;
 
 window.onload = function () {
     canvas = document.getElementsByTagName("canvas")[0];
     renderer = canvas.getContext("2d");
     board = new Board();
+    game = new GameManager(board);
     cursorLocation = board.getSquare(0, 0);
     moveCursorBy(3, 2);
 }
@@ -23,8 +26,8 @@ window.onload = function () {
 //horizontally and/or vertically.  But keeps the cursor within the bounds of
 //the board. Increment may be positive or negative number
 function moveCursorBy(cols: number, rows: number) {
-    var col = keepWithinBounds(cursorLocation.col + cols);
-    var row = keepWithinBounds(cursorLocation.row + rows);
+    var col = board.keepWithinBounds(cursorLocation.col + cols);
+    var row = board.keepWithinBounds(cursorLocation.row + rows);
     cursorLocation = board.getSquare(col, row);
     drawing.drawBoard(board, renderer); //Re-drawing board clears the current cursor
     drawing.drawSquareOutline(cursorLocation, 'yellow', renderer);
@@ -45,23 +48,8 @@ window.onkeydown = function (ke: KeyboardEvent) {
         case 40: // down arrow
             moveCursorBy(0, 1);
             break;
-        case 66: // 'b'
-            placePiece(Side.black);
-            break;
-        case 87: // 'w'
-            placePiece(Side.white);
-            break;
+        case 13: // Enter
+            game.placePiece(cursorLocation);
+            moveCursorBy(0, 0);
     }
-}
-
-//Limits the input value to the range 0-7
-function keepWithinBounds(value: number): number {
-    if (value < 0) return 0;
-    if (value > 7) return 7;
-    return value;
-}
-
-function placePiece(side: Side) {
-    cursorLocation.occupiedBy = side;
-    moveCursorBy(0, 0);
 }
