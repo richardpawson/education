@@ -152,6 +152,9 @@ namespace model {
 
         public turn: Side;
         public status: string;
+        public gameOver: boolean;
+        whiteHasSkippedTurn: boolean;
+        blackHasSkippedTurn: boolean;
 
         public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
@@ -167,17 +170,32 @@ namespace model {
         }
 
         public updateStatus(): void {
-            switch (this.turn) {
-                case Side.black:
-                    this.status = 'Black to play';
-                    break;
-                case Side.white:
-                    this.status = 'White to play';
-                    break;
+            var black = board.countPieces(Side.black);
+            var white = board.countPieces(Side.white);
+            if (black + white == 64) {
+                this.gameOver = true;
+                if (white > black) {
+                    this.status = 'GAME OVER. White has won!';
+                } else if (black > white) {
+                    this.status = 'GAME OVER. Black has won!';
+                } else {
+                    this.status = 'GAME OVER. A draw!';
+                }
+            } else {
+                switch (this.turn) {
+                    case Side.black:
+                        this.status = 'Black to play';
+                        break;
+                    case Side.white:
+                        this.status = 'White to play';
+                        break;
+                }
             }
         }
 
         public skipTurn(): void {
+            if (this.turn == Side.white) this.whiteHasSkippedTurn = true;
+            if (this.turn == Side.black) this.blackHasSkippedTurn = true;
             this.turn = oppositeSideTo(this.turn);
             this.updateStatus();
         }
