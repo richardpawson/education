@@ -135,6 +135,10 @@ namespace model {
         public countPieces(side: Side): number {
             return _.filter(this.squares, sq => sq.occupiedBy == side).length;
         }
+
+        public isFull(): boolean {
+            return _.filter(this.squares, sq => sq.occupiedBy).length == 64;
+        }
     }
 
     export enum Side { black, white }
@@ -153,11 +157,12 @@ namespace model {
         public turn: Side;
         public status: string;
         public gameOver: boolean;
-        whiteHasSkippedTurn: boolean;
-        blackHasSkippedTurn: boolean;
+        lastTurnWasSkipped: boolean;
 
         public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
+                //Reset
+                this.lastTurnWasSkipped = false;
                 //Place new piece
                 sq.occupiedBy = this.turn;
                 //Flip captured pieces
@@ -165,15 +170,18 @@ namespace model {
                 _.forEach(flips, sq => sq.occupiedBy = this.turn);
                 //Now set the next turn
                 this.turn = oppositeSideTo(this.turn);
+                //test for game over
+                if (board.isFull()) {
+                    this.gameOver;
+                }
                 this.updateStatus();
             }
         }
 
         public updateStatus(): void {
-            var black = board.countPieces(Side.black);
-            var white = board.countPieces(Side.white);
-            if (black + white == 64) {
-                this.gameOver = true;
+            if (this.gameOver) {
+                var black = board.countPieces(Side.black);
+                var white = board.countPieces(Side.white);
                 if (white > black) {
                     this.status = 'GAME OVER. White has won!';
                 } else if (black > white) {
@@ -194,9 +202,12 @@ namespace model {
         }
 
         public skipTurn(): void {
-            if (this.turn == Side.white) this.whiteHasSkippedTurn = true;
-            if (this.turn == Side.black) this.blackHasSkippedTurn = true;
-            this.turn = oppositeSideTo(this.turn);
+            if (this.lastTurnWasSkipped) {
+                this.gameOver = true;
+            } else {
+                this.turn = oppositeSideTo(this.turn);
+                this.lastTurnWasSkipped = true;
+            }
             this.updateStatus();
         }
     }
