@@ -177,6 +177,10 @@ namespace model {
             }
         }
 
+        public skipTurn(): void {
+            this.turn = oppositeSideTo(this.turn);
+            this.updateStatus();
+        }
     }
 
 
