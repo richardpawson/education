@@ -41,7 +41,8 @@ namespace model {
 
         public wouldBeValidMove(sq: Square, side: Side): boolean {
             return sq.occupiedBy == null &&
-                this.isAdjacentToPiece(sq, oppositeSideTo(side));
+                this.isAdjacentToPiece(sq, oppositeSideTo(side)) &&
+                this.allCapturedSquares(sq, side).length > 0;
         }
 
 
@@ -150,7 +151,9 @@ namespace model {
 
         public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
+                var flips: Square[] = this.board.allCapturedSquares(sq, this.turn);
                 sq.occupiedBy = this.turn;
+                _.forEach(flips, sq => sq.occupiedBy = this.turn);
                 //Now set the next turn
                 this.turn = oppositeSideTo(this.turn);
                 this.updateStatus();
