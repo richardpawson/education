@@ -36,6 +36,10 @@ namespace model {
                 if (value > 7) return 7;
                 return value;
         }
+
+        public wouldBeValidMove(sq: Square): boolean {
+            return sq.occupiedBy == null;
+        }
     }
 
     export enum Side { black, white }
@@ -44,7 +48,7 @@ namespace model {
 
     export class GameManager {
 
-        public constructor(board: Board) {
+        public constructor(public board: Board) {
             this.turn = Side.black; //The rules state that Black always moves first
             this.updateStatus();
         }
@@ -53,14 +57,16 @@ namespace model {
         public status: string;
 
         public placePiece(sq: Square): void {
-            sq.occupiedBy = this.turn;
-            //Now set the next turn
-            if (this.turn == Side.black) {
-                this.turn = Side.white
-            } else {
-                this.turn = Side.black;
+            if (this.board.wouldBeValidMove(sq)) {
+                sq.occupiedBy = this.turn;
+                //Now set the next turn
+                if (this.turn == Side.black) {
+                    this.turn = Side.white
+                } else {
+                    this.turn = Side.black;
+                }
+                this.updateStatus();
             }
-            this.updateStatus();
         }
 
         public updateStatus(): void {
@@ -73,6 +79,7 @@ namespace model {
                     break;
             }
         }
+
     }
 
 
