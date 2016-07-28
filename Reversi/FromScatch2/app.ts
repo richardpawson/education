@@ -1,19 +1,16 @@
-﻿import Square = model.Square;
-import Board = model.Board;
-
-const squareSide: number = 60;
+﻿const squareSide: number = 60;
 const pieceRadius = 25;
 
 //Global variables
 var canvas: HTMLCanvasElement;
 var renderer: CanvasRenderingContext2D;
-var board: Board;
-var cursorLocation: Square;
+var board: model.Board;
+var cursorLocation: model.Square;
 
 window.onload = function () {
     canvas = document.getElementsByTagName("canvas")[0];
     renderer = canvas.getContext("2d");
-    board = new Board();
+    board = new model.Board();
     drawing.drawBoard(board, renderer);
     cursorLocation = board.getSquare(0, 0);
     moveCursorBy(3, 2);
@@ -42,5 +39,14 @@ window.onkeydown = function (ke: KeyboardEvent) {
         case 40: // down arrow
             moveCursorBy(0, 1);
             break;
+        case 13: // 'Enter'
+            placePiece(model.Side.black);
+            break;
     }
 }
+
+function placePiece(side: model.Side): void {
+    cursorLocation.occupiedBy = side;
+    moveCursorBy(0, 0);
+}
+
