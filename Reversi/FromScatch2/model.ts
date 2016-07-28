@@ -29,8 +29,14 @@ namespace model {
         public getSquare(col: number, row: number): Square {
             return _.find(this.squares, sq => sq.col === col && sq.row == row);
         }
-    }
 
-    export enum Side { black, white }
+        public keepWithinBounds(value: number): number {
+        if (value < 0) return 0;
+        if (value > 7) return 7;
+        return value;
+    }
+}
+
+export enum Side { black, white }
 }
 
