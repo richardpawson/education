@@ -2,6 +2,7 @@
 import Board = model.Board;
 
 const squareSide: number = 60;
+const pieceRadius = 25;
 
 var canvas: HTMLCanvasElement;
 var renderer: CanvasRenderingContext2D;
