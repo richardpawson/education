@@ -43,4 +43,9 @@
         renderer.strokeStyle = colour;
         renderer.strokeRect(square.col * squareSide, square.row * squareSide, squareSide, squareSide);
     }
+
+    export function updateText(game: model.GameManager) {
+        document.getElementById("status").innerHTML = game.status;
+    }
+
 }

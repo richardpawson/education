@@ -14,6 +14,7 @@ window.onload = function () {
     board = new model.Board();
     game = new model.GameManager(board);
     cursorLocation = board.getSquare(0, 0);
+    drawing.updateText(game);
     moveCursorBy(3, 2);
 }
 
@@ -42,6 +43,7 @@ window.onkeydown = function (ke: KeyboardEvent) {
             break;
         case 13: // Enter
             game.placePiece(cursorLocation);
+            drawing.updateText(game);
             moveCursorBy(0, 0);
             break;
     }

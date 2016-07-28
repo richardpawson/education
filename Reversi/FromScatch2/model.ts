@@ -43,6 +43,7 @@ namespace model {
 
         public constructor(public board: Board) {
             this.turn = Side.black; //The rules state that Black always moves first
+            this.updateStatus();
         }
 
         public turn: Side;
@@ -55,7 +56,22 @@ namespace model {
             } else {
                 this.turn = Side.black;
             }
+            this.updateStatus();
         }
+
+        public status: string;
+
+        public updateStatus(): void {
+            switch (this.turn) {
+                case Side.black:
+                    this.status = 'Black to play';
+                    break;
+                case Side.white:
+                    this.status = 'White to play';
+                    break;
+            }
+        }
+
     }
 
 }
