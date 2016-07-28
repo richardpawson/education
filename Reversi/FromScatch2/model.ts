@@ -36,9 +36,36 @@ namespace model {
             return value;
         }
 
-        public wouldBeValidMove(sq: Square): boolean {
-            return sq.occupiedBy == null;
+        public wouldBeValidMove(sq: Square, side: Side): boolean {
+            var oppositeSide: Side;
+            if (side == Side.black) {
+                oppositeSide = Side.white
+            } else {
+                oppositeSide = Side.black;
+            }
+            return sq.occupiedBy == null && this.isAdjacentToPiece(sq, oppositeSide);
         }
+
+        //Returns all squares (on the board) that are immediate neighbours
+        //of the given square  -  between 3 and 8 of them.
+        private getAdjacentSquares(sq: Square): Square[] {
+            var neighbours: Square[] = [];
+            for (var col: number = sq.col - 1; col <= sq.col + 1; col++) {
+                for (var row: number = sq.row - 1; row <= sq.row + 1; row++) {
+                    var neighbour = this.getSquare(col, row);
+                    if (neighbour != undefined && neighbour != sq) {
+                        neighbours.push(neighbour);
+                    }
+                }
+            }
+            return neighbours;
+        }
+
+        private isAdjacentToPiece(sq: Square, piece: Side): boolean {
+            var neighbours = this.getAdjacentSquares(sq);
+            return _.some(neighbours, sq => sq.occupiedBy == piece);
+        }
+
     }
 
     export enum Side { black, white }
@@ -53,7 +80,7 @@ namespace model {
         public turn: Side;
 
         public placePiece(sq: Square): void {
-            if (this.board.wouldBeValidMove(sq)) {
+            if (this.board.wouldBeValidMove(sq, this.turn)) {
                 sq.occupiedBy = this.turn;
                 //Now set the next turn
                 if (this.turn == Side.black) {
@@ -79,6 +106,8 @@ namespace model {
         }
 
     }
-
+    function oppositeSideTo(side: Side): Side {
+        return side === Side.black ? Side.white : Side.black;
+    }
 }
 
