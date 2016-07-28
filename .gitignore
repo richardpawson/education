@@ -3,10 +3,7 @@
 ################################################################################
 
 /Reversi/FromScratch/bin
-/Reversi/FromScratch/obj/Debug
-Reversi/FromScratch/app.js.map
-Reversi/FromScratch/drawing.js.map
-Reversi/FromScratch/app.js.map
+/Reversi/FromScratch/obj
 /Reversi/FromScratch/app.js
 /Reversi/FromScratch/drawing.js
 /Reversi/FromScratch/model.js.map
@@ -17,11 +14,13 @@ Reversi/FromScratch/app.js.map
 /Reversi/game/eventHandling.js
 /Reversi/game/drawing.js.map
 /Reversi/game/drawing.js
-Reversi/FromScatch2/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
-Reversi/FromScatch2/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
 /Reversi/FromScatch2/bin
-/Reversi/FromScatch2/obj/Debug
+/Reversi/FromScatch2/obj
 /Reversi/FromScatch2/app.js.map
 /Reversi/FromScatch2/app.js
 /Reversi/FromScatch2/Scripts/lodash.min.js
 /Reversi/FromScatch2/Scripts/lodash.core.min.js
+/Reversi/FromScatch2/drawing.js
+/Reversi/FromScatch2/drawing.js.map
+/Reversi/FromScatch2/model.js.map
+/Reversi/FromScatch2/model.js

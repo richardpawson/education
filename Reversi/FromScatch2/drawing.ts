@@ -7,7 +7,7 @@
         renderer.fillStyle = 'green';
         renderer.fillRect(sq.col * squareSide, sq.row * squareSide, squareSide, squareSide);
         //Draw outline
-        renderer.strokeStyle = 'black';
+        drawSquareOutline(sq, 'black', renderer);
         renderer.strokeRect(sq.col * squareSide, sq.row * squareSide, squareSide, squareSide);
         if (sq.occupiedBy != null) {
             var colour: string = getColourForSide(sq.occupiedBy);
@@ -39,5 +39,10 @@
         renderer.beginPath();
         renderer.arc(centreX, centerY, pieceRadius, 0, 2 * Math.PI);
         renderer.fill();
+    }
+
+    export function drawSquareOutline(square: Square, colour: string, renderer: CanvasRenderingContext2D) {
+        renderer.strokeStyle = colour;
+        renderer.strokeRect(square.col * squareSide, square.row * squareSide, squareSide, squareSide);
     }
 }
