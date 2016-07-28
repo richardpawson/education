@@ -35,6 +35,10 @@ namespace model {
             if (value > 7) return 7;
             return value;
         }
+
+        public wouldBeValidMove(sq: Square): boolean {
+            return sq.occupiedBy == null;
+        }
     }
 
     export enum Side { black, white }
@@ -49,14 +53,16 @@ namespace model {
         public turn: Side;
 
         public placePiece(sq: Square): void {
-            sq.occupiedBy = this.turn;
-            //Now set the next turn
-            if (this.turn == Side.black) {
-                this.turn = Side.white
-            } else {
-                this.turn = Side.black;
+            if (this.board.wouldBeValidMove(sq)) {
+                sq.occupiedBy = this.turn;
+                //Now set the next turn
+                if (this.turn == Side.black) {
+                    this.turn = Side.white
+                } else {
+                    this.turn = Side.black;
+                }
+                this.updateStatus();
             }
-            this.updateStatus();
         }
 
         public status: string;

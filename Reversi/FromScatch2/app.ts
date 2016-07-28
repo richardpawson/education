@@ -23,7 +23,8 @@ function moveCursorBy(cols: number, rows: number) {
     var row = board.keepWithinBounds(cursorLocation.row + rows);
     cursorLocation = board.getSquare(col, row);
     drawing.drawBoard(board, renderer); //Re-drawing board clears the current cursor
-    drawing.drawSquareOutline(cursorLocation, 'yellow', renderer);
+    var cursorColour = board.wouldBeValidMove(cursorLocation) ? 'yellow' : 'red';
+    drawing.drawSquareOutline(cursorLocation, cursorColour, renderer);
 }
 
 window.onkeydown = function (ke: KeyboardEvent) {
