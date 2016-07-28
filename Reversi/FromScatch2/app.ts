@@ -39,8 +39,11 @@ window.onkeydown = function (ke: KeyboardEvent) {
         case 40: // down arrow
             moveCursorBy(0, 1);
             break;
-        case 13: // 'Enter'
+        case 66: // 'b'
             placePiece(model.Side.black);
+            break;
+        case 87: // 'w'
+            placePiece(model.Side.white);
             break;
     }
 }
