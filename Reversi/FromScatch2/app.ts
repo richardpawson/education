@@ -6,12 +6,13 @@ var canvas: HTMLCanvasElement;
 var renderer: CanvasRenderingContext2D;
 var board: model.Board;
 var cursorLocation: model.Square;
+var game: model.GameManager;
 
 window.onload = function () {
     canvas = document.getElementsByTagName("canvas")[0];
     renderer = canvas.getContext("2d");
     board = new model.Board();
-    drawing.drawBoard(board, renderer);
+    game = new model.GameManager(board);
     cursorLocation = board.getSquare(0, 0);
     moveCursorBy(3, 2);
 }
@@ -39,17 +40,10 @@ window.onkeydown = function (ke: KeyboardEvent) {
         case 40: // down arrow
             moveCursorBy(0, 1);
             break;
-        case 66: // 'b'
-            placePiece(model.Side.black);
-            break;
-        case 87: // 'w'
-            placePiece(model.Side.white);
+        case 13: // Enter
+            game.placePiece(cursorLocation);
+            moveCursorBy(0, 0);
             break;
     }
-}
-
-function placePiece(side: model.Side): void {
-    cursorLocation.occupiedBy = side;
-    moveCursorBy(0, 0);
 }
 
