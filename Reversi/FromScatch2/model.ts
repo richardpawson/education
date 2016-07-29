@@ -43,7 +43,7 @@ namespace model {
             } else {
                 oppositeSide = Side.black;
             }
-            return sq.occupiedBy == null && this.isAdjacentToPiece(sq, oppositeSide);
+            return sq.occupiedBy == null && this.isAdjacentToPiece(sq, oppositeSideTo(side));
         }
 
         //Returns all squares (on the board) that are immediate neighbours
@@ -66,7 +66,69 @@ namespace model {
             return _.some(neighbours, sq => sq.occupiedBy == piece);
         }
 
-    }
+        public squaresFrom(location: Square, dir: Direction): Square[] {
+            var squares: Square[] = [];
+            for (var i = 1; i <= 7; i++) { //Can only be maximum of 7 steps to edge
+                var sq: Square;
+                switch (dir) {
+                    case Direction.north:
+                        sq = this.getSquare(location.col, location.row - i);
+                        break;
+                    case Direction.northEast:
+                        sq = this.getSquare(location.col + i, location.row - i);
+                        break;
+                    case Direction.east:
+                        sq = this.getSquare(location.col + i, location.row);
+                        break;
+                    case Direction.southEast:
+                        sq = this.getSquare(location.col + i, location.row + i);
+                        break;
+                    case Direction.south:
+                        sq = this.getSquare(location.col, location.row + i);
+                        break;
+                    case Direction.southWest:
+                        sq = this.getSquare(location.col - i, location.row + i);
+                        break;
+                    case Direction.west:
+                        sq = this.getSquare(location.col - i, location.row);
+                        break;
+                    case Direction.northWest:
+                        sq = this.getSquare(location.col - i, location.row - i);
+                        break;
+                }
+
+                if (sq != undefined) {
+                    squares.push(sq);
+                }
+            }
+            return squares;
+        }
+
+        public capturedSquares(placement: Square, side: Side, dir: Direction): Square[] {
+            var coveredSquares = [];
+            var squares = this.squaresFrom(placement, dir);
+            for (var i: number = 0; i < squares.length; i++) {
+                var sq: Square = squares[i];
+                if (sq.occupiedBy == side) {
+                    return coveredSquares;;  //Terminate loop
+                }
+                if (sq.occupiedBy == undefined) {
+                    return [];  //no squares are bookended
+                }
+                coveredSquares.push(sq);
+            }
+            return []; //Didn't find a bookend so return no squares;
+        }
+
+        public allCapturedSquares(placement: Square, side: Side): Square[] {
+            var results = [];
+            _.forEach(Direction, d => {
+                var toAdd = this.capturedSquares(placement, side, d);
+                _.forEach(toAdd, sq => results.push(sq));
+            });
+            return results;
+        }
+     }
 
     export enum Side { black, white }
 
@@ -83,11 +145,7 @@ namespace model {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
                 sq.occupiedBy = this.turn;
                 //Now set the next turn
-                if (this.turn == Side.black) {
-                    this.turn = Side.white
-                } else {
-                    this.turn = Side.black;
-                }
+                this.turn = oppositeSideTo(this.turn);
                 this.updateStatus();
             }
         }
@@ -109,5 +167,7 @@ namespace model {
     function oppositeSideTo(side: Side): Side {
         return side === Side.black ? Side.white : Side.black;
     }
+
+    export enum Direction { north, northEast, east, southEast, south, southWest, west, northWest }
 }
 
