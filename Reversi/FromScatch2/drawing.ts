@@ -46,6 +46,9 @@
 
     export function updateText(game: model.GameManager) {
         document.getElementById("status").innerHTML = game.status;
+        document.getElementById("black").innerHTML = board.countPieces(model.Side.black).toString();
+        document.getElementById("white").innerHTML = board.countPieces(model.Side.white).toString();
+
     }
 
 }

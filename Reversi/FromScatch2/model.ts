@@ -130,6 +130,10 @@ namespace model {
             });
             return results;
         }
+
+        public countPieces(side: Side): number {
+            return _.filter(this.squares, sq => sq.occupiedBy == side).length;
+        }
      }
 
     export enum Side { black, white }
