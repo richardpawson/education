@@ -23,7 +23,11 @@
     }
 
     export function getColourForSide(side: model.Side): string {
-        return side === model.Side.black ? 'black' : 'white';
+        if (side == model.Side.black) {
+            return 'black';
+        } else {
+            return 'white';
+        }
     }
 
     export function drawPiece(

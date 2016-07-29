@@ -8,6 +8,7 @@ var board: model.Board;
 var cursorLocation: model.Square;
 var game: model.GameManager;
 
+
 window.onload = function () {
     canvas = document.getElementsByTagName("canvas")[0];
     renderer = canvas.getContext("2d");
