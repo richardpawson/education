@@ -34,6 +34,7 @@ function moveCursorBy(cols: number, rows: number) {
 
 window.onkeydown = function (ke: KeyboardEvent) {
     ke.preventDefault();
+    if (game.gameOver) return;  //Can't continue
     switch (ke.keyCode) {
         case 37: // left arrow
             moveCursorBy(-1, 0);

@@ -134,7 +134,11 @@ namespace model {
         public countPieces(side: Side): number {
             return _.filter(this.squares, sq => sq.occupiedBy == side).length;
         }
-     }
+
+        public isFull(): boolean {
+            return _.filter(this.squares, sq => sq.occupiedBy).length == 64;
+        }
+    }
 
     export enum Side { black, white }
 
@@ -156,6 +160,10 @@ namespace model {
                 _.forEach(flips, sq => sq.occupiedBy = this.turn);
                 //Set the next turn
                 this.turn = oppositeSideTo(this.turn);
+                //test for game over
+                if (board.isFull()) {
+                    this.gameOver;
+                }
                 this.updateStatus();
             }
         }
@@ -163,17 +171,31 @@ namespace model {
         public status: string;
 
         public updateStatus(): void {
-            switch (this.turn) {
-                case Side.black:
-                    this.status = 'Black to play';
-                    break;
-                case Side.white:
-                    this.status = 'White to play';
-                    break;
+            if (this.gameOver) {
+                var black = board.countPieces(Side.black);
+                var white = board.countPieces(Side.white);
+                if (white > black) {
+                    this.status = 'GAME OVER. White has won!';
+                } else if (black > white) {
+                    this.status = 'GAME OVER. Black has won!';
+                } else {
+                    this.status = 'GAME OVER. A draw!';
+                }
+            } else {
+                switch (this.turn) {
+                    case Side.black:
+                        this.status = 'Black to play';
+                        break;
+                    case Side.white:
+                        this.status = 'White to play';
+                        break;
+                }
             }
         }
 
+        public gameOver: boolean;
     }
+
     function oppositeSideTo(side: Side): Side {
         return side === Side.black ? Side.white : Side.black;
     }
