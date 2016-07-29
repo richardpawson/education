@@ -53,5 +53,10 @@ window.onkeydown = function (ke: KeyboardEvent) {
             drawing.updateText(game);
             moveCursorBy(0, 0);
             break;
+        case 27: //Esc -  Skip turn
+            game.skipTurn();
+            drawing.updateText(game);
+            moveCursorBy(0, 0);
+            break;
     }
 }

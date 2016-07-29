@@ -153,6 +153,8 @@ namespace model {
 
         public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
+                //Reset
+                this.lastTurnWasSkipped = false;
                 //Place new piece
                 sq.occupiedBy = this.turn;
                 //Flip captured pieces
@@ -194,6 +196,18 @@ namespace model {
         }
 
         public gameOver: boolean;
+        lastTurnWasSkipped: boolean;
+
+        public skipTurn(): void {
+            this.turn = oppositeSideTo(this.turn);
+            if (this.lastTurnWasSkipped) {
+                this.gameOver = true;
+            } else {
+                this.turn = oppositeSideTo(this.turn);
+                this.lastTurnWasSkipped = true;
+            }
+            this.updateStatus();
+        }
     }
 
     function oppositeSideTo(side: Side): Side {
