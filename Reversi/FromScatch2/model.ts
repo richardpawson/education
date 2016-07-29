@@ -43,7 +43,9 @@ namespace model {
             } else {
                 oppositeSide = Side.black;
             }
-            return sq.occupiedBy == null && this.isAdjacentToPiece(sq, oppositeSideTo(side));
+            return sq.occupiedBy == null &&
+                this.isAdjacentToPiece(sq, oppositeSideTo(side)) &&
+                this.allCapturedSquares(sq, side).length > 0;
         }
 
         //Returns all squares (on the board) that are immediate neighbours
@@ -143,8 +145,12 @@ namespace model {
 
         public placePiece(sq: Square): void {
             if (this.board.wouldBeValidMove(sq, this.turn)) {
+                //Place new piece
                 sq.occupiedBy = this.turn;
-                //Now set the next turn
+                //Flip captured pieces
+                var flips: Square[] = this.board.allCapturedSquares(sq, this.turn);
+                _.forEach(flips, sq => sq.occupiedBy = this.turn);
+                //Set the next turn
                 this.turn = oppositeSideTo(this.turn);
                 this.updateStatus();
             }
