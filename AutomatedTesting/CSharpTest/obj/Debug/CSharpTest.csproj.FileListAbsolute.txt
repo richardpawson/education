@@ -1,0 +1,8 @@
+C:\education\AutomatedTesting\CSharpTest\bin\Debug\CSharpTest.dll
+C:\education\AutomatedTesting\CSharpTest\bin\Debug\CSharpTest.pdb
+C:\education\AutomatedTesting\CSharpTest\bin\Debug\CSharpApp.exe
+C:\education\AutomatedTesting\CSharpTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\education\AutomatedTesting\CSharpTest\bin\Debug\CSharpApp.pdb
+C:\education\AutomatedTesting\CSharpTest\obj\Debug\CSharpTest.csprojResolveAssemblyReference.cache
+C:\education\AutomatedTesting\CSharpTest\obj\Debug\CSharpTest.dll
+C:\education\AutomatedTesting\CSharpTest\obj\Debug\CSharpTest.pdb

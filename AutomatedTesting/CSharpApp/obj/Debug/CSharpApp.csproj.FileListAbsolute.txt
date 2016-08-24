@@ -1,0 +1,8 @@
+C:\education\AutomatedTesting\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\education\AutomatedTesting\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\education\AutomatedTesting\CSharpApp\obj\Debug\CSharpApp.csprojResolveAssemblyReference.cache
+C:\education\AutomatedTesting\CSharpApp\bin\Debug\CSharpApp.exe.config
+C:\education\AutomatedTesting\CSharpApp\bin\Debug\CSharpApp.exe
+C:\education\AutomatedTesting\CSharpApp\bin\Debug\CSharpApp.pdb
+C:\education\AutomatedTesting\CSharpApp\obj\Debug\CSharpApp.exe
+C:\education\AutomatedTesting\CSharpApp\obj\Debug\CSharpApp.pdb
