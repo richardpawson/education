@@ -1,0 +1,6 @@
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\obj\Debug\CSharpRomanNumerals.csprojResolveAssemblyReference.cache
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\bin\Debug\CSharpRomanNumerals.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\bin\Debug\CSharpRomanNumerals.pdb
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\obj\Debug\CSharpRomanNumerals.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\obj\Debug\CSharpRomanNumerals.pdb

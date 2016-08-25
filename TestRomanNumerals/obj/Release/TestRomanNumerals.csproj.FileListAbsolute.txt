@@ -1,0 +1,5 @@
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\bin\Release\TestRomanNumerals.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\bin\Release\TestRomanNumerals.pdb
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\obj\Release\TestRomanNumerals.csprojResolveAssemblyReference.cache
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\obj\Release\TestRomanNumerals.dll
+C:\Users\richard\Documents\Visual Studio 2013\Projects\TestRomanNumerals\obj\Release\TestRomanNumerals.pdb
