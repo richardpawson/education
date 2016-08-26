@@ -1,0 +1,8 @@
+C:\education\Fractions\CSharpFractionsTest\bin\Debug\CSharpFractionsTest.dll
+C:\education\Fractions\CSharpFractionsTest\bin\Debug\CSharpFractionsTest.pdb
+C:\education\Fractions\CSharpFractionsTest\bin\Debug\CSharpFractions.dll
+C:\education\Fractions\CSharpFractionsTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\education\Fractions\CSharpFractionsTest\bin\Debug\CSharpFractions.pdb
+C:\education\Fractions\CSharpFractionsTest\obj\Debug\CSharpFractionsTest.csprojResolveAssemblyReference.cache
+C:\education\Fractions\CSharpFractionsTest\obj\Debug\CSharpFractionsTest.dll
+C:\education\Fractions\CSharpFractionsTest\obj\Debug\CSharpFractionsTest.pdb

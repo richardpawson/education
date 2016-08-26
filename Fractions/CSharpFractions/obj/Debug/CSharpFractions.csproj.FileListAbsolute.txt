@@ -1,0 +1,5 @@
+C:\education\Fractions\CSharpFractions\bin\Debug\CSharpFractions.dll
+C:\education\Fractions\CSharpFractions\bin\Debug\CSharpFractions.pdb
+C:\education\Fractions\CSharpFractions\obj\Debug\CSharpFractions.csprojResolveAssemblyReference.cache
+C:\education\Fractions\CSharpFractions\obj\Debug\CSharpFractions.dll
+C:\education\Fractions\CSharpFractions\obj\Debug\CSharpFractions.pdb
