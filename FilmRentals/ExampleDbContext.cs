@@ -22,7 +22,7 @@ namespace FilmRentals
         protected override void Seed(FilmRentalDbContext context)
         {
             CreateMember(context, "Toby Lawrance", "26 The Street, Silverstone");
-            CreateMember(context, "Olly Clarke", "26 The Street, Oxford");
+            //CreateMember(context, "Olly Clarke", "26 The Street, Oxford");
             var pg = CreateRating(context, "PG", 13);
             var r = CreateRating(context, "R", 17);
             CreateFilm(context, "Casino Royale", 2.50, pg);

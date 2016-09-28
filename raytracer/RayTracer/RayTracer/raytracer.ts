@@ -252,7 +252,6 @@ function defaultScene(): Scene {
             new Sphere(new Vector(0.0, 1.0, -0.25), 1.0, Surfaces.shiny),
             new Sphere(new Vector(0.5, 0.25, 0), 0.25, Surfaces.shiny),
             new Sphere(new Vector(-1.0, 0.5, 1.5), 0.5, Surfaces.shiny),
-            //new Disc(new Vector(0.0, 0.0, 0.0), 1.0, new Vector(0.0, 1.0, 0.0), -0.9, Surfaces.shiny)
         ],
         lights: [
             new Light(new Vector(-2.0, 2.5, 0.0), new Color(0.49, 0.07, 0.07)),
