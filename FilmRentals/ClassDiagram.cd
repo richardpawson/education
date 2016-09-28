@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FilmRentals.Film">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Rating" Type="FilmRentals.Rating">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.443" Y="0.068" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAABAAAAAAAAEAAAAAAgAAAAA=</HashCode>
+      <FileName>Film.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Rating" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FilmRentals.Member">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQQAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Member.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FilmRentals.Rating">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAoAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rating.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FilmRentals.Rental">
+    <Position X="3.75" Y="3" Width="2" />
+    <Members>
+      <Property Name="Container" Hidden="true" />
+      <Property Name="FilmRepository" Hidden="true" />
+      <Property Name="MemberRepository" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Member" Type="FilmRentals.Member" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="3" />
+        <Point X="4.75" Y="1.625" />
+        <Point X="2.75" Y="1.625" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="1.377" Y="-1.115" Height="0.182" Width="0.895" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Film" Type="FilmRentals.Film">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.868" Y="-1.123" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgQAAAEAAAAACAAAAAAAAAAMBAAEAAAAAAKAAAA=</HashCode>
+      <FileName>Rental.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Member" />
+      <Property Name="Film" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

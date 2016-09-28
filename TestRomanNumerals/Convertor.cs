@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CSharpRomanNumerals
 {
     public static class Convertor
     {
-        /// <summary>
-        /// Converts an Arabic integer number to a (string) Roman numeral form. 
-        /// </summary>
-        /// <param name="number">The (Arabic) number you wish to convert</param>
-        /// <returns></returns>
+        private static Dictionary<int, string> symbols = new Dictionary<int, string>
+            {
+                {1000, "M"},{900, "CM"},{500, "D"},{400, "CD"},{100, "C"},{90, "XC"},
+                { 50, "L"},{ 40, "XL"},{10, "X"},{9, "IX"},{5, "V"},{4, "IV"},{1, "I"}
+            };
         public static string AsRomanNumeral(int number)
         {
-            string[] symbols = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
-            int[] values = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-            var roman = ""; //Better: var roman = new StringBuilder;
-            for (int i = 0; i < symbols.Length; i++)
+            var result = new StringBuilder();
+            foreach (int value in symbols.Keys)
             {
-                while (number >= values[i])
+                while (number >= value)
                 {
-                    number -= values[i];
-                    roman += symbols[i]; //roman.Append(symbols[i]);
+                    result.Append(symbols[value]);
+                    number -= value;
                 }
             }
-            return roman; //return roman.ToString();
+            return result.ToString();
         }
     }
 }
