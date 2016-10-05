@@ -1,0 +1,5 @@
+C:\education\Static and Dynamic typing\bin\Debug\StaticAndDynamicTyping.exe.config
+C:\education\Static and Dynamic typing\bin\Debug\StaticAndDynamicTyping.exe
+C:\education\Static and Dynamic typing\bin\Debug\StaticAndDynamicTyping.pdb
+C:\education\Static and Dynamic typing\obj\Debug\StaticAndDynamicTyping.exe
+C:\education\Static and Dynamic typing\obj\Debug\StaticAndDynamicTyping.pdb
