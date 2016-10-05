@@ -3,3 +3,8 @@ C:\Users\richard\Documents\Visual Studio 2015\Projects\ClassLibrary1\ClassLibrar
 C:\Users\richard\Documents\Visual Studio 2015\Projects\ClassLibrary1\ClassLibrary1\obj\Debug\PolymorphismInCSharp.csprojResolveAssemblyReference.cache
 C:\Users\richard\Documents\Visual Studio 2015\Projects\ClassLibrary1\ClassLibrary1\obj\Debug\PolymorphismInCSharp.exe
 C:\Users\richard\Documents\Visual Studio 2015\Projects\ClassLibrary1\ClassLibrary1\obj\Debug\PolymorphismInCSharp.pdb
+C:\education\Polymorphism\PolymorphismInCSharp\bin\Debug\PolymorphismInCSharp.exe
+C:\education\Polymorphism\PolymorphismInCSharp\bin\Debug\PolymorphismInCSharp.pdb
+C:\education\Polymorphism\PolymorphismInCSharp\obj\Debug\PolymorphismInCSharp.csprojResolveAssemblyReference.cache
+C:\education\Polymorphism\PolymorphismInCSharp\obj\Debug\PolymorphismInCSharp.exe
+C:\education\Polymorphism\PolymorphismInCSharp\obj\Debug\PolymorphismInCSharp.pdb

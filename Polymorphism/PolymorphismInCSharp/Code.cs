@@ -63,10 +63,15 @@ public class Program {
 
 // Main program here...
     public static void Main() {
+        Console.WriteLine("Polymorphism in C#");
         summariseAll(drawing1);
         growAll(drawing1, 50);
+        Console.WriteLine();
+        Console.WriteLine("After growing all by 50%:");
         summariseAll(drawing1);
+
         //To keep console open
+        Console.WriteLine("Press any key to continue . . .");
         Console.ReadKey();
     }
 }

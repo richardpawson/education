@@ -43,7 +43,10 @@ def summariseAll(shapes) :
         print(shape.summary())
 
 def Main() :
+    print("Polymorphism in Python")
     summariseAll(drawing1)
+    print()
+    print("After growing all by 50%:")
     growAll(drawing1, 50)
     summariseAll(drawing1)
 
