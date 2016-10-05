@@ -25,6 +25,9 @@
     <Content Include="index.html" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="disc.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="raytracer.ts" />
   </ItemGroup>
   <ItemGroup>
