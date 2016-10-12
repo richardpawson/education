@@ -5,10 +5,10 @@ namespace InheritanceInCSharp
     public class Program
     {
 
-        private static BaseShape[] drawing1 =
-            new BaseShape[] { new Circle(3), new Circle(4), new Rectangle(2, 7), new Circle(10), new EquilateralTriangle(8) };
+        private static IShape[] drawing1 =
+            new IShape[] { new Circle(3), new Circle(4), new Rectangle(2, 7), new Circle(10), new EquilateralTriangle(8) };
 
-        static void GrowAll(BaseShape[] shapes, int percent)
+        static void GrowAll(IShape[] shapes, int percent)
         {
             // iterate (loop) over array and delegate to equivalent method on each
             foreach (var shape in shapes)
@@ -17,16 +17,16 @@ namespace InheritanceInCSharp
             }
         }
 
-        static void RotateAllRotatable(BaseShape[] shapes, int degrees)
+        static void RotateAllRotatable(IShape[] shapes, int degrees)
         {
             //You will need to add 'using System.Linq;' at the top of the file
-            foreach (var rotatableObject in shapes.OfType<RotatableShape>())
+            foreach (var rotatableObject in shapes.OfType<IRotatable>())
             {
                 rotatableObject.RotateBy(degrees);
             }
         }
 
-        static void SummariseAll(BaseShape[] shapes)
+        static void SummariseAll(IShape[] shapes)
         {
             foreach (var shape in shapes)
             {

@@ -43,11 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseShape.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="EquilateralTriangle.cs" />
-    <Compile Include="RotatableShape.cs" />
+    <Compile Include="IRotatable.cs" />
+    <Compile Include="IShape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle.cs" />
   </ItemGroup>

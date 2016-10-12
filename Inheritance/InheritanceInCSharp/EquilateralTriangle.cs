@@ -1,24 +1,28 @@
 ﻿namespace InheritanceInCSharp
 {
-    public class EquilateralTriangle : RotatableShape
+    public class EquilateralTriangle : IShape, IRotatable
     {
         double side = 0;
+        double orientation = 0;
 
         public EquilateralTriangle(double side)
         {
             this.side = side;
         }
 
-        public override void GrowBy(double percent)
+        public void GrowBy(double percent)
         {
             side = side * (1 + percent / 100);
         }
 
-        public override string Summary()
+        public string Summary()
         {
             return "Equilateral Triangle, side: " + side + " orientation:" + orientation;
         }
 
-
+        public void RotateBy(int degrees)
+        {
+            orientation = (orientation + degrees) % 360;
+        }
     }
 }
