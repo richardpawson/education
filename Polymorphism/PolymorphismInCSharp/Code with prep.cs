@@ -86,6 +86,7 @@ public class EquilateralTriangle : IShape, IRotatable
         orientation = (orientation + degrees) % 360;
     }
 }
+
 public class Program {
 
     private static IShape[] drawing1 = 
