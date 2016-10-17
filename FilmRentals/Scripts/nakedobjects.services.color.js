@@ -23,7 +23,7 @@ var NakedObjects;
         }
         function cacheAndReturn(type, color) {
             colorCache[type] = color;
-            return $q.when(color);
+            return color;
         }
         function isSubtype(subtype) {
             var subtypeChecks = subtypeCache.length;
@@ -36,7 +36,7 @@ var NakedObjects;
                     return cacheAndReturn(subtype, defaultColor);
                 });
             }
-            return cacheAndReturn(subtype, defaultColor);
+            return $q.when(cacheAndReturn(subtype, defaultColor));
         }
         function getColor(type) {
             // 1 cache 
@@ -53,7 +53,7 @@ var NakedObjects;
             for (var _i = 0, regexCache_1 = regexCache; _i < regexCache_1.length; _i++) {
                 var entry = regexCache_1[_i];
                 if (entry.regex.test(type)) {
-                    return cacheAndReturn(type, entry.color);
+                    return $q.when(cacheAndReturn(type, entry.color));
                 }
             }
             return isSubtype(type);

@@ -68,7 +68,7 @@ var NakedObjects;
             $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, ++loadingCount);
             return $http(config)
                 .then(function () {
-                return $q.when(true);
+                return true;
             })
                 .catch(function (promiseCallback) {
                 return handleError(promiseCallback);
@@ -100,9 +100,6 @@ var NakedObjects;
                 // clear cache of existing values
                 cache.remove(config.url);
             }
-            if (config.doesnotexist) {
-                config.url = "http://www.google.co.uk";
-            }
             return $http(config)
                 .then(function (promiseCallback) {
                 if (!isValidResponse(promiseCallback.data)) {
@@ -111,7 +108,7 @@ var NakedObjects;
                 var representation = handleRedirectedObject(response, promiseCallback.data);
                 response.populate(representation);
                 response.etagDigest = promiseCallback.headers("ETag");
-                return $q.when(response);
+                return response;
             })
                 .catch(function (promiseCallback) {
                 return handleError(promiseCallback);
@@ -193,7 +190,7 @@ var NakedObjects;
             };
             return $http(config)
                 .then(function (promiseCallback) {
-                return $q.when(promiseCallback.data);
+                return promiseCallback.data;
             })
                 .catch(function (promiseCallback) {
                 return handleError(promiseCallback);
@@ -207,11 +204,11 @@ var NakedObjects;
                 headers: { "Content-Type": mt }
             };
             return $http(config)
-                .then(function (promiseCallback) {
-                return $q.when(true);
+                .then(function () {
+                return true;
             })
-                .catch(function (promiseCallback) {
-                return $q.when(false);
+                .catch(function () {
+                return false;
             });
         };
         function logoff() {

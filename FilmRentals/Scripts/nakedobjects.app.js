@@ -35,6 +35,7 @@ var NakedObjects;
         var splitAttachmentRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentRecent.html";
         var splitAttachmentAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentAttachment.html";
         var singleApplicationPropertiesTemplate = NakedObjects.getSvrPath() + "Content/partials/singleApplicationProperties.html";
+        var singleMultiLineDialogTemplate = NakedObjects.getSvrPath() + "Content/partials/singleMultiLineDialog.html";
         var singleErrorTemplate = NakedObjects.getSvrPath() + "Content/partials/singleError.html";
         $routeProvider.
             //Gemini2 Urls below:
@@ -190,6 +191,10 @@ var NakedObjects;
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.applicationPropertiesPath, {
             templateUrl: singleApplicationPropertiesTemplate,
+            controller: "BackgroundController"
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.multiLineDialogPath, {
+            templateUrl: singleMultiLineDialogTemplate,
             controller: "BackgroundController"
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.errorPath, {

@@ -15,6 +15,7 @@ var NakedObjects;
         FocusTarget[FocusTarget["TableItem"] = 7] = "TableItem";
         FocusTarget[FocusTarget["Input"] = 8] = "Input";
         FocusTarget[FocusTarget["CheckBox"] = 9] = "CheckBox";
+        FocusTarget[FocusTarget["MultiLineDialogRow"] = 10] = "MultiLineDialogRow";
     })(NakedObjects.FocusTarget || (NakedObjects.FocusTarget = {}));
     var FocusTarget = NakedObjects.FocusTarget;
     NakedObjects.app.service("focusManager", function ($timeout, $rootScope) {

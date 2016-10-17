@@ -186,7 +186,7 @@ var NakedObjects;
                     return _this.context.getObjectForEdit(1, obj);
                 }
                 else {
-                    return _this.$q.when(obj); //To wrap a known object as a promise
+                    return obj; //To wrap a known object as a promise
                 }
             });
         };

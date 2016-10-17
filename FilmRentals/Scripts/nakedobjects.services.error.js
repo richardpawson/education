@@ -7,7 +7,7 @@ var NakedObjects;
         var errorService = this;
         var preProcessors = [];
         var displayHandlers = [];
-        function handleHttpServerError(reject) {
+        function handleHttpServerError() {
             urlManager.setError(ErrorCategory.HttpServerError);
         }
         function handleHttpClientError(reject, displayMessages) {
@@ -34,7 +34,7 @@ var NakedObjects;
             context.setError(reject);
             switch (reject.category) {
                 case (ErrorCategory.HttpServerError):
-                    handleHttpServerError(reject);
+                    handleHttpServerError();
                     break;
                 case (ErrorCategory.HttpClientError):
                     handleHttpClientError(reject, displayMessages);
@@ -50,7 +50,7 @@ var NakedObjects;
         errorService.setErrorDisplayHandler = function (handler) {
             displayHandlers.push(handler);
         };
-        errorService.displayError = function ($scope, routeData) {
+        errorService.displayError = function ($scope) {
             // first allow handlers to set error template, if none does then default 
             displayHandlers.forEach(function (h) { return h($scope); });
             if (!$scope.errorTemplate) {

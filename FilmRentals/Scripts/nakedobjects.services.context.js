@@ -13,6 +13,8 @@ var NakedObjects;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var PromptRepresentation = NakedObjects.Models.PromptRepresentation;
     var DomainTypeActionInvokeRepresentation = NakedObjects.Models.DomainTypeActionInvokeRepresentation;
+    var CollectionMember = NakedObjects.Models.CollectionMember;
+    var CollectionRepresentation = NakedObjects.Models.CollectionRepresentation;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     var DirtyState;
     (function (DirtyState) {
@@ -222,7 +224,7 @@ var NakedObjects;
                     dirtyList.clearDirty(oid);
                 }
                 addRecentlyViewed(obj);
-                return $q.when(obj);
+                return obj;
             });
         };
         function editOrReloadObject(paneId, object, inlineDetails) {
@@ -233,7 +235,7 @@ var NakedObjects;
                 currentObjects[paneId] = obj;
                 var oid = obj.getOid();
                 dirtyList.clearDirty(oid);
-                return $q.when(obj);
+                return obj;
             });
         }
         context.getIsDirty = function (oid) { return !oid.isService && dirtyList.getDirty(oid) !== DirtyState.Clean; };
@@ -254,7 +256,7 @@ var NakedObjects;
             }).
                 then(function (service) {
                 currentObjects[paneId] = service;
-                return $q.when(service);
+                return service;
             });
         };
         context.getActionDetails = function (actionMember) {
@@ -288,7 +290,7 @@ var NakedObjects;
             }).
                 then(function (menu) {
                 currentMenuList[menuId] = menu;
-                return $q.when(menu);
+                return menu;
             });
         };
         context.clearMessages = function () {
@@ -313,7 +315,7 @@ var NakedObjects;
             }).
                 then(function (services) {
                 currentServices = services;
-                return $q.when(services);
+                return services;
             });
         };
         context.getMenus = function () {
@@ -327,7 +329,7 @@ var NakedObjects;
             }).
                 then(function (menus) {
                 currentMenus = menus;
-                return $q.when(currentMenus);
+                return currentMenus;
             });
         };
         context.getVersion = function () {
@@ -341,7 +343,7 @@ var NakedObjects;
             }).
                 then(function (version) {
                 currentVersion = version;
-                return $q.when(version);
+                return version;
             });
         };
         context.getUser = function () {
@@ -355,7 +357,7 @@ var NakedObjects;
             }).
                 then(function (user) {
                 currentUser = user;
-                return $q.when(user);
+                return user;
             });
         };
         context.getObject = function (paneId, oid, interactionMode) {
@@ -403,10 +405,10 @@ var NakedObjects;
             return resultPromise().then(function (result) { return handleResult(paneId, result, page, pageSize); });
         };
         context.getActionExtensionsFromMenu = function (menuId, actionId) {
-            return context.getMenu(menuId).then(function (menu) { return $q.when(menu.actionMember(actionId).extensions()); });
+            return context.getMenu(menuId).then(function (menu) { return menu.actionMember(actionId).extensions(); });
         };
         context.getActionExtensionsFromObject = function (paneId, oid, actionId) {
-            return context.getObject(paneId, oid, NakedObjects.InteractionMode.View).then(function (object) { return $q.when(object.actionMember(actionId).extensions()); });
+            return context.getObject(paneId, oid, NakedObjects.InteractionMode.View).then(function (object) { return object.actionMember(actionId).extensions(); });
         };
         function getPagingParms(page, pageSize) {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
@@ -468,11 +470,13 @@ var NakedObjects;
             return doPrompt(field, id, null, function (map) { return map.setArguments(args); }, objectValues, digest);
         };
         var nextTransientId = 0;
-        context.setResult = function (action, result, fromPaneId, toPaneId, page, pageSize) {
+        function setMessages(result) {
             var warnings = result.extensions().warnings() || [];
             var messages = result.extensions().messages() || [];
             $rootScope.$broadcast(NakedObjects.geminiWarningEvent, warnings);
             $rootScope.$broadcast(NakedObjects.geminiMessageEvent, messages);
+        }
+        context.setResult = function (action, result, fromPaneId, toPaneId, page, pageSize) {
             if (!result.result().isNull()) {
                 if (result.resultType() === "object") {
                     var resultObject = result.result().object();
@@ -524,7 +528,8 @@ var NakedObjects;
                 urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
             }
         };
-        function invokeActionInternal(invokeMap, action, fromPaneId, toPaneId, setDirty) {
+        function invokeActionInternal(invokeMap, action, fromPaneId, toPaneId, setDirty, gotoResult) {
+            if (gotoResult === void 0) { gotoResult = false; }
             focusManager.setCurrentPane(toPaneId);
             invokeMap.setUrlParameter(NakedObjects.roInlinePropertyDetails, false);
             if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
@@ -533,8 +538,11 @@ var NakedObjects;
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then(function (result) {
                 setDirty();
-                context.setResult(action, result, fromPaneId, toPaneId, 1, NakedObjects.defaultPageSize);
-                return $q.when(result);
+                setMessages(result);
+                if (gotoResult) {
+                    context.setResult(action, result, fromPaneId, toPaneId, 1, NakedObjects.defaultPageSize);
+                }
+                return result;
             });
         }
         function getSetDirtyFunction(action, parms) {
@@ -544,7 +552,17 @@ var NakedObjects;
                 if (parent instanceof DomainObjectRepresentation) {
                     return function () { return dirtyList.setDirty(parent.getOid()); };
                 }
-                else if (parent instanceof ListRepresentation && parms) {
+                if (parent instanceof CollectionRepresentation) {
+                    return function () {
+                        var selfLink = parent.selfLink();
+                        var oid = ObjectIdWrapper.fromLink(selfLink);
+                        dirtyList.setDirty(oid);
+                    };
+                }
+                if (parent instanceof CollectionMember) {
+                    return function () { return dirtyList.setDirty(parent.parent.getOid()); };
+                }
+                if (parent instanceof ListRepresentation && parms) {
                     var ccaParm = _.find(action.parameters(), function (p) { return p.isCollectionContributed(); });
                     var ccaId = ccaParm ? ccaParm.id() : null;
                     var ccaValue = ccaId ? parms[ccaId] : null;
@@ -561,14 +579,15 @@ var NakedObjects;
             }
             return function () { };
         }
-        context.invokeAction = function (action, parms, fromPaneId, toPaneId) {
+        context.invokeAction = function (action, parms, fromPaneId, toPaneId, gotoResult) {
             if (fromPaneId === void 0) { fromPaneId = 1; }
             if (toPaneId === void 0) { toPaneId = 1; }
+            if (gotoResult === void 0) { gotoResult = true; }
             var invokeOnMap = function (iAction) {
                 var im = iAction.getInvokeMap();
                 _.each(parms, function (parm, k) { return im.setParameter(k, parm); });
                 var setDirty = getSetDirtyFunction(iAction, parms);
-                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty);
+                return invokeActionInternal(im, iAction, fromPaneId, toPaneId, setDirty, gotoResult);
             };
             return invokeOnMap(action);
         };
@@ -591,7 +610,7 @@ var NakedObjects;
                 var rawLinks = object.wrapped().links;
                 updatedObject.wrapped().links = rawLinks;
                 setNewObject(updatedObject, paneId, viewSavedObject);
-                return $q.when(updatedObject);
+                return updatedObject;
             });
         };
         context.saveObject = function (object, props, paneId, viewSavedObject) {
@@ -601,7 +620,7 @@ var NakedObjects;
                 then(function (updatedObject) {
                 transientCache.remove(paneId, object.domainType(), object.id());
                 setNewObject(updatedObject, paneId, viewSavedObject);
-                return $q.when(updatedObject);
+                return updatedObject;
             });
         };
         context.validateUpdateObject = function (object, props) {

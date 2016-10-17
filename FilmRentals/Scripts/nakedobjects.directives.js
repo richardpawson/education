@@ -448,6 +448,9 @@ var NakedObjects;
                     case NakedObjects.FocusTarget.CheckBox:
                         focusElements = $(elem).find("#pane" + paneId + ".split div.collection td.checkbox input, div.single div.collection td.checkbox input");
                         break;
+                    case NakedObjects.FocusTarget.MultiLineDialogRow:
+                        focusElements = $(elem).find("div.parameters :input.value:first-child");
+                        break;
                 }
                 if (focusElements) {
                     if (focusElements.length >= index) {
@@ -608,7 +611,6 @@ var NakedObjects;
                     if (attachment) {
                         var title_2 = attachment.title;
                         element.empty();
-                        var anchor = element.find("div");
                         if (attachment.displayInline()) {
                             attachment.downloadFile().
                                 then(function (blob) {
@@ -623,7 +625,7 @@ var NakedObjects;
                                 catch(function (reject) { return error.handleError(reject); });
                         }
                         else {
-                            anchor.html(title_2);
+                            element.html("<div>" + title_2 + "</div>");
                             attachment.doClick = clickHandler;
                         }
                     }

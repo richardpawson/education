@@ -92,14 +92,19 @@ var NakedObjects;
         var routeData = urlManager.getRouteData();
         handlers.handleApplicationProperties($scope, routeData.pane1);
     });
-    NakedObjects.app.controller("BackgroundController", function ($scope, handlers) {
-        handlers.handleBackground($scope);
-    });
-    NakedObjects.app.controller("ErrorController", function ($scope, handlers, urlManager) {
+    NakedObjects.app.controller("MultiLineDialogController", function ($scope, handlers, urlManager) {
         pane1Dereg();
         pane2Dereg();
         var routeData = urlManager.getRouteData();
-        handlers.handleError($scope, routeData.pane1);
+        handlers.handleMultiLineDialog($scope, routeData.pane1);
+    });
+    NakedObjects.app.controller("BackgroundController", function ($scope, handlers) {
+        handlers.handleBackground($scope);
+    });
+    NakedObjects.app.controller("ErrorController", function ($scope, handlers) {
+        pane1Dereg();
+        pane2Dereg();
+        handlers.handleError($scope);
     });
     NakedObjects.app.controller("ToolBarController", function ($scope, handlers) {
         handlers.handleToolBar($scope);

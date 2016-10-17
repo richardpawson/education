@@ -231,7 +231,7 @@ var NakedObjects;
                 // choice
                 if (newChoice instanceof ChoiceViewModel || newChoice == null) {
                     this.currentChoice = newChoice;
-                    this.updateColor();
+                    this.update();
                 }
             },
             enumerable: true,
@@ -243,7 +243,18 @@ var NakedObjects;
             },
             set: function (newValue) {
                 this.currentRawValue = newValue;
-                this.updateColor();
+                this.update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ValueViewModel.prototype, "selectedMultiChoices", {
+            get: function () {
+                return this.currentMultipleChoices;
+            },
+            set: function (choices) {
+                this.currentMultipleChoices = choices;
+                this.update();
             },
             enumerable: true,
             configurable: true
@@ -257,6 +268,9 @@ var NakedObjects;
             this.selectedChoice = null;
             this.value = null;
             this.reference = "";
+        };
+        ValueViewModel.prototype.update = function () {
+            this.updateColor();
         };
         ValueViewModel.prototype.setColor = function (color) {
             var _this = this;
@@ -325,6 +339,7 @@ var NakedObjects;
         __extends(ParameterViewModel, _super);
         function ParameterViewModel(parmRep, paneId, color, error) {
             _super.call(this, parmRep.extensions(), color, error);
+            this.parmRep = parmRep;
             this.parameterRep = parmRep;
             this.onPaneId = paneId;
             this.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -335,11 +350,43 @@ var NakedObjects;
             this.isCollectionContributed = parmRep.isCollectionContributed();
             this.entryType = parmRep.entryType();
         }
+        ParameterViewModel.prototype.setAsRow = function (i) {
+            this.paneArgId = "" + this.argId + i;
+        };
+        ParameterViewModel.prototype.update = function () {
+            _super.prototype.update.call(this);
+            switch (this.entryType) {
+                case (EntryType.FreeForm):
+                    if (this.type === "scalar") {
+                        if (this.localFilter) {
+                            this.formattedValue = this.value ? this.localFilter.filter(this.value) : "";
+                        }
+                        else {
+                            this.formattedValue = this.value ? this.value.toString() : "";
+                        }
+                        break;
+                    }
+                // fall through 
+                case (EntryType.AutoComplete):
+                case (EntryType.Choices):
+                case (EntryType.ConditionalChoices):
+                    this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : "";
+                    break;
+                case (EntryType.MultipleChoices):
+                case (EntryType.MultipleConditionalChoices):
+                    var count = !this.selectedMultiChoices ? 0 : this.selectedMultiChoices.length;
+                    this.formattedValue = count + " selected";
+                    break;
+                default:
+                    this.formattedValue = this.value ? this.value.toString() : "";
+            }
+        };
         return ParameterViewModel;
     }(ValueViewModel));
     NakedObjects.ParameterViewModel = ParameterViewModel;
     var ActionViewModel = (function () {
         function ActionViewModel() {
+            this.gotoResult = true;
         }
         return ActionViewModel;
     }());
@@ -371,6 +418,8 @@ var NakedObjects;
                 _this.context.updateValues();
                 return _this.actionViewModel.execute(pps, right);
             };
+            this.parameters = [];
+            this.submitted = false;
             this.clientValid = function () { return _.every(_this.parameters, function (p) { return p.clientValid; }); };
             this.tooltip = function () { return tooltip(_this, _this.parameters); };
             this.setParms = function () { return _.forEach(_this.parameters, function (p) { return _this.context.setFieldValue(_this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), _this.onPaneId); }); };
@@ -394,6 +443,7 @@ var NakedObjects;
                         _this.doCloseKeepHistory();
                     }
                     // else query only going to other tab leave dialog open
+                    _this.doCompleteButLeaveOpen();
                 }).
                     catch(function (reject) {
                     var display = function (em) { return _this.viewModelFactory.handleErrorResponse(em, _this, _this.parameters); };
@@ -408,15 +458,17 @@ var NakedObjects;
                 _this.deregister();
                 _this.urlManager.closeDialogReplaceHistory(_this.onPaneId);
             };
+            this.doCompleteButLeaveOpen = function () {
+            };
             this.clearMessages = function () {
                 _this.resetMessage();
                 _.each(_this.actionViewModel.parameters, function (parm) { return parm.clearMessage(); });
             };
         }
-        DialogViewModel.prototype.reset = function (actionViewModel, routeData) {
+        DialogViewModel.prototype.reset = function (actionViewModel, paneId) {
             var _this = this;
             this.actionViewModel = actionViewModel;
-            this.onPaneId = routeData.paneId;
+            this.onPaneId = paneId;
             var fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
             var parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), function (p) { return !p.isCollectionContributed(); });
             this.parameters = _.map(parameters, function (p) { return _this.viewModelFactory.parameterViewModel(p, fields[p.id()], _this.onPaneId); });
@@ -424,6 +476,7 @@ var NakedObjects;
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
+            this.submitted = false;
         };
         DialogViewModel.prototype.refresh = function () {
             var fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
@@ -432,6 +485,91 @@ var NakedObjects;
         return DialogViewModel;
     }(MessageViewModel));
     NakedObjects.DialogViewModel = DialogViewModel;
+    var MultiLineDialogViewModel = (function () {
+        function MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope) {
+            this.color = color;
+            this.context = context;
+            this.viewModelFactory = viewModelFactory;
+            this.urlManager = urlManager;
+            this.focusManager = focusManager;
+            this.error = error;
+            this.$rootScope = $rootScope;
+            this.title = "";
+            this.dialogs = [];
+        }
+        MultiLineDialogViewModel.prototype.createRow = function (i) {
+            var dialogViewModel = new DialogViewModel(this.color, this.context, this.viewModelFactory, this.urlManager, this.focusManager, this.error, this.$rootScope);
+            var actionViewModel = this.viewModelFactory.actionViewModel(this.action, dialogViewModel, this.routeData);
+            actionViewModel.gotoResult = false;
+            dialogViewModel.reset(actionViewModel, 1);
+            dialogViewModel.doCloseKeepHistory = function () {
+                dialogViewModel.submitted = true;
+            };
+            dialogViewModel.doCloseReplaceHistory = function () {
+                dialogViewModel.submitted = true;
+            };
+            dialogViewModel.doCompleteButLeaveOpen = function () {
+                dialogViewModel.submitted = true;
+            };
+            dialogViewModel.parameters.forEach(function (p) { return p.setAsRow(i); });
+            return dialogViewModel;
+        };
+        MultiLineDialogViewModel.prototype.reset = function (routeData, action) {
+            var _this = this;
+            this.action = action;
+            this.routeData = routeData;
+            this.action.parent.etagDigest = "*";
+            var initialCount = action.extensions().multipleLines() || 1;
+            this.dialogs = _.map(_.range(initialCount), function (i) { return _this.createRow(i); });
+            this.title = this.dialogs[0].title;
+            return this;
+        };
+        MultiLineDialogViewModel.prototype.header = function () {
+            return this.dialogs.length === 0 ? [] : _.map(this.dialogs[0].parameters, function (p) { return p.title; });
+        };
+        MultiLineDialogViewModel.prototype.clientValid = function () {
+            return _.every(this.dialogs, function (d) { return d.clientValid(); });
+        };
+        MultiLineDialogViewModel.prototype.tooltip = function () {
+            var tooltips = _.map(this.dialogs, function (d, i) { return ("row: " + i + " " + (d.tooltip() || "OK")); });
+            return _.reduce(tooltips, function (s, t) { return (s + "\n" + t); });
+        };
+        MultiLineDialogViewModel.prototype.invokeAndAdd = function (index) {
+            this.dialogs[index].doInvoke();
+            this.add(index);
+            this.focusManager.focusOn(NakedObjects.FocusTarget.MultiLineDialogRow, 1, 1);
+        };
+        MultiLineDialogViewModel.prototype.add = function (index) {
+            if (index === this.dialogs.length - 1) {
+                // if this is last dialog always add another
+                this.dialogs.push(this.createRow(this.dialogs.length));
+            }
+            else if (_.takeRight(this.dialogs)[0].submitted) {
+                // if the last dialog is submitted add another 
+                this.dialogs.push(this.createRow(this.dialogs.length));
+            }
+        };
+        MultiLineDialogViewModel.prototype.clear = function (index) {
+            _.pullAt(this.dialogs, [index]);
+        };
+        MultiLineDialogViewModel.prototype.submitAll = function () {
+            if (this.clientValid()) {
+                _.each(this.dialogs, function (d) {
+                    if (!d.submitted) {
+                        d.doInvoke();
+                    }
+                });
+            }
+        };
+        MultiLineDialogViewModel.prototype.submittedCount = function () {
+            return (_.filter(this.dialogs, function (d) { return d.submitted; })).length;
+        };
+        MultiLineDialogViewModel.prototype.close = function () {
+            this.urlManager.popUrlState();
+        };
+        return MultiLineDialogViewModel;
+    }());
+    NakedObjects.MultiLineDialogViewModel = MultiLineDialogViewModel;
     var PropertyViewModel = (function (_super) {
         __extends(PropertyViewModel, _super);
         function PropertyViewModel(propertyRep, color, error) {
@@ -451,18 +589,126 @@ var NakedObjects;
         return CollectionPlaceholderViewModel;
     }());
     NakedObjects.CollectionPlaceholderViewModel = CollectionPlaceholderViewModel;
-    var ListViewModel = (function (_super) {
-        __extends(ListViewModel, _super);
-        function ListViewModel(colorService, context, viewModelFactory, urlManager, focusManager, error, $q) {
+    var ContributedActionParentViewModel = (function (_super) {
+        __extends(ContributedActionParentViewModel, _super);
+        function ContributedActionParentViewModel(context, viewModelFactory, urlManager, focusManager, error, $q) {
             var _this = this;
             _super.call(this);
-            this.colorService = colorService;
             this.context = context;
             this.viewModelFactory = viewModelFactory;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
             this.error = error;
             this.$q = $q;
+            this.selectAll = function () { return _.each(_this.items, function (item, i) {
+                item.selected = _this.allSelected;
+                item.selectionChange(i);
+            }); };
+        }
+        ContributedActionParentViewModel.prototype.isLocallyContributed = function (action) {
+            return _.some(action.parameters(), function (p) { return p.isCollectionContributed(); });
+        };
+        ContributedActionParentViewModel.prototype.collectionContributedActionDecorator = function (actionViewModel) {
+            var _this = this;
+            var wrappedInvoke = actionViewModel.execute;
+            actionViewModel.execute = function (pps, right) {
+                var selected = _.filter(_this.items, function (i) { return i.selected; });
+                var rejectAsNeedSelection = function (action) {
+                    if (_this.isLocallyContributed(action)) {
+                        if (selected.length === 0) {
+                            var em = new ErrorMap({}, 0, NakedObjects.noItemsSelected);
+                            var rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
+                            return rp;
+                        }
+                    }
+                    return null;
+                };
+                var getParms = function (action) {
+                    var parms = _.values(action.parameters());
+                    var contribParm = _.find(parms, function (p) { return p.isCollectionContributed(); });
+                    if (contribParm) {
+                        var parmValue = new Value(_.map(selected, function (i) { return i.link; }));
+                        var collectionParmVm = _this.viewModelFactory.parameterViewModel(contribParm, parmValue, _this.onPaneId);
+                        var allpps = _.clone(pps);
+                        allpps.push(collectionParmVm);
+                        return allpps;
+                    }
+                    return pps;
+                };
+                if (actionViewModel.invokableActionRep) {
+                    var rp = rejectAsNeedSelection(actionViewModel.invokableActionRep);
+                    return rp ? _this.$q.reject(rp) : wrappedInvoke(getParms(actionViewModel.invokableActionRep), right).
+                        then(function (result) {
+                        // clear selected items on void actions 
+                        _this.clearSelected(result);
+                        return result;
+                    });
+                }
+                return _this.context.getActionDetails(actionViewModel.actionRep).
+                    then(function (details) {
+                    var rp = rejectAsNeedSelection(details);
+                    if (rp) {
+                        return _this.$q.reject(rp);
+                    }
+                    return wrappedInvoke(getParms(details), right);
+                }).
+                    then(function (result) {
+                    // clear selected items on void actions 
+                    _this.clearSelected(result);
+                    return result;
+                });
+            };
+        };
+        ContributedActionParentViewModel.prototype.collectionContributedInvokeDecorator = function (actionViewModel) {
+            var _this = this;
+            var showDialog = function () {
+                return _this.context.getInvokableAction(actionViewModel.actionRep).
+                    then(function (invokableAction) {
+                    var keyCount = _.keys(invokableAction.parameters()).length;
+                    return keyCount > 1 || keyCount === 1 && !_.toArray(invokableAction.parameters())[0].isCollectionContributed();
+                });
+            };
+            // make sure not null while waiting for promise to assign correct function 
+            actionViewModel.doInvoke = function () { };
+            var invokeWithDialog = function (right) {
+                _this.context.clearDialogValues(_this.onPaneId);
+                _this.focusManager.focusOverrideOff();
+                _this.urlManager.setDialogOrMultiLineDialog(actionViewModel.actionRep, _this.onPaneId);
+            };
+            var invokeWithoutDialog = function (right) {
+                return actionViewModel.execute([], right).
+                    then(function (result) {
+                    _this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : "");
+                    // clear selected items on void actions 
+                    _this.clearSelected(result);
+                }).
+                    catch(function (reject) {
+                    var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
+                    _this.error.handleErrorAndDisplayMessages(reject, display);
+                });
+            };
+            showDialog().
+                then(function (show) { return actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog; }).
+                catch(function (reject) { return _this.error.handleError(reject); });
+        };
+        ContributedActionParentViewModel.prototype.decorate = function (actionViewModel) {
+            this.collectionContributedActionDecorator(actionViewModel);
+            this.collectionContributedInvokeDecorator(actionViewModel);
+        };
+        ContributedActionParentViewModel.prototype.clearSelected = function (result) {
+            if (result.resultType() === "void") {
+                this.allSelected = false;
+                this.selectAll();
+            }
+        };
+        return ContributedActionParentViewModel;
+    }(MessageViewModel));
+    var ListViewModel = (function (_super) {
+        __extends(ListViewModel, _super);
+        function ListViewModel(colorService, context, viewModelFactory, urlManager, focusManager, error, $q) {
+            var _this = this;
+            _super.call(this, context, viewModelFactory, urlManager, focusManager, error, $q);
+            this.colorService = colorService;
             this.recreate = function (page, pageSize) {
                 return _this.routeData.objectId ?
                     _this.context.getListFromObject(_this.routeData.paneId, _this.routeData, page, pageSize) :
@@ -516,13 +762,11 @@ var NakedObjects;
                 _this.urlManager.setListState(NakedObjects.CollectionViewState.Table, _this.onPaneId);
             };
             this.reload = function () {
+                _this.allSelected = false;
+                _this.selectAll();
                 _this.context.clearCachedList(_this.onPaneId, _this.routeData.page, _this.routeData.pageSize);
                 _this.setPage(_this.page, _this.state);
             };
-            this.selectAll = function () { return _.each(_this.items, function (item, i) {
-                item.selected = _this.allSelected;
-                item.selectionChange(i);
-            }); };
             this.disableActions = function () { return !_this.actions || _this.actions.length === 0 || !_this.items || _this.items.length === 0; };
             this.actionsTooltip = function () { return actionsTooltip(_this, !!_this.routeData.actionsOpen); };
             this.actionMember = function (id) {
@@ -543,61 +787,6 @@ var NakedObjects;
             else {
                 this.description = function () { return NakedObjects.noItemsFound; };
             }
-        };
-        ListViewModel.prototype.collectionContributedActionDecorator = function (actionViewModel) {
-            var _this = this;
-            var wrappedInvoke = actionViewModel.execute;
-            actionViewModel.execute = function (pps, right) {
-                var selected = _.filter(_this.items, function (i) { return i.selected; });
-                if (selected.length === 0) {
-                    var em = new ErrorMap({}, 0, NakedObjects.noItemsSelected);
-                    var rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
-                    return _this.$q.reject(rp);
-                }
-                var getParms = function (action) {
-                    var parms = _.values(action.parameters());
-                    var contribParm = _.find(parms, function (p) { return p.isCollectionContributed(); });
-                    var parmValue = new Value(_.map(selected, function (i) { return i.link; }));
-                    var collectionParmVm = _this.viewModelFactory.parameterViewModel(contribParm, parmValue, _this.onPaneId);
-                    var allpps = _.clone(pps);
-                    allpps.push(collectionParmVm);
-                    return allpps;
-                };
-                if (actionViewModel.invokableActionRep) {
-                    return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
-                }
-                return _this.context.getActionDetails(actionViewModel.actionRep)
-                    .then(function (details) { return wrappedInvoke(getParms(details), right); });
-            };
-        };
-        ListViewModel.prototype.collectionContributedInvokeDecorator = function (actionViewModel) {
-            var _this = this;
-            var showDialog = function () {
-                return _this.context.getInvokableAction(actionViewModel.actionRep).
-                    then(function (invokableAction) { return _.keys(invokableAction.parameters()).length > 1; });
-            };
-            // make sure not null while waiting for promise to assign correct function 
-            actionViewModel.doInvoke = function () { };
-            var invokeWithDialog = function (right) {
-                _this.context.clearDialogValues(_this.onPaneId);
-                _this.focusManager.focusOverrideOff();
-                _this.urlManager.setDialog(actionViewModel.actionRep.actionId(), _this.onPaneId);
-            };
-            var invokeWithoutDialog = function (right) {
-                return actionViewModel.execute([], right).
-                    then(function (result) { return _this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""); }).
-                    catch(function (reject) {
-                    var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
-                    _this.error.handleErrorAndDisplayMessages(reject, display);
-                });
-            };
-            showDialog().
-                then(function (show) { return actionViewModel.doInvoke = show ? invokeWithDialog : invokeWithoutDialog; }).
-                catch(function (reject) { return _this.error.handleError(reject); });
-        };
-        ListViewModel.prototype.decorate = function (actionViewModel) {
-            this.collectionContributedActionDecorator(actionViewModel);
-            this.collectionContributedInvokeDecorator(actionViewModel);
         };
         ListViewModel.prototype.refresh = function (routeData) {
             var _this = this;
@@ -637,15 +826,31 @@ var NakedObjects;
             _.forEach(this.actions, function (a) { return _this.decorate(a); });
         };
         return ListViewModel;
-    }(MessageViewModel));
+    }(ContributedActionParentViewModel));
     NakedObjects.ListViewModel = ListViewModel;
-    var CollectionViewModel = (function () {
+    var CollectionViewModel = (function (_super) {
+        __extends(CollectionViewModel, _super);
         function CollectionViewModel() {
             var _this = this;
+            _super.apply(this, arguments);
             this.description = function () { return _this.details.toString(); };
+            this.disableActions = function () { return _this.editing || !_this.actions || _this.actions.length === 0; };
+            this.actionMember = function (id) {
+                var actionViewModel = _.find(_this.actions, function (a) { return a.actionRep.actionId() === id; });
+                return actionViewModel ? actionViewModel.actionRep : null;
+            };
         }
+        CollectionViewModel.prototype.setActions = function (actions, routeData) {
+            var _this = this;
+            this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, routeData); });
+            this.menuItems = createMenuItems(this.actions);
+            _.forEach(this.actions, function (a) { return _this.decorate(a); });
+        };
+        CollectionViewModel.prototype.hasMatchingLocallyContributedAction = function (id) {
+            return id && this.actions && this.actions.length > 0 && !!this.actionMember(id);
+        };
         return CollectionViewModel;
-    }());
+    }(ContributedActionParentViewModel));
     NakedObjects.CollectionViewModel = CollectionViewModel;
     var MenusViewModel = (function () {
         function MenusViewModel(viewModelFactory) {
@@ -675,9 +880,23 @@ var NakedObjects;
         return TableRowColumnViewModel;
     }());
     NakedObjects.TableRowColumnViewModel = TableRowColumnViewModel;
+    var PlaceHolderTableRowColumnViewModel = (function () {
+        function PlaceHolderTableRowColumnViewModel(id) {
+            this.id = id;
+        }
+        return PlaceHolderTableRowColumnViewModel;
+    }());
+    NakedObjects.PlaceHolderTableRowColumnViewModel = PlaceHolderTableRowColumnViewModel;
     var TableRowViewModel = (function () {
         function TableRowViewModel() {
         }
+        TableRowViewModel.prototype.conformColumns = function (columns) {
+            var _this = this;
+            if (columns) {
+                this.properties =
+                    _.map(columns, function (c) { return _.find(_this.properties, function (tp) { return tp.id === c; }) || new PlaceHolderTableRowColumnViewModel(c); });
+            }
+        };
         return TableRowViewModel;
     }());
     NakedObjects.TableRowViewModel = TableRowViewModel;

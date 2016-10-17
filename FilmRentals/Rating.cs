@@ -2,6 +2,7 @@
 
 namespace FilmRentals
 {
+    [Bounded]
     public class Rating
     {
         [NakedObjectsIgnore]

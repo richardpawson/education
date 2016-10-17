@@ -140,6 +140,8 @@ var NakedObjects;
         }
         function clearPane(search, paneId) {
             var toClear = allSearchKeysForPane(search, paneId);
+            // always add reload flag 
+            toClear.push(akm.reload);
             return _.omit(search, toClear);
         }
         function clearSearchKeys(search, paneId, keys) {
@@ -214,6 +216,7 @@ var NakedObjects;
             Transition[Transition["ToTransient"] = 10] = "ToTransient";
             Transition[Transition["ToRecent"] = 11] = "ToRecent";
             Transition[Transition["ToAttachment"] = 12] = "ToAttachment";
+            Transition[Transition["ToMultiLineDialog"] = 13] = "ToMultiLineDialog";
         })(Transition || (Transition = {}));
         function getId(key, search) {
             return Decompress(search[key]);
@@ -223,6 +226,39 @@ var NakedObjects;
         }
         function clearId(key, search) {
             delete search[key];
+        }
+        function validKeysForHome() {
+            return [akm.menu, akm.dialog, akm.reload];
+        }
+        function validKeysForObject() {
+            return [akm.object, akm.interactionMode, akm.reload, akm.actions, akm.dialog, akm.collection, akm.prop];
+        }
+        function validKeysForMultiLineDialog() {
+            return [akm.object, akm.dialog, akm.menu];
+        }
+        function validKeysForList() {
+            return [akm.reload, akm.actions, akm.dialog, akm.menu, akm.action, akm.page, akm.pageSize, akm.selected, akm.collection, akm.parm, akm.object];
+        }
+        function validKeys(path) {
+            switch (path) {
+                case NakedObjects.homePath:
+                    return validKeysForHome();
+                case NakedObjects.objectPath:
+                    return validKeysForObject();
+                case NakedObjects.listPath:
+                    return validKeysForList();
+                case NakedObjects.multiLineDialogPath:
+                    return validKeysForMultiLineDialog();
+            }
+            return [];
+        }
+        function clearInvalidParmsFromSearch(paneId, search, path) {
+            if (path) {
+                var vks = validKeys(path);
+                var ivks = _.without.apply(_, [_.values(akm)].concat(vks));
+                return clearSearchKeys(search, paneId, ivks);
+            }
+            return search;
         }
         function handleTransition(paneId, search, transition) {
             var replace = true;
@@ -271,6 +307,9 @@ var NakedObjects;
                     replace = setupPaneNumberAndTypes(paneId, NakedObjects.attachmentPath);
                     search = clearPane(search, paneId);
                     break;
+                case (Transition.ToMultiLineDialog):
+                    replace = setupPaneNumberAndTypes(paneId, NakedObjects.multiLineDialogPath);
+                    break;
                 default:
                     // null transition 
                     break;
@@ -278,6 +317,11 @@ var NakedObjects;
             if (replace) {
                 $location.replace();
             }
+            var path = $location.path();
+            var segments = path.split("/");
+            var pane1Type = segments[2], pane2Type = segments[3];
+            search = clearInvalidParmsFromSearch(1, search, pane1Type);
+            search = clearInvalidParmsFromSearch(2, search, pane2Type);
             return search;
         }
         function executeTransition(newValues, paneId, transition, condition) {
@@ -313,6 +357,22 @@ var NakedObjects;
             var key = "" + akm.dialog + paneId;
             var newValues = _.zipObject([key], [dialogId]);
             executeTransition(newValues, paneId, Transition.ToDialog, function (search) { return getId(key, search) !== dialogId; });
+        };
+        helper.setMultiLineDialog = function (dialogId, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            helper.pushUrlState();
+            var key = "" + akm.dialog + paneId;
+            var newValues = _.zipObject([key], [dialogId]);
+            executeTransition(newValues, paneId, Transition.ToMultiLineDialog, function (search) { return getId(key, search) !== dialogId; });
+        };
+        helper.setDialogOrMultiLineDialog = function (actionRep, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            if (actionRep.extensions().multipleLines()) {
+                helper.setMultiLineDialog(actionRep.actionId(), paneId);
+            }
+            else {
+                helper.setDialog(actionRep.actionId(), paneId);
+            }
         };
         function closeOrCancelDialog(paneId, transition) {
             var key = "" + akm.dialog + paneId;
@@ -355,8 +415,6 @@ var NakedObjects;
             newValues[("" + akm.collection + toPaneId)] = newState;
             // This will also swap the panes of the field values if we are 
             // right clicking into the other pane.
-            //newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
-            //newValues = setFieldsToParms(toPaneId, newValues);
             _.forEach(parms, function (p, id) { return setId("" + akm.parm + toPaneId + "_" + id, p.toJsonString(), newValues); });
             executeTransition(newValues, toPaneId, Transition.ToList, function () { return true; });
         };

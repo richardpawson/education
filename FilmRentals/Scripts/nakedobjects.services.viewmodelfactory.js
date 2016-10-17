@@ -125,7 +125,7 @@ var NakedObjects;
             actionViewModel.execute = function (pps, right) {
                 var parmMap = _.zipObject(_.map(pps, function (p) { return p.id; }), _.map(pps, function (p) { return p.getValue(); }));
                 _.forEach(pps, function (p) { return urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId); });
-                return context.getInvokableAction(actionViewModel.actionRep).then(function (details) { return context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right)); });
+                return context.getInvokableAction(actionViewModel.actionRep).then(function (details) { return context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right), actionViewModel.gotoResult); });
             };
             // form actions should never show dialogs
             var showDialog = function () { return actionRep.extensions().hasParams() && (routeData.interactionMode !== NakedObjects.InteractionMode.Form); };
@@ -136,7 +136,7 @@ var NakedObjects;
                     focusManager.focusOverrideOff();
                     // clear any previous dialog so we don't pick up values from it
                     context.clearDialogValues(paneId);
-                    urlManager.setDialog(actionRep.actionId(), paneId);
+                    urlManager.setDialogOrMultiLineDialog(actionRep, paneId);
                     focusManager.focusOn(NakedObjects.FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
                 function (right) {
@@ -160,9 +160,10 @@ var NakedObjects;
         viewModelFactory.handleErrorResponse = function (err, messageViewModel, valueViewModels) {
             var requiredFieldsMissing = false; // only show warning message if we have nothing else 
             var fieldValidationErrors = false;
-            _.each(valueViewModels, function (valueViewModel) {
-                var errorValue = err.valuesMap()[valueViewModel.id];
-                if (errorValue) {
+            var contributedParameterErrorMsg = "";
+            _.each(err.valuesMap(), function (errorValue, k) {
+                var valueViewModel = _.find(valueViewModels, function (vvm) { return vvm.id === k; });
+                if (valueViewModel) {
                     var reason = errorValue.invalidReason;
                     if (reason) {
                         if (reason === "Mandatory") {
@@ -176,8 +177,13 @@ var NakedObjects;
                         }
                     }
                 }
+                else {
+                    // no matching parm for message - this can happen in contributed actions 
+                    // make the message a dialog level warning.                               
+                    contributedParameterErrorMsg = errorValue.invalidReason;
+                }
             });
-            var msg = err.invalidReason() || "";
+            var msg = contributedParameterErrorMsg || err.invalidReason() || "";
             if (requiredFieldsMissing)
                 msg = msg + " Please complete REQUIRED fields. ";
             if (fieldValidationErrors)
@@ -276,6 +282,7 @@ var NakedObjects;
         viewModelFactory.propertyTableViewModel = function (propertyRep, id, paneId) {
             var tableRowColumnViewModel = new NakedObjects.TableRowColumnViewModel();
             tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
+            tableRowColumnViewModel.id = id;
             if (propertyRep instanceof CollectionMember) {
                 var size = propertyRep.size();
                 tableRowColumnViewModel.formattedValue = getCollectionDetails(size);
@@ -490,7 +497,18 @@ var NakedObjects;
         }
         viewModelFactory.parameterViewModel = function (parmRep, previousValue, paneId) {
             var parmViewModel = new NakedObjects.ParameterViewModel(parmRep, paneId, color, error);
+            var remoteMask = parmRep.extensions().mask();
             var fieldEntryType = parmViewModel.entryType;
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "scalar") {
+                var lf = void 0;
+                if (remoteMask) {
+                    lf = mask.toLocalFilter(remoteMask, parmRep.extensions().format()) || mask.defaultLocalFilter(parmRep.extensions().format());
+                }
+                else {
+                    lf = mask.defaultLocalFilter(parmRep.extensions().format());
+                }
+                parmViewModel.localFilter = lf;
+            }
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
                 setupParameterChoices(parmViewModel);
             }
@@ -508,13 +526,6 @@ var NakedObjects;
             }
             else {
                 setupParameterSelectedValue(parmViewModel, previousValue);
-            }
-            var remoteMask = parmRep.extensions().mask();
-            if (remoteMask && parmRep.isScalar()) {
-                var localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
-                parmViewModel.localFilter = localFilter;
-                // formatting also happens in in directive - at least for dates - value is now date in that case
-                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
             parmViewModel.description = getRequiredIndicator(parmViewModel) + parmViewModel.description;
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel);
@@ -537,11 +548,15 @@ var NakedObjects;
                         _.forEach(items, function (itemViewModel) {
                             itemViewModel.tableRowViewModel.hasTitle = ext.tableViewTitle();
                             itemViewModel.tableRowViewModel.title = itemViewModel.title;
+                            itemViewModel.tableRowViewModel.conformColumns(ext.tableViewColumns());
                         });
                         if (!listViewModel.header) {
-                            var firstItem = items[0].tableRowViewModel;
-                            var propertiesHeader = _.map(firstItem.properties, function (property) { return property.title; });
-                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
+                            var firstItem_1 = items[0].tableRowViewModel;
+                            var propertiesHeader = _.map(firstItem_1.properties, function (p, i) {
+                                var match = _.find(items, function (item) { return item.tableRowViewModel.properties[i].title; });
+                                return match ? match.tableRowViewModel.properties[i].title : firstItem_1.properties[i].id;
+                            });
+                            listViewModel.header = firstItem_1.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
                             focusManager.focusOverrideOff();
                             focusManager.focusOn(NakedObjects.FocusTarget.TableItem, 0, routeData.paneId);
                         }
@@ -568,7 +583,7 @@ var NakedObjects;
             return NakedObjects.CollectionViewState.Summary;
         }
         viewModelFactory.collectionViewModel = function (collectionRep, routeData) {
-            var collectionViewModel = new NakedObjects.CollectionViewModel();
+            var collectionViewModel = new NakedObjects.CollectionViewModel(context, viewModelFactory, urlManager, focusManager, error, $q);
             var itemLinks = collectionRep.value();
             var paneId = routeData.paneId;
             var size = collectionRep.size();
@@ -577,33 +592,45 @@ var NakedObjects;
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.presentationHint = collectionRep.extensions().presentationHint();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
+            collectionViewModel.id = collectionRep.collectionId().toLowerCase();
             color.toColorNumberFromType(collectionRep.extensions().elementType()).
                 then(function (c) { return collectionViewModel.color = "" + NakedObjects.linkColor + c; }).
                 catch(function (reject) { return error.handleError(reject); });
             collectionViewModel.refresh = function (routeData, resetting) {
-                var state = size === 0 ? NakedObjects.CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
+                var state = routeData.collections[collectionRep.collectionId()];
+                // collections are always shown as summary on transient 
+                if (routeData.interactionMode === NakedObjects.InteractionMode.Transient) {
+                    state = NakedObjects.CollectionViewState.Summary;
+                }
                 if (state == null) {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
+                collectionViewModel.editing = routeData.interactionMode === NakedObjects.InteractionMode.Edit;
+                // clear any previous messages
+                collectionViewModel.resetMessage();
                 if (resetting || state !== collectionViewModel.currentState) {
                     if (size > 0 || size == null) {
                         collectionViewModel.mayHaveItems = true;
                     }
                     collectionViewModel.details = getCollectionDetails(size);
                     var getDetails = itemLinks == null || state === NakedObjects.CollectionViewState.Table;
+                    var actions = collectionRep.actionMembers();
+                    collectionViewModel.setActions(actions, routeData);
                     if (state === NakedObjects.CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     }
                     else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state, resetting).
-                            then(function (details) {
+                        context.getCollectionDetails(collectionRep, state, resetting)
+                            .then(function (details) {
                             collectionViewModel.items = viewModelFactory.getItems(details.value(), state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
                             collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
-                        }).
-                            catch(function (reject) { return error.handleError(reject); });
+                            collectionViewModel.allSelected = _.every(collectionViewModel.items, function (item) { return item.selected; });
+                        })
+                            .catch(function (reject) { return error.handleError(reject); });
                     }
                     else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
+                        collectionViewModel.allSelected = _.every(collectionViewModel.items, function (item) { return item.selected; });
                     }
                     switch (state) {
                         case NakedObjects.CollectionViewState.List:
@@ -616,6 +643,9 @@ var NakedObjects;
                             collectionViewModel.template = NakedObjects.collectionSummaryTemplate;
                     }
                     collectionViewModel.currentState = state;
+                }
+                else {
+                    collectionViewModel.allSelected = _.every(collectionViewModel.items, function (item) { return item.selected; });
                 }
             };
             collectionViewModel.refresh(routeData, true);

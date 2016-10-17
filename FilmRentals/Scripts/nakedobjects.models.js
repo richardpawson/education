@@ -166,7 +166,7 @@ var NakedObjects;
         Models.ErrorWrapper = ErrorWrapper;
         // abstract classes 
         function toOid(id) {
-            return _.reduce(id, function (a, v) { return ("" + a + (a ? NakedObjects.keySeparator : "") + v); }, "");
+            return _.reduce(id, function (a, v) { return ("" + a + NakedObjects.keySeparator + v); });
         }
         var ObjectIdWrapper = (function () {
             function ObjectIdWrapper() {
@@ -794,7 +794,8 @@ var NakedObjects;
             };
             Parameter.prototype.isCollectionContributed = function () {
                 var myparent = this.parent;
-                var isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) && myparent.parent instanceof ListRepresentation;
+                var isOnList = (myparent instanceof ActionMember || myparent instanceof ActionRepresentation) &&
+                    (myparent.parent instanceof ListRepresentation || myparent.parent instanceof CollectionRepresentation || myparent.parent instanceof CollectionMember);
                 var isList = this.isList();
                 return isList && isOnList;
             };
@@ -1007,6 +1008,14 @@ var NakedObjects;
             CollectionRepresentation.prototype.disabledReason = function () {
                 return this.wrapped().disabledReason;
             };
+            CollectionRepresentation.prototype.actionMembers = function () {
+                var _this = this;
+                this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, function (m, id) { return Member.wrapMember(m, _this, id); });
+                return this.actionMemberMap;
+            };
+            CollectionRepresentation.prototype.actionMember = function (id) {
+                return this.actionMembers()[id];
+            };
             return CollectionRepresentation;
         }(ResourceRepresentation));
         Models.CollectionRepresentation = CollectionRepresentation;
@@ -1123,7 +1132,7 @@ var NakedObjects;
                 if (toWrap.memberType === "collection") {
                     return new CollectionMember(toWrap, parent, id);
                 }
-                if (toWrap.memberType === "action") {
+                if (toWrap.memberType === "action" && !(parent instanceof Link)) {
                     var member = new ActionMember(toWrap, parent, id);
                     if (member.invokeLink()) {
                         return new InvokableActionMember(toWrap, parent, id);
@@ -1246,6 +1255,7 @@ var NakedObjects;
                 this.parent = parent;
                 this.id = id;
                 this.wrapped = function () { return _this.resource(); };
+                this.etagDigest = parent.etagDigest;
             }
             CollectionMember.prototype.collectionId = function () {
                 return this.id;
@@ -1259,6 +1269,17 @@ var NakedObjects;
             };
             CollectionMember.prototype.getDetails = function () {
                 return this.detailsLink().getTarget();
+            };
+            CollectionMember.prototype.actionMembers = function () {
+                var _this = this;
+                if (this.wrapped().members) {
+                    this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, function (m, id) { return Member.wrapMember(m, _this, id); });
+                    return this.actionMemberMap;
+                }
+                return {};
+            };
+            CollectionMember.prototype.actionMember = function (id) {
+                return this.actionMembers()[id];
             };
             return CollectionMember;
         }(Member));

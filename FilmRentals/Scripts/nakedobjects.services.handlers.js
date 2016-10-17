@@ -7,6 +7,7 @@ var NakedObjects;
     var ErrorWrapper = NakedObjects.Models.ErrorWrapper;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    var DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     NakedObjects.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, $rootScope, repLoader, context, viewModelFactory, color, navigation, urlManager, focusManager, template, error) {
         var handlers = this;
@@ -25,6 +26,9 @@ var NakedObjects;
         var perPaneMenusViews = [,
             new NakedObjects.MenusViewModel(viewModelFactory),
             new NakedObjects.MenusViewModel(viewModelFactory)
+        ];
+        var perPaneMultiLineDialogViews = [,
+            new NakedObjects.MultiLineDialogViewModel(color, context, viewModelFactory, urlManager, focusManager, error, $rootScope)
         ];
         function setVersionError(error) {
             context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
@@ -48,15 +52,18 @@ var NakedObjects;
             $scope.dialog = null;
             context.clearParmUpdater(paneId);
         }
-        function setDialog($scope, action, routeData) {
+        function setDialog($scope, action, routeData, matchingCollectionId) {
             context.clearParmUpdater(routeData.paneId);
             $scope.dialogTemplate = NakedObjects.dialogTemplate;
+            $scope.parametersTemplate = NakedObjects.parametersTemplate;
+            $scope.parameterTemplate = NakedObjects.parameterTemplate;
             var dialogViewModel = perPaneDialogViews[routeData.paneId];
             var isAlreadyViewModel = action instanceof NakedObjects.ActionViewModel;
             var actionViewModel = !isAlreadyViewModel
                 ? viewModelFactory.actionViewModel(action, dialogViewModel, routeData)
                 : action;
-            dialogViewModel.reset(actionViewModel, routeData);
+            dialogViewModel.matchingCollectionId = matchingCollectionId;
+            dialogViewModel.reset(actionViewModel, routeData.paneId);
             $scope.dialog = dialogViewModel;
             context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
             dialogViewModel.deregister = function () { return context.clearParmUpdater(routeData.paneId); };
@@ -106,7 +113,8 @@ var NakedObjects;
                     if (actionViewModel) {
                         actionViewModel.makeInvokable(details);
                     }
-                    setDialog($scope, actionViewModel || details, routeData);
+                    var matchingCollectionId = holder instanceof NakedObjects.CollectionViewModel ? holder.id : "";
+                    setDialog($scope, actionViewModel || details, routeData, matchingCollectionId);
                     focusManager.focusOn(NakedObjects.FocusTarget.Dialog, 0, routeData.paneId);
                 }).
                     catch(function (reject) { return error.handleError(reject); });
@@ -181,14 +189,17 @@ var NakedObjects;
             var currentDialog = $scope.dialog;
             var currentDialogId = currentDialog ? currentDialog.id : null;
             var newDialogId = routeData.dialogId;
-            if (currentDialogId !== newDialogId) {
+            // deliberate == to catch undefined == null 
+            if (!(currentDialogId == newDialogId)) {
                 var listViewModel = $scope.collection;
                 var actionViewModel = _.find(listViewModel.actions, function (a) { return a.actionRep.actionId() === newDialogId; });
                 setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
             }
             else if ($scope.dialog) {
                 $scope.dialog.refresh();
+                $scope.dialog.resetMessage();
             }
+            $scope.collection.resetMessage();
         }
         function handleListSearchChanged($scope, routeData) {
             // only update templates if changed 
@@ -238,10 +249,10 @@ var NakedObjects;
             $scope.recentTemplate = NakedObjects.recentTemplate;
             $scope.recent = viewModelFactory.recentItemsViewModel(routeData.paneId);
         };
-        handlers.handleError = function ($scope, routeData) {
+        handlers.handleError = function ($scope) {
             var evm = viewModelFactory.errorViewModel(context.getError());
             $scope.error = evm;
-            error.displayError($scope, routeData);
+            error.displayError($scope);
         };
         handlers.handleToolBar = function ($scope) {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
@@ -266,6 +277,12 @@ var NakedObjects;
             if ($scope.actionsTemplate !== newActionsTemplate) {
                 $scope.actionsTemplate = newActionsTemplate;
             }
+            if ($scope.propertiesTemplate !== NakedObjects.propertiesTemplate) {
+                $scope.propertiesTemplate = NakedObjects.propertiesTemplate;
+            }
+            if ($scope.propertyTemplate !== NakedObjects.propertyTemplate) {
+                $scope.propertyTemplate = NakedObjects.propertyTemplate;
+            }
             var focusTarget;
             var currentDialog = $scope.dialog;
             var currentDialogId = currentDialog ? currentDialog.id : null;
@@ -283,8 +300,17 @@ var NakedObjects;
             else {
                 focusTarget = NakedObjects.FocusTarget.ObjectTitle;
             }
-            if (currentDialogId !== newDialogId) {
-                setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
+            // deliberate == to catch undefined == null 
+            if (!(currentDialogId == newDialogId)) {
+                // need to match Locally Contributed Actions 
+                var lcaCollection = _.find(ovm.collections, function (c) { return c.hasMatchingLocallyContributedAction(newDialogId); });
+                if (lcaCollection) {
+                    var actionViewModel = _.find(lcaCollection.actions, function (a) { return a.actionRep.actionId() === newDialogId; });
+                    setNewDialog($scope, lcaCollection, newDialogId, routeData, focusTarget, actionViewModel);
+                }
+                else {
+                    setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
+                }
             }
             else {
                 if ($scope.dialog) {
@@ -361,7 +387,7 @@ var NakedObjects;
             }).
                 catch(function (reject) { return error.handleError(reject); });
         };
-        handlers.handleApplicationProperties = function ($scope, routeData) {
+        handlers.handleApplicationProperties = function ($scope) {
             context.clearWarnings();
             context.clearMessages();
             $scope.applicationPropertiesTemplate = NakedObjects.applicationPropertiesTemplate;
@@ -375,6 +401,61 @@ var NakedObjects;
                 catch(function (reject) { return error.handleError(reject); });
             apvm.serverUrl = NakedObjects.getAppPath();
             apvm.clientVersion = NakedObjects["version"] || "Failed to write version";
+        };
+        function setMultiLineDialog($scope, holder, newDialogId, routeData, actionViewModel) {
+            var action = holder.actionMember(newDialogId);
+            context.getInvokableAction(action).
+                then(function (details) {
+                if (actionViewModel) {
+                    actionViewModel.makeInvokable(details);
+                }
+                $scope.multiLineDialogTemplate = NakedObjects.multiLineDialogTemplate;
+                $scope.parametersTemplate = NakedObjects.parametersTemplate;
+                $scope.parameterTemplate = NakedObjects.parameterTemplate;
+                $scope.readOnlyParameterTemplate = NakedObjects.readOnlyParameterTemplate;
+                var dialogViewModel = perPaneMultiLineDialogViews[routeData.paneId];
+                dialogViewModel.reset(routeData, details);
+                if (holder instanceof DomainObjectRepresentation) {
+                    dialogViewModel.objectTitle = holder.title();
+                    dialogViewModel.objectFriendlyName = holder.extensions().friendlyName();
+                }
+                else {
+                    dialogViewModel.objectFriendlyName = "";
+                    dialogViewModel.objectTitle = "";
+                }
+                $scope.multiLineDialog = dialogViewModel;
+            }).
+                catch(function (reject) { return error.handleError(reject); });
+        }
+        handlers.handleMultiLineDialog = function ($scope, routeData) {
+            if (routeData.menuId) {
+                context.getMenu(routeData.menuId)
+                    .then(function (menu) {
+                    setMultiLineDialog($scope, menu, routeData.dialogId, routeData);
+                })
+                    .catch(function (reject) {
+                    error.handleError(reject);
+                });
+            }
+            else if (routeData.objectId) {
+                var oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+                context.getObject(routeData.paneId, oid, routeData.interactionMode).
+                    then(function (object) {
+                    var ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
+                    var newDialogId = routeData.dialogId;
+                    var lcaCollection = _.find(ovm.collections, function (c) { return c.hasMatchingLocallyContributedAction(newDialogId); });
+                    if (lcaCollection) {
+                        var actionViewModel = _.find(lcaCollection.actions, function (a) { return a.actionRep.actionId() === newDialogId; });
+                        setMultiLineDialog($scope, lcaCollection, newDialogId, routeData, actionViewModel);
+                    }
+                    else {
+                        setMultiLineDialog($scope, object, newDialogId, routeData);
+                    }
+                }).
+                    catch(function (reject) {
+                    error.handleError(reject);
+                });
+            }
         };
     });
 })(NakedObjects || (NakedObjects = {}));

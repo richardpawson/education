@@ -50,6 +50,12 @@ var NakedObjects;
     NakedObjects.attachmentTemplate = getSvrPath() + "Content/partials/attachment.html";
     NakedObjects.ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
     NakedObjects.applicationPropertiesTemplate = getSvrPath() + "Content/partials/applicationProperties.html";
+    NakedObjects.multiLineDialogTemplate = getSvrPath() + "Content/partials/multiLineDialog.html";
+    NakedObjects.propertiesTemplate = getSvrPath() + "Content/partials/properties.html";
+    NakedObjects.parametersTemplate = getSvrPath() + "Content/partials/parameters.html";
+    NakedObjects.propertyTemplate = getSvrPath() + "Content/partials/readOnlyProperty.html";
+    NakedObjects.parameterTemplate = getSvrPath() + "Content/partials/parameter.html";
+    NakedObjects.readOnlyParameterTemplate = getSvrPath() + "Content/partials/readOnlyParameter.html";
     // routing constants 
     NakedObjects.geminiPath = "gemini";
     NakedObjects.ciceroPath = "cicero";
@@ -60,6 +66,7 @@ var NakedObjects;
     NakedObjects.recentPath = "recent";
     NakedObjects.attachmentPath = "attachment";
     NakedObjects.applicationPropertiesPath = "applicationProperties";
+    NakedObjects.multiLineDialogPath = "multiLineDialog";
     //Restful Objects constants
     NakedObjects.roDomainType = "x-ro-domain-type";
     NakedObjects.roInvalidReason = "x-ro-invalidReason";
