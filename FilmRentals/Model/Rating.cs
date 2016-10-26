@@ -1,6 +1,6 @@
 ﻿using NakedObjects;
 
-namespace FilmRentals
+namespace FilmRentals.Model
 {
     [Bounded]
     public class Rating

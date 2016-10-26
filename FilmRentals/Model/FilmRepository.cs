@@ -2,7 +2,7 @@
 using System.Linq;
 
 
-namespace FilmRentals
+namespace FilmRentals.Model
 {
     public class FilmRepository
     {

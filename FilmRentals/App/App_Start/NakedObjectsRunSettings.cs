@@ -11,6 +11,8 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using FilmRentals;
+using FilmRentals.Model;
+using FilmRentals.Data;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings

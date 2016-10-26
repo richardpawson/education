@@ -15,8 +15,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FilmRentals</RootNamespace>
-    <AssemblyName>FilmRentals</AssemblyName>
+    <RootNamespace>FilmRentals.App</RootNamespace>
+    <AssemblyName>FilmRentals.App</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -307,7 +307,6 @@
     <Content Include="images\summary.png" />
     <Content Include="images\table.png" />
     <Content Include="index.html" />
-    <Content Include="ClassDiagram.cd" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
@@ -360,21 +359,21 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\RestfulObjectsController.cs" />
-    <Compile Include="Film.cs" />
-    <Compile Include="RentalRepository.cs" />
-    <Compile Include="RatingRepository.cs" />
-    <Compile Include="Member.cs" />
-    <Compile Include="FilmRepository.cs" />
-    <Compile Include="MemberRepository.cs" />
-    <Compile Include="FilmRentalDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rating.cs" />
-    <Compile Include="Rental.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{13066942-4d32-41c2-adb5-3ab6f20159ba}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{9433889b-df0c-4d87-88ee-5394a6e45c92}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\nakedobjects.app.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.cicerocommandfactory.ts" />
