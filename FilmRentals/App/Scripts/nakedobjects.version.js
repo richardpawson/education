@@ -1,1 +1,0 @@
-//# sourceMappingURL=nakedobjects.version.js.map
