@@ -32,10 +32,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="pen.ts" />
     <TypeScriptCompile Include="tree.ts" />
-    <TypeScriptCompile Include="spiral.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README.mdown" />
     <Content Include="LICENSE.mdown" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
