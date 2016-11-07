@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
-
-public static class MyProgram
+public static class Program
 {
     public static void HeartBeat()
     {
@@ -10,9 +9,7 @@ public static class MyProgram
             Console.WriteLine("Beat");
             Thread.Sleep(100);
         }
-
     }
-
     public static void Walk()
     {
         for (int i = 0; i < 50; i++)
@@ -23,7 +20,6 @@ public static class MyProgram
             Thread.Sleep(500);
         }
     }
-
     public static void ChewGum()
     {
         for (int i = 0; i < 50; i++)
@@ -34,15 +30,12 @@ public static class MyProgram
             Thread.Sleep(1000);
         }
     }
-
     public static void Main()
     {
         Console.WriteLine("Starting ...");
-
         var walk = new Thread(new ThreadStart(Walk));
         var chew = new Thread(new ThreadStart(ChewGum));
         var heart = new Thread(new ThreadStart(HeartBeat));
-
         walk.Start();
         chew.Start();
         heart.Start();
