@@ -51,13 +51,15 @@
   </Choose>
   <ItemGroup>
     <Compile Include="TestFactorial.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleApplication\ConsoleApplication.csproj">
       <Project>{123aa574-c645-4c30-836f-9b4155782b08}</Project>
       <Name>ConsoleApplication</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

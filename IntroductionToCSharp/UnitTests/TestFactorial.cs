@@ -33,5 +33,10 @@ namespace Test
         {
             Assert.AreEqual(3628800, Program.Factorial(10));
         }
+        [TestMethod]
+        public void Test0()
+        {
+            Assert.AreEqual(1, Program.Factorial(0));
+        }
     }
 }
