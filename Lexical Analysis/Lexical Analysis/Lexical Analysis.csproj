@@ -7,8 +7,8 @@
     <ProjectGuid>{9872824F-97E7-4443-93F0-E7DF916B0161}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lexical_Analysis</RootNamespace>
-    <AssemblyName>Lexical Analysis</AssemblyName>
+    <RootNamespace>LexicalAnalysis</RootNamespace>
+    <AssemblyName>LexicalAnalysis</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,13 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpTokenDefinitions.cs" />
-    <Compile Include="ExampleCode.cs">
+    <Content Include="ExampleCode.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="IMatcher.cs" />
+    </Content>
     <Compile Include="Lexer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="RegexMatcher.cs" />
+    <Compile Include="Token.cs" />
     <Compile Include="TokenDefinition.cs" />
   </ItemGroup>
   <ItemGroup>

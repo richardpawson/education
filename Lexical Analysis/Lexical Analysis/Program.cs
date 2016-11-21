@@ -8,15 +8,16 @@ namespace LexicalAnalysis
         {
             //Note that the properties on the ExampleCode.cs file have Copy To Output Directly 
             //set to 'Copy Always' so it is in the path.
-            //Alternatively specify a full path to a file e.g. "C:\Users\richard\Documents\ExampleCode.cs"
-            var sourceCode = System.IO.File.OpenText(@"ExampleCode.cs");
+            //Alternatively specify a full path to a file e.g. "C:\Users\richard\Documents\ExampleCode.txt"
+            var sourceCode = System.IO.File.OpenText(@"ExampleCode.txt");
+
             Lexer l = new Lexer(sourceCode, CSharpTokenDefinitions.lexemes);
-            while (l.More())
+            while (l.TextRemaining())
             {
                 try
                 {
-                    l.Next();
-                    Console.WriteLine("Token: {0} Contents: {1}", l.Token, l.TokenContents);
+                    Token token = l.NextToken();
+                    Console.WriteLine("Token: {0} Contents: {1}", token, token.Contents);
                 }
                 catch (Exception e)
                 {

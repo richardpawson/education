@@ -1,15 +1,14 @@
 ﻿namespace LexicalAnalysis
 {
-
-    public sealed class TokenDefinition
+    public class TokenDefinition
     {
-        public readonly IMatcher Matcher;
-        public readonly object Token;
+        public readonly RegexMatcher Matcher;
+        public readonly string TokenName;
 
-        public TokenDefinition(string regex, object token)
+        public TokenDefinition(string regex, string tokenName)
         {
             this.Matcher = new RegexMatcher(regex);
-            this.Token = token;
+            this.TokenName = tokenName;
         }
     }
 

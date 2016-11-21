@@ -32,40 +32,34 @@ public sealed class Lexer : IDisposable
         } while (lineRemaining != null && lineRemaining.Length == 0);
     }
 
-    public bool More()
+    public bool TextRemaining()
     {
         return lineRemaining != null;
     }
-    public bool Next()
+    public Token NextToken()
     {
         if (lineRemaining == null)
-            return false;
+            return null;
         foreach (var def in tokenDefinitions)
         {
             var matched = def.Matcher.Match(lineRemaining);
             if (matched > 0)
             {
-                Position += matched;
-                Token = def.Token;
-                TokenContents = lineRemaining.Substring(0, matched);
+                string contents = lineRemaining.Substring(0, matched);
+                Token token = new Token(def.TokenName, contents, LineNumber, Position);
                 lineRemaining = lineRemaining.Substring(matched);
-                if (lineRemaining.Length == 0)
-                    nextLine();
-
-                return true;
+                 if (lineRemaining.Length == 0) { nextLine(); }
+                Position += matched;
+                return token;
             }
         }
         throw new Exception(string.Format("Unable to match against any tokens at line {0} position {1} \"{2}\"",
                                           LineNumber, Position, lineRemaining));
     }
 
-    public string TokenContents { get; private set; }
+        private int LineNumber;
 
-    public object Token { get; private set; }
-
-    public int LineNumber { get; private set; }
-
-    public int Position { get; private set; }
+        private int Position;
 
     public void Dispose()
     {

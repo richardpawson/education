@@ -1,15 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace LexicalAnalysis
 {
-sealed class RegexMatcher : IMatcher
+public class RegexMatcher
 {
     private readonly Regex regex;
     public RegexMatcher(string regex)
     {
-        this.regex = new Regex(string.Format("^{0}", regex));
+        this.regex = new Regex(string.Format("^{0}", regex)); // The ^ enforces that match must be at the start of the current (remaining) string
     }
 
     public int Match(string text)

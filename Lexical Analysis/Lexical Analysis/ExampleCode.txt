@@ -1,5 +1,6 @@
 ﻿public class Foo
 {
-    int bar = 3;
+    int bar = 3 + 45;
 }
+
 
