@@ -6,8 +6,10 @@ namespace LexicalAnalysis
     {
         public static void Main(string[] args)
         {
-            //Can also specify a full path to a file e.g. "C:\Users\richard\Documents\ExampleCode.cs"
-            var sourceCode = System.IO.File.OpenText(@"C:\Users\richard\Documents\visual studio 2015\Projects\Lexical Analysis\Lexical Analysis\ExampleCode.cs");
+            //Note that the properties on the ExampleCode.cs file have Copy To Output Directly 
+            //set to 'Copy Always' so it is in the path.
+            //Alternatively specify a full path to a file e.g. "C:\Users\richard\Documents\ExampleCode.cs"
+            var sourceCode = System.IO.File.OpenText(@"ExampleCode.cs");
             Lexer l = new Lexer(sourceCode, CSharpTokenDefinitions.lexemes);
             while (l.More())
             {
