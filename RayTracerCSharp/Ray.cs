@@ -1,4 +1,6 @@
-﻿namespace RayTracer
+﻿using System.Windows.Media.Media3D;
+
+namespace RayTracer
 {
 
     class Ray

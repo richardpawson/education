@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media.Media3D;
 
 namespace RayTracer
 {
@@ -17,8 +18,8 @@ namespace RayTracer
 
         public override Intersection Intersect(Ray ray)
         {
-            Vector3D eo = Vector3D.Minus(Center, ray.Start);
-            double v = Vector3D.Dot(eo, ray.Dir);
+            Vector3D eo = Center - ray.Start;
+            double v = Vector3D.DotProduct(eo, ray.Dir);
             double dist;
             if (v < 0)
             {
@@ -26,7 +27,7 @@ namespace RayTracer
             }
             else
             {
-                double disc = Math.Pow(Radius, 2) - (Vector3D.Dot(eo, eo) - Math.Pow(v, 2));
+                double disc = Math.Pow(Radius, 2) - (Vector3D.DotProduct(eo, eo) - Math.Pow(v, 2));
                 dist = disc < 0 ? 0 : v - Math.Sqrt(disc);
             }
             if (dist == 0) return null;
@@ -40,7 +41,9 @@ namespace RayTracer
 
         public override Vector3D Normal(Vector3D pos)
         {
-            return Vector3D.Norm(Vector3D.Minus(pos, Center));
+            Vector3D normal =  pos - Center;
+            normal.Normalize();
+            return normal;
         }
     }
 
@@ -51,13 +54,13 @@ namespace RayTracer
 
         public override Intersection Intersect(Ray ray)
         {
-            double denom = Vector3D.Dot(Norm, ray.Dir);
+            double denom = Vector3D.DotProduct(Norm, ray.Dir);
             if (denom > 0) return null;
             return new Intersection()
             {
                 Thing = this,
                 Ray = ray,
-                Dist = (Vector3D.Dot(Norm, ray.Start) + Offset) / (-denom)
+                Dist = (Vector3D.DotProduct(Norm, ray.Start) + Offset) / (-denom)
             };
         }
 
