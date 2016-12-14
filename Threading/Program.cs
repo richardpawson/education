@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 public static class Program
 {
+    static int steps;
+    static int chews;
     public static void HeartBeat()
     {
         while(true)
@@ -12,22 +15,26 @@ public static class Program
     }
     public static void Walk()
     {
-        for (int i = 0; i < 50; i++)
+        //sw.Start();
+        for (int i = 0; i < 100; i++)
         {
             Console.WriteLine("Left");
-            Thread.Sleep(500);
             Console.WriteLine("Right");
-            Thread.Sleep(500);
+            //Thread.Sleep(10);
+            steps += 1;
+            Console.WriteLine("Steps: " + steps + "Chews: "+ chews);
         }
     }
     public static void ChewGum()
     {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 100; i++)
         {
+            chews += 1;
             Console.WriteLine("Open jaws");
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
             Console.WriteLine("Close jaws");
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
+            Console.WriteLine("Chews: " + chews + " Steps: "+ steps);
         }
     }
     public static void Main()
@@ -35,10 +42,9 @@ public static class Program
         Console.WriteLine("Starting ...");
         var walk = new Thread(new ThreadStart(Walk));
         var chew = new Thread(new ThreadStart(ChewGum));
-        var heart = new Thread(new ThreadStart(HeartBeat));
         walk.Start();
         chew.Start();
-        heart.Start();
+        //heart.Start();
 
         Console.ReadKey();
     }

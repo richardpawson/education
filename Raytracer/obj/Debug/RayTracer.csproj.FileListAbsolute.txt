@@ -1,6 +1,0 @@
-C:\education\Raytracer\obj\Debug\RayTracer.csprojResolveAssemblyReference.cache
-C:\education\Raytracer\obj\Debug\RayTracer.dll
-C:\education\Raytracer\obj\Debug\RayTracer.pdb
-C:\education\Raytracer\bin\RayTracer.dll.config
-C:\education\Raytracer\bin\RayTracer.dll
-C:\education\Raytracer\bin\RayTracer.pdb
