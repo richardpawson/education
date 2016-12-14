@@ -43,7 +43,7 @@ namespace RayTracer {
         }
 
         private Color GetNaturalColor(SceneObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene) {
-            Color ret = Color.Make(0, 0, 0);
+            Color ret = new Color(0, 0, 0);
             foreach (Light light in scene.Lights) {
                 Vector3D ldis = light.Pos- pos;
                 Vector3D livec = ldis;
@@ -52,10 +52,10 @@ namespace RayTracer {
                 bool isInShadow = !((neatIsect > ldis.Length) || (neatIsect == 0));
                 if (!isInShadow) {
                     double illum = Vector3D.DotProduct(livec, norm);
-                    Color lcolor = illum > 0 ? Color.Times(illum, light.Color) : Color.Make(0, 0, 0);
+                    Color lcolor = illum > 0 ? Color.Times(illum, light.Color) : new Color(0, 0, 0);
                     rd.Normalize();
                     double specular = Vector3D.DotProduct(livec, rd);
-                    Color scolor = specular > 0 ? Color.Times(Math.Pow(specular, thing.Surface.Roughness), light.Color) : Color.Make(0, 0, 0);
+                    Color scolor = specular > 0 ? Color.Times(Math.Pow(specular, thing.Surface.Roughness), light.Color) : new Color(0, 0, 0);
                     ret = Color.Plus(ret, Color.Plus(Color.Times(thing.Surface.Diffuse(pos), lcolor),
                                                      Color.Times(thing.Surface.Specular(pos), scolor)));
                 }
@@ -75,7 +75,7 @@ namespace RayTracer {
             Color ret = Color.DefaultColor;
             ret = Color.Plus(ret, GetNaturalColor(isect.Thing, pos, normal, reflectDir, scene));
             if (depth >= MaxDepth) {
-                return Color.Plus(ret, Color.Make(.5, .5, .5));
+                return Color.Plus(ret, new Color(.5, .5, .5));
             }
             return Color.Plus(ret, GetReflectionColor(isect.Thing, pos + (.001 * reflectDir), normal, reflectDir, scene, depth));
         }
@@ -125,19 +125,19 @@ namespace RayTracer {
                     Lights = new Light[] { 
                                 new Light() {
                                     Pos = new Vector3D(-2,2.5,0),
-                                    Color = Color.Make(.49,.07,.07)
+                                    Color = new Color(.49,.07,.07)
                                 },
                                 new Light() {
                                     Pos = new Vector3D(1.5,2.5,1.5),
-                                    Color = Color.Make(.07,.07,.49)
+                                    Color = new Color(.07,.07,.49)
                                 },
                                 new Light() {
                                     Pos = new Vector3D(1.5,2.5,-1.5),
-                                    Color = Color.Make(.07,.49,.071)
+                                    Color = new Color(.07,.49,.071)
                                 },
                                 new Light() {
                                     Pos = new Vector3D(0,3.5,0),
-                                    Color = Color.Make(.21,.21,.35)
+                                    Color = new Color(.21,.21,.35)
                                 }},
                     Camera = new Camera(new Vector3D(3,2,4), new Vector3D(-1,.5,0))
                 };

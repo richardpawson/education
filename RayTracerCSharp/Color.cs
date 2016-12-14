@@ -23,8 +23,6 @@ namespace RayTracer
             B = double.Parse(nums[2]);
         }
 
-        public static Color Make(double r, double g, double b) { return new Color(r, g, b); }
-
         public static Color Times(double n, Color v)
         {
             return new Color(n * v.R, n * v.G, n * v.B);
@@ -43,8 +41,8 @@ namespace RayTracer
             return new Color(v1.R - v2.R, v1.G - v2.G, v1.B - v2.B);
         }
 
-        public static readonly Color Background = Make(0, 0, 0);
-        public static readonly Color DefaultColor = Make(0, 0, 0);
+        public static readonly Color Background = new Color(0, 0, 0);
+        public static readonly Color DefaultColor = new Color(0, 0, 0);
 
         public double Legalize(double d)
         {

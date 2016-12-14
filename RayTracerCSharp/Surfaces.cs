@@ -10,9 +10,9 @@ namespace RayTracer
             new Surface()
             {
                 Diffuse = pos => ((Math.Floor(pos.Z) + Math.Floor(pos.X)) % 2 != 0)
-                                    ? Color.Make(1, 1, 1)
-                                    : Color.Make(0, 0, 0),
-                Specular = pos => Color.Make(1, 1, 1),
+                                    ? new Color(1, 1, 1)
+                                    : new Color(0, 0, 0),
+                Specular = pos => new Color(1, 1, 1),
                 Reflect = pos => ((Math.Floor(pos.Z) + Math.Floor(pos.X)) % 2 != 0)
                                     ? .1
                                     : .7,
@@ -23,8 +23,8 @@ namespace RayTracer
         public static readonly Surface Shiny =
             new Surface()
             {
-                Diffuse = pos => Color.Make(1, 1, 1),
-                Specular = pos => Color.Make(.5, .5, .5),
+                Diffuse = pos => new Color(1, 1, 1),
+                Specular = pos => new Color(.5, .5, .5),
                 Reflect = pos => .6,
                 Roughness = 50
             };
