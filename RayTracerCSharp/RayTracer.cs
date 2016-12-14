@@ -139,7 +139,7 @@ namespace RayTracer {
                                     Pos = new Vector3D(0,3.5,0),
                                     Color = Color.Make(.21,.21,.35)
                                 }},
-                    Camera = Camera.Create(new Vector3D(3,2,4), new Vector3D(-1,.5,0))
+                    Camera = new Camera(new Vector3D(3,2,4), new Vector3D(-1,.5,0))
                 };
     }
 
