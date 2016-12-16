@@ -16,43 +16,31 @@ namespace PredatorPrey
             FoodUnitsNeeded = (int)(10 * base.CalculateRandomValue(100, Variability) / 100);
         }
 
-        public void AdvanceGeneration(bool ShowDetail)
+        public void AdvanceGeneration()
         {
             if (FoodUnitsConsumedThisPeriod == 0)
             {
                 IsAlive = false;
-                if (ShowDetail)
-                {
                     Logger.WriteLine("  Fox dies as has eaten no food this period.");
-                }
             }
             else
             {
                 if (CheckIfKilledByOtherFactor())
                 {
                     IsAlive = false;
-                    if (ShowDetail)
-                    {
                         Logger.WriteLine("  Fox killed by other factor.");
-                    }
                 }
                 else
                 {
                     if (FoodUnitsConsumedThisPeriod < FoodUnitsNeeded)
                     {
                         CalculateNewAge();
-                        if (ShowDetail)
-                        {
                             Logger.WriteLine("  Fox ages further due to lack of food.");
-                        }
                     }
                     CalculateNewAge();
                     if (!IsAlive)
                     {
-                        if (ShowDetail)
-                        {
                             Logger.WriteLine("  Fox has died of old age.");
-                        }
                     }
                 }
             }

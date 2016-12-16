@@ -42,10 +42,10 @@ namespace PredatorPrey
             } while (true);
             Simulation Sim = new Simulation(LandscapeSize, InitialWarrenCount,
                 InitialFoxCount, Variability, FixedInitialLocations, Logger);
-            RunSimulation(Sim);
+            RunSimulation(Sim, Logger);
         }
 
-        private static void RunSimulation(Simulation Sim)
+        private static void RunSimulation(Simulation Sim, ILogger Logger)
         {
             DrawLandscape(Sim);
             int menuOption;
@@ -65,13 +65,13 @@ namespace PredatorPrey
                 menuOption = Convert.ToInt32(Console.ReadLine());
                 if (menuOption == 1)
                 {
-                    Sim.ShowDetail = true;
+                    Logger.StartLogging();
                     Sim.AdvanceTimePeriod();
                     DrawLandscape(Sim);
                 }
                 if (menuOption == 2)
                 {
-                    Sim.ShowDetail = false;
+                    Logger.StopLogging();
                     Sim.AdvanceTimePeriod();
                     DrawLandscape(Sim);
                 }

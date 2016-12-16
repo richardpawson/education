@@ -8,5 +8,9 @@ namespace PredatorPrey
         void WriteLine(string text = null);
 
         void PageBreak();
+
+        void StartLogging();
+
+        void StopLogging();
     }
 }

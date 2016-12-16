@@ -72,25 +72,25 @@ namespace PredatorPrey
             }
         }
 
-        public void AdvanceGeneration(bool ShowDetail)
+        public void AdvanceGeneration()
         {
             PeriodsRun++;
             if (RabbitCount > 0)
             {
-                KillByOtherFactors(ShowDetail);
+                KillByOtherFactors();
             }
             if (RabbitCount > 0)
             {
-                AgeRabbits(ShowDetail);
+                AgeRabbits();
             }
             if ((RabbitCount > 0) && (RabbitCount <= MaxRabbitsInWarren))
             {
                 if (ContainsMales())
                 {
-                    MateRabbits(ShowDetail);
+                    MateRabbits();
                 }
             }
-            if ((RabbitCount == 0) && (ShowDetail))
+            if (RabbitCount == 0)
             {
                 Logger.WriteLine("  All rabbits in warren are dead");
             }
@@ -117,7 +117,7 @@ namespace PredatorPrey
             return RabbitsToEat;
         }
 
-        private void KillByOtherFactors(bool ShowDetail)
+        private void KillByOtherFactors()
         {
             int DeathCount = 0;
             for (int r = 0; r < RabbitCount; r++)
@@ -129,13 +129,10 @@ namespace PredatorPrey
                 }
             }
             CompressRabbitList(DeathCount);
-            if (ShowDetail)
-            {
                 Logger.WriteLine("  " + DeathCount + " rabbits killed by other factors.");
-            }
         }
 
-        private void AgeRabbits(bool ShowDetail)
+        private void AgeRabbits()
         {
             int DeathCount = 0;
             for (int r = 0; r < RabbitCount; r++)
@@ -148,13 +145,10 @@ namespace PredatorPrey
                 }
             }
             CompressRabbitList(DeathCount);
-            if (ShowDetail)
-            {
                 Logger.WriteLine("  " + DeathCount + " rabbits die of old age.");
-            }
         }
 
-        private void MateRabbits(bool ShowDetail)
+        private void MateRabbits()
         {
             int Mate = 0;
             int Babies = 0;
@@ -176,10 +170,7 @@ namespace PredatorPrey
                 }
             }
             RabbitCount = RabbitCount + Babies;
-            if (ShowDetail)
-            {
                 Logger.WriteLine("  " + Babies + " baby rabbits born.");
-            }
         }
 
         private void CompressRabbitList(int DeathCount)

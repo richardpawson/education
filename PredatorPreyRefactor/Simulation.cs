@@ -9,8 +9,7 @@ namespace PredatorPrey
         public int TimePeriod { get; private set; }
         public int WarrenCount { get; private set; }
         public int FoxCount { get; private set; }
-        public bool ShowDetail { get; set; } 
-        public  int LandscapeSize { get; private set; }
+        public int LandscapeSize { get; private set; }
         private int Variability;
         private static Random Rnd = new Random();
         private ILogger Logger;
@@ -28,10 +27,7 @@ namespace PredatorPrey
         public void AdvanceTimePeriod()
         {
             int NewFoxCount = 0;
-            if (ShowDetail)
-            {
-                Logger.WriteLine();
-            }
+            Logger.WriteLine();
             TimePeriod++;
             for (int x = 0; x < LandscapeSize; x++)
             {
@@ -39,12 +35,9 @@ namespace PredatorPrey
                 {
                     if (Landscape[x, y].Warren != null)
                     {
-                        if (ShowDetail)
-                        {
-                            Logger.WriteLine("Warren at (" + x + "," + y + "):");
-                            Logger.Write("  Period Start: ");
-                            Logger.Write(Landscape[x, y].Warren.Inspect());
-                        }
+                        Logger.WriteLine("Warren at (" + x + "," + y + "):");
+                        Logger.Write("  Period Start: ");
+                        Logger.Write(Landscape[x, y].Warren.Inspect());
                         if (FoxCount > 0)
                         {
                             FoxesEatRabbitsInWarren(x, y);
@@ -53,13 +46,10 @@ namespace PredatorPrey
                         {
                             CreateNewWarren();
                         }
-                        Landscape[x, y].Warren.AdvanceGeneration(ShowDetail);
-                        if (ShowDetail)
-                        {
-                            Logger.Write("  Period End: ");
-                            Logger.Write(Landscape[x, y].Warren.Inspect());
-                            Logger.PageBreak();
-                        }
+                        Landscape[x, y].Warren.AdvanceGeneration();
+                        Logger.Write("  Period End: ");
+                        Logger.Write(Landscape[x, y].Warren.Inspect());
+                        Logger.PageBreak();
                         if (Landscape[x, y].Warren.WarrenHasDiedOut())
                         {
                             Landscape[x, y].Warren = null;
@@ -74,11 +64,8 @@ namespace PredatorPrey
                 {
                     if (Landscape[x, y].Fox != null)
                     {
-                        if (ShowDetail)
-                        {
-                            Logger.WriteLine("Fox at (" + x + "," + y + "): ");
-                        }
-                        Landscape[x, y].Fox.AdvanceGeneration(ShowDetail);
+                        Logger.WriteLine("Fox at (" + x + "," + y + "): ");
+                        Landscape[x, y].Fox.AdvanceGeneration();
                         if (Landscape[x, y].Fox.CheckIfDead())
                         {
                             Landscape[x, y].Fox = null;
@@ -88,16 +75,10 @@ namespace PredatorPrey
                         {
                             if (Landscape[x, y].Fox.ReproduceThisPeriod())
                             {
-                                if (ShowDetail)
-                                {
-                                    Logger.WriteLine("  Fox has reproduced. ");
-                                }
+                                Logger.WriteLine("  Fox has reproduced. ");
                                 NewFoxCount++;
                             }
-                            if (ShowDetail)
-                            {
-                                Logger.Write(Landscape[x, y].Fox.Inspect());
-                            }
+                            Logger.Write(Landscape[x, y].Fox.Inspect());
                             Landscape[x, y].Fox.ResetFoodConsumed();
                         }
                     }
@@ -105,19 +86,13 @@ namespace PredatorPrey
             }
             if (NewFoxCount > 0)
             {
-                if (ShowDetail)
-                {
-                    Logger.WriteLine("New foxes born: ");
-                }
+                Logger.WriteLine("New foxes born: ");
                 for (int f = 0; f < NewFoxCount; f++)
                 {
                     CreateNewFox();
                 }
             }
-            if (ShowDetail)
-            {
-                Logger.PageBreak();
-            }
+            Logger.PageBreak();
             Logger.WriteLine();
         }
 
@@ -166,10 +141,7 @@ namespace PredatorPrey
                 x = Rnd.Next(0, LandscapeSize);
                 y = Rnd.Next(0, LandscapeSize);
             } while (Landscape[x, y].Warren != null);
-            if (ShowDetail)
-            {
-                Logger.WriteLine("New Warren at (" + x + "," + y + ")");
-            }
+            Logger.WriteLine("New Warren at (" + x + "," + y + ")");
             Landscape[x, y].Warren = new Warren(Variability, Logger);
             WarrenCount++;
         }
@@ -182,10 +154,7 @@ namespace PredatorPrey
                 x = Rnd.Next(0, LandscapeSize);
                 y = Rnd.Next(0, LandscapeSize);
             } while (Landscape[x, y].Fox != null);
-            if (ShowDetail)
-            {
-                Logger.WriteLine("  New Fox at (" + x + "," + y + ")");
-            }
+            Logger.WriteLine("  New Fox at (" + x + "," + y + ")");
             Landscape[x, y].Fox = new Fox(Variability, Logger);
             FoxCount++;
         }
@@ -219,10 +188,7 @@ namespace PredatorPrey
                         RabbitsToEat = (int)Math.Round((double)(PercentToEat * RabbitCountAtStartOfPeriod / 100.0));
                         FoodConsumed = Landscape[WarrenX, WarrenY].Warren.EatRabbits(RabbitsToEat);
                         Landscape[FoxX, FoxY].Fox.GiveFood(FoodConsumed);
-                        if (ShowDetail)
-                        {
-                            Logger.WriteLine("  " + FoodConsumed + " rabbits eaten by fox at (" + FoxX + "," + FoxY + ").");
-                        }
+                        Logger.WriteLine("  " + FoodConsumed + " rabbits eaten by fox at (" + FoxX + "," + FoxY + ").");
                     }
                 }
             }

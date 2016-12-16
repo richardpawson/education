@@ -4,17 +4,29 @@ namespace PredatorPrey
 {
     class ConsoleLogger : ILogger
     {
+        private bool logging;
+
         public void Write(string text)
         {
-            Console.Write(text);
+            if (logging) Console.Write(text);
         }
         public void WriteLine(string text = null)
         {
-            Console.WriteLine(text);
+            if (logging) Console.WriteLine(text);
         }
         public void PageBreak()
         {
-            Console.ReadKey();
+            if (logging) Console.ReadKey();
+        }
+
+        public void StartLogging()
+        {
+            logging = true;
+        }
+
+        public void StopLogging()
+        {
+            logging = false;
         }
     }
 }
