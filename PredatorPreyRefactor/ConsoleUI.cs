@@ -80,7 +80,7 @@ namespace PredatorPrey
                     y = InputCoordinate('y');
                     if (Sim.Landscape[x, y].Fox != null)
                     {
-                        Sim.Landscape[x, y].Fox.Inspect();
+                        Console.Write(Sim.Landscape[x, y].Fox.Inspect());
                     }
                 }
                 if (menuOption == 4)
@@ -89,12 +89,12 @@ namespace PredatorPrey
                     y = InputCoordinate('y');
                     if (Sim.Landscape[x, y].Warren != null)
                     {
-                        Sim.Landscape[x, y].Warren.Inspect();
+                        Console.Write(Sim.Landscape[x, y].Warren.Inspect());
                         Console.Write("View individual rabbits (y/n)?");
                         viewRabbits = Console.ReadLine();
                         if (viewRabbits == "y")
                         {
-                            Sim.Landscape[x, y].Warren.ListRabbits();
+                            Console.Write(Sim.Landscape[x, y].Warren.InspectAllRabbits());
                         }
                     }
                 }

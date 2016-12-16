@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace PredatorPrey
 {
@@ -215,20 +216,22 @@ namespace PredatorPrey
             return Males;
         }
 
-        public void Inspect()
+        public string Inspect()
         {
-            Console.WriteLine("Periods Run " + PeriodsRun + " Size " + RabbitCount);
+           return "Periods Run " + PeriodsRun + " Size " + RabbitCount + "\n";
         }
 
-        public void ListRabbits()
+        public string InspectAllRabbits()
         {
+            var sb = new StringBuilder();
             if (RabbitCount > 0)
             {
                 for (int r = 0; r < RabbitCount; r++)
                 {
-                    Rabbits[r].Inspect();
+                    sb.Append(Rabbits[r].Inspect());
                 }
             }
+            return sb.ToString();
         }
     }
 

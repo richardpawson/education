@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace PredatorPrey
 {
@@ -80,12 +81,14 @@ namespace PredatorPrey
             FoodUnitsConsumedThisPeriod = FoodUnitsConsumedThisPeriod + FoodUnits;
         }
 
-        public override void Inspect()
+        public override string Inspect()
         {
-            base.Inspect();
-            Console.Write("Food needed " + FoodUnitsNeeded + " ");
-            Console.Write("Food eaten " + FoodUnitsConsumedThisPeriod + " ");
-            Console.WriteLine();
+            var sb = new StringBuilder();
+            sb.Append(base.Inspect());
+            sb.Append("Food needed " + FoodUnitsNeeded + " ");
+            sb.Append("Food eaten " + FoodUnitsConsumedThisPeriod + " ");
+            sb.AppendLine();
+            return sb.ToString();
         }
     }
 }

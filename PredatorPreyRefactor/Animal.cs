@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace PredatorPrey
 {
@@ -35,12 +36,14 @@ namespace PredatorPrey
             return !IsAlive;
         }
 
-        public virtual void Inspect()
+        public virtual string Inspect()
         {
-            Console.Write("  ID " + ID + " ");
-            Console.Write("Age " + Age + " ");
-            Console.Write("LS " + NaturalLifespan + " ");
-            Console.Write("Pr dth " + Math.Round(ProbabilityOfDeathOtherCauses, 2) + " ");
+            var sb = new StringBuilder();
+            sb.Append("  ID " + ID + " ");
+            sb.Append("Age " + Age + " ");
+            sb.Append("LS " + NaturalLifespan + " ");
+            sb.Append("Pr dth " + Math.Round(ProbabilityOfDeathOtherCauses, 2) + " ");
+            return sb.ToString();
         }
 
         public virtual bool CheckIfKilledByOtherFactor()

@@ -41,7 +41,7 @@ namespace PredatorPrey
                         {
                             Console.WriteLine("Warren at (" + x + "," + y + "):");
                             Console.Write("  Period Start: ");
-                            Landscape[x, y].Warren.Inspect();
+                            Console.Write(Landscape[x, y].Warren.Inspect());
                         }
                         if (FoxCount > 0)
                         {
@@ -55,7 +55,7 @@ namespace PredatorPrey
                         if (ShowDetail)
                         {
                             Console.Write("  Period End: ");
-                            Landscape[x, y].Warren.Inspect();
+                            Console.Write(Landscape[x, y].Warren.Inspect());
                             Console.ReadKey();
                         }
                         if (Landscape[x, y].Warren.WarrenHasDiedOut())
@@ -94,7 +94,7 @@ namespace PredatorPrey
                             }
                             if (ShowDetail)
                             {
-                                Landscape[x, y].Fox.Inspect();
+                                Console.Write(Landscape[x, y].Fox.Inspect());
                             }
                             Landscape[x, y].Fox.ResetFoodConsumed();
                         }

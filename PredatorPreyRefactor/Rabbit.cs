@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace PredatorPrey
 {
@@ -43,11 +44,13 @@ namespace PredatorPrey
             }
         }
 
-        public override void Inspect()
+        public override string Inspect()
         {
-            base.Inspect();
-            Console.Write("Rep rate " + Math.Round(ReproductionRate, 1) + " ");
-            Console.WriteLine("Gender " + Gender + " ");
+            var sb = new StringBuilder();
+            sb.Append(base.Inspect());
+            sb.Append("Rep rate " + Math.Round(ReproductionRate, 1) + " ");
+            sb.AppendLine("Gender " + Gender + " ");
+            return sb.ToString();
         }
 
         public bool IsFemale()
