@@ -13,10 +13,12 @@ namespace PredatorPrey
         public  int LandscapeSize { get; private set; }
         private int Variability;
         private static Random Rnd = new Random();
+        private ILogger Logger;
 
         public Simulation(int LandscapeSize, int InitialWarrenCount, int InitialFoxCount,
-            int Variability, bool FixedInitialLocations)
+            int Variability, bool FixedInitialLocations, ILogger Logger)
         {
+            this.Logger = Logger;
             this.LandscapeSize = LandscapeSize;
             this.Variability = Variability;
             Landscape = new Location[LandscapeSize, LandscapeSize];
@@ -28,7 +30,7 @@ namespace PredatorPrey
             int NewFoxCount = 0;
             if (ShowDetail)
             {
-                Console.WriteLine();
+                Logger.WriteLine();
             }
             TimePeriod++;
             for (int x = 0; x < LandscapeSize; x++)
@@ -39,9 +41,9 @@ namespace PredatorPrey
                     {
                         if (ShowDetail)
                         {
-                            Console.WriteLine("Warren at (" + x + "," + y + "):");
-                            Console.Write("  Period Start: ");
-                            Console.Write(Landscape[x, y].Warren.Inspect());
+                            Logger.WriteLine("Warren at (" + x + "," + y + "):");
+                            Logger.Write("  Period Start: ");
+                            Logger.Write(Landscape[x, y].Warren.Inspect());
                         }
                         if (FoxCount > 0)
                         {
@@ -54,9 +56,9 @@ namespace PredatorPrey
                         Landscape[x, y].Warren.AdvanceGeneration(ShowDetail);
                         if (ShowDetail)
                         {
-                            Console.Write("  Period End: ");
-                            Console.Write(Landscape[x, y].Warren.Inspect());
-                            Console.ReadKey();
+                            Logger.Write("  Period End: ");
+                            Logger.Write(Landscape[x, y].Warren.Inspect());
+                            Logger.PageBreak();
                         }
                         if (Landscape[x, y].Warren.WarrenHasDiedOut())
                         {
@@ -74,7 +76,7 @@ namespace PredatorPrey
                     {
                         if (ShowDetail)
                         {
-                            Console.WriteLine("Fox at (" + x + "," + y + "): ");
+                            Logger.WriteLine("Fox at (" + x + "," + y + "): ");
                         }
                         Landscape[x, y].Fox.AdvanceGeneration(ShowDetail);
                         if (Landscape[x, y].Fox.CheckIfDead())
@@ -88,13 +90,13 @@ namespace PredatorPrey
                             {
                                 if (ShowDetail)
                                 {
-                                    Console.WriteLine("  Fox has reproduced. ");
+                                    Logger.WriteLine("  Fox has reproduced. ");
                                 }
                                 NewFoxCount++;
                             }
                             if (ShowDetail)
                             {
-                                Console.Write(Landscape[x, y].Fox.Inspect());
+                                Logger.Write(Landscape[x, y].Fox.Inspect());
                             }
                             Landscape[x, y].Fox.ResetFoodConsumed();
                         }
@@ -105,7 +107,7 @@ namespace PredatorPrey
             {
                 if (ShowDetail)
                 {
-                    Console.WriteLine("New foxes born: ");
+                    Logger.WriteLine("New foxes born: ");
                 }
                 for (int f = 0; f < NewFoxCount; f++)
                 {
@@ -114,9 +116,9 @@ namespace PredatorPrey
             }
             if (ShowDetail)
             {
-                Console.ReadKey();
+                Logger.PageBreak();
             }
-            Console.WriteLine();
+            Logger.WriteLine();
         }
 
         private void CreateLandscapeAndAnimals(int InitialWarrenCount, int InitialFoxCount, bool FixedInitialLocations)
@@ -130,17 +132,17 @@ namespace PredatorPrey
             }
             if (FixedInitialLocations)
             {
-                Landscape[1, 1].Warren = new Warren(Variability, 38);
-                Landscape[2, 8].Warren = new Warren(Variability, 80);
-                Landscape[9, 7].Warren = new Warren(Variability, 20);
-                Landscape[10, 3].Warren = new Warren(Variability, 52);
-                Landscape[13, 4].Warren = new Warren(Variability, 67);
+                Landscape[1, 1].Warren = new Warren(Variability, 38, Logger);
+                Landscape[2, 8].Warren = new Warren(Variability, 80, Logger);
+                Landscape[9, 7].Warren = new Warren(Variability, 20, Logger);
+                Landscape[10, 3].Warren = new Warren(Variability, 52, Logger);
+                Landscape[13, 4].Warren = new Warren(Variability, 67, Logger);
                 WarrenCount = 5;
-                Landscape[2, 10].Fox = new Fox(Variability);
-                Landscape[6, 1].Fox = new Fox(Variability);
-                Landscape[8, 6].Fox = new Fox(Variability);
-                Landscape[11, 13].Fox = new Fox(Variability);
-                Landscape[12, 4].Fox = new Fox(Variability);
+                Landscape[2, 10].Fox = new Fox(Variability, Logger);
+                Landscape[6, 1].Fox = new Fox(Variability, Logger);
+                Landscape[8, 6].Fox = new Fox(Variability, Logger);
+                Landscape[11, 13].Fox = new Fox(Variability, Logger);
+                Landscape[12, 4].Fox = new Fox(Variability, Logger);
                 FoxCount = 5;
             }
             else
@@ -166,9 +168,9 @@ namespace PredatorPrey
             } while (Landscape[x, y].Warren != null);
             if (ShowDetail)
             {
-                Console.WriteLine("New Warren at (" + x + "," + y + ")");
+                Logger.WriteLine("New Warren at (" + x + "," + y + ")");
             }
-            Landscape[x, y].Warren = new Warren(Variability);
+            Landscape[x, y].Warren = new Warren(Variability, Logger);
             WarrenCount++;
         }
 
@@ -182,9 +184,9 @@ namespace PredatorPrey
             } while (Landscape[x, y].Fox != null);
             if (ShowDetail)
             {
-                Console.WriteLine("  New Fox at (" + x + "," + y + ")");
+                Logger.WriteLine("  New Fox at (" + x + "," + y + ")");
             }
-            Landscape[x, y].Fox = new Fox(Variability);
+            Landscape[x, y].Fox = new Fox(Variability, Logger);
             FoxCount++;
         }
 
@@ -219,7 +221,7 @@ namespace PredatorPrey
                         Landscape[FoxX, FoxY].Fox.GiveFood(FoodConsumed);
                         if (ShowDetail)
                         {
-                            Console.WriteLine("  " + FoodConsumed + " rabbits eaten by fox at (" + FoxX + "," + FoxY + ").");
+                            Logger.WriteLine("  " + FoodConsumed + " rabbits eaten by fox at (" + FoxX + "," + FoxY + ").");
                         }
                     }
                 }

@@ -10,8 +10,8 @@ namespace PredatorPrey
         private const int DefaultLifespan = 7;
         private const double DefaultProbabilityDeathOtherCauses = 0.1;
 
-        public Fox(int Variability)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability)
+        public Fox(int Variability, ILogger Logger)
+            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger)
         {
             FoodUnitsNeeded = (int)(10 * base.CalculateRandomValue(100, Variability) / 100);
         }
@@ -23,7 +23,7 @@ namespace PredatorPrey
                 IsAlive = false;
                 if (ShowDetail)
                 {
-                    Console.WriteLine("  Fox dies as has eaten no food this period.");
+                    Logger.WriteLine("  Fox dies as has eaten no food this period.");
                 }
             }
             else
@@ -33,7 +33,7 @@ namespace PredatorPrey
                     IsAlive = false;
                     if (ShowDetail)
                     {
-                        Console.WriteLine("  Fox killed by other factor.");
+                        Logger.WriteLine("  Fox killed by other factor.");
                     }
                 }
                 else
@@ -43,7 +43,7 @@ namespace PredatorPrey
                         CalculateNewAge();
                         if (ShowDetail)
                         {
-                            Console.WriteLine("  Fox ages further due to lack of food.");
+                            Logger.WriteLine("  Fox ages further due to lack of food.");
                         }
                     }
                     CalculateNewAge();
@@ -51,7 +51,7 @@ namespace PredatorPrey
                     {
                         if (ShowDetail)
                         {
-                            Console.WriteLine("  Fox has died of old age.");
+                            Logger.WriteLine("  Fox has died of old age.");
                         }
                     }
                 }

@@ -12,26 +12,28 @@ namespace PredatorPrey
         private bool AlreadySpread = false;
         private int Variability;
         private static Random Rnd = new Random();
+        private ILogger Logger;
 
-        public Warren(int Variability)
+        public Warren(int Variability, ILogger Logger) 
         {
-            this.Variability = Variability;
-            Rabbits = new Rabbit[MaxRabbitsInWarren];
-            RabbitCount = (int)(CalculateRandomValue((int)(MaxRabbitsInWarren / 4), this.Variability));
-            for (int r = 0; r < RabbitCount; r++)
-            {
-                Rabbits[r] = new Rabbit(Variability);
-            }
+            var rabbitCount = (int)(CalculateRandomValue(MaxRabbitsInWarren / 4, this.Variability));
+            CommonSetUp(Variability, rabbitCount, Logger);
         }
 
-        public Warren(int Variability, int rabbitCount)
+        public Warren(int Variability, int rabbitCount, ILogger Logger) 
+        {
+            CommonSetUp(Variability, rabbitCount, Logger);
+        }
+
+        private void CommonSetUp(int Variability, int rabbitCount, ILogger Logger)
         {
             this.Variability = Variability;
+            this.Logger = Logger;
             this.RabbitCount = rabbitCount;
             Rabbits = new Rabbit[MaxRabbitsInWarren];
             for (int r = 0; r < RabbitCount; r++)
             {
-                Rabbits[r] = new Rabbit(Variability);
+                Rabbits[r] = new Rabbit(Variability, Logger);
             }
         }
 
@@ -90,7 +92,7 @@ namespace PredatorPrey
             }
             if ((RabbitCount == 0) && (ShowDetail))
             {
-                Console.WriteLine("  All rabbits in warren are dead");
+                Logger.WriteLine("  All rabbits in warren are dead");
             }
         }
 
@@ -129,7 +131,7 @@ namespace PredatorPrey
             CompressRabbitList(DeathCount);
             if (ShowDetail)
             {
-                Console.WriteLine("  " + DeathCount + " rabbits killed by other factors.");
+                Logger.WriteLine("  " + DeathCount + " rabbits killed by other factors.");
             }
         }
 
@@ -148,7 +150,7 @@ namespace PredatorPrey
             CompressRabbitList(DeathCount);
             if (ShowDetail)
             {
-                Console.WriteLine("  " + DeathCount + " rabbits die of old age.");
+                Logger.WriteLine("  " + DeathCount + " rabbits die of old age.");
             }
         }
 
@@ -168,7 +170,7 @@ namespace PredatorPrey
                     CombinedReproductionRate = (Rabbits[r].GetReproductionRate() + Rabbits[Mate].GetReproductionRate()) / 2;
                     if (CombinedReproductionRate >= 1)
                     {
-                        Rabbits[RabbitCount + Babies] = new Rabbit(Variability, CombinedReproductionRate);
+                        Rabbits[RabbitCount + Babies] = new Rabbit(Variability, CombinedReproductionRate, Logger);
                         Babies++;
                     }
                 }
@@ -176,7 +178,7 @@ namespace PredatorPrey
             RabbitCount = RabbitCount + Babies;
             if (ShowDetail)
             {
-                Console.WriteLine("  " + Babies + " baby rabbits born.");
+                Logger.WriteLine("  " + Babies + " baby rabbits born.");
             }
         }
 

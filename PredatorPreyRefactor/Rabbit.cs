@@ -16,8 +16,8 @@ namespace PredatorPrey
         private const double DefaultProbabilityDeathOtherCauses = 0.05;
         private Genders Gender;
 
-        public Rabbit(int Variability)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability)
+        public Rabbit(int Variability, ILogger Logger)
+            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger)
         {
             ReproductionRate = DefaultReproductionRate * CalculateRandomValue(100, Variability) / 100;
             if (Rnd.Next(0, 100) < 50)
@@ -30,8 +30,8 @@ namespace PredatorPrey
             }
         }
 
-        public Rabbit(int Variability, double ParentsReproductionRate)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability)
+        public Rabbit(int Variability, double ParentsReproductionRate, ILogger Logger)
+            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger)
         {
             ReproductionRate = ParentsReproductionRate * CalculateRandomValue(100, Variability) / 100;
             if (Rnd.Next(0, 100) < 50)
