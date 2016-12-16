@@ -11,11 +11,12 @@ namespace PredatorPrey
         protected int Age = 0;
         protected double ProbabilityOfDeathOtherCauses;
         protected bool IsAlive;
-        protected static Random Rnd = new Random();
+        protected IRandomGenerator Rnd;
         protected ILogger Logger;
 
-        public Animal(int AvgLifespan, double AvgProbabilityOfDeathOtherCauses, int Variability, ILogger Logger)
+        public Animal(int AvgLifespan, double AvgProbabilityOfDeathOtherCauses, int Variability, ILogger Logger, IRandomGenerator Rnd)
         {
+            this.Rnd = Rnd;
             NaturalLifespan = AvgLifespan * CalculateRandomValue(100, Variability) / 100;
             ProbabilityOfDeathOtherCauses = AvgProbabilityOfDeathOtherCauses * CalculateRandomValue(100, Variability) / 100;
             IsAlive = true;

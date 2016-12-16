@@ -11,17 +11,19 @@ namespace PredatorPrey
         private int PeriodsRun = 0;
         private bool AlreadySpread = false;
         private int Variability;
-        private static Random Rnd = new Random();
+        protected IRandomGenerator Rnd;
         private ILogger Logger;
 
-        public Warren(int Variability, ILogger Logger) 
+        public Warren(int Variability, ILogger Logger, IRandomGenerator Rnd) 
         {
+            this.Rnd = Rnd;
             var rabbitCount = (int)(CalculateRandomValue(MaxRabbitsInWarren / 4, this.Variability));
             CommonSetUp(Variability, rabbitCount, Logger);
         }
 
-        public Warren(int Variability, int rabbitCount, ILogger Logger) 
+        public Warren(int Variability, int rabbitCount, ILogger Logger, IRandomGenerator Rnd) 
         {
+            this.Rnd = Rnd;
             CommonSetUp(Variability, rabbitCount, Logger);
         }
 
@@ -33,7 +35,7 @@ namespace PredatorPrey
             Rabbits = new Rabbit[MaxRabbitsInWarren];
             for (int r = 0; r < RabbitCount; r++)
             {
-                Rabbits[r] = new Rabbit(Variability, Logger);
+                Rabbits[r] = new Rabbit(Variability, Logger, Rnd);
             }
         }
 
@@ -164,7 +166,7 @@ namespace PredatorPrey
                     CombinedReproductionRate = (Rabbits[r].GetReproductionRate() + Rabbits[Mate].GetReproductionRate()) / 2;
                     if (CombinedReproductionRate >= 1)
                     {
-                        Rabbits[RabbitCount + Babies] = new Rabbit(Variability, CombinedReproductionRate, Logger);
+                        Rabbits[RabbitCount + Babies] = new Rabbit(Variability, CombinedReproductionRate, Logger, Rnd);
                         Babies++;
                     }
                 }

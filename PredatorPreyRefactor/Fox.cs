@@ -10,8 +10,8 @@ namespace PredatorPrey
         private const int DefaultLifespan = 7;
         private const double DefaultProbabilityDeathOtherCauses = 0.1;
 
-        public Fox(int Variability, ILogger Logger)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger)
+        public Fox(int Variability, ILogger Logger, IRandomGenerator Rnd)
+            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger, Rnd)
         {
             FoodUnitsNeeded = (int)(10 * base.CalculateRandomValue(100, Variability) / 100);
         }

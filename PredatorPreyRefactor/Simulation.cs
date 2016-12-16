@@ -11,13 +11,14 @@ namespace PredatorPrey
         public int FoxCount { get; private set; }
         public int LandscapeSize { get; private set; }
         private int Variability;
-        private static Random Rnd = new Random();
+        protected IRandomGenerator Rnd;
         private ILogger Logger;
 
         public Simulation(int LandscapeSize, int InitialWarrenCount, int InitialFoxCount,
-            int Variability, bool FixedInitialLocations, ILogger Logger)
+            int Variability, bool FixedInitialLocations, ILogger Logger, IRandomGenerator Rnd)
         {
             this.Logger = Logger;
+            this.Rnd = Rnd;
             this.LandscapeSize = LandscapeSize;
             this.Variability = Variability;
             Landscape = new Location[LandscapeSize, LandscapeSize];
@@ -107,17 +108,17 @@ namespace PredatorPrey
             }
             if (FixedInitialLocations)
             {
-                Landscape[1, 1].Warren = new Warren(Variability, 38, Logger);
-                Landscape[2, 8].Warren = new Warren(Variability, 80, Logger);
-                Landscape[9, 7].Warren = new Warren(Variability, 20, Logger);
-                Landscape[10, 3].Warren = new Warren(Variability, 52, Logger);
-                Landscape[13, 4].Warren = new Warren(Variability, 67, Logger);
+                Landscape[1, 1].Warren = new Warren(Variability, 38, Logger, Rnd);
+                Landscape[2, 8].Warren = new Warren(Variability, 80, Logger, Rnd);
+                Landscape[9, 7].Warren = new Warren(Variability, 20, Logger, Rnd);
+                Landscape[10, 3].Warren = new Warren(Variability, 52, Logger, Rnd);
+                Landscape[13, 4].Warren = new Warren(Variability, 67, Logger, Rnd);
                 WarrenCount = 5;
-                Landscape[2, 10].Fox = new Fox(Variability, Logger);
-                Landscape[6, 1].Fox = new Fox(Variability, Logger);
-                Landscape[8, 6].Fox = new Fox(Variability, Logger);
-                Landscape[11, 13].Fox = new Fox(Variability, Logger);
-                Landscape[12, 4].Fox = new Fox(Variability, Logger);
+                Landscape[2, 10].Fox = new Fox(Variability, Logger, Rnd);
+                Landscape[6, 1].Fox = new Fox(Variability, Logger, Rnd);
+                Landscape[8, 6].Fox = new Fox(Variability, Logger, Rnd);
+                Landscape[11, 13].Fox = new Fox(Variability, Logger, Rnd);
+                Landscape[12, 4].Fox = new Fox(Variability, Logger, Rnd);
                 FoxCount = 5;
             }
             else
@@ -142,7 +143,7 @@ namespace PredatorPrey
                 y = Rnd.Next(0, LandscapeSize);
             } while (Landscape[x, y].Warren != null);
             Logger.WriteLine("New Warren at (" + x + "," + y + ")");
-            Landscape[x, y].Warren = new Warren(Variability, Logger);
+            Landscape[x, y].Warren = new Warren(Variability, Logger, Rnd);
             WarrenCount++;
         }
 
@@ -155,7 +156,7 @@ namespace PredatorPrey
                 y = Rnd.Next(0, LandscapeSize);
             } while (Landscape[x, y].Fox != null);
             Logger.WriteLine("  New Fox at (" + x + "," + y + ")");
-            Landscape[x, y].Fox = new Fox(Variability, Logger);
+            Landscape[x, y].Fox = new Fox(Variability, Logger, Rnd);
             FoxCount++;
         }
 

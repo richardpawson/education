@@ -12,6 +12,7 @@ namespace PredatorPrey
             int Variability = 0;
             bool FixedInitialLocations = true;
             ILogger Logger = new ConsoleLogger();
+            IRandomGenerator Rnd = new SystemRandomGenerator();
             do
             {
                 Console.WriteLine("Predator Prey Simulation Main Menu");
@@ -41,7 +42,7 @@ namespace PredatorPrey
                 }
             } while (true);
             Simulation Sim = new Simulation(LandscapeSize, InitialWarrenCount,
-                InitialFoxCount, Variability, FixedInitialLocations, Logger);
+                InitialFoxCount, Variability, FixedInitialLocations, Logger, Rnd);
             RunSimulation(Sim, Logger);
         }
 
