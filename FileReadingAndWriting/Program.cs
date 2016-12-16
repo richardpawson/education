@@ -7,7 +7,7 @@ namespace FileReadingAndWriting
     {
         static void Main()
         {
-            const string path = @"C:\Users\rpaws\Documents\visual studio 2015\Projects\FileReadingAndWriting\FileReadingAndWriting\";
+            const string path = @"C:\education\FileReadingAndWriting\";
             decimal[] columnTotals = null;
             decimal grandTotal = 0;
             int columnCount = 0;
@@ -17,16 +17,16 @@ namespace FileReadingAndWriting
             while (!reader.EndOfStream)
             {
                 string inputLine = reader.ReadLine();
-                string[] cells = inputLine.Split(',');
+                string[] values = inputLine.Split(',');
                 if (columnCount == 0) //i.e. only  on first line
                 {
-                    columnCount = cells.Length;
+                    columnCount = values.Length;
                     columnTotals = new Decimal[columnCount+ 1]; //extra 1 for grand total
                 }
                 decimal lineTotal = 0;
-                for (int col = 0; col < cells.Length; col++)
+                for (int col = 0; col < values.Length; col++)
                 {
-                    decimal value = Convert.ToDecimal(cells[col]);
+                    decimal value = Convert.ToDecimal(values[col]);
                     lineTotal += value;
                     columnTotals[col] += value;
                 }
