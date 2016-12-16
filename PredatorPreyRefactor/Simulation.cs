@@ -2,94 +2,35 @@
 
 namespace PredatorPrey
 {
+
     class Simulation
     {
-        private Location[,] Landscape;
-        private int TimePeriod = 0;
-        private int WarrenCount = 0;
-        private int FoxCount = 0;
-        private bool ShowDetail = false;
-        private int LandscapeSize;
+        public Location[,] Landscape { get; private set; }
+        public int TimePeriod { get; private set; }
+        public int WarrenCount { get; private set; }
+        public int FoxCount { get; private set; }
+        public bool ShowDetail { get; set; } 
+        public  int LandscapeSize { get; private set; }
         private int Variability;
         private static Random Rnd = new Random();
 
-        public Simulation(int LandscapeSize, int InitialWarrenCount, int InitialFoxCount, int Variability, bool FixedInitialLocations)
+        public Simulation(int LandscapeSize, int InitialWarrenCount, int InitialFoxCount,
+            int Variability, bool FixedInitialLocations)
         {
-            int menuOption;
-            int x;
-            int y;
-            string viewRabbits;
             this.LandscapeSize = LandscapeSize;
             this.Variability = Variability;
             Landscape = new Location[LandscapeSize, LandscapeSize];
             CreateLandscapeAndAnimals(InitialWarrenCount, InitialFoxCount, FixedInitialLocations);
-            DrawLandscape();
-            do
-            {
-                Console.WriteLine();
-                Console.WriteLine("1. Advance to next time period showing detail");
-                Console.WriteLine("2. Advance to next time period hiding detail");
-                Console.WriteLine("3. Inspect fox");
-                Console.WriteLine("4. Inspect warren");
-                Console.WriteLine("5. Exit");
-                Console.WriteLine();
-                Console.Write("Select option: ");
-                menuOption = Convert.ToInt32(Console.ReadLine());
-                if (menuOption == 1)
-                {
-                    TimePeriod++;
-                    ShowDetail = true;
-                    AdvanceTimePeriod();
-                }
-                if (menuOption == 2)
-                {
-                    TimePeriod++;
-                    ShowDetail = false;
-                    AdvanceTimePeriod();
-                }
-                if (menuOption == 3)
-                {
-                    x = InputCoordinate('x');
-                    y = InputCoordinate('y');
-                    if (Landscape[x, y].Fox != null)
-                    {
-                        Landscape[x, y].Fox.Inspect();
-                    }
-                }
-                if (menuOption == 4)
-                {
-                    x = InputCoordinate('x');
-                    y = InputCoordinate('y');
-                    if (Landscape[x, y].Warren != null)
-                    {
-                        Landscape[x, y].Warren.Inspect();
-                        Console.Write("View individual rabbits (y/n)?");
-                        viewRabbits = Console.ReadLine();
-                        if (viewRabbits == "y")
-                        {
-                            Landscape[x, y].Warren.ListRabbits();
-                        }
-                    }
-                }
-            } while (((WarrenCount > 0) || (FoxCount > 0)) && (menuOption != 5));
-            Console.ReadKey();
         }
 
-        private int InputCoordinate(char Coordinatename)
-        {
-            int Coordinate;
-            Console.Write("  Input " + Coordinatename + " coordinate: ");
-            Coordinate = Convert.ToInt32(Console.ReadLine());
-            return Coordinate;
-        }
-
-        private void AdvanceTimePeriod()
+        public void AdvanceTimePeriod()
         {
             int NewFoxCount = 0;
             if (ShowDetail)
             {
                 Console.WriteLine();
             }
+            TimePeriod++;
             for (int x = 0; x < LandscapeSize; x++)
             {
                 for (int y = 0; y < LandscapeSize; y++)
@@ -175,7 +116,6 @@ namespace PredatorPrey
             {
                 Console.ReadKey();
             }
-            DrawLandscape();
             Console.WriteLine();
         }
 
@@ -289,61 +229,6 @@ namespace PredatorPrey
         private double DistanceBetween(int x1, int y1, int x2, int y2)
         {
             return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
-        }
-
-        private void DrawLandscape()
-        {
-            Console.WriteLine();
-            Console.WriteLine("TIME PERIOD: " + TimePeriod);
-            Console.WriteLine();
-            Console.Write("    ");
-            for (int x = 0; x < LandscapeSize; x++)
-            {
-                if (x < 10)
-                {
-                    Console.Write(" ");
-                }
-                Console.Write(x + " |");
-            }
-            Console.WriteLine();
-            for (int x = 0; x <= LandscapeSize * 4 + 3; x++)
-            {
-                Console.Write("-");
-            }
-            Console.WriteLine();
-            for (int y = 0; y < LandscapeSize; y++)
-            {
-                if (y < 10)
-                {
-                    Console.Write(" ");
-                }
-                Console.Write(" " + y + "|");
-                for (int x = 0; x < LandscapeSize; x++)
-                {
-                    if (Landscape[x, y].Warren != null)
-                    {
-                        if (Landscape[x, y].Warren.GetRabbitCount() < 10)
-                        {
-                            Console.Write(" ");
-                        }
-                        Console.Write(Landscape[x, y].Warren.GetRabbitCount());
-                    }
-                    else
-                    {
-                        Console.Write("  ");
-                    }
-                    if (Landscape[x, y].Fox != null)
-                    {
-                        Console.Write("F");
-                    }
-                    else
-                    {
-                        Console.Write(" ");
-                    }
-                    Console.Write("|");
-                }
-                Console.WriteLine();
-            }
         }
     }
 
