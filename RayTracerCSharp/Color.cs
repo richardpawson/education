@@ -23,20 +23,20 @@ namespace RayTracer
             B = double.Parse(nums[2]);
         }
 
-        public static Color Times(double n, Color v)
+        public static Color operator *(double n, Color v)
         {
             return new Color(n * v.R, n * v.G, n * v.B);
         }
-        public static Color Times(Color v1, Color v2)
+        public static Color operator *(Color v1, Color v2)
         {
             return new Color(v1.R * v2.R, v1.G * v2.G, v1.B * v2.B);
         }
 
-        public static Color Plus(Color v1, Color v2)
+        public static Color operator +(Color v1, Color v2)
         {
             return new Color(v1.R + v2.R, v1.G + v2.G, v1.B + v2.B);
         }
-        public static Color Minus(Color v1, Color v2)
+        public static Color operator -(Color v1, Color v2)
         {
             return new Color(v1.R - v2.R, v1.G - v2.G, v1.B - v2.B);
         }

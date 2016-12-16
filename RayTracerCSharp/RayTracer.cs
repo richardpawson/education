@@ -52,19 +52,18 @@ namespace RayTracer {
                 bool isInShadow = !((neatIsect > ldis.Length) || (neatIsect == 0));
                 if (!isInShadow) {
                     double illum = Vector3D.DotProduct(livec, norm);
-                    Color lcolor = illum > 0 ? Color.Times(illum, light.Color) : new Color(0, 0, 0);
+                    Color lcolor = illum > 0 ? illum * light.Color : new Color(0, 0, 0);
                     rd.Normalize();
                     double specular = Vector3D.DotProduct(livec, rd);
-                    Color scolor = specular > 0 ? Color.Times(Math.Pow(specular, thing.Surface.Roughness), light.Color) : new Color(0, 0, 0);
-                    ret = Color.Plus(ret, Color.Plus(Color.Times(thing.Surface.Diffuse(pos), lcolor),
-                                                     Color.Times(thing.Surface.Specular(pos), scolor)));
+                    Color scolor = specular > 0 ? Math.Pow(specular, thing.Surface.Roughness) * light.Color : new Color(0, 0, 0);
+                    ret = ret +  (thing.Surface.Diffuse(pos) * lcolor) + (thing.Surface.Specular(pos) * scolor);
                 }
             }
             return ret;
         }
 
         private Color GetReflectionColor(SceneObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene, int depth) {
-            return Color.Times(thing.Surface.Reflect(pos), TraceRay(new Ray() { Start = pos, Dir = rd }, scene, depth + 1));
+            return thing.Surface.Reflect(pos) * TraceRay(new Ray() { Start = pos, Dir = rd }, scene, depth + 1);
         }
 
         private Color Shade(Intersection isect, Scene scene, int depth) {
@@ -73,11 +72,11 @@ namespace RayTracer {
             var normal = isect.Thing.Normal(pos);
             var reflectDir = d - 2 * Vector3D.DotProduct(normal, d) * normal;
             Color ret = Color.DefaultColor;
-            ret = Color.Plus(ret, GetNaturalColor(isect.Thing, pos, normal, reflectDir, scene));
+            ret = ret + GetNaturalColor(isect.Thing, pos, normal, reflectDir, scene);
             if (depth >= MaxDepth) {
-                return Color.Plus(ret, new Color(.5, .5, .5));
+                return ret + new Color(.5, .5, .5);
             }
-            return Color.Plus(ret, GetReflectionColor(isect.Thing, pos + (.001 * reflectDir), normal, reflectDir, scene, depth));
+            return ret + GetReflectionColor(isect.Thing, pos + (.001 * reflectDir), normal, reflectDir, scene, depth);
         }
 
         private double RecenterX(double x) {
