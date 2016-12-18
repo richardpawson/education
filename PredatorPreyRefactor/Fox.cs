@@ -1,19 +1,18 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace PredatorPrey
 {
-    class Fox : Animal
+    public class Fox : Animal
     {
         private int FoodUnitsNeeded = 10;
         private int FoodUnitsConsumedThisPeriod = 0;
         private const int DefaultLifespan = 7;
         private const double DefaultProbabilityDeathOtherCauses = 0.1;
 
-        public Fox(int Variability, ILogger Logger, IRandomGenerator Rnd)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger, Rnd)
+        public Fox(Location loc, int variability, ILogger logger, IRandomGenerator randomGenerator)
+            : base(loc, DefaultLifespan, DefaultProbabilityDeathOtherCauses, variability, logger, randomGenerator)
         {
-            FoodUnitsNeeded = (int)(10 * base.CalculateRandomValue(100, Variability) / 100);
+            FoodUnitsNeeded = (int)(10 * base.CalculateRandomValue(100, variability) / 100);
         }
 
         public void AdvanceGeneration()
@@ -21,26 +20,26 @@ namespace PredatorPrey
             if (FoodUnitsConsumedThisPeriod == 0)
             {
                 IsAlive = false;
-                    Logger.WriteLine("  Fox dies as has eaten no food this period.");
+                Logger.WriteLine("  Fox dies as has eaten no food this period.");
             }
             else
             {
                 if (CheckIfKilledByOtherFactor())
                 {
                     IsAlive = false;
-                        Logger.WriteLine("  Fox killed by other factor.");
+                    Logger.WriteLine("  Fox killed by other factor.");
                 }
                 else
                 {
                     if (FoodUnitsConsumedThisPeriod < FoodUnitsNeeded)
                     {
                         CalculateNewAge();
-                            Logger.WriteLine("  Fox ages further due to lack of food.");
+                        Logger.WriteLine("  Fox ages further due to lack of food.");
                     }
                     CalculateNewAge();
                     if (!IsAlive)
                     {
-                            Logger.WriteLine("  Fox has died of old age.");
+                        Logger.WriteLine("  Fox has died of old age.");
                     }
                 }
             }
@@ -54,7 +53,7 @@ namespace PredatorPrey
         public bool ReproduceThisPeriod()
         {
             const double ReproductionProbability = 0.25;
-            if (Rnd.Next(0, 100) < ReproductionProbability * 100)
+            if (RandomGenerator.Next(0, 100) < ReproductionProbability * 100)
             {
                 return true;
             }
@@ -64,9 +63,9 @@ namespace PredatorPrey
             }
         }
 
-        public void GiveFood(int FoodUnits)
+        public void GiveFood(int foodUnits)
         {
-            FoodUnitsConsumedThisPeriod = FoodUnitsConsumedThisPeriod + FoodUnits;
+            FoodUnitsConsumedThisPeriod = FoodUnitsConsumedThisPeriod + foodUnits;
         }
 
         public override string Inspect()

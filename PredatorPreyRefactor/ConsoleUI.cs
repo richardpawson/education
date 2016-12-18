@@ -2,17 +2,17 @@
 
 namespace PredatorPrey
 {
-    class ConsoleUI
+    public class ConsoleUI
     {
-        static void Main()
+       public static void Main()
         {
-            int LandscapeSize = 15;
-            int InitialWarrenCount = 5;
-            int InitialFoxCount = 5;
-            int Variability = 0;
-            bool FixedInitialLocations = true;
-            ILogger Logger = new ConsoleLogger();
-            IRandomGenerator Rnd = new SystemRandomGenerator();
+            int landscapeSize = 15;
+            int initialWarrenCount = 5;
+            int initialFoxCount = 5;
+            int variability = 0;
+            bool fixedInitialLocations = true;
+            ILogger logger = new ConsoleLogger();
+            IRandomGenerator randomGenerator = new SystemRandomGenerator();
             do
             {
                 Console.WriteLine("Predator Prey Simulation Main Menu");
@@ -29,11 +29,11 @@ namespace PredatorPrey
                 }
                 else if (MenuOption == "2")
                 {
-                    LandscapeSize = InputInt("Landscape Size: ");
-                    InitialWarrenCount = InputInt("Initial number of warrens: ");
-                    InitialFoxCount = InputInt("Initial number of foxes: ");
-                    Variability = InputInt("Randomness variability (percent): ");
-                    FixedInitialLocations = false;
+                    landscapeSize = InputInt("Landscape Size: ");
+                    initialWarrenCount = InputInt("Initial number of warrens: ");
+                    initialFoxCount = InputInt("Initial number of foxes: ");
+                    variability = InputInt("Randomness variability (percent): ");
+                    fixedInitialLocations = false;
                     break;
                 }
                 else if (MenuOption == "3")
@@ -41,18 +41,20 @@ namespace PredatorPrey
                     return; //exit Main method
                 }
             } while (true);
-            Simulation Sim = new Simulation(LandscapeSize, InitialWarrenCount,
-                InitialFoxCount, Variability, FixedInitialLocations, Logger, Rnd);
-            RunSimulation(Sim, Logger);
+            SquareLandscape land = new SquareLandscape(landscapeSize, randomGenerator);
+            Simulation sim = new Simulation(land, initialWarrenCount,
+                initialFoxCount, variability, fixedInitialLocations, logger, randomGenerator);
+            RunSimulation(sim, logger);
         }
 
-        private static void RunSimulation(Simulation Sim, ILogger Logger)
+        private static void RunSimulation(Simulation sim, ILogger logger)
         {
-            DrawLandscape(Sim);
             int menuOption;
             int x;
             int y;
             string viewRabbits;
+
+            DrawSquareLandscape(sim);
             do
             {
                 Console.WriteLine();
@@ -66,51 +68,74 @@ namespace PredatorPrey
                 menuOption = Convert.ToInt32(Console.ReadLine());
                 if (menuOption == 1)
                 {
-                    Logger.StartLogging();
-                    Sim.AdvanceTimePeriod();
-                    DrawLandscape(Sim);
+                    logger.StartLogging();
+                    sim.AdvanceTimePeriod();
+                    DrawSquareLandscape(sim);
                 }
                 if (menuOption == 2)
                 {
-                    Logger.StopLogging();
-                    Sim.AdvanceTimePeriod();
-                    DrawLandscape(Sim);
+                    logger.StopLogging();
+                    sim.AdvanceTimePeriod();
+                    DrawSquareLandscape(sim);
                 }
                 if (menuOption == 3)
                 {
                     x = InputCoordinate('x');
                     y = InputCoordinate('y');
-                    if (Sim.Landscape[x, y].Fox != null)
+                    Location loc = sim.Landscape.GetLocation(x, y);
+                    Fox fox = sim.GetFox(loc);
+                    if (fox!= null)
                     {
-                        Console.Write(Sim.Landscape[x, y].Fox.Inspect());
+                        Console.Write(fox.Inspect());
                     }
                 }
                 if (menuOption == 4)
                 {
                     x = InputCoordinate('x');
                     y = InputCoordinate('y');
-                    if (Sim.Landscape[x, y].Warren != null)
+                    Location loc = sim.Landscape.GetLocation(x, y);
+                    Warren warren = sim.GetWarren(loc);
+                    if ( warren != null)
                     {
-                        Console.Write(Sim.Landscape[x, y].Warren.Inspect());
+                        Console.Write(warren.Inspect());
                         Console.Write("View individual rabbits (y/n)?");
                         viewRabbits = Console.ReadLine();
                         if (viewRabbits == "y")
                         {
-                            Console.Write(Sim.Landscape[x, y].Warren.InspectAllRabbits());
+                            Console.Write(warren.InspectAllRabbits());
                         }
                     }
                 }
-            } while (((Sim.WarrenCount > 0) || (Sim.FoxCount > 0)) && (menuOption != 5));
-            Console.ReadKey();
+            } while ((sim.HasLife()) && (menuOption != 5));
         }
 
-        private static void DrawLandscape(Simulation Sim)
+        private static void DrawSquareLandscape(Simulation sim)
         {
             Console.WriteLine();
-            Console.WriteLine("TIME PERIOD: " + Sim.TimePeriod);
+            Console.WriteLine("TIME PERIOD: " + sim.TimePeriod);
             Console.WriteLine();
             Console.Write("    ");
-            for (int x = 0; x < Sim.LandscapeSize; x++)
+            var land = (SquareLandscape) sim.Landscape; //Down-cast is OK as this method is explicly for Square Landscapes only
+            DrawColumnHeaders(land.Size);
+            for (int y = 0; y <= land.Size; y++)
+            {
+                if (y < 10)
+                {
+                    Console.Write(" ");
+                }
+                Console.Write(" " + y + "|");
+                for (int x = 0; x < land.Size; x++)
+                {
+                    var loc = land.GetLocation(x, y);
+                    DrawCellWithContents(loc, sim);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static void DrawColumnHeaders(int size)
+        {
+            for (int x = 0; x < size; x++)
             {
                 if (x < 10)
                 {
@@ -119,50 +144,42 @@ namespace PredatorPrey
                 Console.Write(x + " |");
             }
             Console.WriteLine();
-            for (int x = 0; x <= Sim.LandscapeSize * 4 + 3; x++)
+            for (int x = 0; x <= size * 4 + 3; x++)
             {
                 Console.Write("-");
             }
             Console.WriteLine();
-            for (int y = 0; y < Sim.LandscapeSize; y++)
+        }
+
+        private static void DrawCellWithContents(Location loc, Simulation sim)
+        {
+            var warren = sim.GetWarren(loc);
+            if (warren != null)
             {
-                if (y < 10)
+                if (warren.RabbitCount < 10)
                 {
                     Console.Write(" ");
                 }
-                Console.Write(" " + y + "|");
-                for (int x = 0; x < Sim.LandscapeSize; x++)
-                {
-                    if (Sim.Landscape[x, y].Warren != null)
-                    {
-                        if (Sim.Landscape[x, y].Warren.GetRabbitCount() < 10)
-                        {
-                            Console.Write(" ");
-                        }
-                        Console.Write(Sim.Landscape[x, y].Warren.GetRabbitCount());
-                    }
-                    else
-                    {
-                        Console.Write("  ");
-                    }
-                    if (Sim.Landscape[x, y].Fox != null)
-                    {
-                        Console.Write("F");
-                    }
-                    else
-                    {
-                        Console.Write(" ");
-                    }
-                    Console.Write("|");
-                }
-                Console.WriteLine();
+                Console.Write(warren.RabbitCount);
             }
+            else
+            {
+                Console.Write("  ");
+            }
+            if (sim.GetFox(loc) != null)
+            {
+                Console.Write("F");
+            }
+            else
+            {
+                Console.Write(" ");
+            }
+            Console.Write("|");
         }
 
-        private static int InputCoordinate(char Coordinatename)
+        private static int InputCoordinate(char coordinatename)
         {
-            Console.Write("  Input " + Coordinatename + " coordinate: ");
-            return Convert.ToInt32(Console.ReadLine());
+            return InputInt("  Input " + coordinatename + " coordinate: ");
         }
 
         private static int InputInt(string prompt)

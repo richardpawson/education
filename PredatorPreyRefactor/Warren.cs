@@ -1,52 +1,44 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PredatorPrey
 {
-    class Warren
+    public class Warren
     {
         private const int MaxRabbitsInWarren = 99;
-        private Rabbit[] Rabbits;
-        private int RabbitCount = 0;
+        private List<Rabbit> Rabbits = new List<Rabbit>();
         private int PeriodsRun = 0;
         private bool AlreadySpread = false;
         private int Variability;
-        protected IRandomGenerator Rnd;
+        private IRandomGenerator RandomGenerator;
         private ILogger Logger;
+        public Location Location { get; private set; }
 
-        public Warren(int Variability, ILogger Logger, IRandomGenerator Rnd) 
+        public Warren(Location loc, int variability, ILogger logger, IRandomGenerator randomGenerator, int? rabbitCount = null )
         {
-            this.Rnd = Rnd;
-            var rabbitCount = (int)(CalculateRandomValue(MaxRabbitsInWarren / 4, this.Variability));
-            CommonSetUp(Variability, rabbitCount, Logger);
-        }
-
-        public Warren(int Variability, int rabbitCount, ILogger Logger, IRandomGenerator Rnd) 
-        {
-            this.Rnd = Rnd;
-            CommonSetUp(Variability, rabbitCount, Logger);
-        }
-
-        private void CommonSetUp(int Variability, int rabbitCount, ILogger Logger)
-        {
-            this.Variability = Variability;
-            this.Logger = Logger;
-            this.RabbitCount = rabbitCount;
-            Rabbits = new Rabbit[MaxRabbitsInWarren];
-            for (int r = 0; r < RabbitCount; r++)
+            RandomGenerator = randomGenerator;
+            Location = loc;
+            Variability = variability;
+            Logger = logger;
+            if (rabbitCount == null)
             {
-                Rabbits[r] = new Rabbit(Variability, Logger, Rnd);
+                rabbitCount = (int)(CalculateRandomValue(MaxRabbitsInWarren / 4, this.Variability));
+            }
+            for (int r = 0; r < rabbitCount; r++)
+            {
+                Rabbits.Add(new Rabbit(loc, variability, logger, randomGenerator));
             }
         }
 
-        private double CalculateRandomValue(int BaseValue, int Variability)
+        public int RabbitCount
         {
-            return BaseValue - (BaseValue * Variability / 100) + (BaseValue * Rnd.Next(0, (Variability * 2) + 1) / 100);
+            get { return Rabbits.Count; }
         }
 
-        public int GetRabbitCount()
+        private double CalculateRandomValue(int baseValue, int variability)
         {
-            return RabbitCount;
+            return baseValue - (baseValue * variability / 100) + (baseValue * RandomGenerator.Next(0, (variability * 2) + 1) / 100);
         }
 
         public bool NeedToCreateNewWarren()
@@ -54,18 +46,6 @@ namespace PredatorPrey
             if ((RabbitCount == MaxRabbitsInWarren) && (!AlreadySpread))
             {
                 AlreadySpread = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public bool WarrenHasDiedOut()
-        {
-            if (RabbitCount == 0)
-            {
                 return true;
             }
             else
@@ -85,12 +65,9 @@ namespace PredatorPrey
             {
                 AgeRabbits();
             }
-            if ((RabbitCount > 0) && (RabbitCount <= MaxRabbitsInWarren))
+            if ((RabbitCount > 0) && (RabbitCount <= MaxRabbitsInWarren) && ContainsMales())
             {
-                if (ContainsMales())
-                {
                     MateRabbits();
-                }
             }
             if (RabbitCount == 0)
             {
@@ -98,136 +75,99 @@ namespace PredatorPrey
             }
         }
 
-        public int EatRabbits(int RabbitsToEat)
+        public int EatRabbits(int rabbitsToEat)
         {
             int DeathCount = 0;
-            int RabbitNumber;
-            if (RabbitsToEat > RabbitCount)
+            if (rabbitsToEat > RabbitCount)
             {
-                RabbitsToEat = RabbitCount;
+                rabbitsToEat = RabbitCount;
             }
-            while (DeathCount < RabbitsToEat)
+            while (DeathCount < rabbitsToEat)
             {
-                RabbitNumber = Rnd.Next(0, RabbitCount);
-                if (Rabbits[RabbitNumber] != null)
-                {
-                    Rabbits[RabbitNumber] = null;
-                    DeathCount++;
-                }
+                Rabbits.Remove(GetRandomRabbit());
+                DeathCount++;
             }
-            CompressRabbitList(DeathCount);
-            return RabbitsToEat;
+            return rabbitsToEat;
         }
 
         private void KillByOtherFactors()
         {
             int DeathCount = 0;
-            for (int r = 0; r < RabbitCount; r++)
+            foreach (Rabbit rabbit in Rabbits.ToArray())
             {
-                if (Rabbits[r].CheckIfKilledByOtherFactor())
+                if (rabbit.CheckIfKilledByOtherFactor())
                 {
-                    Rabbits[r] = null;
+                    Rabbits.Remove(rabbit);
                     DeathCount++;
                 }
             }
-            CompressRabbitList(DeathCount);
-                Logger.WriteLine("  " + DeathCount + " rabbits killed by other factors.");
+            Logger.WriteLine("  " + DeathCount + " rabbits killed by other factors.");
         }
 
         private void AgeRabbits()
         {
             int DeathCount = 0;
-            for (int r = 0; r < RabbitCount; r++)
+            foreach (Rabbit rabbit in Rabbits.ToArray())
             {
-                Rabbits[r].CalculateNewAge();
-                if (Rabbits[r].CheckIfDead())
+                rabbit.CalculateNewAge();
+                if (rabbit.IsDead())
                 {
-                    Rabbits[r] = null;
+                    Rabbits.Remove(rabbit);
                     DeathCount++;
                 }
             }
-            CompressRabbitList(DeathCount);
-                Logger.WriteLine("  " + DeathCount + " rabbits die of old age.");
+            Logger.WriteLine("  " + DeathCount + " rabbits die of old age.");
         }
 
         private void MateRabbits()
         {
-            int Mate = 0;
-            int Babies = 0;
-            double CombinedReproductionRate;
-            for (int r = 0; r < RabbitCount; r++)
+            int babies = 0;
+            double combinedReproductionRate;
+            foreach (Rabbit female in Rabbits.Where(r => r.IsFemale()).ToArray())
             {
-                if ((Rabbits[r].IsFemale()) && (RabbitCount + Babies < MaxRabbitsInWarren))
+                if ((RabbitCount + babies) < MaxRabbitsInWarren)
                 {
-                    do
+                    var male = GetRandomMale();
+                    combinedReproductionRate = (female.ReproductionRate + male.ReproductionRate) / 2;
+                    if (combinedReproductionRate >= 1)
                     {
-                        Mate = Rnd.Next(0, RabbitCount);
-                    } while ((Mate == r) || (Rabbits[Mate].IsFemale()));
-                    CombinedReproductionRate = (Rabbits[r].GetReproductionRate() + Rabbits[Mate].GetReproductionRate()) / 2;
-                    if (CombinedReproductionRate >= 1)
-                    {
-                        Rabbits[RabbitCount + Babies] = new Rabbit(Variability, CombinedReproductionRate, Logger, Rnd);
-                        Babies++;
+                        Rabbits.Add(new Rabbit(Location, Variability, combinedReproductionRate, Logger, RandomGenerator));
+                        babies++;
                     }
                 }
             }
-            RabbitCount = RabbitCount + Babies;
-                Logger.WriteLine("  " + Babies + " baby rabbits born.");
+            Logger.WriteLine("  " + babies + " baby rabbits born.");
         }
 
-        private void CompressRabbitList(int DeathCount)
+        private Rabbit GetRandomRabbit()
         {
-            if (DeathCount > 0)
-            {
-                int ShiftTo = 0;
-                int ShiftFrom = 0;
-                while (ShiftTo < RabbitCount - DeathCount)
-                {
-                    while (Rabbits[ShiftFrom] == null)
-                    {
-                        ShiftFrom++;
-                    }
-                    if (ShiftTo != ShiftFrom)
-                    {
-                        Rabbits[ShiftTo] = Rabbits[ShiftFrom];
-                    }
-                    ShiftTo++;
-                    ShiftFrom++;
-                }
-                RabbitCount = RabbitCount - DeathCount;
-            }
+            return Rabbits[RandomGenerator.Next(0, RabbitCount)];
+        }
+
+        private Rabbit GetRandomMale()
+        {
+            var males = Rabbits.Where(r => !r.IsFemale()).ToArray();
+            return males[RandomGenerator.Next(0, males.Count())];
         }
 
         private bool ContainsMales()
         {
-            bool Males = false;
-            for (int r = 0; r < RabbitCount; r++)
-            {
-                if (!Rabbits[r].IsFemale())
-                {
-                    Males = true;
-                }
-            }
-            return Males;
+            return Rabbits.Any(r => !r.IsFemale());
         }
 
         public string Inspect()
         {
-           return "Periods Run " + PeriodsRun + " Size " + RabbitCount + "\n";
+            return "Periods Run " + PeriodsRun + " Size " + RabbitCount + "\n";
         }
 
         public string InspectAllRabbits()
         {
             var sb = new StringBuilder();
-            if (RabbitCount > 0)
+            foreach (Rabbit r in Rabbits)
             {
-                for (int r = 0; r < RabbitCount; r++)
-                {
-                    sb.Append(Rabbits[r].Inspect());
-                }
+                sb.Append(r.Inspect());
             }
             return sb.ToString();
         }
     }
-
 }

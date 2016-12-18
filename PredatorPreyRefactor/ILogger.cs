@@ -1,7 +1,7 @@
 ﻿
 namespace PredatorPrey
 {
-    interface ILogger
+    public interface ILogger
     {
         void Write(string text);
 

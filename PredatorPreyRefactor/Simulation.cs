@@ -1,88 +1,167 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PredatorPrey
 {
-
-    class Simulation
+    public class Simulation
     {
-        public Location[,] Landscape { get; private set; }
-        public int TimePeriod { get; private set; }
-        public int WarrenCount { get; private set; }
-        public int FoxCount { get; private set; }
-        public int LandscapeSize { get; private set; }
         private int Variability;
-        protected IRandomGenerator Rnd;
         private ILogger Logger;
+        private IRandomGenerator RandomGenerator;
+        private List<Fox> Foxes = new List<Fox>();
+        private List<Warren> Warrens = new List<Warren>();
+        public int TimePeriod { get; private set; }
+        public Landscape Landscape { get; private set; }
 
-        public Simulation(int LandscapeSize, int InitialWarrenCount, int InitialFoxCount,
-            int Variability, bool FixedInitialLocations, ILogger Logger, IRandomGenerator Rnd)
+        public Simulation(Landscape landscape, int initialWarrenCount, int initialFoxCount, int variability, bool fixedInitialLocations, ILogger logger, IRandomGenerator randomGenerator)
         {
-            this.Logger = Logger;
-            this.Rnd = Rnd;
-            this.LandscapeSize = LandscapeSize;
-            this.Variability = Variability;
-            Landscape = new Location[LandscapeSize, LandscapeSize];
-            CreateLandscapeAndAnimals(InitialWarrenCount, InitialFoxCount, FixedInitialLocations);
+            Logger = logger;
+            this.RandomGenerator = randomGenerator;
+            Landscape = landscape;
+            this.Variability = variability;
+            CreateAnimals(initialWarrenCount, initialFoxCount, fixedInitialLocations);
+        }
+
+        public Fox GetFox(Location loc)
+        {
+            return Foxes.FirstOrDefault(f => f.Location == loc);
+        }
+
+        public Warren GetWarren(Location loc)
+        {
+            return Warrens.FirstOrDefault(w => w.Location == loc);
+        }
+
+        public bool HasLife()
+        {
+            return Warrens.Count > 0 || Foxes.Count > 0;
+        }
+
+        private void CreateAnimals(int initialWarrenCount, int initialFoxCount, bool fixedInitialLocations)
+        {
+            if (fixedInitialLocations)
+            {
+                CreateNewWarren(1, 1, 38);
+                CreateNewWarren(2, 8, 80);
+                CreateNewWarren(9, 7, 20);
+                CreateNewWarren(10, 3, 52);
+                CreateNewWarren(3, 4, 67);
+                CreateNewFox(2, 10);
+                CreateNewFox(6, 1);
+                CreateNewFox(8, 6);
+                CreateNewFox(11, 13);
+                CreateNewFox(12, 4);
+            }
+            else
+            {
+                for (int w = 0; w < initialWarrenCount; w++)
+                {
+                    CreateRandomWarren();
+                }
+                for (int f = 0; f < initialFoxCount; f++)
+                {
+                    CreateRandomFox();
+                }
+            }
+        }
+
+        private void CreateNewWarren(int x, int y, int rabbitCount)
+        {
+            var loc = Landscape.GetLocation(x, y);
+            var warren = new Warren(loc, Variability, Logger, RandomGenerator, rabbitCount);
+            Warrens.Add(warren);
+        }
+
+        private void CreateRandomWarren()
+        {
+            Location loc;
+            do
+            {
+                loc = Landscape.RandomLocation();
+            } while (GetWarren(loc) != null);
+            var warren = new Warren(loc, Variability, Logger, RandomGenerator);
+            Warrens.Add(warren);
+            Logger.WriteLine("New Warren at (" + loc.X + "," + loc.Y + ")");
+        }
+
+        private void CreateNewFox(int x, int y)
+        {
+            var loc = Landscape.GetLocation(x, y);
+            var fox = new Fox(loc, Variability, Logger, RandomGenerator);
+            Foxes.Add(fox);
+        }
+
+        private void CreateRandomFox()
+        {
+            Location loc;
+            do
+            {
+                loc = Landscape.RandomLocation();
+            } while (GetFox(loc) != null);
+            var fox = new Fox(loc, Variability, Logger, RandomGenerator);
+            Foxes.Add(fox);
+            Logger.WriteLine("  New Fox at (" + loc.X + "," + loc.Y + ")");
         }
 
         public void AdvanceTimePeriod()
         {
-            int NewFoxCount = 0;
-            Logger.WriteLine();
             TimePeriod++;
-            for (int x = 0; x < LandscapeSize; x++)
+            Logger.WriteLine();
+            ProcessWarrens();
+            ProcessFoxes();
+            Logger.PageBreak();
+            Logger.WriteLine();
+        }
+
+        private void ProcessWarrens()
+        {
+            foreach (Warren warren in Warrens.ToArray()) //ToArray is to make copy so as not to modify the collection being looped over
             {
-                for (int y = 0; y < LandscapeSize; y++)
+                var loc = warren.Location;
+                Logger.WriteLine("Warren at (" + loc.X + "," + loc.Y + "):");
+                Logger.Write("  Period Start: ");
+                Logger.Write(warren.Inspect());
+                if (Foxes.Count > 0)
                 {
-                    if (Landscape[x, y].Warren != null)
-                    {
-                        Logger.WriteLine("Warren at (" + x + "," + y + "):");
-                        Logger.Write("  Period Start: ");
-                        Logger.Write(Landscape[x, y].Warren.Inspect());
-                        if (FoxCount > 0)
-                        {
-                            FoxesEatRabbitsInWarren(x, y);
-                        }
-                        if (Landscape[x, y].Warren.NeedToCreateNewWarren())
-                        {
-                            CreateNewWarren();
-                        }
-                        Landscape[x, y].Warren.AdvanceGeneration();
-                        Logger.Write("  Period End: ");
-                        Logger.Write(Landscape[x, y].Warren.Inspect());
-                        Logger.PageBreak();
-                        if (Landscape[x, y].Warren.WarrenHasDiedOut())
-                        {
-                            Landscape[x, y].Warren = null;
-                            WarrenCount--;
-                        }
-                    }
+                    FoxesEatRabbitsInWarren(warren);
+                }
+                if (warren.NeedToCreateNewWarren())
+                {
+                    CreateRandomWarren();
+                }
+                warren.AdvanceGeneration();
+                Logger.Write("  Period End: ");
+                Logger.Write(warren.Inspect());
+                Logger.PageBreak();
+                if (warren.RabbitCount == 0)
+                {
+                    Warrens.Remove(warren);
                 }
             }
-            for (int x = 0; x < LandscapeSize; x++)
+        }
+
+        private void ProcessFoxes()
+        {
+            int NewFoxCount = 0;
+            foreach (Fox fox in Foxes.ToArray())
             {
-                for (int y = 0; y < LandscapeSize; y++)
+                var loc = fox.Location;
+                Logger.WriteLine("Fox at (" + loc.X + "," + loc.Y + "): ");
+                fox.AdvanceGeneration();
+                if (fox.IsDead())
                 {
-                    if (Landscape[x, y].Fox != null)
+                    Foxes.Remove(fox);
+                }
+                else
+                {
+                    if (fox.ReproduceThisPeriod())
                     {
-                        Logger.WriteLine("Fox at (" + x + "," + y + "): ");
-                        Landscape[x, y].Fox.AdvanceGeneration();
-                        if (Landscape[x, y].Fox.CheckIfDead())
-                        {
-                            Landscape[x, y].Fox = null;
-                            FoxCount--;
-                        }
-                        else
-                        {
-                            if (Landscape[x, y].Fox.ReproduceThisPeriod())
-                            {
-                                Logger.WriteLine("  Fox has reproduced. ");
-                                NewFoxCount++;
-                            }
-                            Logger.Write(Landscape[x, y].Fox.Inspect());
-                            Landscape[x, y].Fox.ResetFoodConsumed();
-                        }
+                        Logger.WriteLine("  Fox has reproduced. ");
+                        NewFoxCount++;
                     }
+                    Logger.Write(fox.Inspect());
+                    fox.ResetFoodConsumed();
                 }
             }
             if (NewFoxCount > 0)
@@ -90,115 +169,39 @@ namespace PredatorPrey
                 Logger.WriteLine("New foxes born: ");
                 for (int f = 0; f < NewFoxCount; f++)
                 {
-                    CreateNewFox();
-                }
-            }
-            Logger.PageBreak();
-            Logger.WriteLine();
-        }
-
-        private void CreateLandscapeAndAnimals(int InitialWarrenCount, int InitialFoxCount, bool FixedInitialLocations)
-        {
-            for (int x = 0; x < LandscapeSize; x++)
-            {
-                for (int y = 0; y < LandscapeSize; y++)
-                {
-                    Landscape[x, y] = new Location();
-                }
-            }
-            if (FixedInitialLocations)
-            {
-                Landscape[1, 1].Warren = new Warren(Variability, 38, Logger, Rnd);
-                Landscape[2, 8].Warren = new Warren(Variability, 80, Logger, Rnd);
-                Landscape[9, 7].Warren = new Warren(Variability, 20, Logger, Rnd);
-                Landscape[10, 3].Warren = new Warren(Variability, 52, Logger, Rnd);
-                Landscape[13, 4].Warren = new Warren(Variability, 67, Logger, Rnd);
-                WarrenCount = 5;
-                Landscape[2, 10].Fox = new Fox(Variability, Logger, Rnd);
-                Landscape[6, 1].Fox = new Fox(Variability, Logger, Rnd);
-                Landscape[8, 6].Fox = new Fox(Variability, Logger, Rnd);
-                Landscape[11, 13].Fox = new Fox(Variability, Logger, Rnd);
-                Landscape[12, 4].Fox = new Fox(Variability, Logger, Rnd);
-                FoxCount = 5;
-            }
-            else
-            {
-                for (int w = 0; w < InitialWarrenCount; w++)
-                {
-                    CreateNewWarren();
-                }
-                for (int f = 0; f < InitialFoxCount; f++)
-                {
-                    CreateNewFox();
+                    CreateRandomFox();
                 }
             }
         }
 
-        private void CreateNewWarren()
-        {
-            int x, y;
-            do
-            {
-                x = Rnd.Next(0, LandscapeSize);
-                y = Rnd.Next(0, LandscapeSize);
-            } while (Landscape[x, y].Warren != null);
-            Logger.WriteLine("New Warren at (" + x + "," + y + ")");
-            Landscape[x, y].Warren = new Warren(Variability, Logger, Rnd);
-            WarrenCount++;
-        }
-
-        private void CreateNewFox()
-        {
-            int x, y;
-            do
-            {
-                x = Rnd.Next(0, LandscapeSize);
-                y = Rnd.Next(0, LandscapeSize);
-            } while (Landscape[x, y].Fox != null);
-            Logger.WriteLine("  New Fox at (" + x + "," + y + ")");
-            Landscape[x, y].Fox = new Fox(Variability, Logger, Rnd);
-            FoxCount++;
-        }
-
-        private void FoxesEatRabbitsInWarren(int WarrenX, int WarrenY)
+        private void FoxesEatRabbitsInWarren(Warren warren)
         {
             int FoodConsumed;
             int PercentToEat;
             double Dist;
             int RabbitsToEat;
-            int RabbitCountAtStartOfPeriod = Landscape[WarrenX, WarrenY].Warren.GetRabbitCount();
-            for (int FoxX = 0; FoxX < LandscapeSize; FoxX++)
+            int RabbitCountAtStartOfPeriod = warren.RabbitCount;
+            foreach (Fox fox in Foxes)
             {
-                for (int FoxY = 0; FoxY < LandscapeSize; FoxY++)
+                Dist = warren.Location.DistanceFrom(fox.Location);
+                if (Dist <= 3.5)
                 {
-                    if (Landscape[FoxX, FoxY].Fox != null)
-                    {
-                        Dist = DistanceBetween(FoxX, FoxY, WarrenX, WarrenY);
-                        if (Dist <= 3.5)
-                        {
-                            PercentToEat = 20;
-                        }
-                        else if (Dist <= 7)
-                        {
-                            PercentToEat = 10;
-                        }
-                        else
-                        {
-                            PercentToEat = 0;
-                        }
-                        RabbitsToEat = (int)Math.Round((double)(PercentToEat * RabbitCountAtStartOfPeriod / 100.0));
-                        FoodConsumed = Landscape[WarrenX, WarrenY].Warren.EatRabbits(RabbitsToEat);
-                        Landscape[FoxX, FoxY].Fox.GiveFood(FoodConsumed);
-                        Logger.WriteLine("  " + FoodConsumed + " rabbits eaten by fox at (" + FoxX + "," + FoxY + ").");
-                    }
+                    PercentToEat = 20;
                 }
+                else if (Dist <= 7)
+                {
+                    PercentToEat = 10;
+                }
+                else
+                {
+                    PercentToEat = 0;
+                }
+                RabbitsToEat = (int)Math.Round((double)(PercentToEat * RabbitCountAtStartOfPeriod / 100.0));
+                FoodConsumed = warren.EatRabbits(RabbitsToEat);
+                fox.GiveFood(FoodConsumed);
+                var loc = fox.Location;
+                Logger.WriteLine("  " + FoodConsumed + " rabbits eaten by fox at (" + loc.X + "," + loc.Y + ").");
             }
         }
-
-        private double DistanceBetween(int x1, int y1, int x2, int y2)
-        {
-            return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
-        }
     }
-
 }

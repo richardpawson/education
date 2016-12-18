@@ -3,44 +3,42 @@ using System.Text;
 
 namespace PredatorPrey
 {
-    class Rabbit : Animal
+    public class Rabbit : Animal
     {
-        enum Genders
+        enum Sexes
         {
             Male,
             Female
         }
-        private double ReproductionRate;
         private const double DefaultReproductionRate = 1.2;
         private const int DefaultLifespan = 4;
         private const double DefaultProbabilityDeathOtherCauses = 0.05;
-        private Genders Gender;
+        private Sexes Sex;
+        public double ReproductionRate { get; private set; }
 
-        public Rabbit(int Variability, ILogger Logger, IRandomGenerator Rnd)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger, Rnd)
+        public Rabbit(Location loc, int variability, ILogger logger, IRandomGenerator randomGenerator)
+            : base(loc, DefaultLifespan, DefaultProbabilityDeathOtherCauses, variability, logger, randomGenerator)
         {
-            ReproductionRate = DefaultReproductionRate * CalculateRandomValue(100, Variability) / 100;
-            if (Rnd.Next(0, 100) < 50)
-            {
-                Gender = Genders.Male;
-            }
-            else
-            {
-                Gender = Genders.Female;
-            }
+            ReproductionRate = DefaultReproductionRate * CalculateRandomValue(100, variability) / 100;
+            DetermineSex();
         }
 
-        public Rabbit(int Variability, double ParentsReproductionRate, ILogger Logger, IRandomGenerator Rnd)
-            : base(DefaultLifespan, DefaultProbabilityDeathOtherCauses, Variability, Logger, Rnd)
+        public Rabbit(Location loc, int variability, double parentsReproductionRate, ILogger logger, IRandomGenerator randomGenerator)
+            : base(loc, DefaultLifespan, DefaultProbabilityDeathOtherCauses, variability, logger, randomGenerator)
         {
-            ReproductionRate = ParentsReproductionRate * CalculateRandomValue(100, Variability) / 100;
-            if (Rnd.Next(0, 100) < 50)
+            ReproductionRate = parentsReproductionRate * CalculateRandomValue(100, variability) / 100;
+            DetermineSex();
+        }
+
+        private void DetermineSex()
+        {
+            if (RandomGenerator.Next(0, 100) < 50)
             {
-                Gender = Genders.Male;
+                Sex = Sexes.Male;
             }
             else
             {
-                Gender = Genders.Female;
+                Sex = Sexes.Female;
             }
         }
 
@@ -49,25 +47,13 @@ namespace PredatorPrey
             var sb = new StringBuilder();
             sb.Append(base.Inspect());
             sb.Append("Rep rate " + Math.Round(ReproductionRate, 1) + " ");
-            sb.AppendLine("Gender " + Gender + " ");
+            sb.AppendLine("Gender " + Sex + " ");
             return sb.ToString();
         }
 
         public bool IsFemale()
         {
-            if (Gender == Genders.Female)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public double GetReproductionRate()
-        {
-            return ReproductionRate;
+            return Sex == Sexes.Female;
         }
     }
 }

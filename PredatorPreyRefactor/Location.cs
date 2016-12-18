@@ -1,14 +1,21 @@
-﻿namespace PredatorPrey
-{
-    class Location
-    {
-        public Fox Fox;
-        public Warren Warren;
+﻿using System;
 
-        public Location()
+namespace PredatorPrey
+{
+    public class Location
+    {
+        public int X { get; private set; }
+        public int Y { get; private set; }
+
+        public Location(int x, int y)
         {
-            Fox = null;
-            Warren = null;
+            this.X = x;
+            this.Y = y;
+        }
+
+        public double DistanceFrom(Location other)
+        {
+            return Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
         }
     }
 }

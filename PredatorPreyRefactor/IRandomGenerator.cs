@@ -1,6 +1,6 @@
 ﻿namespace PredatorPrey
 {
-    interface IRandomGenerator
+    public interface IRandomGenerator
     {
         int Next(int minValue, int maxValue);
     }
