@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using TechnicalServices;
 
-namespace PredatorPrey
+namespace PredatorPrey.Model
 {
     public class Rabbit : Animal
     {

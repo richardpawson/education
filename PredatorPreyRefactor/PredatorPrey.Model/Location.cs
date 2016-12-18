@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PredatorPrey
+namespace PredatorPrey.Model
 {
     public class Location
     {

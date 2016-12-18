@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PredatorPrey
+namespace TechnicalServices
 {
     public class ConsoleLogger : ILogger
     {

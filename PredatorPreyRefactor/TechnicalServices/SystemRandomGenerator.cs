@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace PredatorPrey
+namespace TechnicalServices
 {
-    class SystemRandomGenerator : IRandomGenerator
+    public class SystemRandomGenerator : IRandomGenerator
     {
         private static Random Random = new Random();
 

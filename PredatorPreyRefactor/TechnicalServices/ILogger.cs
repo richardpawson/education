@@ -1,5 +1,5 @@
 ﻿
-namespace PredatorPrey
+namespace TechnicalServices
 {
     public interface ILogger
     {

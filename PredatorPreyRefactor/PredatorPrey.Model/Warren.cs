@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TechnicalServices;
 
-namespace PredatorPrey
+namespace PredatorPrey.Model
 {
     public class Warren
     {

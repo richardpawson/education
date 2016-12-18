@@ -1,6 +1,9 @@
-﻿using System;
+﻿using PredatorPrey.DataFixture;
+using PredatorPrey.Model;
+using System;
+using TechnicalServices;
 
-namespace PredatorPrey
+namespace PredatorPrey.ConsoleUI
 {
     public class ConsoleUI
     {

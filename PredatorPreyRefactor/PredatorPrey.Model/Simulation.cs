@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TechnicalServices;
 
-namespace PredatorPrey
+namespace PredatorPrey.Model
 {
     public class Simulation
     {
@@ -14,7 +15,7 @@ namespace PredatorPrey
         public int TimePeriod { get; private set; }
         public Landscape Landscape { get; private set; }
 
-        public Simulation(SetUp setUp, ILogger logger, IRandomGenerator randomGenerator)
+        public Simulation(ISetUp setUp, ILogger logger, IRandomGenerator randomGenerator)
         {
             Logger = logger;
             this.RandomGenerator = randomGenerator;

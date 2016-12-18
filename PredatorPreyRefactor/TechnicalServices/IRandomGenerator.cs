@@ -1,4 +1,4 @@
-﻿namespace PredatorPrey
+﻿namespace TechnicalServices
 {
     public interface IRandomGenerator
     {

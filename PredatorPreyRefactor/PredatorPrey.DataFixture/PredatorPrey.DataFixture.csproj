@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C87FEAF8-EF42-4D4D-9AE9-62A0E6120202}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{2ACA9031-9C56-4B51-8056-AC39A36D10F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PredatorPrey</RootNamespace>
-    <AssemblyName>PredatorPrey</AssemblyName>
+    <RootNamespace>PredatorPrey.DataFixture</RootNamespace>
+    <AssemblyName>PredatorPrey.DataFixture</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,28 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animal.cs" />
-    <Compile Include="ConsoleLogger.cs" />
-    <Compile Include="ConsoleUI.cs" />
+    <Compile Include="FixedLocationSetUp.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomSetUp.cs" />
     <Compile Include="SetUp.cs" />
-    <Compile Include="Fox.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="IRandomGenerator.cs" />
-    <Compile Include="Landscape.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="Rabbit.cs" />
-    <Compile Include="Simulation.cs" />
-    <Compile Include="SystemRandomGenerator.cs" />
-    <Compile Include="Warren.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="Location and Landscape.cd" />
+    <ProjectReference Include="..\PredatorPrey.Model\PredatorPrey.Model.csproj">
+      <Project>{52230e0d-dea8-4cea-8925-4121387fa807}</Project>
+      <Name>PredatorPrey.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
+      <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
+      <Name>TechnicalServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="SetUp.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
