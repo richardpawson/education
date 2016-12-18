@@ -7,14 +7,16 @@ namespace PredatorPrey
     public abstract class SetUp
     {
         public Landscape Landscape { get; protected set; }
-        public List<Warren> Warrens = new List<Warren>();
-        public List<Fox> Foxes = new List<Fox>();
-        public int Variability;
+        public List<Warren> Warrens { get; protected set; } 
+        public List<Fox> Foxes { get; protected set; }
+        public int Variability { get; protected set; }
         protected ILogger Logger;
         protected IRandomGenerator RandomGenerator;
 
         public SetUp(Landscape landscape, int variability, ILogger logger, IRandomGenerator randomGenerator)
         {
+            Warrens = new List<Warren>();
+            Foxes =  new List<Fox>();
             this.Variability = variability;
             this.Logger = logger;
             this.RandomGenerator = randomGenerator;
@@ -40,6 +42,7 @@ namespace PredatorPrey
             CreateWarrens();
             CreateFoxes();
         }
+
         protected void CreateWarrens()
         {
             CreateNewWarren(1, 1, 38);

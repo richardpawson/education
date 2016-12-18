@@ -61,6 +61,7 @@
     <None Include="App.config" />
     <None Include="ClassDiagram.cd" />
     <None Include="Location and Landscape.cd" />
+    <None Include="SetUp.cd" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

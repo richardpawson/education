@@ -15,7 +15,7 @@ namespace PredatorPrey
         private ILogger Logger;
         public Location Location { get; private set; }
 
-        public Warren(Location loc, int variability, ILogger logger, IRandomGenerator randomGenerator, int? rabbitCount = null )
+        public Warren(Location loc, int variability, ILogger logger, IRandomGenerator randomGenerator, int? rabbitCount = null)
         {
             RandomGenerator = randomGenerator;
             Location = loc;
@@ -67,7 +67,7 @@ namespace PredatorPrey
             }
             if ((RabbitCount > 0) && (RabbitCount <= MaxRabbitsInWarren) && ContainsMales())
             {
-                    MateRabbits();
+                MateRabbits();
             }
             if (RabbitCount == 0)
             {
