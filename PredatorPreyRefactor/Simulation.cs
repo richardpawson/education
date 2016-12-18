@@ -14,14 +14,40 @@ namespace PredatorPrey
         public int TimePeriod { get; private set; }
         public Landscape Landscape { get; private set; }
 
-        public Simulation(Landscape landscape, int initialWarrenCount, int initialFoxCount, int variability, bool fixedInitialLocations, ILogger logger, IRandomGenerator randomGenerator)
+        public Simulation(SetUp setUp, ILogger logger, IRandomGenerator randomGenerator)
         {
             Logger = logger;
             this.RandomGenerator = randomGenerator;
-            Landscape = landscape;
-            this.Variability = variability;
-            CreateAnimals(initialWarrenCount, initialFoxCount, fixedInitialLocations);
+            this.Variability = setUp.Variability;
+            Landscape = setUp.Landscape;
+            Warrens.AddRange(setUp.Warrens);
+            Foxes.AddRange(setUp.Foxes);
         }
+
+        private void CreateRandomWarren()
+        {
+            Location loc;
+            do
+            {
+                loc = Landscape.RandomLocation();
+            } while (GetWarren(loc) != null);
+            var warren = new Warren(loc, Variability, Logger, RandomGenerator);
+            Warrens.Add(warren);
+            Logger.WriteLine("New Warren at (" + loc.X + "," + loc.Y + ")");
+        }
+
+        private void CreateRandomFox()
+        {
+            Location loc;
+            do
+            {
+                loc = Landscape.RandomLocation();
+            } while (GetFox(loc) != null);
+            var fox = new Fox(loc, Variability, Logger, RandomGenerator);
+            Foxes.Add(fox);
+            Logger.WriteLine("  New Fox at (" + loc.X + "," + loc.Y + ")");
+        }
+
 
         public Fox GetFox(Location loc)
         {
@@ -38,71 +64,6 @@ namespace PredatorPrey
             return Warrens.Count > 0 || Foxes.Count > 0;
         }
 
-        private void CreateAnimals(int initialWarrenCount, int initialFoxCount, bool fixedInitialLocations)
-        {
-            if (fixedInitialLocations)
-            {
-                CreateNewWarren(1, 1, 38);
-                CreateNewWarren(2, 8, 80);
-                CreateNewWarren(9, 7, 20);
-                CreateNewWarren(10, 3, 52);
-                CreateNewWarren(3, 4, 67);
-                CreateNewFox(2, 10);
-                CreateNewFox(6, 1);
-                CreateNewFox(8, 6);
-                CreateNewFox(11, 13);
-                CreateNewFox(12, 4);
-            }
-            else
-            {
-                for (int w = 0; w < initialWarrenCount; w++)
-                {
-                    CreateRandomWarren();
-                }
-                for (int f = 0; f < initialFoxCount; f++)
-                {
-                    CreateRandomFox();
-                }
-            }
-        }
-
-        private void CreateNewWarren(int x, int y, int rabbitCount)
-        {
-            var loc = Landscape.GetLocation(x, y);
-            var warren = new Warren(loc, Variability, Logger, RandomGenerator, rabbitCount);
-            Warrens.Add(warren);
-        }
-
-        private void CreateRandomWarren()
-        {
-            Location loc;
-            do
-            {
-                loc = Landscape.RandomLocation();
-            } while (GetWarren(loc) != null);
-            var warren = new Warren(loc, Variability, Logger, RandomGenerator);
-            Warrens.Add(warren);
-            Logger.WriteLine("New Warren at (" + loc.X + "," + loc.Y + ")");
-        }
-
-        private void CreateNewFox(int x, int y)
-        {
-            var loc = Landscape.GetLocation(x, y);
-            var fox = new Fox(loc, Variability, Logger, RandomGenerator);
-            Foxes.Add(fox);
-        }
-
-        private void CreateRandomFox()
-        {
-            Location loc;
-            do
-            {
-                loc = Landscape.RandomLocation();
-            } while (GetFox(loc) != null);
-            var fox = new Fox(loc, Variability, Logger, RandomGenerator);
-            Foxes.Add(fox);
-            Logger.WriteLine("  New Fox at (" + loc.X + "," + loc.Y + ")");
-        }
 
         public void AdvanceTimePeriod()
         {

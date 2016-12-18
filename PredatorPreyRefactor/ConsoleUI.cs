@@ -4,13 +4,9 @@ namespace PredatorPrey
 {
     public class ConsoleUI
     {
-       public static void Main()
+        public static void Main()
         {
-            int landscapeSize = 15;
-            int initialWarrenCount = 5;
-            int initialFoxCount = 5;
-            int variability = 0;
-            bool fixedInitialLocations = true;
+            SetUp setUp;
             ILogger logger = new ConsoleLogger();
             IRandomGenerator randomGenerator = new SystemRandomGenerator();
             do
@@ -25,15 +21,19 @@ namespace PredatorPrey
                 string MenuOption = Console.ReadLine();
                 if (MenuOption == "1")
                 {
+                    var landscape = new SquareLandscape(15, randomGenerator);
+                    int variability = 0;
+                    setUp = new FixedLocationSetUp(landscape, variability, logger, randomGenerator);
                     break;
                 }
                 else if (MenuOption == "2")
                 {
-                    landscapeSize = InputInt("Landscape Size: ");
-                    initialWarrenCount = InputInt("Initial number of warrens: ");
-                    initialFoxCount = InputInt("Initial number of foxes: ");
-                    variability = InputInt("Randomness variability (percent): ");
-                    fixedInitialLocations = false;
+                    int landscapeSize = InputInt("Landscape Size: ");
+                    int initialWarrenCount = InputInt("Initial number of warrens: ");
+                    int initialFoxCount = InputInt("Initial number of foxes: ");
+                    int variability = InputInt("Randomness variability (percent): ");
+                    var landscape = new SquareLandscape(landscapeSize, randomGenerator);
+                    setUp = new RandomSetUp(initialWarrenCount, initialFoxCount, landscape, variability, logger, randomGenerator);
                     break;
                 }
                 else if (MenuOption == "3")
@@ -41,9 +41,7 @@ namespace PredatorPrey
                     return; //exit Main method
                 }
             } while (true);
-            SquareLandscape land = new SquareLandscape(landscapeSize, randomGenerator);
-            Simulation sim = new Simulation(land, initialWarrenCount,
-                initialFoxCount, variability, fixedInitialLocations, logger, randomGenerator);
+            Simulation sim = new Simulation(setUp, logger, randomGenerator);
             RunSimulation(sim, logger);
         }
 
@@ -84,7 +82,7 @@ namespace PredatorPrey
                     y = InputCoordinate('y');
                     Location loc = sim.Landscape.GetLocation(x, y);
                     Fox fox = sim.GetFox(loc);
-                    if (fox!= null)
+                    if (fox != null)
                     {
                         Console.Write(fox.Inspect());
                     }
@@ -95,7 +93,7 @@ namespace PredatorPrey
                     y = InputCoordinate('y');
                     Location loc = sim.Landscape.GetLocation(x, y);
                     Warren warren = sim.GetWarren(loc);
-                    if ( warren != null)
+                    if (warren != null)
                     {
                         Console.Write(warren.Inspect());
                         Console.Write("View individual rabbits (y/n)?");
@@ -115,7 +113,7 @@ namespace PredatorPrey
             Console.WriteLine("TIME PERIOD: " + sim.TimePeriod);
             Console.WriteLine();
             Console.Write("    ");
-            var land = (SquareLandscape) sim.Landscape; //Down-cast is OK as this method is explicly for Square Landscapes only
+            var land = (SquareLandscape)sim.Landscape; //Down-cast is OK as this method is explicly for Square Landscapes only
             DrawColumnHeaders(land.Size);
             for (int y = 0; y <= land.Size; y++)
             {

@@ -46,6 +46,7 @@
     <Compile Include="Animal.cs" />
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="ConsoleUI.cs" />
+    <Compile Include="SetUp.cs" />
     <Compile Include="Fox.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IRandomGenerator.cs" />
