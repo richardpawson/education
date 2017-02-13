@@ -5,11 +5,11 @@ namespace RayTracer
 {
     public class Scene
     {
-        public SceneObject[] Things { get; private set; }
+        public PhysicalObject[] Things { get; private set; }
         public Light[] Lights { get; private set; }
         public Camera Camera { get; private set; }
 
-        public Scene(SceneObject[] things, Light[] lights, Camera camera)
+        public Scene(PhysicalObject[] things, Light[] lights, Camera camera)
         {
             Things = things;
             Lights = lights;

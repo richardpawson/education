@@ -2,7 +2,7 @@
 
 namespace RayTracer
 {
-
+    //This is a light-weight immutable class. It could be a struct
     public class Ray
     {
         public Vector3D Start { get; private set; }

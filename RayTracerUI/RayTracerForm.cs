@@ -36,7 +36,7 @@ namespace RayTracer
                 bitmap.SetPixel(x, y, color);
                 if (x == 0) pictureBox.Refresh();
             });
-            rayTracer.Render(rayTracer.DefaultScene);
+            rayTracer.Render(StandardScenes.DefaultScene);
             pictureBox.Invalidate();
 
         }
@@ -45,7 +45,6 @@ namespace RayTracer
         static void Main()
         {
             Application.EnableVisualStyles();
-
             Application.Run(new RayTracerForm());
         }
     }

@@ -42,7 +42,7 @@ namespace RayTracer {
             return Shade(isect, scene, depth);
         }
 
-        private Color GetNaturalColor(SceneObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene) {
+        private Color GetNaturalColor(PhysicalObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene) {
             Color ret = new Color(0, 0, 0);
             foreach (Light light in scene.Lights) {
                 Vector3D ldis = light.Pos- pos;
@@ -62,7 +62,7 @@ namespace RayTracer {
             return ret;
         }
 
-        private Color GetReflectionColor(SceneObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene, int depth) {
+        private Color GetReflectionColor(PhysicalObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene, int depth) {
             return thing.Surface.Reflect(pos) * TraceRay(new Ray( pos,  rd ), scene, depth + 1);
         }
 
@@ -92,7 +92,7 @@ namespace RayTracer {
             return result;
         }
 
-        internal void Render(Scene scene) {
+        public void Render(Scene scene) {
             for (int y = 0; y < screenHeight; y++)
             {
                 for (int x = 0; x < screenWidth; x++)
@@ -102,21 +102,6 @@ namespace RayTracer {
                 }
             }
         }
-
-        internal readonly Scene DefaultScene =
-            new Scene(new SceneObject[] {
-                                new Plane(new Vector3D(0,1,0),0, Surfaces.CheckerBoard),
-                                new Sphere(new Vector3D(0,1,0),1,Surfaces.Shiny),
-                                new Sphere(new Vector3D(-1,.5,1.5),.5,Surfaces.Shiny)
-                                },
-                     new Light[] {
-                                new Light(new Vector3D(-2,2.5,0), new Color(.49,.07,.07)),
-                                new Light(new Vector3D(1.5,2.5,1.5),new Color(.07,.07,.49)),
-                                new Light(new Vector3D(1.5,2.5,-1.5),new Color(.07,.49,.071)),
-                                new Light(new Vector3D(0,3.5,0),new Color(.21,.21,.35))
-                                },
-                    new Camera(new Vector3D(3, 2, 4), new Vector3D(-1, .5, 0))
-                );
     }
 
     public delegate void Action<T,U,V>(T t, U u, V v);
