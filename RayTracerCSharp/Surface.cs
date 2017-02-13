@@ -3,7 +3,7 @@ using System.Windows.Media.Media3D;
 
 namespace RayTracer
 {
-    class Surface
+    public class Surface
     {
         public Func<Vector3D, Color> Diffuse;
         public Func<Vector3D, Color> Specular;

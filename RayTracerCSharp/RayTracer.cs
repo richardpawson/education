@@ -48,7 +48,7 @@ namespace RayTracer {
                 Vector3D ldis = light.Pos- pos;
                 Vector3D livec = ldis;
                 livec.Normalize();
-                double neatIsect = TestRay(new Ray() { Start = pos, Dir = livec }, scene);
+                double neatIsect = TestRay(new Ray(pos, livec), scene);
                 bool isInShadow = !((neatIsect > ldis.Length) || (neatIsect == 0));
                 if (!isInShadow) {
                     double illum = Vector3D.DotProduct(livec, norm);
@@ -63,7 +63,7 @@ namespace RayTracer {
         }
 
         private Color GetReflectionColor(SceneObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene, int depth) {
-            return thing.Surface.Reflect(pos) * TraceRay(new Ray() { Start = pos, Dir = rd }, scene, depth + 1);
+            return thing.Surface.Reflect(pos) * TraceRay(new Ray( pos,  rd ), scene, depth + 1);
         }
 
         private Color Shade(Intersection isect, Scene scene, int depth) {
@@ -97,49 +97,26 @@ namespace RayTracer {
             {
                 for (int x = 0; x < screenWidth; x++)
                 {
-                    Color color = TraceRay(new Ray() { Start = scene.Camera.Pos, Dir = GetPoint(x, y, scene.Camera) }, scene, 0);
+                    Color color = TraceRay(new Ray(scene.Camera.Pos,GetPoint(x, y, scene.Camera) ), scene, 0);
                     setPixel(x, y, color.ToDrawingColor());
                 }
             }
         }
 
         internal readonly Scene DefaultScene =
-            new Scene() {
-                    Things = new SceneObject[] { 
-                                new Plane() {
-                                    Norm = new Vector3D(0,1,0),
-                                    Offset = 0,
-                                    Surface = Surfaces.CheckerBoard
+            new Scene(new SceneObject[] {
+                                new Plane(new Vector3D(0,1,0),0, Surfaces.CheckerBoard),
+                                new Sphere(new Vector3D(0,1,0),1,Surfaces.Shiny),
+                                new Sphere(new Vector3D(-1,.5,1.5),.5,Surfaces.Shiny)
                                 },
-                                new Sphere() {
-                                    Center = new Vector3D(0,1,0),
-                                    Radius = 1,
-                                    Surface = Surfaces.Shiny
+                     new Light[] {
+                                new Light(new Vector3D(-2,2.5,0), new Color(.49,.07,.07)),
+                                new Light(new Vector3D(1.5,2.5,1.5),new Color(.07,.07,.49)),
+                                new Light(new Vector3D(1.5,2.5,-1.5),new Color(.07,.49,.071)),
+                                new Light(new Vector3D(0,3.5,0),new Color(.21,.21,.35))
                                 },
-                                new Sphere() {
-                                    Center = new Vector3D(-1,.5,1.5),
-                                    Radius = .5,
-                                    Surface = Surfaces.Shiny
-                                }},
-                    Lights = new Light[] { 
-                                new Light() {
-                                    Pos = new Vector3D(-2,2.5,0),
-                                    Color = new Color(.49,.07,.07)
-                                },
-                                new Light() {
-                                    Pos = new Vector3D(1.5,2.5,1.5),
-                                    Color = new Color(.07,.07,.49)
-                                },
-                                new Light() {
-                                    Pos = new Vector3D(1.5,2.5,-1.5),
-                                    Color = new Color(.07,.49,.071)
-                                },
-                                new Light() {
-                                    Pos = new Vector3D(0,3.5,0),
-                                    Color = new Color(.21,.21,.35)
-                                }},
-                    Camera = new Camera(new Vector3D(3,2,4), new Vector3D(-1,.5,0))
-                };
+                    new Camera(new Vector3D(3, 2, 4), new Vector3D(-1, .5, 0))
+                );
     }
 
     public delegate void Action<T,U,V>(T t, U u, V v);

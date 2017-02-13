@@ -1,9 +1,16 @@
 ﻿namespace RayTracer
 {
-    class Intersection
+    public class Intersection
     {
-        public SceneObject Thing;
-        public Ray Ray;
-        public double Dist;
+        public SceneObject Thing { get; private set; }
+        public Ray Ray { get; private set; }
+        public double Dist { get; private set; }
+
+        public Intersection(SceneObject thing, Ray ray, double dist)
+        {
+            Thing = thing;
+            Ray = ray;
+            Dist = dist;
+        }
     }
 }

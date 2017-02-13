@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RayTracer
 {
 
     public class Color
     {
-        public double R;
-        public double G;
-        public double B;
-
+        private double R, G, B; //Declare three private fields of same type
+        //Constructors
         public Color(double r, double g, double b) { R = r; G = g; B = b; }
         public Color(string str)
         {
@@ -23,6 +17,13 @@ namespace RayTracer
             B = double.Parse(nums[2]);
         }
 
+        //static methods or properties belong to the class, not an instance of it.
+        //They are invoked on the class itself e.g. myBackground = Color.Background
+        public static readonly Color Background = new Color(0, 0, 0);
+        public static readonly Color DefaultColor = new Color(0, 0, 0);
+
+        // 'operators' allow use of  +,-,*, instead of conventional method signatures
+        // like 'add(...), subtract(...)'. They are static and hence must take two parameters
         public static Color operator *(double n, Color v)
         {
             return new Color(n * v.R, n * v.G, n * v.B);
@@ -31,7 +32,6 @@ namespace RayTracer
         {
             return new Color(v1.R * v2.R, v1.G * v2.G, v1.B * v2.B);
         }
-
         public static Color operator +(Color v1, Color v2)
         {
             return new Color(v1.R + v2.R, v1.G + v2.G, v1.B + v2.B);
@@ -41,19 +41,17 @@ namespace RayTracer
             return new Color(v1.R - v2.R, v1.G - v2.G, v1.B - v2.B);
         }
 
-        public static readonly Color Background = new Color(0, 0, 0);
-        public static readonly Color DefaultColor = new Color(0, 0, 0);
-
         public double Legalize(double d)
         {
-            return d > 1 ? 1 : d;
+            return d > 1 ? 1 : d; // means: 'if d > 1 return 1, else return d'
         }
 
+        //Use of namespace to qualify which Color class is being used:
+        //this one, or the standard System.Drawing Color class
         internal System.Drawing.Color ToDrawingColor()
         {
             return System.Drawing.Color.FromArgb((int)(Legalize(R) * 255), (int)(Legalize(G) * 255), (int)(Legalize(B) * 255));
         }
-
     }
 
 }

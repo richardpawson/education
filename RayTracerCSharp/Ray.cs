@@ -3,10 +3,15 @@
 namespace RayTracer
 {
 
-    class Ray
+    public class Ray
     {
-        public Vector3D Start;
-        public Vector3D Dir;
+        public Vector3D Start { get; private set; }
+        public Vector3D Dir { get; private set; }
+        public Ray(Vector3D start, Vector3D dir)
+        {
+            Start = start;
+            Dir = dir;
+        }
     }
 
 }

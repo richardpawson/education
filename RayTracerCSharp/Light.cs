@@ -2,9 +2,15 @@
 
 namespace RayTracer
 {
-    class Light
+    public class Light
     {
-        public Vector3D Pos;
-        public Color Color;
+        public Vector3D Pos { get; private set; }
+        public Color Color { get; private set; }
+
+        public Light(Vector3D pos, Color color)
+        {
+            Pos = pos;
+            Color = color;
+        }
     }
 }
