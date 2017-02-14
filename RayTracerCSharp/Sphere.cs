@@ -3,21 +3,23 @@ using System.Windows.Media.Media3D;
 
 namespace RayTracer
 {
-    public class Sphere : PhysicalObject
+    public class Sphere : IThing
     {
+        public SurfaceTexture Surface { get; private set; }
         public Vector3D Centre { get; private set; }
         public double Radius { get; private set; }
 
-        public Sphere(Vector3D centre, double radius, Surface surface) : base(surface)
+        public Sphere(Vector3D centre, double radius, SurfaceTexture surface) 
         {
             Centre = centre;
             Radius = radius;
+            Surface = surface;
         }
 
-        public override Intersection Intersect(Ray ray)
+        public Intersection CalculateIntersection(Ray withRay)
         {
-            Vector3D eo = Centre - ray.Start;
-            double v = Vector3D.DotProduct(eo, ray.Dir);
+            Vector3D eo = Centre - withRay.Start;
+            double v = Vector3D.DotProduct(eo, withRay.Dir);
             double dist;
             if (v < 0)
             {
@@ -29,15 +31,14 @@ namespace RayTracer
                 dist = disc < 0 ? 0 : v - Math.Sqrt(disc);
             }
             if (dist == 0) return null;
-            return new Intersection(this, ray, dist);
+            return new Intersection(this, withRay, dist);
         }
 
-        public override Vector3D Normal(Vector3D pos)
+        public Vector3D CalculateNormal(Vector3D surfacePosition)
         {
-            Vector3D normal = pos - Centre;
+            Vector3D normal = surfacePosition - Centre;
             normal.Normalize();
             return normal;
         }
     }
-
 }

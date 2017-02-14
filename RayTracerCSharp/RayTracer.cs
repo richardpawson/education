@@ -2,6 +2,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
+using System.Diagnostics;
 
 namespace RayTracer {
     public class RayTracer {
@@ -21,7 +22,7 @@ namespace RayTracer {
         private IEnumerable<Intersection> Intersections(Ray ray, Scene scene)
         {
             return scene.Things
-                        .Select(obj => obj.Intersect(ray))
+                        .Select(obj => obj.CalculateIntersection(ray))
                         .Where(inter => inter != null)
                         .OrderBy(inter => inter.Dist);
         }
@@ -42,9 +43,9 @@ namespace RayTracer {
             return Shade(isect, scene, depth);
         }
 
-        private Color GetNaturalColor(PhysicalObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene) {
+        private Color GetNaturalColor(IThing thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene) {
             Color ret = new Color(0, 0, 0);
-            foreach (Light light in scene.Lights) {
+            foreach (LightSource light in scene.Lights) {
                 Vector3D ldis = light.Pos- pos;
                 Vector3D livec = ldis;
                 livec.Normalize();
@@ -62,14 +63,14 @@ namespace RayTracer {
             return ret;
         }
 
-        private Color GetReflectionColor(PhysicalObject thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene, int depth) {
+        private Color GetReflectionColor(IThing thing, Vector3D pos, Vector3D norm, Vector3D rd, Scene scene, int depth) {
             return thing.Surface.Reflect(pos) * TraceRay(new Ray( pos,  rd ), scene, depth + 1);
         }
 
         private Color Shade(Intersection isect, Scene scene, int depth) {
             var d = isect.Ray.Dir;
             var pos = isect.Dist * isect.Ray.Dir +  isect.Ray.Start;
-            var normal = isect.Thing.Normal(pos);
+            var normal = isect.Thing.CalculateNormal(pos);
             var reflectDir = d - 2 * Vector3D.DotProduct(normal, d) * normal;
             Color ret = Color.DefaultColor;
             ret = ret + GetNaturalColor(isect.Thing, pos, normal, reflectDir, scene);
@@ -97,6 +98,7 @@ namespace RayTracer {
             {
                 for (int x = 0; x < screenWidth; x++)
                 {
+                    if (x == 300 && y == 300) Debugger.Break();
                     Color color = TraceRay(new Ray(scene.Camera.Pos,GetPoint(x, y, scene.Camera) ), scene, 0);
                     setPixel(x, y, color.ToDrawingColor());
                 }
@@ -105,6 +107,4 @@ namespace RayTracer {
     }
 
     public delegate void Action<T,U,V>(T t, U u, V v);
-
- 
 }

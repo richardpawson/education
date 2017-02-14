@@ -2,10 +2,9 @@
 
 namespace RayTracer
 {
-
     public class Color
     {
-        private double R, G, B; //Declare three private fields of same type
+        private double R, G, B; 
         //Constructors
         public Color(double r, double g, double b) { R = r; G = g; B = b; }
         public Color(string str)
@@ -53,5 +52,4 @@ namespace RayTracer
             return System.Drawing.Color.FromArgb((int)(Legalize(R) * 255), (int)(Legalize(G) * 255), (int)(Legalize(B) * 255));
         }
     }
-
 }

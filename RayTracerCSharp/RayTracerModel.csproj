@@ -53,14 +53,14 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Intersection.cs" />
-    <Compile Include="Light.cs" />
+    <Compile Include="LightSource.cs" />
     <Compile Include="Plane.cs" />
     <Compile Include="Ray.cs" />
     <Compile Include="RayTracer.cs" />
     <Compile Include="Scene.cs" />
-    <Compile Include="PhysicalObject.cs" />
+    <Compile Include="IThing.cs" />
     <Compile Include="Sphere.cs" />
-    <Compile Include="Surface.cs" />
+    <Compile Include="SurfaceTexture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

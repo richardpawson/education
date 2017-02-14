@@ -1,31 +1,30 @@
-﻿
-
-using System.Windows.Media.Media3D;
+﻿using System.Windows.Media.Media3D;
 
 namespace RayTracer
 {
-    public class Plane : PhysicalObject
+    public class Plane : IThing
     {
+        public SurfaceTexture Surface { get; private set; }
         public Vector3D Norm { get; private set; }
         public double Offset { get; private set; }
 
-        public Plane(Vector3D norm, double offset, Surface surface) : base(surface)
+        public Plane(Vector3D norm, double offset, SurfaceTexture surface)
         {
             Norm = norm;
             Offset = offset;
+            Surface = surface;
         }
 
-        public override Intersection Intersect(Ray ray)
+        public  Intersection CalculateIntersection(Ray withRay)
         {
-            double denom = Vector3D.DotProduct(Norm, ray.Dir);
+            double denom = Vector3D.DotProduct(Norm, withRay.Dir);
             if (denom > 0) return null;
-            return new Intersection(this, ray, (Vector3D.DotProduct(Norm, ray.Start) + Offset) / (-denom));
+            return new Intersection(this, withRay, (Vector3D.DotProduct(Norm, withRay.Start) + Offset) / (-denom));
         }
 
-        public override Vector3D Normal(Vector3D pos)
+        public  Vector3D CalculateNormal(Vector3D surfacePosition)
         {
             return Norm;
         }
     }
-
 }

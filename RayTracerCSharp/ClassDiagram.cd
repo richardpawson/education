@@ -1,12 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="RayTracer.Camera">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="9.75" Y="0.5" Width="1.5" />
     <Members>
-      <Field Name="Forward" Hidden="true" />
-      <Field Name="Pos" Hidden="true" />
-      <Field Name="Right" Hidden="true" />
-      <Field Name="Up" Hidden="true" />
+      <Method Name="Camera" Hidden="true" />
     </Members>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAACAAAAAAAI=</HashCode>
@@ -14,7 +11,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="RayTracer.Color">
-    <Position X="2.5" Y="0.5" Width="1.5" />
+    <Position X="8.75" Y="2.75" Width="1.5" />
     <Members>
       <Field Name="B" Hidden="true" />
       <Field Name="Background" Hidden="true" />
@@ -28,76 +25,76 @@
       <FileName>Color.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RayTracer.Intersection" Collapsed="true">
-    <Position X="4.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAACAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Intersection.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="RayTracer.RayTracer">
-    <Position X="4.25" Y="1.25" Width="1.5" />
-    <Members>
-      <Field Name="DefaultScene" Hidden="true" />
-      <Field Name="MaxDepth" Hidden="true" />
-      <Field Name="screenHeight" Hidden="true" />
-      <Field Name="screenWidth" Hidden="true" />
-      <Field Name="setPixel" Hidden="true" />
-    </Members>
+    <Position X="1" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>UBBAIAgAAABAAAAAAAAAACAAAAAIAAAAgBAAQAIAQAA=</HashCode>
+      <HashCode>UBBAIAgAAABAAAAAAAAAACAAAAAIAAAAABAAQAIAQAA=</HashCode>
       <FileName>RayTracer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RayTracer.Scene">
-    <Position X="6" Y="1.5" Width="1.5" />
+    <Position X="5" Y="2.75" Width="1.5" />
     <Members>
-      <Field Name="Camera" Hidden="true" />
-      <Field Name="Lights" Hidden="true" />
-      <Field Name="Things" Hidden="true" />
+      <Property Name="Camera" Hidden="true" />
+      <Property Name="Lights" Hidden="true" />
+      <Method Name="Scene" Hidden="true" />
+      <Property Name="Things" Hidden="true" />
     </Members>
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAEAgCAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Scene.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RayTracer.SceneObject">
-    <Position X="7.5" Y="2.75" Width="1.5" />
-    <Members>
-      <Field Name="Surface" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAEAAAIAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>SceneObjects.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="RayTracer.Sphere" Collapsed="true">
-    <Position X="8.5" Y="5" Width="1.5" />
+    <Position X="7" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAAAAAAAEAAAAAAAIAAAAAAAAAAAIAAA=</HashCode>
-      <FileName>SceneObjects.cs</FileName>
+      <HashCode>ABAIAAAAAEAAAAAAAAAAAAAEAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Sphere.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="RayTracer.Plane" Collapsed="true">
-    <Position X="6.25" Y="5" Width="1.5" />
+    <Position X="5.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAAAAAAAQAAgAA=</HashCode>
-      <FileName>SceneObjects.cs</FileName>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAEAAAAAAAAAAAAAQAggAA=</HashCode>
+      <FileName>Plane.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="RayTracer.Surface" Collapsed="true">
-    <Position X="9.5" Y="3.25" Width="1.5" />
+  <Class Name="RayTracer.SurfaceTexture">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="SurfaceTexture" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAAAgAAAAABAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>Surface.cs</FileName>
+      <FileName>SurfaceTexture.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RayTracer.Ray" Collapsed="true">
-    <Position X="6" Y="0.5" Width="1.5" />
+  <Class Name="RayTracer.Ray">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="Ray" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Ray.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="RayTracer.Intersection">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="Intersection" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAACAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Intersection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="System.Windows.Media.Media3D.Vector3D" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Struct>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
