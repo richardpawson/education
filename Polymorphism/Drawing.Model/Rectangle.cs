@@ -17,17 +17,12 @@ namespace Drawing.Model
         public override string Summary()
         {
             //... and we use self to access properties or other methods
-            return "Rectangle, H: " + Height + " W: " + Width;
+            return "Rectangle, H " + Height + " W " + Width + PositionSummary();
         }
         public override void GrowBy(double percent)
         {
             Height = Height * (1 + percent / 100);
             Width = Width * (1 + percent / 100);
-        }
-
-        public override void Draw()
-        {
-            throw new NotImplementedException();
         }
     }
 }

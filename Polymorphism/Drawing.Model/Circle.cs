@@ -18,12 +18,7 @@ namespace Drawing.Model
         }
         public override string Summary()
         {
-            return "Circle, radius: " + Radius;
-        }
-
-        public override void Draw()
-        {
-            throw new NotImplementedException();
+            return "Circle, radius " + Radius + PositionSummary();
         }
     }
 }

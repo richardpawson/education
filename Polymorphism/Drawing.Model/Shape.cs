@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text;
 
 namespace Drawing.Model
@@ -26,10 +27,14 @@ namespace Drawing.Model
             OriginX += x;
             OriginY += y;
         }
+
+        protected string PositionSummary()
+        {
+            return " @ coordinates " + OriginX + "," + OriginY;
+        }
         #endregion
 
         #region Abstract methods
-        public abstract void Draw();
         public abstract string Summary();
         public abstract void GrowBy(double percent);
         #endregion
