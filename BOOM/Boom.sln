@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalServices", "Techni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Test", "Boom.Test\Boom.Test.csproj", "{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.WinFormsUI", "Boom.WinForms UI\Boom.WinFormsUI.csproj", "{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

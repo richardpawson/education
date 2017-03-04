@@ -7,9 +7,9 @@ namespace Boom.Model
     {
         private char[,] Squares;
         private Ship[] Ships;
-        private const char Empty = ' ';
-        private const char Hit = 'h';
-        private const char Miss = 'm';
+        public const char Empty = ' ';
+        public const char Hit = 'h';
+        public const char Miss = 'm';
         private ILogger Logger;
         private IRandomGenerator RandomGenerator;
         public int Size { get; private set; }
