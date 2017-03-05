@@ -4,4 +4,9 @@
     {
         Horizontal, Vertical
     }
+
+    public enum SquareValues
+    {
+        Empty, Miss, Hit
+    }
 }

@@ -9,30 +9,25 @@ namespace Boom.WinFormsUI
 {
     public partial class Form1 : Form
     {
-        Pen blackPen = new Pen(Color.Black);
+        private Pen blackPen = new Pen(Color.Black);
+        private Brush redBrush = new SolidBrush(Color.Red);
+        private Brush blueBrush = new SolidBrush(Color.Blue);
+        private Brush whiteBrush = new SolidBrush(Color.White);
+
         private GameBoard Board;
         private ReadableLogger Logger = new ReadableLogger();
 
         public Form1()
         {
             InitializeComponent();
-            InitializeGame();
         }
 
-        private void InitializeGame()
-        {
-            var ships = Ships.TrainingGame();
-
+        private void InitializeGame(Ship[] ships)
+        {            
             Logger.StartLogging();
             var randomGenerator = new SystemRandomGenerator();
             Board = new GameBoard(10, ships, Logger, randomGenerator);
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DrawBoard();
-        }
-
 
         private void DrawBoard()
         {
@@ -44,13 +39,25 @@ namespace Boom.WinFormsUI
                 {
                     var square = Board.ReadSquare(row, col);
                     Brush brush = null;
-                    if (square == GameBoard.Hit)
+                    switch (square)
                     {
-                        brush = new SolidBrush(Color.Red);
+                        case SquareValues.Empty:
+                            brush = whiteBrush;
+                            break;
+                        case SquareValues.Miss:
+                            brush = blueBrush;
+                            break;
+                        case SquareValues.Hit:
+                            brush = redBrush;
+                            break;
                     }
-                    else if (square == GameBoard.Miss)
+                    if (square == SquareValues.Hit)
                     {
-                        brush = new SolidBrush(Color.Green);
+                        brush = redBrush;
+                    }
+                    else if (square == SquareValues.Miss)
+                    {
+                        brush = blueBrush;
                     }
                     DrawSquare(squareSize, g, row, col, brush);
                 }
@@ -65,6 +72,30 @@ namespace Boom.WinFormsUI
                 g.FillRectangle(fill, col * squareSide + 1, row * squareSide + 1, squareSide - 1, squareSide - 1);
             }
         }
+        #region Button clicks
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var ships = Ships.TrainingGame();
+            InitializeGame(ships);
+            DrawBoard();
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FireWeapon(new Missile());
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var ships = Ships.UnplacedShips1();
+            InitializeGame(ships);
+            Board.RandomiseShipPlacement();
+            DrawBoard();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            FireWeapon(new Bomb());
+        }
+        #endregion
 
         private void label2_Click(object sender, EventArgs e)
         {
@@ -76,12 +107,11 @@ namespace Boom.WinFormsUI
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var missile = new Missile();
+        private void FireWeapon(IWeapon weapon)
+        {        
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            missile.Fire(row, col, Board);
+            weapon.Fire(row, col, Board);
             DrawBoard();
             richTextBox1.Text = Logger.ReadAndResetLog();
         }
@@ -92,6 +122,11 @@ namespace Boom.WinFormsUI
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }

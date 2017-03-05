@@ -1,9 +1,8 @@
 ﻿namespace Boom.Model
 {
-    public class Missile : Weapon
+    public class Missile : IWeapon
     {
-        //Returns a list of ships hit
-        public override void Fire(int row, int col, GameBoard Board)
+        public void Fire(int row, int col, GameBoard Board)
         {
             Board.CheckLocation(row, col);
         }

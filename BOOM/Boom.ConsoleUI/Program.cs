@@ -33,7 +33,7 @@ namespace Boom.ConsoleUI
             while (!GameWon)
             {
                 PrintBoard(Board);
-                Weapon missile = null;
+                IWeapon missile = null;
                 var missileType = GetMissileType();
                 var col = GetColumn();
                 var row = GetRow();

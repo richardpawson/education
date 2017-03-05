@@ -49,8 +49,8 @@
     <Compile Include="Bomb.cs" />
     <Compile Include="Gameboard.cs" />
     <Compile Include="Missile.cs" />
-    <Compile Include="Weapon.cs" />
-    <Compile Include="Orientation.cs" />
+    <Compile Include="IWeapon.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
   </ItemGroup>

@@ -1,10 +1,10 @@
 ﻿namespace Boom.Model
 {
-    public class Bomb : Weapon
+    public class Bomb : IWeapon
     {
         private int blastRadius = 1;
 
-        public override void Fire(int row, int col, GameBoard Board)
+        public void Fire(int row, int col, GameBoard Board)
         {
             for (int startRow = row - blastRadius; startRow <= row + blastRadius; startRow++)
             {
