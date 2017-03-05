@@ -1,18 +1,17 @@
 ﻿using System.Text;
-using TechnicalServices;
 
-namespace Boom.Test
+namespace TechnicalServices
 {
-    public class TestLogger : ILogger
+    public class ReadableLogger : ILogger
     {
         private StringBuilder log = new StringBuilder();
         private bool Logging;
-        public TestLogger()
+        public ReadableLogger()
         {
             StartLogging();
         }
 
-        internal string ReadAndResetLog()
+        public string ReadAndResetLog()
         {
             var output = log.ToString();
             log = new StringBuilder();

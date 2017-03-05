@@ -9,7 +9,7 @@ namespace Boom.Test
     [TestClass]
     public class UnitTest1
     {
-        static TestLogger Logger = new TestLogger();
+        static ReadableLogger Logger = new ReadableLogger();
         static IRandomGenerator RandomGenerator = new SystemRandomGenerator(); 
 
         [TestMethod]
