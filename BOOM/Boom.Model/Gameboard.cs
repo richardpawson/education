@@ -5,14 +5,11 @@ namespace Boom.Model
 {
     public class GameBoard
     {
+        public int Size { get; private set; }
         private SquareValues[,] Squares;
         private Ship[] Ships;
-        public const char Empty = ' ';
-        public const char Hit = 'h';
-        public const char Miss = 'm';
         private ILogger Logger;
         private IRandomGenerator RandomGenerator;
-        public int Size { get; private set; }
 
         public GameBoard(int size, Ship[] ships, ILogger logger, IRandomGenerator randomGenerator)
         {
@@ -24,6 +21,7 @@ namespace Boom.Model
             Ships = ships;
         }
 
+        //Sets all squares to empty
         private void InitialiseEmptyBoard()
         {
             for (int Row = 0; Row < Size; Row++)
@@ -34,8 +32,10 @@ namespace Boom.Model
                 }
             }
         }
-
-        public void CheckLocation(int row, int col)
+        ,
+        //Checks, in collaboration with Ships, whether any of them cover
+        //the given row, column; if one does, invoke the Hit() method on it.
+        public void CheckSquareAndRecordOutcome(int row, int col)
         {
             foreach (Ship ship in Ships)
             {
@@ -51,6 +51,11 @@ namespace Boom.Model
                     {
                         Logger.WriteLine("Hit a " + ship.Name + " at (" + col + "," + row + ").");
                     }
+                    if (CheckWin())
+                    {
+                        Logger.WriteLine("All ships sunk!");
+                        Logger.WriteLine();
+                    }
                     return;
                 }
             }
@@ -58,70 +63,76 @@ namespace Boom.Model
             Logger.WriteLine("Sorry, (" + row + "," + col + ") is a miss.");
         }
 
-        private bool ValidateBoatPosition(Ship ship, int row, int col, Orientations orientation)
-    {
-        if (orientation == Orientations.Vertical && row + ship.Size > Size)
+        //Returns true if the given position for the ship fits within the board 
+        //and does not clash with another ship
+        private bool IsValidPosition(Ship ship, int row, int col, Orientations orientation)
         {
-            return false;
-        }
-        else if (orientation == Orientations.Horizontal && col + ship.Size > Size)
-        {
-            return false;
-        }
-        else
-        {
-            if (orientation == Orientations.Vertical)
+            if (orientation == Orientations.Vertical && row + ship.Size > Size)
             {
-                for (int Scan = 0; Scan < ship.Size; Scan++)
+                return false;
+            }
+            else if (orientation == Orientations.Horizontal && col + ship.Size > Size)
+            {
+                return false;
+            }
+            else
+            {
+                if (orientation == Orientations.Vertical)
                 {
-                    if (Squares[row + Scan, col] != SquareValues.Empty)
+                    for (int Scan = 0; Scan < ship.Size; Scan++)
                     {
-                        return false;
+                        if (Squares[row + Scan, col] != SquareValues.Empty)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (orientation == Orientations.Horizontal)
+                {
+                    for (int Scan = 0; Scan < ship.Size; Scan++)
+                    {
+                        if (Squares[row, col + Scan] != SquareValues.Empty)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
-            else if (orientation == Orientations.Horizontal)
-            {
-                for (int Scan = 0; Scan < ship.Size; Scan++)
-                {
-                    if (Squares[row, col + Scan] != SquareValues.Empty)
-                    {
-                        return false;
-                    }
-                }
-            }
+            return true;
         }
-        return true;
-    }
-
-    public bool CheckWin()
-    {
-        return !Ships.Any(s => !s.IsSunk());
-    }
-
-    public SquareValues ReadSquare(int row, int col)
-    {
-        return Squares[row, col];
-    }
-
-    public void RandomiseShipPlacement()
-    {
-        foreach (var ship in Ships)
+        //Returns true if all ships are sunk.
+        public bool CheckWin()
         {
-            Orientations orientation = 0; //default
-            int row = 0;
-            int col = 0;
-            bool valid = false;
-            while (valid == false)
+          return !Ships.Any(s => !s.IsSunk());
+        }
+
+        //Allows the actual array of squares to remain private
+        public SquareValues ReadSquare(int row, int col)
+        {
+            return Squares[row, col];
+        }
+
+        //In collaboration with IsValidPosition, finds a random but valid
+        //position for each of the ships set up, whether or not they already
+        //have a position specified.
+        public void RandomiseShipPlacement()
+        {
+            foreach (var ship in Ships)
             {
-                row = RandomGenerator.Next(0, Size);
-                col = RandomGenerator.Next(0, Size);
-                orientation = (Orientations)RandomGenerator.Next(0, 2);
-                valid = ValidateBoatPosition(ship, row, col, orientation);
+                Orientations orientation = 0; //default
+                int row = 0;
+                int col = 0;
+                bool valid = false;
+                while (valid == false)
+                {
+                    row = RandomGenerator.Next(0, Size);
+                    col = RandomGenerator.Next(0, Size);
+                    orientation = (Orientations)RandomGenerator.Next(0, 2);
+                    valid = IsValidPosition(ship, row, col, orientation);
+                }
+                Logger.WriteLine("Computer placing the " + ship.Name);
+                ship.SetPosition(row, col, orientation);
             }
-            Logger.WriteLine("Computer placing the " + ship.Name);
-            ship.SetPosition(row, col, orientation);
         }
     }
-}
 }

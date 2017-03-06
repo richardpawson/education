@@ -2,6 +2,9 @@
 
 namespace TechnicalServices
 {
+    //Implementation of ILogger with no actual UI. It captures the messages written, and allows
+    //them to be read back programmatically via the ReadAndResetLog() method. Useful
+    //for testing, or for use within another non-console UI.
     public class ReadableLogger : ILogger
     {
         private StringBuilder log = new StringBuilder();

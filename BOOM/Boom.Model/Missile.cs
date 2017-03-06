@@ -4,7 +4,7 @@
     {
         public void Fire(int row, int col, GameBoard Board)
         {
-            Board.CheckLocation(row, col);
+            Board.CheckSquareAndRecordOutcome(row, col);
         }
     }
 }

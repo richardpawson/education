@@ -7,6 +7,32 @@ namespace Boom.ConsoleUI
 {
     public class Program
     {
+        static void Main(string[] args)
+        {
+            var logger = new ConsoleLogger();
+            logger.StartLogging();
+            var randomGenerator = new SystemRandomGenerator();
+            GameBoard Board = null;
+
+            int MenuOption = 0;
+            while (MenuOption != 9)
+            {
+                DisplayMenu();
+                MenuOption = GetMainMenuChoice();
+                if (MenuOption == 1)
+                {
+                    var ships = Ships.UnplacedShips1();
+                    Board = new GameBoard(10, ships, logger, randomGenerator);
+                    Board.RandomiseShipPlacement();
+                }
+                if (MenuOption == 2)
+                {
+                    var ships = Ships.TrainingGame();
+                    Board = new GameBoard(10, ships, logger, randomGenerator);
+                }
+                PlayGame(Board);
+            }
+        }
 
         private static void DisplayMenu()
         {
@@ -46,11 +72,6 @@ namespace Boom.ConsoleUI
                     missile = new Bomb();
                 }
                 missile.Fire(row, col, Board);
-                if (Board.CheckWin() == true)
-                {
-                    Console.WriteLine("All ships sunk!");
-                    Console.WriteLine();
-                }
             }
         }
 
@@ -75,33 +96,6 @@ namespace Boom.ConsoleUI
             return row;
         }
 
-        static void Main(string[] args)
-        {
-            var logger = new ConsoleLogger();
-            logger.StartLogging();
-            var randomGenerator = new SystemRandomGenerator();
-              GameBoard Board = null;
-
-            int MenuOption = 0;
-            while (MenuOption != 9)
-            {
-                DisplayMenu();
-                MenuOption = GetMainMenuChoice();
-                if (MenuOption == 1)
-                {
-                    var ships = Ships.UnplacedShips1();
-                    Board = new GameBoard(10, ships,logger, randomGenerator);
-                    Board.RandomiseShipPlacement();
-                }
-                if (MenuOption == 2)
-                {
-                    var ships = Ships.TrainingGame();
-                    Board = new GameBoard(10, ships, logger, randomGenerator);
-                }
-                PlayGame(Board);
-            }
-        }
-
         private static void PrintBoard(GameBoard board)
         {
             int boardSize = board.Size;
@@ -119,7 +113,20 @@ namespace Boom.ConsoleUI
                 Console.Write(row + " ");
                 for (int col = 0; col < boardSize; col++)
                 {
-                    Console.Write(board.ReadSquare(row, col));
+                    SquareValues square = board.ReadSquare(row, col);
+                    switch (square)
+                    {
+                        case SquareValues.Empty:
+                            Console.Write(' ');
+                            break;
+                        case SquareValues.Miss:
+                            Console.Write('m');
+                            break;
+                        case SquareValues.Hit:
+                            Console.Write('h');
+                            break;
+                    }        
+                    
                     if (col != boardSize - 1)
                     {
                         Console.Write(" | ");
@@ -129,6 +136,4 @@ namespace Boom.ConsoleUI
             }
         }
     }
-
-
 }
