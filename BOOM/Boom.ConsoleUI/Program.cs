@@ -21,7 +21,7 @@ namespace Boom.ConsoleUI
                 MenuOption = GetMainMenuChoice();
                 if (MenuOption == 1)
                 {
-                    var ships = Ships.UnplacedShips1();
+                    var ships = Ships.UnplacedShips5();
                     Board = new GameBoard(10, ships, logger, randomGenerator);
                     Board.RandomiseShipPlacement();
                 }
@@ -71,7 +71,7 @@ namespace Boom.ConsoleUI
                 {
                     missile = new Bomb();
                 }
-                missile.Fire(row, col, Board);
+                missile.Fire(col, row, Board);
             }
         }
 

@@ -14,23 +14,23 @@
 
         public int Hits { get; private set; }
 
-        public Ship(string ShipName, int ShipSize, int row =0, int col =0, Orientations orient = 0)
+        public Ship(string ShipName, int ShipSize, int col =0, int row = 0, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
             Hits = 0;
-            SetPosition(row, col, orient);
+            SetPosition(col, row, orient);
         }
 
-        public void SetPosition(int row, int col, Orientations orient)
+        public void SetPosition(int col, int row, Orientations orient)
         {
-            startRow = row;
             startCol = col;
+            startRow = row;
             Orientation = orient;
         }
 
         //Calculated based on the size and the orientation of the ship
-        public bool ShipOccupiesLocation(int row, int col)
+        public bool ShipOccupiesLocation(int col, int row)
         {
             if (Orientation == Orientations.Horizontal)
             {

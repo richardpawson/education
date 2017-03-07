@@ -5,15 +5,17 @@
     {
         private int blastRadius = 1;
 
-        public void Fire(int row, int col, GameBoard Board)
+        public void Fire(int col, int row, GameBoard Board)
         {
-            for (int startRow = row - blastRadius; startRow <= row + blastRadius; startRow++)
+            for (int startCol = col - blastRadius; startCol <= col + blastRadius; startCol++)
             {
-                for (int startCol = col - blastRadius; startCol <= col + blastRadius; startCol++)
+                for (int startRow = row - blastRadius; startRow <= row + blastRadius; startRow++)
                 {
-                    if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
                     {
-                        Board.CheckSquareAndRecordOutcome(startRow, startCol);
+                        if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
+                        {
+                            Board.CheckSquareAndRecordOutcome(startCol, startRow);
+                        }
                     }
                 }
             }

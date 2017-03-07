@@ -32,20 +32,19 @@ namespace Boom.Model
                 }
             }
         }
-        ,
         //Checks, in collaboration with Ships, whether any of them cover
         //the given row, column; if one does, invoke the Hit() method on it.
-        public void CheckSquareAndRecordOutcome(int row, int col)
+        public void CheckSquareAndRecordOutcome(int col, int row)
         {
             foreach (Ship ship in Ships)
             {
-                if (ship.ShipOccupiesLocation(row, col))
+                if (ship.ShipOccupiesLocation(col, row))
                 {
                     ship.Hit();
                     Squares[row, col] = SquareValues.Hit;
                     if (ship.IsSunk())
                     {
-                        Logger.WriteLine(ship.Name + " sunk !");
+                        Logger.WriteLine(ship.Name + " sunk!");
                     }
                     else
                     {
@@ -60,7 +59,7 @@ namespace Boom.Model
                 }
             }
             Squares[row, col] = SquareValues.Miss;
-            Logger.WriteLine("Sorry, (" + row + "," + col + ") is a miss.");
+            Logger.WriteLine("Sorry, (" + col + "," + row + ") is a miss.");
         }
 
         //Returns true if the given position for the ship fits within the board 

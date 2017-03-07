@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.DataFixture", "Boom.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalServices", "TechnicalServices\TechnicalServices.csproj", "{B1014419-CEEC-4288-A9B4-B98C79ED9CB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Test", "Boom.Test\Boom.Test.csproj", "{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B1014419-CEEC-4288-A9B4-B98C79ED9CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1014419-CEEC-4288-A9B4-B98C79ED9CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1014419-CEEC-4288-A9B4-B98C79ED9CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

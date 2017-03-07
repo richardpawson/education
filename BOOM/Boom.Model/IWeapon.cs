@@ -2,6 +2,6 @@
 {
     public interface IWeapon
     {
-         void Fire(int row, int col, GameBoard Board);
+         void Fire(int col, int row, GameBoard Board);
     }
 }

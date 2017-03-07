@@ -2,9 +2,9 @@
 {
     public class Missile : IWeapon
     {
-        public void Fire(int row, int col, GameBoard Board)
+        public void Fire(int col, int row, GameBoard Board)
         {
-            Board.CheckSquareAndRecordOutcome(row, col);
+            Board.CheckSquareAndRecordOutcome(col, row);
         }
     }
 }
