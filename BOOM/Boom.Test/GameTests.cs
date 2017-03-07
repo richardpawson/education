@@ -9,9 +9,25 @@ namespace Boom.Test
     [TestClass]
     public class GameTests
     {
-        static ReadableLogger Logger = new ReadableLogger();
-        static IRandomGenerator SystemRandom = new SystemRandomGenerator();
-        static PredictableRandomGenerator Preditable = new PredictableRandomGenerator();
+        private ReadableLogger Logger = null;
+        private IRandomGenerator SystemRandom = null;
+        private PredictableRandomGenerator Preditable = null;
+        [TestInitialize] 
+        public void TestInitialize()
+        {
+             Logger = new ReadableLogger();
+             SystemRandom = new SystemRandomGenerator();
+             Preditable = new PredictableRandomGenerator();
+        }
+
+        [TestCleanup] 
+        public void TestCleanUp()
+        {
+            Logger = null;
+            SystemRandom = null;
+            Preditable = null;
+        }
+
 
         [TestMethod]
         public void TestHitWithMissile()
@@ -22,7 +38,26 @@ namespace Boom.Test
             missile.Fire(8, 1, board);
             Assert.AreEqual("Hit a Battleship at (8,1).", Logger.ReadAndResetLog());
             var battleship = ships[1];
-            Assert.AreEqual(1, battleship.Hits);
+            Assert.AreEqual(1, battleship.HitCount());
+            Assert.IsFalse(battleship.IsSunk());
+        }
+
+        [TestMethod]
+        public void RepeatedHitOnSameSquareDoesNotIncreaseHitCount()
+        {
+            var ships = Ships.TrainingGame();
+            var board = new GameBoard(10, ships, Logger, SystemRandom);
+            var missile = new Missile();
+            missile.Fire(8, 1, board);
+            Assert.AreEqual("Hit a Battleship at (8,1).", Logger.ReadAndResetLog());
+            var battleship = ships[1];
+            Assert.AreEqual(1, battleship.HitCount());
+            Assert.IsFalse(battleship.IsSunk());
+            missile.Fire(8, 1, board);
+            missile.Fire(8, 1, board);
+            missile.Fire(8, 1, board);
+            missile.Fire(8, 1, board);
+            Assert.AreEqual(1, battleship.HitCount());
             Assert.IsFalse(battleship.IsSunk());
         }
 
@@ -48,7 +83,7 @@ namespace Boom.Test
                "Hit a Battleship at (8,1).Hit a Battleship at (8,2).Hit a Battleship at (8,3).";
             Assert.AreEqual(expected, Logger.ReadAndResetLog());
             var battleship = ships[1];
-            Assert.AreEqual(3, battleship.Hits);
+            Assert.AreEqual(3, battleship.HitCount());
             Assert.IsFalse(battleship.IsSunk());
         }
 
@@ -61,10 +96,10 @@ namespace Boom.Test
             missile.Fire(4,5, board);
             Assert.AreEqual("Hit a Frigate at (4,5).", Logger.ReadAndResetLog());
             var frigate = ships[1];
-            Assert.AreEqual(1, frigate.Hits);
+            Assert.AreEqual(1, frigate.HitCount());
             Assert.IsFalse(frigate.IsSunk());
             missile.Fire(4, 6, board);
-            Assert.AreEqual(2, frigate.Hits);
+            Assert.AreEqual(2, frigate.HitCount());
             Assert.IsTrue(frigate.IsSunk());
             Assert.AreEqual("Frigate sunk!", Logger.ReadAndResetLog());
         }

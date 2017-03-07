@@ -85,7 +85,7 @@ namespace Boom.WinFormsUI
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            var ships = Ships.UnplacedShips1();
+            var ships = Ships.UnplacedShips5();
             InitializeGame(ships);
             Board.RandomiseShipPlacement();
             DrawBoard();
@@ -111,7 +111,7 @@ namespace Boom.WinFormsUI
         {        
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            weapon.Fire(row, col, Board);
+            weapon.Fire(col, row, Board);
             DrawBoard();
             richTextBox1.Text = Logger.ReadAndResetLog();
         }

@@ -40,7 +40,7 @@ namespace Boom.Model
             {
                 if (ship.ShipOccupiesLocation(col, row))
                 {
-                    ship.Hit();
+                    ship.Hit(col, row);
                     Squares[row, col] = SquareValues.Hit;
                     if (ship.IsSunk())
                     {

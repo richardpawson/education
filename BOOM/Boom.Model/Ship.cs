@@ -1,4 +1,6 @@
-﻿namespace Boom.Model
+﻿using System.Linq;
+
+namespace Boom.Model
 {
     public class Ship
     { 
@@ -12,13 +14,15 @@
 
         public int Size { get; private set; }
 
-        public int Hits { get; private set; }
+        //Corresponds to the length of the ship to know which squares
+        //have already been hit and prevent double-counting hits on same position
+        private bool[] Hits = null;
 
         public Ship(string ShipName, int ShipSize, int col =0, int row = 0, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
-            Hits = 0;
+            Hits = new bool[ShipSize];
             SetPosition(col, row, orient);
         }
 
@@ -44,16 +48,35 @@
             }
         }
 
-        //Increments the hit count
-        public void Hit()
+        private int PositionOnShip(int col, int row)
         {
-            Hits += 1;
+            if (!ShipOccupiesLocation(col, row)) throw new System.Exception("Ship does not occupy coordinates given");
+            if (Orientation == Orientations.Horizontal)
+            {
+                return col - startCol;
+            }
+            else
+            {
+                return row - startRow;
+            }
+        }
+
+        //Increments the hit count
+        public void Hit(int col, int row)
+        {
+            int positionOnShip = PositionOnShip(col, row);
+            Hits[positionOnShip] = true;
+        }
+
+        public int HitCount()
+        {
+            return Hits.Count(h => h); //i.e. returns count of 'true' values
         }
 
         //Returns true if the Hit count matches the size of the ship
         public bool IsSunk()
         {
-            return Hits >= Size;
+            return HitCount() >= Size;
         }
     }
 }
