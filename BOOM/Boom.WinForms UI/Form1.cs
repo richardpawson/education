@@ -97,16 +97,6 @@ namespace Boom.WinFormsUI
         }
         #endregion
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void FireWeapon(IWeapon weapon)
         {        
             var row = Convert.ToInt16(comboBox1.SelectedItem);
@@ -114,21 +104,6 @@ namespace Boom.WinFormsUI
             weapon.Fire(col, row, Board);
             DrawBoard();
             richTextBox1.Text = Logger.ReadAndResetLog();
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -77,7 +77,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(207, 39);
             this.comboBox1.TabIndex = 2;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // comboBox2
             // 
@@ -97,7 +96,6 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(207, 39);
             this.comboBox2.TabIndex = 3;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -107,7 +105,6 @@
             this.label1.Size = new System.Drawing.Size(71, 32);
             this.label1.TabIndex = 4;
             this.label1.Text = "Row";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -117,7 +114,6 @@
             this.label2.Size = new System.Drawing.Size(58, 32);
             this.label2.TabIndex = 5;
             this.label2.Text = "Col";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // button2
             // 
@@ -174,13 +170,10 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "BOOM - Battleships with OO Makeover";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
