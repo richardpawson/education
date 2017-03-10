@@ -94,8 +94,8 @@ Namespace Boom.ConsoleUI
 			For row As Integer = 0 To boardSize - 1
                 Console.Write(row.ToString() + " ")
                 For col As Integer = 0 To boardSize - 1
-					Dim square As SquareValues = board.ReadSquare(row, col)
-					Select Case square
+                    Dim square As SquareValues = board.ReadSquare(col, row)
+                    Select Case square
 						Case SquareValues.Empty
 							Console.Write(" "C)
 							Exit Select

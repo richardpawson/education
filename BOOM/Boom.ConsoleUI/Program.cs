@@ -113,7 +113,7 @@ namespace Boom.ConsoleUI
                 Console.Write(row + " ");
                 for (int col = 0; col < boardSize; col++)
                 {
-                    SquareValues square = board.ReadSquare(row, col);
+                    SquareValues square = board.ReadSquare(col, row);
                     switch (square)
                     {
                         case SquareValues.Empty:

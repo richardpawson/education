@@ -118,12 +118,12 @@ Namespace Boom.Test
 			Dim patrol = ships__1(1)
 			Preditable.SetNextValues(2, 3, 0, 4, 2, 1)
 			board.RandomiseShipPlacement()
-			Assert.IsTrue(destroyer.ShipOccupiesLocation(2, 3))
-			Assert.IsTrue(destroyer.ShipOccupiesLocation(3, 3))
+            Assert.IsTrue(destroyer.ShipOccupiesLocation(2, 3))
+            Assert.IsTrue(destroyer.ShipOccupiesLocation(3, 3))
 			Assert.IsTrue(destroyer.ShipOccupiesLocation(4, 3))
-			Assert.IsFalse(destroyer.ShipOccupiesLocation(2, 4))
+            Assert.IsFalse(destroyer.ShipOccupiesLocation(3, 2))
 
-			Assert.IsTrue(patrol.ShipOccupiesLocation(4, 2))
+            Assert.IsTrue(patrol.ShipOccupiesLocation(4, 2))
 			Assert.IsTrue(patrol.ShipOccupiesLocation(4, 3))
 			Assert.IsFalse(patrol.ShipOccupiesLocation(5, 2))
 		End Sub

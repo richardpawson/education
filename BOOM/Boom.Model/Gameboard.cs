@@ -24,11 +24,11 @@ namespace Boom.Model
         //Sets all squares to empty
         private void InitialiseEmptyBoard()
         {
-            for (int Row = 0; Row < Size; Row++)
+            for (int row = 0; row < Size; row++)
             {
-                for (int Column = 0; Column < Size; Column++)
+                for (int col = 0; col < Size; col++)
                 {
-                    Squares[Row, Column] = SquareValues.Empty;
+                    Squares[col, row] = SquareValues.Empty;
                 }
             }
         }
@@ -41,7 +41,7 @@ namespace Boom.Model
                 if (ship.ShipOccupiesLocation(col, row))
                 {
                     ship.Hit(col, row);
-                    Squares[row, col] = SquareValues.Hit;
+                    Squares[col, row] = SquareValues.Hit;
                     if (ship.IsSunk())
                     {
                         Logger.WriteLine(ship.Name + " sunk!");
@@ -106,9 +106,9 @@ namespace Boom.Model
         }
 
         //Allows the actual array of squares to remain private
-        public SquareValues ReadSquare(int row, int col)
+        public SquareValues ReadSquare(int col, int row)
         {
-            return Squares[row, col];
+            return Squares[col, row];
         }
 
         //In collaboration with IsValidPosition, finds a random but valid
@@ -124,13 +124,13 @@ namespace Boom.Model
                 bool valid = false;
                 while (valid == false)
                 {
-                    row = RandomGenerator.Next(0, Size);
                     col = RandomGenerator.Next(0, Size);
+                    row = RandomGenerator.Next(0, Size);
                     orientation = (Orientations)RandomGenerator.Next(0, 2);
                     valid = IsValidPosition(ship, row, col, orientation);
                 }
                 Logger.WriteLine("Computer placing the " + ship.Name);
-                ship.SetPosition(row, col, orientation);
+                ship.SetPosition(col, row, orientation);
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Boom.WinFormsUI
         }
 
         private void InitializeGame(Ship[] ships)
-        {            
+        {
             Logger.StartLogging();
             var randomGenerator = new SystemRandomGenerator();
             Board = new GameBoard(10, ships, Logger, randomGenerator);
@@ -33,11 +33,11 @@ namespace Boom.WinFormsUI
         {
             const int squareSize = 30;
             var g = pictureBox1.CreateGraphics();
-            for (int row = 0; row < Board.Size; row++)
+            for (int col = 0; col < Board.Size; col++)
             {
-                for (int col = 0; col < Board.Size; col++)
+                for (int row = 0; row < Board.Size; row++)
                 {
-                    var square = Board.ReadSquare(row, col);
+                    var square = Board.ReadSquare(col, row);
                     Brush brush = null;
                     switch (square)
                     {
@@ -98,7 +98,7 @@ namespace Boom.WinFormsUI
         #endregion
 
         private void FireWeapon(IWeapon weapon)
-        {        
+        {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             weapon.Fire(col, row, Board);

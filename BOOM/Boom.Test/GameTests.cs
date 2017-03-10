@@ -133,7 +133,7 @@ namespace Boom.Test
             Assert.IsTrue(destroyer.ShipOccupiesLocation(2, 3));
             Assert.IsTrue(destroyer.ShipOccupiesLocation(3, 3));
             Assert.IsTrue(destroyer.ShipOccupiesLocation(4, 3));
-            Assert.IsFalse(destroyer.ShipOccupiesLocation(2, 4));
+            Assert.IsFalse(destroyer.ShipOccupiesLocation(3, 2));
 
             Assert.IsTrue(patrol.ShipOccupiesLocation(4, 2));
             Assert.IsTrue(patrol.ShipOccupiesLocation(4, 3));
