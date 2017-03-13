@@ -24,7 +24,7 @@ namespace PredatorPrey.ConsoleUI
                 string MenuOption = Console.ReadLine();
                 if (MenuOption == "1")
                 {
-                    var landscape = new SquareLandscape(15, randomGenerator);
+                    var landscape = new SquareLandscape(10, randomGenerator);
                     int variability = 0;
                     setUp = new FixedLocationSetUp(landscape, variability, logger, randomGenerator);
                     break;
