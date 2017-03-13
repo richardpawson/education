@@ -5,7 +5,7 @@ using TechnicalServices;
 
 namespace PredatorPrey.ConsoleUI
 {
-    public class ConsoleUI
+    public class Program
     {
         public static void Main()
         {
