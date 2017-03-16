@@ -17,7 +17,7 @@ namespace PredatorPrey.WinFormsUI
     {
         private ReadableLogger Logger = new ReadableLogger();
         private IRandomGenerator RandomGenerator = new SystemRandomGenerator();
-        Simulation Sim = null;
+        private Simulation Sim = null;
         private Pen BlackPen = new Pen(Color.Black);
         private Brush BlackBrush = new SolidBrush(Color.Black);
         private Brush WhiteBrush = new SolidBrush(Color.White);
@@ -89,5 +89,9 @@ namespace PredatorPrey.WinFormsUI
             richTextBox1.Text = Logger.ReadAndResetLog();
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
