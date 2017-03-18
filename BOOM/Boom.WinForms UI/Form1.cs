@@ -59,12 +59,12 @@ namespace Boom.WinFormsUI
                     {
                         brush = blueBrush;
                     }
-                    DrawSquare(squareSize, g, row, col, brush);
+                    DrawSquare(squareSize, g, col, row, brush);
                 }
             }
         }
 
-        private void DrawSquare(int squareSide, Graphics g, int row, int col, Brush fill)
+        private void DrawSquare(int squareSide, Graphics g, int col, int row, Brush fill)
         {
             g.DrawRectangle(blackPen, col * squareSide, row * squareSide, squareSide, squareSide);
             if (fill != null)

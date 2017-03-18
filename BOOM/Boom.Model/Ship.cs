@@ -48,9 +48,19 @@ namespace Boom.Model
             }
         }
 
+        public bool ShipIsHitInLocation(int col, int row)
+        {
+            if (ShipOccupiesLocation(col, row))
+            {
+                int pos = PositionOnShip(col, row);
+                return Hits[pos];
+            }
+            else
+            { return false; }
+        }
+
         private int PositionOnShip(int col, int row)
         {
-            if (!ShipOccupiesLocation(col, row)) throw new System.Exception("Ship does not occupy coordinates given");
             if (Orientation == Orientations.Horizontal)
             {
                 return col - startCol;

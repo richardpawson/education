@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TechnicalServices;
 
 namespace Boom.Model
@@ -6,7 +8,7 @@ namespace Boom.Model
     public class GameBoard
     {
         public int Size { get; private set; }
-        private SquareValues[,] Squares;
+        private List<Tuple<int, int>> Misses = new List<Tuple<int, int>>();
         private Ship[] Ships;
         private ILogger Logger;
         private IRandomGenerator RandomGenerator;
@@ -14,24 +16,11 @@ namespace Boom.Model
         public GameBoard(int size, Ship[] ships, ILogger logger, IRandomGenerator randomGenerator)
         {
             Size = size;
-            Squares = new SquareValues[Size, Size];
             Logger = logger;
             RandomGenerator = randomGenerator;
-            InitialiseEmptyBoard();
             Ships = ships;
         }
 
-        //Sets all squares to empty
-        private void InitialiseEmptyBoard()
-        {
-            for (int row = 0; row < Size; row++)
-            {
-                for (int col = 0; col < Size; col++)
-                {
-                    Squares[col, row] = SquareValues.Empty;
-                }
-            }
-        }
         //Checks, in collaboration with Ships, whether any of them cover
         //the given row, column; if one does, invoke the Hit() method on it.
         public void CheckSquareAndRecordOutcome(int col, int row)
@@ -41,7 +30,6 @@ namespace Boom.Model
                 if (ship.ShipOccupiesLocation(col, row))
                 {
                     ship.Hit(col, row);
-                    Squares[col, row] = SquareValues.Hit;
                     if (ship.IsSunk())
                     {
                         Logger.WriteLine(ship.Name + " sunk!");
@@ -58,7 +46,7 @@ namespace Boom.Model
                     return;
                 }
             }
-            Squares[row, col] = SquareValues.Miss;
+            Misses.Add(Tuple.Create(col, row));
             Logger.WriteLine("Sorry, (" + col + "," + row + ") is a miss.");
         }
 
@@ -78,22 +66,16 @@ namespace Boom.Model
             {
                 if (orientation == Orientations.Vertical)
                 {
-                    for (int Scan = 0; Scan < ship.Size; Scan++)
+                    for (int scan = 0; scan < ship.Size; scan++)
                     {
-                        if (Squares[row + Scan, col] != SquareValues.Empty)
-                        {
-                            return false;
-                        }
+                        if (ship.ShipOccupiesLocation(col+scan, row)) return false;
                     }
                 }
                 else if (orientation == Orientations.Horizontal)
                 {
-                    for (int Scan = 0; Scan < ship.Size; Scan++)
+                    for (int scan = 0; scan < ship.Size; scan++)
                     {
-                        if (Squares[row, col + Scan] != SquareValues.Empty)
-                        {
-                            return false;
-                        }
+                        if (ship.ShipOccupiesLocation(col, row+scan)) return false;
                     }
                 }
             }
@@ -108,7 +90,18 @@ namespace Boom.Model
         //Allows the actual array of squares to remain private
         public SquareValues ReadSquare(int col, int row)
         {
-            return Squares[col, row];
+            if (Ships.Any(s => s.ShipIsHitInLocation(col, row)))
+            {
+                return SquareValues.Hit;
+            }
+            else if (Misses.Contains(Tuple.Create(col, row)))
+            {
+                return SquareValues.Miss;
+            }
+            else
+            {
+                return SquareValues.Empty;
+            }
         }
 
         //In collaboration with IsValidPosition, finds a random but valid
