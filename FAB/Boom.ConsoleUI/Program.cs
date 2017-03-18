@@ -2,6 +2,7 @@
 using TechnicalServices;
 using Boom.Model;
 using Boom.DataFixture;
+using System.Collections.Immutable;
 
 namespace Boom.ConsoleUI
 {
@@ -12,7 +13,8 @@ namespace Boom.ConsoleUI
             var logger = new ConsoleLogger();
             logger.StartLogging();
             var randomGenerator = new SystemRandomGenerator();
-            GameBoard Board = null;
+            var noMisses = ImmutableList<Tuple<int, int>>.Empty;
+                GameBoard Board = null;
 
             int MenuOption = 0;
             while (MenuOption != 9)
@@ -22,13 +24,13 @@ namespace Boom.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5();
-                   var board = new GameBoard(10, ships, logger, randomGenerator);
+                   var board = new GameBoard(10, ships, logger, randomGenerator, noMisses);
                     GameBoard.RandomiseShipPlacement(board);
                 }
                 if (MenuOption == 2)
                 {
                     var ships = Ships.TrainingGame();
-                    Board = new GameBoard(10, ships, logger, randomGenerator);
+                    Board = new GameBoard(10, ships, logger, randomGenerator, noMisses);
                 }
                 PlayGame(Board);
             }
@@ -64,11 +66,11 @@ namespace Boom.ConsoleUI
                 var row = GetRow();
                 if (missileType == "M")
                 {
-                    Missile.Fire(col, row, Board);
+                    Board = Missile.Fire(col, row, Board);
                 }
                 if (missileType == "B")
                 {
-                    Bomb.Fire(col, row, Board);
+                    Board = Bomb.Fire(col, row, Board);
                 }
                 
             }

@@ -1,6 +1,7 @@
 ﻿using Boom.DataFixture;
 using Boom.Model;
 using System;
+using System.Collections.Immutable;
 using System.Drawing;
 using System.Windows.Forms;
 using TechnicalServices;
@@ -16,6 +17,7 @@ namespace Boom.WinFormsUI
 
         private GameBoard Board;
         private ReadableLogger Logger = new ReadableLogger();
+        private ImmutableList<Tuple<int, int>>  noMisses = ImmutableList<Tuple<int, int>>.Empty;
 
         public Form1()
         {
@@ -26,7 +28,7 @@ namespace Boom.WinFormsUI
         {
             Logger.StartLogging();
             var randomGenerator = new SystemRandomGenerator();
-            Board = new GameBoard(10, ships, Logger, randomGenerator);
+            Board = new GameBoard(10, ships, Logger, randomGenerator, noMisses);
         }
 
         private void DrawBoard()
@@ -83,7 +85,7 @@ namespace Boom.WinFormsUI
         {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            Missile.Fire(col, row, Board);
+            Board = Missile.Fire(col, row, Board);
             DrawBoard();
             richTextBox1.Text = Logger.ReadAndResetLog();
         }
@@ -99,7 +101,7 @@ namespace Boom.WinFormsUI
         {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            Bomb.Fire(col, row, Board);
+            Board = Bomb.Fire(col, row, Board);
             DrawBoard();
             richTextBox1.Text = Logger.ReadAndResetLog();
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using TechnicalServices;
 
@@ -8,22 +9,32 @@ namespace Boom.Model
     public class GameBoard
     {
         public readonly int Size;
-        public readonly List<Tuple<int, int>> Misses = new List<Tuple<int, int>>();
+        public readonly ImmutableList<Tuple<int, int>> Misses;
         public readonly Ship[] Ships;
         public readonly ILogger Logger;
         public readonly IRandomGenerator RandomGenerator;
 
-        public GameBoard(int size, Ship[] ships, ILogger logger, IRandomGenerator randomGenerator)
+        /// <summary>
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="ships"></param>
+        /// <param name="logger"></param>
+        /// <param name="randomGenerator"></param>
+        /// <param name="misses"></param>
+        public GameBoard(int size, Ship[] ships, ILogger logger, IRandomGenerator randomGenerator, ImmutableList<Tuple<int, int>> misses)
         {
             Size = size;
             Logger = logger;
             RandomGenerator = randomGenerator;
             Ships = ships;
+            Misses = misses;
         }
+
+
 
         //Checks, in collaboration with Ships, whether any of them cover
         //the given row, column; if one does, invoke the Hit() method on it.
-        public static void CheckSquareAndRecordOutcome(GameBoard board, int col, int row)
+        public static GameBoard CheckSquareAndRecordOutcome(GameBoard board, int col, int row)
         {
             foreach (Ship ship in board.Ships)
             {
@@ -43,11 +54,12 @@ namespace Boom.Model
                         board.Logger.WriteLine("All ships sunk!");
                         board.Logger.WriteLine();
                     }
-                    return;
+                    return board;
                 }
             }
-            board.Misses.Add(Tuple.Create(col, row));
+            var newMisses = board.Misses.Add(Tuple.Create(col, row));
             board.Logger.WriteLine("Sorry, (" + col + "," + row + ") is a miss.");
+            return new GameBoard(board.Size, board.Ships, board.Logger, board.RandomGenerator, newMisses);
         }
 
         //Returns true if the given position for the ship fits within the board 
@@ -127,7 +139,7 @@ namespace Boom.Model
                 var newShip = Ship.SetPosition(ship, col, row, orientation);
                 newShips.Add(newShip);
             }
-            return new GameBoard(board.Size, newShips.ToArray(), board.Logger, board.RandomGenerator);
+            return new GameBoard(board.Size, newShips.ToArray(), board.Logger, board.RandomGenerator, board.Misses);
         }
     }
 }

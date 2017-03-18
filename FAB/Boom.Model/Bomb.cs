@@ -5,7 +5,7 @@
     {
         private static int blastRadius = 1;
 
-        public static void Fire(int col, int row, GameBoard board)
+        public static GameBoard Fire(int col, int row, GameBoard board)
         {
             for (int startCol = col - blastRadius; startCol <= col + blastRadius; startCol++)
             {
@@ -14,11 +14,12 @@
                     {
                         if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
                         {
-                            GameBoard.CheckSquareAndRecordOutcome(board, startCol, startRow);
+                            board =  GameBoard.CheckSquareAndRecordOutcome(board, startCol, startRow);
                         }
                     }
                 }
             }
+            return board;
         }
     }
 }
