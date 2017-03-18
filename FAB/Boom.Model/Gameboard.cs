@@ -7,11 +7,11 @@ namespace Boom.Model
 {
     public class GameBoard
     {
-        public int Size { get; private set; }
-        private List<Tuple<int, int>> Misses = new List<Tuple<int, int>>();
-        public Ship[] Ships;
-        private ILogger Logger;
-        private IRandomGenerator RandomGenerator;
+        public readonly int Size;
+        public readonly List<Tuple<int, int>> Misses = new List<Tuple<int, int>>();
+        public readonly Ship[] Ships;
+        public readonly ILogger Logger;
+        public readonly IRandomGenerator RandomGenerator;
 
         public GameBoard(int size, Ship[] ships, ILogger logger, IRandomGenerator randomGenerator)
         {
@@ -127,8 +127,7 @@ namespace Boom.Model
                 var newShip = Ship.SetPosition(ship, col, row, orientation);
                 newShips.Add(newShip);
             }
-            board.Ships = newShips.ToArray();
-            return board; //TODO: will need to be a new board
+            return new GameBoard(board.Size, newShips.ToArray(), board.Logger, board.RandomGenerator);
         }
     }
 }
