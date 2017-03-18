@@ -28,7 +28,6 @@ namespace Boom.Test
             Preditable = null;
         }
 
-
         [TestMethod]
         public void TestHitWithMissile()
         {

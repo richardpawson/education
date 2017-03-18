@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Boom.Model
 {
@@ -16,13 +18,12 @@ namespace Boom.Model
 
         //Corresponds to the length of the ship to know which squares
         //have already been hit and prevent double-counting hits on same position
-        private bool[] Hits = null;
+        private HashSet<Tuple<int,int>> Hits = new HashSet<Tuple<int, int>>();
 
         public Ship(string ShipName, int ShipSize, int col =0, int row = 0, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
-            Hits = new bool[ShipSize];
             SetPosition(col, row, orient);
         }
 
@@ -50,13 +51,7 @@ namespace Boom.Model
 
         public bool ShipIsHitInLocation(int col, int row)
         {
-            if (ShipOccupiesLocation(col, row))
-            {
-                int pos = PositionOnShip(col, row);
-                return Hits[pos];
-            }
-            else
-            { return false; }
+            return Hits.Contains(Tuple.Create(col, row));
         }
 
         private int PositionOnShip(int col, int row)
@@ -74,13 +69,12 @@ namespace Boom.Model
         //Increments the hit count
         public void Hit(int col, int row)
         {
-            int positionOnShip = PositionOnShip(col, row);
-            Hits[positionOnShip] = true;
+            Hits.Add(Tuple.Create(col, row));
         }
 
         public int HitCount()
         {
-            return Hits.Count(h => h); //i.e. returns count of 'true' values
+            return Hits.Count;
         }
 
         //Returns true if the Hit count matches the size of the ship
