@@ -9,7 +9,7 @@ namespace Boom.Model
     {
         public int Size { get; private set; }
         private List<Tuple<int, int>> Misses = new List<Tuple<int, int>>();
-        private Ship[] Ships;
+        public Ship[] Ships;
         private ILogger Logger;
         private IRandomGenerator RandomGenerator;
 
@@ -107,8 +107,9 @@ namespace Boom.Model
         //In collaboration with IsValidPosition, finds a random but valid
         //position for each of the ships set up, whether or not they already
         //have a position specified.
-        public static void RandomiseShipPlacement(GameBoard board)
+        public static GameBoard RandomiseShipPlacement(GameBoard board)
         {
+            var newShips = new List<Ship>(); 
             foreach (var ship in board.Ships)
             {
                 Orientations orientation = 0; //default
@@ -123,8 +124,11 @@ namespace Boom.Model
                     valid = IsValidPosition(board, ship, row, col, orientation);
                 }
                 board.Logger.WriteLine("Computer placing the " + ship.Name);
-                Ship.SetPosition(ship, col, row, orientation);
+                var newShip = Ship.SetPosition(ship, col, row, orientation);
+                newShips.Add(newShip);
             }
+            board.Ships = newShips.ToArray();
+            return board; //TODO: will need to be a new board
         }
     }
 }

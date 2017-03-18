@@ -6,33 +6,33 @@ namespace Boom.Model
 {
     public class Ship
     { 
-        private int startRow;
+        public readonly int startRow;
 
-        private int startCol;
+        public readonly int startCol;
 
-        private Orientations Orientation;
+        public readonly Orientations Orientation;
 
-        public string Name { get; private set; }
+        public readonly string Name;
 
-        public int Size { get; private set; }
+        public readonly int Size;
 
         //Corresponds to the length of the ship to know which squares
         //have already been hit and prevent double-counting hits on same position
-        private HashSet<Tuple<int,int>> Hits = new HashSet<Tuple<int, int>>();
+        public readonly HashSet<Tuple<int,int>> Hits = new HashSet<Tuple<int, int>>();
 
         #region Ship-related functions
-        public Ship(string ShipName, int ShipSize, int col =0, int row = 0, Orientations orient = 0)
+        public Ship(string ShipName, int ShipSize, int col=0, int row = 0, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
-            SetPosition(this, col, row, orient);
+            this.startCol = col;
+            this.startRow = row;
+            this.Orientation = orient;
         }
 
-        public static void SetPosition(Ship ship, int col, int row, Orientations orient)
+        public static Ship SetPosition(Ship ship, int col, int row, Orientations orient)
         {
-            ship.startCol = col;
-            ship.startRow = row;
-            ship.Orientation = orient;
+            return new Ship(ship.Name, ship.Size, col, row, orient); 
         }
 
         //Calculated based on the size and the orientation of the ship

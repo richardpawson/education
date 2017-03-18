@@ -119,10 +119,12 @@ namespace Boom.Test
         {
             var ships = Ships.UnplacedShips2();
             var board = new GameBoard(10, ships, Logger, Preditable);
+
+            Preditable.SetNextValues(2, 3, 0, 4, 2, 1);
+            board = GameBoard.RandomiseShipPlacement(board);
+            ships = board.Ships;
             var destroyer = ships[0];
             var patrol = ships[1];
-            Preditable.SetNextValues(2, 3, 0, 4, 2, 1);
-            GameBoard.RandomiseShipPlacement(board);
             Assert.IsTrue(Ship.ShipOccupiesLocation(destroyer,2, 3));
             Assert.IsTrue(Ship.ShipOccupiesLocation(destroyer, 3, 3));
             Assert.IsTrue(Ship.ShipOccupiesLocation(destroyer, 4, 3));
