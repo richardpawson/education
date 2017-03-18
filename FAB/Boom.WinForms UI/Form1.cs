@@ -37,7 +37,7 @@ namespace Boom.WinFormsUI
             {
                 for (int row = 0; row < Board.Size; row++)
                 {
-                    var square = Board.ReadSquare(col, row);
+                    var square = GameBoard.ReadSquare(Board, col, row);
                     Brush brush = null;
                     switch (square)
                     {
@@ -81,29 +81,29 @@ namespace Boom.WinFormsUI
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            FireWeapon(new Missile());
+            var row = Convert.ToInt16(comboBox1.SelectedItem);
+            var col = Convert.ToInt16(comboBox2.SelectedItem);
+            Missile.Fire(col, row, Board);
+            DrawBoard();
+            richTextBox1.Text = Logger.ReadAndResetLog();
         }
         private void button3_Click(object sender, EventArgs e)
         {
             var ships = Ships.UnplacedShips5();
             InitializeGame(ships);
-            Board.RandomiseShipPlacement();
+            GameBoard.RandomiseShipPlacement(Board);
             DrawBoard();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            FireWeapon(new Bomb());
-        }
-        #endregion
-
-        private void FireWeapon(IWeapon weapon)
-        {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            weapon.Fire(col, row, Board);
+            Bomb.Fire(col, row, Board);
             DrawBoard();
             richTextBox1.Text = Logger.ReadAndResetLog();
         }
+        #endregion
+
     }
 }

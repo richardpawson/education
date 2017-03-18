@@ -23,42 +23,42 @@ namespace Boom.Model
 
         //Checks, in collaboration with Ships, whether any of them cover
         //the given row, column; if one does, invoke the Hit() method on it.
-        public void CheckSquareAndRecordOutcome(int col, int row)
+        public static void CheckSquareAndRecordOutcome(GameBoard board, int col, int row)
         {
-            foreach (Ship ship in Ships)
+            foreach (Ship ship in board.Ships)
             {
-                if (ship.ShipOccupiesLocation(col, row))
+                if (Ship.ShipOccupiesLocation(ship, col, row))
                 {
-                    ship.Hit(col, row);
-                    if (ship.IsSunk())
+                    Ship.Hit(ship, col, row);
+                    if (Ship.IsSunk(ship))
                     {
-                        Logger.WriteLine(ship.Name + " sunk!");
+                        board.Logger.WriteLine(ship.Name + " sunk!");
                     }
                     else
                     {
-                        Logger.WriteLine("Hit a " + ship.Name + " at (" + col + "," + row + ").");
+                        board.Logger.WriteLine("Hit a " + ship.Name + " at (" + col + "," + row + ").");
                     }
-                    if (CheckWin())
+                    if (CheckWin(board))
                     {
-                        Logger.WriteLine("All ships sunk!");
-                        Logger.WriteLine();
+                        board.Logger.WriteLine("All ships sunk!");
+                        board.Logger.WriteLine();
                     }
                     return;
                 }
             }
-            Misses.Add(Tuple.Create(col, row));
-            Logger.WriteLine("Sorry, (" + col + "," + row + ") is a miss.");
+            board.Misses.Add(Tuple.Create(col, row));
+            board.Logger.WriteLine("Sorry, (" + col + "," + row + ") is a miss.");
         }
 
         //Returns true if the given position for the ship fits within the board 
         //and does not clash with another ship
-        private bool IsValidPosition(Ship ship, int row, int col, Orientations orientation)
+        private static bool IsValidPosition(GameBoard board, Ship ship, int row, int col, Orientations orientation)
         {
-            if (orientation == Orientations.Vertical && row + ship.Size > Size)
+            if (orientation == Orientations.Vertical && row + ship.Size > board.Size)
             {
                 return false;
             }
-            else if (orientation == Orientations.Horizontal && col + ship.Size > Size)
+            else if (orientation == Orientations.Horizontal && col + ship.Size > board.Size)
             {
                 return false;
             }
@@ -68,33 +68,33 @@ namespace Boom.Model
                 {
                     for (int scan = 0; scan < ship.Size; scan++)
                     {
-                        if (ship.ShipOccupiesLocation(col+scan, row)) return false;
+                        if (Ship.ShipOccupiesLocation(ship, col+scan, row)) return false;
                     }
                 }
                 else if (orientation == Orientations.Horizontal)
                 {
                     for (int scan = 0; scan < ship.Size; scan++)
                     {
-                        if (ship.ShipOccupiesLocation(col, row+scan)) return false;
+                        if (Ship.ShipOccupiesLocation(ship, col, row+scan)) return false;
                     }
                 }
             }
             return true;
         }
         //Returns true if all ships are sunk.
-        public bool CheckWin()
+        public static bool CheckWin(GameBoard board)
         {
-          return !Ships.Any(s => !s.IsSunk());
+          return !board.Ships.Any(s => !Ship.IsSunk(s));
         }
 
         //Allows the actual array of squares to remain private
-        public SquareValues ReadSquare(int col, int row)
+        public static SquareValues ReadSquare(GameBoard board, int col, int row)
         {
-            if (Ships.Any(s => s.ShipIsHitInLocation(col, row)))
+            if (board.Ships.Any(s => Ship.ShipIsHitInLocation(s, col, row)))
             {
                 return SquareValues.Hit;
             }
-            else if (Misses.Contains(Tuple.Create(col, row)))
+            else if (board.Misses.Contains(Tuple.Create(col, row)))
             {
                 return SquareValues.Miss;
             }
@@ -107,9 +107,9 @@ namespace Boom.Model
         //In collaboration with IsValidPosition, finds a random but valid
         //position for each of the ships set up, whether or not they already
         //have a position specified.
-        public void RandomiseShipPlacement()
+        public static void RandomiseShipPlacement(GameBoard board)
         {
-            foreach (var ship in Ships)
+            foreach (var ship in board.Ships)
             {
                 Orientations orientation = 0; //default
                 int row = 0;
@@ -117,13 +117,13 @@ namespace Boom.Model
                 bool valid = false;
                 while (valid == false)
                 {
-                    col = RandomGenerator.Next(0, Size);
-                    row = RandomGenerator.Next(0, Size);
-                    orientation = (Orientations)RandomGenerator.Next(0, 2);
-                    valid = IsValidPosition(ship, row, col, orientation);
+                    col = board.RandomGenerator.Next(0, board.Size);
+                    row = board.RandomGenerator.Next(0, board.Size);
+                    orientation = (Orientations) board.RandomGenerator.Next(0, 2);
+                    valid = IsValidPosition(board, ship, row, col, orientation);
                 }
-                Logger.WriteLine("Computer placing the " + ship.Name);
-                ship.SetPosition(col, row, orientation);
+                board.Logger.WriteLine("Computer placing the " + ship.Name);
+                Ship.SetPosition(ship, col, row, orientation);
             }
         }
     }

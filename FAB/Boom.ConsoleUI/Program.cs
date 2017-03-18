@@ -22,8 +22,8 @@ namespace Boom.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5();
-                    Board = new GameBoard(10, ships, logger, randomGenerator);
-                    Board.RandomiseShipPlacement();
+                   var board = new GameBoard(10, ships, logger, randomGenerator);
+                    GameBoard.RandomiseShipPlacement(board);
                 }
                 if (MenuOption == 2)
                 {
@@ -59,19 +59,18 @@ namespace Boom.ConsoleUI
             while (!GameWon)
             {
                 PrintBoard(Board);
-                IWeapon missile = null;
                 var missileType = GetMissileType();
                 var col = GetColumn();
                 var row = GetRow();
                 if (missileType == "M")
                 {
-                    missile = new Missile();
+                    Missile.Fire(col, row, Board);
                 }
                 if (missileType == "B")
                 {
-                    missile = new Bomb();
+                    Bomb.Fire(col, row, Board);
                 }
-                missile.Fire(col, row, Board);
+                
             }
         }
 
@@ -113,7 +112,7 @@ namespace Boom.ConsoleUI
                 Console.Write(row + " ");
                 for (int col = 0; col < boardSize; col++)
                 {
-                    SquareValues square = board.ReadSquare(col, row);
+                    SquareValues square = GameBoard.ReadSquare(board, col, row);
                     switch (square)
                     {
                         case SquareValues.Empty:

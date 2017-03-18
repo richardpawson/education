@@ -1,10 +1,10 @@
 ﻿namespace Boom.Model
 {
-    public class Missile : IWeapon
+    public class Missile
     {
-        public void Fire(int col, int row, GameBoard Board)
+        public static void Fire(int col, int row, GameBoard board)
         {
-            Board.CheckSquareAndRecordOutcome(col, row);
+            GameBoard.CheckSquareAndRecordOutcome(board, col, row);
         }
     }
 }

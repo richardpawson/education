@@ -20,67 +20,69 @@ namespace Boom.Model
         //have already been hit and prevent double-counting hits on same position
         private HashSet<Tuple<int,int>> Hits = new HashSet<Tuple<int, int>>();
 
+        #region Ship-related functions
         public Ship(string ShipName, int ShipSize, int col =0, int row = 0, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
-            SetPosition(col, row, orient);
+            SetPosition(this, col, row, orient);
         }
 
-        public void SetPosition(int col, int row, Orientations orient)
+        public static void SetPosition(Ship ship, int col, int row, Orientations orient)
         {
-            startCol = col;
-            startRow = row;
-            Orientation = orient;
+            ship.startCol = col;
+            ship.startRow = row;
+            ship.Orientation = orient;
         }
 
         //Calculated based on the size and the orientation of the ship
-        public bool ShipOccupiesLocation(int col, int row)
+        public static bool ShipOccupiesLocation(Ship ship, int col, int row)
         {
-            if (Orientation == Orientations.Horizontal)
+            if (ship.Orientation == Orientations.Horizontal)
             {
-                return startRow == row &&
-                    col >= startCol && col < startCol + Size;
+                return ship.startRow == row &&
+                    col >= ship.startCol && col < ship.startCol + ship.Size;
             }
             else
             {
-                return this.startCol == col &&
-                    row >= startRow && row < startRow + Size;
+                return ship.startCol == col &&
+                    row >= ship.startRow && row < ship.startRow + ship.Size;
             }
         }
 
-        public bool ShipIsHitInLocation(int col, int row)
+        public static bool ShipIsHitInLocation(Ship ship, int col, int row)
         {
-            return Hits.Contains(Tuple.Create(col, row));
+            return ship.Hits.Contains(Tuple.Create(col, row));
         }
 
-        private int PositionOnShip(int col, int row)
+        private static int PositionOnShip(Ship ship, int col, int row)
         {
-            if (Orientation == Orientations.Horizontal)
+            if (ship.Orientation == Orientations.Horizontal)
             {
-                return col - startCol;
+                return col - ship.startCol;
             }
             else
             {
-                return row - startRow;
+                return row - ship.startRow;
             }
         }
 
         //Increments the hit count
-        public void Hit(int col, int row)
+        public static void Hit(Ship ship, int col, int row)
         {
-            Hits.Add(Tuple.Create(col, row));
+            ship.Hits.Add(Tuple.Create(col, row));
         }
 
-        public int HitCount()
+        public static int HitCount(Ship ship)
         {
-            return Hits.Count;
+            return ship.Hits.Count;
         }
 
         //Returns true if the Hit count matches the size of the ship
-        public bool IsSunk()
+        public static bool IsSunk(Ship ship)
         {
-            return HitCount() >= Size;
+            return HitCount(ship) >= ship.Size;
         }
+        #endregion
     }
 }
