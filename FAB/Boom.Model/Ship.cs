@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Boom.Model
@@ -16,23 +17,22 @@ namespace Boom.Model
 
         public readonly int Size;
 
-        //Corresponds to the length of the ship to know which squares
-        //have already been hit and prevent double-counting hits on same position
-        public readonly HashSet<Tuple<int,int>> Hits = new HashSet<Tuple<int, int>>();
+        public readonly ImmutableHashSet<Tuple<int,int>> Hits;
 
         #region Ship-related functions
-        public Ship(string ShipName, int ShipSize, int col=0, int row = 0, Orientations orient = 0)
+        public Ship(string ShipName, int ShipSize, ImmutableHashSet<Tuple<int, int>> hits, int col=0, int row = 0, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
-            this.startCol = col;
-            this.startRow = row;
-            this.Orientation = orient;
+            startCol = col;
+            startRow = row;
+            Orientation = orient;
+            Hits = hits;
         }
 
         public static Ship SetPosition(Ship ship, int col, int row, Orientations orient)
         {
-            return new Ship(ship.Name, ship.Size, col, row, orient); 
+            return new Ship(ship.Name, ship.Size, ship.Hits, col, row, orient); 
         }
 
         //Calculated based on the size and the orientation of the ship
@@ -67,10 +67,10 @@ namespace Boom.Model
             }
         }
 
-        //Increments the hit count
-        public static void Hit(Ship ship, int col, int row)
+        public static Ship Hit(Ship ship, int col, int row)
         {
-            ship.Hits.Add(Tuple.Create(col, row));
+            var newHits = ship.Hits.Add(Tuple.Create(col, row));
+            return new Ship(ship.Name, ship.Size, newHits, ship.startCol, ship.startRow, ship.Orientation);
         }
 
         public static int HitCount(Ship ship)
