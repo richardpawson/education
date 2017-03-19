@@ -25,7 +25,7 @@ namespace Boom.WinFormsUI
 
         private void InitializeGame(Ship[] ships)
         {
-            var randomGenerator = new SystemRandomGenerator();
+            var randomGenerator = new Random();
             Board = new GameBoard(10, ships, "", randomGenerator, noMisses);
         }
 

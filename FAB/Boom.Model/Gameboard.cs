@@ -11,7 +11,7 @@ namespace Boom.Model
         public readonly int Size;
         public readonly ImmutableList<Tuple<int, int>> Misses;
         public readonly Ship[] Ships;
-        public readonly IRandomGenerator RandomGenerator;
+        public readonly Random RandomGenerator;
         public readonly string Messages;
         private const string newLine = "\n";
         /// <summary>
@@ -21,7 +21,7 @@ namespace Boom.Model
         /// <param name="logger"></param>
         /// <param name="randomGenerator"></param>
         /// <param name="misses"></param>
-        public GameBoard(int size, Ship[] ships, string messages,IRandomGenerator randomGenerator, ImmutableList<Tuple<int, int>> misses)
+        public GameBoard(int size, Ship[] ships, string messages,Random randomGenerator, ImmutableList<Tuple<int, int>> misses)
         {
             Size = size;
             Messages = messages;

@@ -10,7 +10,7 @@ namespace Boom.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var randomGenerator = new SystemRandomGenerator();
+            var randomGenerator = new Random();
             var noMisses = ImmutableList<Tuple<int, int>>.Empty;
                 GameBoard Board = null;
 
