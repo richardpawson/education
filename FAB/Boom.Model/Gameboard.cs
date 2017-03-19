@@ -10,7 +10,7 @@ namespace Boom.Model
     {
         public readonly int Size;
         public readonly ImmutableList<Tuple<int, int>> Misses;
-        public readonly Ship[] Ships;
+        public readonly ImmutableArray<Ship> Ships;
         public readonly Random RandomGenerator;
         public readonly string Messages;
         private const string newLine = "\n";
@@ -21,7 +21,7 @@ namespace Boom.Model
         /// <param name="logger"></param>
         /// <param name="randomGenerator"></param>
         /// <param name="misses"></param>
-        public GameBoard(int size, Ship[] ships, string messages,Random randomGenerator, ImmutableList<Tuple<int, int>> misses)
+        public GameBoard(int size, ImmutableArray<Ship> ships, string messages,Random randomGenerator, ImmutableList<Tuple<int, int>> misses)
         {
             Size = size;
             Messages = messages;
@@ -34,7 +34,7 @@ namespace Boom.Model
         //the given row, column; if one does, invoke the Hit() method on it.
         public static GameBoard CheckSquareAndRecordOutcome(GameBoard board, int col, int row)
         {
-            var newShips = ImmutableList<Ship>.Empty;
+            var newShips = ImmutableArray<Ship>.Empty;
             bool hit = false;
             var messages = new StringBuilder();
             foreach (Ship ship in board.Ships)
@@ -67,7 +67,7 @@ namespace Boom.Model
             if (!newShips.Any(s => !Ship.IsSunk(s))) {
                 messages.Append("All ships sunk!");
             }
-            return new GameBoard(board.Size, newShips.ToArray(), messages.ToString(), board.RandomGenerator, misses);
+            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages.ToString(), board.RandomGenerator, misses);
         }
 
         //Returns true if the given position for the ship fits within the board 
@@ -157,7 +157,7 @@ namespace Boom.Model
                 var newShip = Ship.SetPosition(ship, col, row, orientation);
                 newShips = newShips.Add(newShip);
             }
-            return new GameBoard(board.Size, newShips.ToArray(), messages, newRandom, board.Misses);
+            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages, newRandom, board.Misses);
         }
     }
 }

@@ -7,47 +7,48 @@ namespace Boom.DataFixture
     public static class Ships
     {
         private static ImmutableHashSet<Tuple<int, int>> noHits = ImmutableHashSet<Tuple<int, int>>.Empty;
+  
         //Returns five ships with no placings. Intention is that after creating a new
         // GameBoard with this set, you would call RandomiseShipPlacement() on it.
-        public static Ship[] UnplacedShips5()
+        public static ImmutableArray<Ship> UnplacedShips5()
         {
-
-            var ships = new Ship[5];
-            ships[0] = new Ship("Aircraft Carrier",5, noHits);
-            ships[1] = new Ship("Battleship",4, noHits);
-            ships[2] = new Ship("Submarine", 3, noHits);
-            ships[3] = new Ship("Destroyer", 3, noHits);
-            ships[4] = new Ship("Patrol Boat", 2, noHits);
-            return ships;
+             return ImmutableArray.Create(
+                new Ship("Aircraft Carrier",5, noHits),
+                new Ship("Battleship", 4, noHits),
+                new Ship("Submarine", 3, noHits),
+                new Ship("Destroyer", 3, noHits),
+                new Ship("Patrol Boat", 2, noHits)
+            );
         }
 
-        public static Ship[] UnplacedShips4()
+        public static ImmutableArray<Ship> UnplacedShips4()
         {
-            var ships = new Ship[4];
-            ships[0] = new Ship("Patrol Boat", 2, noHits);
-            ships[1] = new Ship("Patrol Boat", 2, noHits);
-            ships[2] = new Ship("Patrol Boat", 2, noHits);
-            ships[3] = new Ship("Patrol Boat", 2, noHits);
-            return ships;
+            return  ImmutableArray.Create(
+                new Ship("Patrol Boat", 2, noHits),
+                new Ship("Patrol Boat", 2, noHits),
+                new Ship("Patrol Boat", 2, noHits),
+                new Ship("Patrol Boat", 2, noHits)
+            );
         }
 
-        public static Ship[] TrainingGame() {
-            var ships = new Ship[5];
-            ships[0] = new Ship("Aircraft Carrier", 5, noHits, 1,8,Orientations.Horizontal);
-            ships[1] = new Ship("Battleship", 4, noHits, 8,1,Orientations.Vertical);
-            ships[2] = new Ship("Submarine", 3, noHits, 7,6,Orientations.Vertical);
-            ships[3] = new Ship("Destroyer", 3, noHits, 5,9,Orientations.Horizontal);
-            ships[4] = new Ship("Patrol Boat", 2, noHits, 1,4,Orientations.Vertical);
-            return ships;
+        public static ImmutableArray<Ship> TrainingGame()
+        {
+            return ImmutableArray.Create(
+                new Ship("Aircraft Carrier", 5, noHits, 1,8,Orientations.Horizontal),
+                new Ship("Battleship", 4, noHits, 8, 1, Orientations.Vertical),
+                new Ship("Submarine", 3, noHits, 7, 6, Orientations.Vertical),
+                new Ship("Destroyer", 3, noHits, 5, 9, Orientations.Horizontal),
+                new Ship("Patrol Boat", 2, noHits, 1, 4, Orientations.Vertical)
+            );
         }
 
         //Contains only two small ships.  Intent is for testing a complete game scenario.
-        public static Ship[] SmallTestGame()
+        public static ImmutableArray<Ship> SmallTestGame()
         {
-            var ships = new Ship[2];
-            ships[0] = new Ship("Minesweeper", 1, noHits, 2, 3, Orientations.Horizontal);
-            ships[1] = new Ship("Frigate", 2, noHits, 4, 5, Orientations.Vertical);
-            return ships;
+            return ImmutableArray.Create(
+                new Ship("Minesweeper", 1, noHits, 2, 3, Orientations.Horizontal),
+                new Ship("Frigate", 2, noHits, 4, 5, Orientations.Vertical)
+            );
         }
     }
 }

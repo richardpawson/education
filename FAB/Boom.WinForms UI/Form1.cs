@@ -23,7 +23,7 @@ namespace Boom.WinFormsUI
             InitializeComponent();
         }
 
-        private void InitializeGame(Ship[] ships)
+        private void InitializeGame(ImmutableArray<Ship> ships)
         {
             var randomGenerator = new Random();
             Board = new GameBoard(10, ships, "", randomGenerator, noMisses);
