@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using TechnicalServices;
@@ -36,7 +35,7 @@ namespace Boom.Model
         //the given row, column; if one does, invoke the Hit() method on it.
         public static GameBoard CheckSquareAndRecordOutcome(GameBoard board, int col, int row)
         {
-            var newShips = new List<Ship>(); //TODO: Make immutable 
+            var newShips = ImmutableList<Ship>.Empty; //TODO: Make immutable 
             bool hit = false;
             foreach (Ship ship in board.Ships)
             {
@@ -44,7 +43,7 @@ namespace Boom.Model
                 {
                     hit = true;
                     var newShip = Ship.Hit(ship, col, row);
-                    newShips.Add(newShip);
+                    newShips = newShips.Add(newShip);
                     if (Ship.IsSunk(newShip))
                     {
                         board.Logger.WriteLine(newShip.Name + " sunk!");
@@ -56,7 +55,7 @@ namespace Boom.Model
                 }
                 else
                 {
-                    newShips.Add(ship);
+                   newShips = newShips.Add(ship);
                 }
             }
             var misses = board.Misses;
@@ -133,7 +132,7 @@ namespace Boom.Model
         //have a position specified.
         public static GameBoard RandomiseShipPlacement(GameBoard board)
         {
-            var newShips = new List<Ship>();
+            var newShips = ImmutableList<Ship>.Empty;
             foreach (var ship in board.Ships)
             {
                 Orientations orientation = 0; //default
@@ -149,7 +148,7 @@ namespace Boom.Model
                 }
                 board.Logger.WriteLine("Computer placing the " + ship.Name);
                 var newShip = Ship.SetPosition(ship, col, row, orientation);
-                newShips.Add(newShip);
+                newShips = newShips.Add(newShip);
             }
             return new GameBoard(board.Size, newShips.ToArray(), board.Logger, board.RandomGenerator, board.Misses);
         }
