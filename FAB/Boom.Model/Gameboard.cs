@@ -70,18 +70,13 @@ namespace Boom.Model
             return new GameBoard(board.Size, newShips.ToImmutableArray(), messages.ToString(), board.RandomGenerator, misses);
         }
 
-        //Returns true if the given position for the ship fits within the board 
-        //and does not clash with another ship
         private static bool IsValidPosition(GameBoard board, Ship ship, int row, int col, Orientations orientation)
         {
-            if (orientation == Orientations.Vertical && row + ship.Size > board.Size)
+            if (!ShipWouldFitWithinBoard(board, ship, row, col, orientation))
             {
                 return false;
             }
-            else if (orientation == Orientations.Horizontal && col + ship.Size > board.Size)
-            {
-                return false;
-            }
+
             else
             {
                 if (orientation == Orientations.Vertical)
@@ -100,6 +95,12 @@ namespace Boom.Model
                 }
             }
             return true;
+        }
+
+        private static bool ShipWouldFitWithinBoard(GameBoard board, Ship ship, int row, int col, Orientations orientation)
+        {
+            return (orientation == Orientations.Vertical && row + ship.Size <= board.Size) ||
+                   (orientation == Orientations.Horizontal && col + ship.Size <= board.Size);
         }
 
         //Allows the actual array of squares to remain private
@@ -124,7 +125,7 @@ namespace Boom.Model
         //have a position specified.
         public static GameBoard RandomiseShipPlacement(GameBoard board)
         {
-            Random newRandom = board.RandomGenerator;
+            Random random1 = board.RandomGenerator;
             var newShips = ImmutableList<Ship>.Empty;
             var messages = "";
             foreach (var ship in board.Ships)
@@ -135,21 +136,21 @@ namespace Boom.Model
                 bool valid = false;
                 while (valid == false)
                 {
-                    var result = RandomNumbers.Next(newRandom, 0, board.Size);
-                    col = result.Item1;
-                    newRandom = result.Item2;
+                    var result1 = RandomNumbers.Next(random1, 0, board.Size);
+                    col = result1.Item1;
+                    var random2 = result1.Item2;
 
-                    result = RandomNumbers.Next(newRandom, 0, board.Size);
+                    result = RandomNumbers.Next(random1, 0, board.Size);
                     col = result.Item1;
-                    newRandom = result.Item2;
+                    random1 = result.Item2;
 
-                    result = RandomNumbers.Next(newRandom, 0, board.Size);
+                    result = RandomNumbers.Next(random1, 0, board.Size);
                     row = result.Item1;
-                    newRandom = result.Item2;
+                    random1 = result.Item2;
 
-                    result = RandomNumbers.Next(newRandom, 0, 2);
+                    result = RandomNumbers.Next(random1, 0, 2);
                     orientation  = (Orientations) result.Item1;
-                    newRandom = result.Item2;
+                    random1 = result.Item2;
 
                     valid = IsValidPosition(board, ship, row, col, orientation);
                 }
@@ -157,7 +158,7 @@ namespace Boom.Model
                 var newShip = Ship.SetPosition(ship, col, row, orientation);
                 newShips = newShips.Add(newShip);
             }
-            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages, newRandom, board.Misses);
+            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages, random1, board.Misses);
         }
     }
 }
