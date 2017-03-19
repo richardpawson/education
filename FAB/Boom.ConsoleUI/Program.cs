@@ -10,8 +10,6 @@ namespace Boom.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var logger = new ConsoleLogger();
-            logger.StartLogging();
             var randomGenerator = new SystemRandomGenerator();
             var noMisses = ImmutableList<Tuple<int, int>>.Empty;
                 GameBoard Board = null;
@@ -24,13 +22,13 @@ namespace Boom.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5();
-                   var board = new GameBoard(10, ships, logger, randomGenerator, noMisses);
+                   var board = new GameBoard(10, ships, "", randomGenerator, noMisses);
                     GameBoard.RandomiseShipPlacement(board);
                 }
                 if (MenuOption == 2)
                 {
                     var ships = Ships.TrainingGame();
-                    Board = new GameBoard(10, ships, logger, randomGenerator, noMisses);
+                    Board = new GameBoard(10, ships, "", randomGenerator, noMisses);
                 }
                 PlayGame(Board);
             }

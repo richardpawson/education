@@ -11,14 +11,12 @@ namespace Boom.Test
     [TestClass]
     public class GameTests
     {
-        private ReadableLogger Logger = null;
         private IRandomGenerator SystemRandom = null;
         private PredictableRandomGenerator Preditable = null;
         private ImmutableList<Tuple<int, int>>  noMisses = ImmutableList<Tuple<int, int>>.Empty;
         [TestInitialize] 
         public void TestInitialize()
         {
-             Logger = new ReadableLogger();
              SystemRandom = new SystemRandomGenerator();
              Preditable = new PredictableRandomGenerator();
         }
@@ -26,7 +24,6 @@ namespace Boom.Test
         [TestCleanup] 
         public void TestCleanUp()
         {
-            Logger = null;
             SystemRandom = null;
             Preditable = null;
         }
@@ -35,9 +32,9 @@ namespace Boom.Test
         public void TestHitWithMissile()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, Logger, SystemRandom, noMisses);       
+            var board = new GameBoard(10, ships, "", SystemRandom, noMisses);       
             board = Missile.Fire(8, 1, board);
-            Assert.AreEqual("Hit a Battleship at (8,1).", Logger.ReadAndResetLog());
+            Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
             var battleship = board.Ships[1];
             Assert.AreEqual(1, Ship.HitCount(battleship));
             Assert.IsFalse(Ship.IsSunk(battleship));
@@ -48,9 +45,9 @@ namespace Boom.Test
         public void RepeatedHitOnSameSquareDoesNotIncreaseHitCount()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, Logger, SystemRandom, noMisses);
+            var board = new GameBoard(10, ships, "", SystemRandom, noMisses);
             board = Missile.Fire(8, 1, board);
-            Assert.AreEqual("Hit a Battleship at (8,1).", Logger.ReadAndResetLog());
+            Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
             var battleship = board.Ships[1];
             Assert.AreEqual(1, Ship.HitCount(battleship));
             Assert.IsFalse(Ship.IsSunk(battleship));
@@ -67,13 +64,13 @@ namespace Boom.Test
         public void TestMissWithMissile()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, Logger, SystemRandom, noMisses);
+            var board = new GameBoard(10, ships, "", SystemRandom, noMisses);
             board = Missile.Fire(7, 1, board);
             Assert.AreEqual(1, board.Misses.Count);
-            Assert.AreEqual("Sorry, (7,1) is a miss.", Logger.ReadAndResetLog());
+            Assert.AreEqual("Sorry, (7,1) is a miss.", board.Messages);
             board = Missile.Fire(6, 1, board);
             Assert.AreEqual(2, board.Misses.Count);
-            Assert.AreEqual("Sorry, (6,1) is a miss.", Logger.ReadAndResetLog());
+            Assert.AreEqual("Sorry, (6,1) is a miss.", board.Messages);
 
         }
 
@@ -81,12 +78,12 @@ namespace Boom.Test
         public void TestBombWithHits()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, Logger, SystemRandom, noMisses);
+            var board = new GameBoard(10, ships, "", SystemRandom, noMisses);
             board = Bomb.Fire(7, 2, board);
             var expected = "Sorry, (6,1) is a miss.Sorry, (6,2) is a miss.Sorry, (6,3) is a miss." +
                "Sorry, (7,1) is a miss.Sorry, (7,2) is a miss.Sorry, (7,3) is a miss." +
                "Hit a Battleship at (8,1).Hit a Battleship at (8,2).Hit a Battleship at (8,3).";
-            Assert.AreEqual(expected, Logger.ReadAndResetLog());
+            Assert.AreEqual(expected, board.Messages);
             var battleship = board.Ships[1];
             Assert.AreEqual(3, Ship.HitCount(battleship));
             Assert.IsFalse(Ship.IsSunk(battleship));
@@ -96,9 +93,9 @@ namespace Boom.Test
         public void TestSunk()
         {
             var ships = Ships.SmallTestGame();
-            var board = new GameBoard(10, ships, Logger, SystemRandom, noMisses);
+            var board = new GameBoard(10, ships, "", SystemRandom, noMisses);
             board = Missile.Fire(4,5, board);
-            Assert.AreEqual("Hit a Frigate at (4,5).", Logger.ReadAndResetLog());
+            Assert.AreEqual("Hit a Frigate at (4,5).", board.Messages);
             var frigate = board.Ships[1];
             Assert.AreEqual(1, Ship.HitCount(frigate));
             Assert.IsFalse(Ship.IsSunk(frigate));
@@ -106,20 +103,20 @@ namespace Boom.Test
             frigate = board.Ships[1];
             Assert.AreEqual(2, Ship.HitCount(frigate));
             Assert.IsTrue(Ship.IsSunk(frigate));
-            Assert.AreEqual("Frigate sunk!", Logger.ReadAndResetLog());
+            Assert.AreEqual("Frigate sunk!", board.Messages);
         }
 
         [TestMethod]
         public void TestGameOver()
         {
             var ships = Ships.SmallTestGame();
-            var board = new GameBoard(10, ships, Logger, SystemRandom, noMisses);
+            var board = new GameBoard(10, ships, "", SystemRandom, noMisses);
             board = Missile.Fire(4, 5, board);
-            Assert.AreEqual("Hit a Frigate at (4,5).", Logger.ReadAndResetLog());
+            Assert.AreEqual("Hit a Frigate at (4,5).", board.Messages);
             board = Missile.Fire(4, 6, board);
-            Assert.AreEqual("Frigate sunk!", Logger.ReadAndResetLog());
+            Assert.AreEqual("Frigate sunk!", board.Messages);
             board = Missile.Fire(2, 3, board);
-            Assert.AreEqual("Minesweeper sunk!All ships sunk!", Logger.ReadAndResetLog());
+            Assert.AreEqual("Minesweeper sunk!All ships sunk!", board.Messages);
         }
 
         //Uses the (mock) PredictableRandomGenerator. It is not
@@ -128,7 +125,7 @@ namespace Boom.Test
         public void TestRandomPlacement()
         {
             var ships = Ships.UnplacedShips2();
-            var board = new GameBoard(10, ships, Logger, Preditable, noMisses);
+            var board = new GameBoard(10, ships, "", Preditable, noMisses);
 
             Preditable.SetNextValues(2, 3, 0, 4, 2, 1);
             board = GameBoard.RandomiseShipPlacement(board);

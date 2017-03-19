@@ -16,7 +16,6 @@ namespace Boom.WinFormsUI
         private Brush whiteBrush = new SolidBrush(Color.White);
 
         private GameBoard Board;
-        private ReadableLogger Logger = new ReadableLogger();
         private ImmutableList<Tuple<int, int>>  noMisses = ImmutableList<Tuple<int, int>>.Empty;
 
         public Form1()
@@ -26,9 +25,8 @@ namespace Boom.WinFormsUI
 
         private void InitializeGame(Ship[] ships)
         {
-            Logger.StartLogging();
             var randomGenerator = new SystemRandomGenerator();
-            Board = new GameBoard(10, ships, Logger, randomGenerator, noMisses);
+            Board = new GameBoard(10, ships, "", randomGenerator, noMisses);
         }
 
         private void DrawBoard()
@@ -87,7 +85,7 @@ namespace Boom.WinFormsUI
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             Board = Missile.Fire(col, row, Board);
             DrawBoard();
-            richTextBox1.Text = Logger.ReadAndResetLog();
+            richTextBox1.Text = Board.Messages;
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -103,7 +101,7 @@ namespace Boom.WinFormsUI
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             Board = Bomb.Fire(col, row, Board);
             DrawBoard();
-            richTextBox1.Text = Logger.ReadAndResetLog();
+            richTextBox1.Text = Board.Messages;
         }
         #endregion
 
