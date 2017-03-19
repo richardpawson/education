@@ -121,20 +121,26 @@ namespace Boom.Test
         [TestMethod]
         public void TestRandomPlacement()
         {
-            var ships = Ships.UnplacedShips2();
+            var ships = Ships.UnplacedShips4();
             var board = new GameBoard(10, ships, "", Random, noMisses);
             board = GameBoard.RandomiseShipPlacement(board);
             ships = board.Ships;
-            var destroyer = ships[0];
-            var patrol = ships[1];
-            Assert.IsTrue(Ship.ShipOccupiesLocation(destroyer,2, 1));
-            Assert.IsTrue(Ship.ShipOccupiesLocation(destroyer, 3, 1));
-            Assert.IsTrue(Ship.ShipOccupiesLocation(destroyer, 4, 1));
-            Assert.IsFalse(Ship.ShipOccupiesLocation(destroyer, 1, 2));
+            var s0 = ships[0];
+            var s1 = ships[1];
+            var s2 = ships[2];
+            var s3 = ships[3];
 
-            Assert.IsTrue(Ship.ShipOccupiesLocation(patrol,7, 6));
-            Assert.IsTrue(Ship.ShipOccupiesLocation(patrol, 8, 6));
-            Assert.IsFalse(Ship.ShipOccupiesLocation(patrol,6, 7));
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s0,1, 4));
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s0, 1, 5));
+
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s1,4, 3));
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s1, 4, 4));
+
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s2, 6, 0));
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s2, 7, 0));
+
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s3, 9, 6));
+            Assert.IsTrue(Ship.ShipOccupiesLocation(s3, 9, 7));
         }
 
     }

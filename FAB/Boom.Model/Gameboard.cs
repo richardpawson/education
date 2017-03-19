@@ -124,6 +124,7 @@ namespace Boom.Model
         //have a position specified.
         public static GameBoard RandomiseShipPlacement(GameBoard board)
         {
+            Random newRandom = board.RandomGenerator;
             var newShips = ImmutableList<Ship>.Empty;
             var messages = "";
             foreach (var ship in board.Ships)
@@ -134,16 +135,29 @@ namespace Boom.Model
                 bool valid = false;
                 while (valid == false)
                 {
-                    col = board.RandomGenerator.Next(0, board.Size);
-                    row = board.RandomGenerator.Next(0, board.Size);
-                    orientation = (Orientations)board.RandomGenerator.Next(0, 2);
+                    var result = RandomNumbers.Next(newRandom, 0, board.Size);
+                    col = result.Item1;
+                    newRandom = result.Item2;
+
+                    result = RandomNumbers.Next(newRandom, 0, board.Size);
+                    col = result.Item1;
+                    newRandom = result.Item2;
+
+                    result = RandomNumbers.Next(newRandom, 0, board.Size);
+                    row = result.Item1;
+                    newRandom = result.Item2;
+
+                    result = RandomNumbers.Next(newRandom, 0, 2);
+                    orientation  = (Orientations) result.Item1;
+                    newRandom = result.Item2;
+
                     valid = IsValidPosition(board, ship, row, col, orientation);
                 }
                 messages =("Computer placing the " + ship.Name+newLine);
                 var newShip = Ship.SetPosition(ship, col, row, orientation);
                 newShips = newShips.Add(newShip);
             }
-            return new GameBoard(board.Size, newShips.ToArray(), messages, board.RandomGenerator, board.Misses);
+            return new GameBoard(board.Size, newShips.ToArray(), messages, newRandom, board.Misses);
         }
     }
 }

@@ -21,11 +21,13 @@ namespace Boom.DataFixture
             return ships;
         }
 
-        public static Ship[] UnplacedShips2()
+        public static Ship[] UnplacedShips4()
         {
-            var ships = new Ship[2];
-            ships[0] = new Ship("Destroyer", 3, noHits);
+            var ships = new Ship[4];
+            ships[0] = new Ship("Patrol Boat", 2, noHits);
             ships[1] = new Ship("Patrol Boat", 2, noHits);
+            ships[2] = new Ship("Patrol Boat", 2, noHits);
+            ships[3] = new Ship("Patrol Boat", 2, noHits);
             return ships;
         }
 
