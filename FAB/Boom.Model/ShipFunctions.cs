@@ -30,10 +30,19 @@ namespace Boom.Model
             return ship.Hits.Contains(Tuple.Create(col, row));
         }
 
-        public static Ship Hit(this Ship ship, int col, int row)
+        public static Tuple<Ship, bool, String> FireAt(this Ship ship, int col, int row)
         {
-            var newHits = ship.Hits.Add(Tuple.Create(col, row));
-            return new Ship(ship.Name, ship.Size, newHits, ship.startCol, ship.startRow, ship.Orientation);
+            if (ship.ShipOccupiesLocation(col, row))
+            {
+                var newHits = ship.Hits.Add(Tuple.Create(col, row));
+                var newShip = new Ship(ship.Name, ship.Size, newHits, ship.startCol, ship.startRow, ship.Orientation);
+                var message = IsSunk(newShip) ? newShip.Name + " sunk!" : "Hit a " + newShip.Name + " at (" + col + "," + row + ").";
+                return Tuple.Create(newShip, true, message);
+            }
+            else
+            {
+                return Tuple.Create(ship, false, "");
+            }
         }
 
         public static bool IsSunk(this Ship ship)

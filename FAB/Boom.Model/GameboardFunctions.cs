@@ -14,38 +14,22 @@ namespace Boom.Model
         //the given row, column; if one does, invoke the Hit() method on it.
         public static GameBoard CheckSquareAndRecordOutcome(this GameBoard board, int col, int row)
         {
-            var newShips = ImmutableArray<Ship>.Empty;
-            bool hit = false;
-            var messages = new StringBuilder();
-            foreach (Ship ship in board.Ships)
-            {
-                if (ship.ShipOccupiesLocation(col, row))
-                {
-                    hit = true;
-                    var newShip = ship.Hit(col, row);
-                    newShips = newShips.Add(newShip);
-                    if (newShip.IsSunk())
-                    {
-                        messages.Append(newShip.Name + " sunk!");
-                    }
-                    else
-                    {
-                        messages.Append("Hit a " + newShip.Name + " at (" + col + "," + row + ").");
-                    }
-                }
-                else
-                {
-                   newShips = newShips.Add(ship);
-                }
-            }
+           
+            var results = board.Ships.Select(s => s.FireAt(col, row));
+            var newShips = results.Select(r => r.Item1);
+            var hit = results.Select(r => r.Item2).Aggregate((a, b) => a | b);
+            var messages = results.Select(r => r.Item3).Aggregate((a, b) => a + b);
+
+            //TODO:  Good above, bad below
+
             var misses = board.Misses;
             if (!hit)
             {
                 misses = board.Misses.Add(Tuple.Create(col, row));
-                messages.Append("Sorry, (" + col + "," + row + ") is a miss.");
+                messages += "Sorry, (" + col + "," + row + ") is a miss.";
             }
             if (!newShips.Any(ship => !ship.IsSunk())) {
-                messages.Append("All ships sunk!");
+                messages += "All ships sunk!";
             }
             return new GameBoard(board.Size, newShips.ToImmutableArray(), messages.ToString(), board.RandomGenerator, misses);
         }
