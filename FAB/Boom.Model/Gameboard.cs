@@ -125,40 +125,43 @@ namespace Boom.Model
         //have a position specified.
         public static GameBoard RandomiseShipPlacement(GameBoard board)
         {
-            Random random1 = board.RandomGenerator;
+            Random random = board.RandomGenerator;
             var newShips = ImmutableList<Ship>.Empty;
             var messages = "";
             foreach (var ship in board.Ships)
             {
-                Orientations orientation = 0; //default
-                int row = 0;
-                int col = 0;
-                bool valid = false;
-                while (valid == false)
-                {
-                    var result1 = RandomNumbers.Next(random1, 0, board.Size);
-                    col = result1.Item1;
-                    var random2 = result1.Item2;
-
-                    result = RandomNumbers.Next(random1, 0, board.Size);
-                    col = result.Item1;
-                    random1 = result.Item2;
-
-                    result = RandomNumbers.Next(random1, 0, board.Size);
-                    row = result.Item1;
-                    random1 = result.Item2;
-
-                    result = RandomNumbers.Next(random1, 0, 2);
-                    orientation  = (Orientations) result.Item1;
-                    random1 = result.Item2;
-
-                    valid = IsValidPosition(board, ship, row, col, orientation);
-                }
+                var pos = GetValidRandomPosition(board, random, ship);
+                random = pos.Item4;
                 messages =("Computer placing the " + ship.Name+newLine);
-                var newShip = Ship.SetPosition(ship, col, row, orientation);
+                var newShip = Ship.SetPosition(ship, pos.Item1, pos.Item2, pos.Item3);
                 newShips = newShips.Add(newShip);
             }
-            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages, random1, board.Misses);
+            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages, random, board.Misses);
+        }
+
+        private static Tuple<int, int, Orientations, Random> GetValidRandomPosition(GameBoard board, Random random1, Ship ship)
+        {
+            var pos = GetRandomPosition(board, random1);
+            return IsValidPosition(board, ship, pos.Item1, pos.Item2, pos.Item3) ?
+                pos :
+                GetValidRandomPosition(board, pos.Item4, ship);
+        }
+
+        private static Tuple<int, int, Orientations, Random> GetRandomPosition(GameBoard board, Random random1)
+        {
+            var result1 = RandomNumbers.Next(random1, 0, board.Size);
+            var col = result1.Item1;
+            var random2 = result1.Item2;
+
+            var result2 = RandomNumbers.Next(random2, 0, board.Size);
+            var row = result2.Item1;
+            var random3 = result2.Item2;
+
+            var result3 = RandomNumbers.Next(random3, 0, 2);
+            var orientation = (Orientations)result3.Item1;
+            var random4 = result3.Item2;
+
+            return Tuple.Create(col, row, orientation, random4);
         }
     }
 }

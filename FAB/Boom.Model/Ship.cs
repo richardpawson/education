@@ -37,16 +37,11 @@ namespace Boom.Model
         //Calculated based on the size and the orientation of the ship
         public static bool ShipOccupiesLocation(Ship ship, int col, int row)
         {
-            if (ship.Orientation == Orientations.Horizontal)
-            {
-                return ship.startRow == row &&
-                    col >= ship.startCol && col < ship.startCol + ship.Size;
-            }
-            else
-            {
-                return ship.startCol == col &&
+            return ship.Orientation == Orientations.Horizontal ?
+                 ship.startRow == row &&
+                    col >= ship.startCol && col < ship.startCol + ship.Size :
+                 ship.startCol == col &&
                     row >= ship.startRow && row < ship.startRow + ship.Size;
-            }
         }
 
         public static bool ShipIsHitInLocation(Ship ship, int col, int row)
@@ -54,34 +49,17 @@ namespace Boom.Model
             return ship.Hits.Contains(Tuple.Create(col, row));
         }
 
-        private static int PositionOnShip(Ship ship, int col, int row)
-        {
-            if (ship.Orientation == Orientations.Horizontal)
-            {
-                return col - ship.startCol;
-            }
-            else
-            {
-                return row - ship.startRow;
-            }
-        }
-
         public static Ship Hit(Ship ship, int col, int row)
         {
             var newHits = ship.Hits.Add(Tuple.Create(col, row));
             return new Ship(ship.Name, ship.Size, newHits, ship.startCol, ship.startRow, ship.Orientation);
         }
-
-        public static int HitCount(Ship ship)
-        {
-            return ship.Hits.Count;
-        }
-
-        //Returns true if the Hit count matches the size of the ship
+   
         public static bool IsSunk(Ship ship)
         {
-            return HitCount(ship) >= ship.Size;
+            return ship.Hits.Count >= ship.Size;
         }
         #endregion
+
     }
 }
