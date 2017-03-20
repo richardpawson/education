@@ -34,7 +34,7 @@ namespace Boom.Test
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
             var battleship = board.Ships[1];
             Assert.AreEqual(1, battleship.Hits.Count);
-            Assert.IsFalse(Ship.IsSunk(battleship));
+            Assert.IsFalse(battleship.IsSunk());
             Assert.AreEqual(0, board.Misses.Count);
         }
 
@@ -47,14 +47,14 @@ namespace Boom.Test
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
             var battleship = board.Ships[1];
             Assert.AreEqual(1, battleship.Hits.Count);
-            Assert.IsFalse(Ship.IsSunk(battleship));
+            Assert.IsFalse(battleship.IsSunk());
             board = Missile.Fire(8, 1, board);
             board = Missile.Fire(8, 1, board);
             board = Missile.Fire(8, 1, board);
             board = Missile.Fire(8, 1, board);
             battleship = board.Ships[1];
             Assert.AreEqual(1, battleship.Hits.Count);
-            Assert.IsFalse(Ship.IsSunk(battleship));
+            Assert.IsFalse(battleship.IsSunk());
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace Boom.Test
             Assert.AreEqual(expected, board.Messages);
             var battleship = board.Ships[1];
             Assert.AreEqual(3, battleship.Hits.Count);
-            Assert.IsFalse(Ship.IsSunk(battleship));
+            Assert.IsFalse(battleship.IsSunk());
         }
 
         [TestMethod]
@@ -95,11 +95,11 @@ namespace Boom.Test
             Assert.AreEqual("Hit a Frigate at (4,5).", board.Messages);
             var frigate = board.Ships[1];
             Assert.AreEqual(1, frigate.Hits.Count);
-            Assert.IsFalse(Ship.IsSunk(frigate));
+            Assert.IsFalse(frigate.IsSunk());
             board = Missile.Fire(4, 6, board);
             frigate = board.Ships[1];
             Assert.AreEqual(2, frigate.Hits.Count);
-            Assert.IsTrue(Ship.IsSunk(frigate));
+            Assert.IsTrue(frigate.IsSunk());
             Assert.AreEqual("Frigate sunk!", board.Messages);
         }
 
@@ -123,7 +123,7 @@ namespace Boom.Test
         {
             var ships = Ships.UnplacedShips4();
             var board = new GameBoard(10, ships, "", Random, noMisses);
-            board = GameBoard.RandomiseShipPlacement(board);
+            board = board.RandomiseShipPlacement();
             ships = board.Ships;
             var s0 = ships[0];
             var s1 = ships[1];
@@ -132,11 +132,11 @@ namespace Boom.Test
 
             //2 1 0 7 6 0
 
-            Assert.IsTrue(Ship.ShipOccupiesLocation(s0,2, 1));
-            Assert.IsTrue(Ship.ShipOccupiesLocation(s0, 3, 1));
+            Assert.IsTrue(s0.ShipOccupiesLocation(2, 1));
+            Assert.IsTrue(s0.ShipOccupiesLocation(3, 1));
 
-            Assert.IsTrue(Ship.ShipOccupiesLocation(s1,7, 6));
-            Assert.IsTrue(Ship.ShipOccupiesLocation(s1, 8, 6));
+            Assert.IsTrue(s1.ShipOccupiesLocation(7, 6));
+            Assert.IsTrue(s1.ShipOccupiesLocation(8, 6));
         }
 
     }

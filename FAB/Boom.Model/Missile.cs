@@ -4,7 +4,7 @@
     {
         public static GameBoard Fire(int col, int row, GameBoard board)
         {
-            return GameBoard.CheckSquareAndRecordOutcome(board, col, row);
+            return board.CheckSquareAndRecordOutcome(col, row);
         }
     }
 }

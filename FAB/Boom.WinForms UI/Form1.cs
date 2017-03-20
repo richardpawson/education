@@ -37,7 +37,7 @@ namespace Boom.WinFormsUI
             {
                 for (int row = 0; row < Board.Size; row++)
                 {
-                    var square = GameBoard.ReadSquare(Board, col, row);
+                    var square = Board.ReadSquare(col, row);
                     Brush brush = null;
                     switch (square)
                     {
@@ -91,7 +91,7 @@ namespace Boom.WinFormsUI
         {
             var ships = Ships.UnplacedShips5();
             InitializeGame(ships);
-            GameBoard.RandomiseShipPlacement(Board);
+            Board.RandomiseShipPlacement();
             DrawBoard();
         }
 

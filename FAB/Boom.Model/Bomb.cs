@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
 
 namespace Boom.Model
 {
@@ -17,7 +20,7 @@ namespace Boom.Model
                     {
                         if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
                         {
-                            board =  GameBoard.CheckSquareAndRecordOutcome(board, startCol, startRow);
+                            board =  board.CheckSquareAndRecordOutcome(startCol, startRow);
                             messages.Append(board.Messages);
                         }
                     }
@@ -25,5 +28,21 @@ namespace Boom.Model
             }
             return new GameBoard(board.Size, board.Ships, messages.ToString(), board.RandomGenerator, board.Misses);
         }
+
+        //public static GameBoard Fire(int col, int row, GameBoard board)
+        //{
+        //    var locs = GenerateLocationsToHit(col, row, board);
+        //    var messages = locs.Select(loc =>
+        //       GameBoard.CheckSquareAndRecordOutcome(board, loc.Item1, loc.Item2).Messages).
+        //       Aggregate((a, b) => a + b);
+        //     )
+        //     return new GameBoard(board.Size, board.Ships, messages.ToString(), board.RandomGenerator, board.Misses);
+
+        //}
+
+        //private static ImmutableArray<Tuple<int, int>> GenerateLocationsToHit(int row, int col, GameBoard board)
+        //{
+        //    return ImmutableArray<Tuple<int, int>>.Empty;
+        //}
     }
 }

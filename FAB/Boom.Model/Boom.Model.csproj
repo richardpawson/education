@@ -51,11 +51,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bomb.cs" />
+    <Compile Include="GameboardFunctions.cs" />
     <Compile Include="Gameboard.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="ShipFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

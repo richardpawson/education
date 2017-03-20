@@ -23,7 +23,7 @@ namespace Boom.ConsoleUI
                 {
                     var ships = Ships.UnplacedShips5();
                    var board = new GameBoard(10, ships, "", randomGenerator, noMisses);
-                    GameBoard.RandomiseShipPlacement(board);
+                    board.RandomiseShipPlacement();
                 }
                 if (MenuOption == 2)
                 {
@@ -112,7 +112,7 @@ namespace Boom.ConsoleUI
                 Console.Write(row + " ");
                 for (int col = 0; col < boardSize; col++)
                 {
-                    SquareValues square = GameBoard.ReadSquare(board, col, row);
+                    SquareValues square = board.ReadSquare(col, row);
                     switch (square)
                     {
                         case SquareValues.Empty:
