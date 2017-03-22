@@ -4,7 +4,7 @@ using FilmRentals;
 using FilmRentals.Model;
 using FilmRentals.Data;
 
-namespace FilmRentalsTest
+namespace FilmRentals.Test
 {
     /// <summary>
     /// Unit tests for FilmRental project.

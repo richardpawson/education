@@ -6,7 +6,7 @@ namespace FilmRentals.Data
     public static class FilmRentalDataFixture
     {
 
-        public static void CreateData(FilmRentalDbContext dbContext)
+        public static void CreateData(FilmRentalsDbContext dbContext)
         {
 
             CreateMember(dbContext, "Toby Lawrance", "26 The Street, Silverstone");
@@ -19,7 +19,7 @@ namespace FilmRentals.Data
             CreateFilm(dbContext, "Mary Poppins", PriceCodes.Childrens, u);
         }
 
-        public static Member CreateMember(FilmRentalDbContext context, string name, string address)
+        public static Member CreateMember(FilmRentalsDbContext context, string name, string address)
         {
             var member = new Member
             {
@@ -33,7 +33,7 @@ namespace FilmRentals.Data
             return member;
         }
 
-        public static Rating CreateRating(FilmRentalDbContext context, string description, int age)
+        public static Rating CreateRating(FilmRentalsDbContext context, string description, int age)
         {
             var rating = new Rating
             {
@@ -46,7 +46,7 @@ namespace FilmRentals.Data
             }
             return rating;
         }
-        public static Film CreateFilm(FilmRentalDbContext context, string title, PriceCodes priceCode, Rating rating)
+        public static Film CreateFilm(FilmRentalsDbContext context, string title, PriceCodes priceCode, Rating rating)
         {
             var film = new Film { Title = title, PriceCode = priceCode, Rating = rating };
             if (context != null)
@@ -56,7 +56,7 @@ namespace FilmRentals.Data
             return film;
         }
 
-        public static Rental CreateRental(FilmRentalDbContext context, Member member, Film film, int daysRented)
+        public static Rental CreateRental(FilmRentalsDbContext context, Member member, Film film, int daysRented)
         {
             var rental = new Rental { Film = film, Member = member, DaysRented = daysRented };
             if (context != null)
