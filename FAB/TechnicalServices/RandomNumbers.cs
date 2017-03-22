@@ -9,7 +9,6 @@ namespace TechnicalServices
 {
     public static class RandomNumbers
     { 
-
         public static Tuple<int, Random> Next(Random generator, int minValue, int maxValue)
         {
             var clone = Clone(generator);

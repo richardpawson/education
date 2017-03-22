@@ -44,6 +44,13 @@ namespace Boom.Test
 
         }
 
-        
+        [TestMethod]
+        public void TestFunctionRepeatability()
+        {
+            var gen = new Random(1);
+            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Item1);
+            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Item1);
+            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Item1);
+        }       
     }
 }
