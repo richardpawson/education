@@ -12,29 +12,36 @@ namespace Boom.Model
 
         //Checks, in collaboration with Ships, whether any of them cover
         //the given row, column; if one does, invoke the Hit() method on it.
+        //OK
         public static GameBoard CheckSquareAndRecordOutcome(this GameBoard board, int col, int row)
         {
-           
             var results = board.Ships.Select(s => s.FireAt(col, row));
             var newShips = results.Select(r => r.Item1);
             var hit = results.Select(r => r.Item2).Aggregate((a, b) => a | b);
             var messages = results.Select(r => r.Item3).Aggregate((a, b) => a + b);
-
-            //TODO:  Good above, bad below
-
             var misses = board.Misses;
-            if (!hit)
+            if (hit)
             {
-                misses = board.Misses.Add(Tuple.Create(col, row));
-                messages += "Sorry, (" + col + "," + row + ") is a miss.";
+                if (!newShips.Any(ship => !ship.IsSunk()))
+                {
+                    var newMessage = messages + "All ships sunk!";
+                    return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, board.RandomGenerator, misses);
+                }
+                else
+                {
+                    return new GameBoard(board.Size, newShips.ToImmutableArray(), messages.ToString(), board.RandomGenerator, misses);
+                }
             }
-            if (!newShips.Any(ship => !ship.IsSunk())) {
-                messages += "All ships sunk!";
+            else
+            {
+                var newMisses = board.Misses.Add(Tuple.Create(col, row));
+                var newMessage = messages + "Sorry, (" + col + "," + row + ") is a miss.";
+                return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, board.RandomGenerator, newMisses);
             }
-            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages.ToString(), board.RandomGenerator, misses);
         }
 
-        private static bool IsValidPosition(this GameBoard board, Ship ship, int row, int col, Orientations orientation)
+        //OK
+        public static bool IsValidPosition(this GameBoard board, Ship ship, int row, int col, Orientations orientation)
         {
             if (!ShipWouldFitWithinBoard(board, ship, row, col, orientation))
             {
@@ -45,26 +52,30 @@ namespace Boom.Model
             {
                 var locs = LocationsThatShipWouldOccupy(col, row, orientation, ship.Size);
                 var existingShips = board.Ships;
+                //TODO: re-write using .SelectMany ?
                 var occupiedLocations = from l in locs
-                        from s in existingShips
-                        where s.ShipOccupiesLocation(l.Item1, l.Item2)
-                        select l;
+                                        from s in existingShips
+                                        where s.ShipOccupiesLocation(l.Item1, l.Item2)
+                                        select l;
                 return occupiedLocations.Count() == 0;
             }
         }
 
+        //OK
         public static ImmutableArray<Tuple<int, int>> LocationsThatShipWouldOccupy(int startCol, int startRow, Orientations orient, int locsToAdd)
         {
             if (locsToAdd == 0)
             {
                 return ImmutableArray<Tuple<int, int>>.Empty;
-            } else
+            }
+            else
             {
                 var loc = Tuple.Create(startCol, startRow);
                 if (orient == Orientations.Horizontal)
                 {
                     return LocationsThatShipWouldOccupy(startCol + 1, startRow, orient, locsToAdd - 1).Add(loc);
-                } else //i.e. vertical
+                }
+                else //i.e. vertical
                 {
                     return LocationsThatShipWouldOccupy(startCol, startRow + 1, orient, locsToAdd - 1).Add(loc);
                 }
@@ -106,7 +117,7 @@ namespace Boom.Model
             {
                 var pos = GetValidRandomPosition(board, random, ship);
                 random = pos.Item4;
-                messages =("Computer placing the " + ship.Name+newLine);
+                messages = ("Computer placing the " + ship.Name + newLine);
                 var newShip = ship.SetPosition(pos.Item1, pos.Item2, pos.Item3);
                 newShips = newShips.Add(newShip);
             }
