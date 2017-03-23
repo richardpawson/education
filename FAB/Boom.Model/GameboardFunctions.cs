@@ -43,22 +43,32 @@ namespace Boom.Model
 
             else
             {
-                if (orientation == Orientations.Vertical)
+                var locs = LocationsThatShipWouldOccupy(col, row, orientation, ship.Size);
+                var existingShips = board.Ships;
+                var occupiedLocations = from l in locs
+                        from s in existingShips
+                        where s.ShipOccupiesLocation(l.Item1, l.Item2)
+                        select l;
+                return occupiedLocations.Count() == 0;
+            }
+        }
+
+        public static ImmutableArray<Tuple<int, int>> LocationsThatShipWouldOccupy(int startCol, int startRow, Orientations orient, int locsToAdd)
+        {
+            if (locsToAdd == 0)
+            {
+                return ImmutableArray<Tuple<int, int>>.Empty;
+            } else
+            {
+                var loc = Tuple.Create(startCol, startRow);
+                if (orient == Orientations.Horizontal)
                 {
-                    for (int scan = 0; scan < ship.Size; scan++)
-                    {
-                        if (ship.ShipOccupiesLocation(col + scan, row)) return false;
-                    }
-                }
-                else if (orientation == Orientations.Horizontal)
+                    return LocationsThatShipWouldOccupy(startCol + 1, startRow, orient, locsToAdd - 1).Add(loc);
+                } else //i.e. vertical
                 {
-                    for (int scan = 0; scan < ship.Size; scan++)
-                    {
-                        if (ship.ShipOccupiesLocation(col, row + scan)) return false;
-                    }
+                    return LocationsThatShipWouldOccupy(startCol, startRow + 1, orient, locsToAdd - 1).Add(loc);
                 }
             }
-            return true;
         }
 
         private static bool ShipWouldFitWithinBoard(this GameBoard board, Ship ship, int row, int col, Orientations orientation)
