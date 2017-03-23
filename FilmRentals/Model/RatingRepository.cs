@@ -10,6 +10,7 @@ namespace FilmRentals.Model
         //An implementation of this interface is injected automatically by the framework
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
+
         public Rating CreateNewRating()
         {
             return Container.NewTransientInstance<Rating>();
@@ -19,7 +20,5 @@ namespace FilmRentals.Model
         {
             return Container.Instances<Rating>();
         }
-
     }
-
 }

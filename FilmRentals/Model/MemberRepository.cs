@@ -25,7 +25,5 @@ namespace FilmRentals.Model
             return AllMembers().Where(c => c.Name.ToUpper().Contains(matching.ToUpper()) ||
                     c.MemberId.ToString() == matching);
         }
-
     }
-
 }

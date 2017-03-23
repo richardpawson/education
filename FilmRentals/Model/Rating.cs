@@ -2,7 +2,9 @@
 
 namespace FilmRentals.Model
 {
-    [Bounded]
+    [Bounded] //Indicates that all instances may be displayed as a 
+    //drop-down list on an input field of this type
+
     public class Rating
     {
         [NakedObjectsIgnore]

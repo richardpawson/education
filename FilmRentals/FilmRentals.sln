@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRentals.Model", "Model\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRentals.Data", "Data\FilmRentals.Data.csproj", "{13066942-4D32-41C2-ADB5-3AB6F20159BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRentals.Test", "Test\FilmRentals.Test.csproj", "{888CD802-4D0F-492A-9A7F-0237E3E68FDA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRentals.Client", "Template.Client\FilmRentals.Client.csproj", "{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRentals.Server", "Template.Server\FilmRentals.Server.csproj", "{19C44CF1-95B0-41CF-BF8A-BF67F927C469}"
@@ -27,10 +25,6 @@ Global
 		{13066942-4D32-41C2-ADB5-3AB6F20159BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13066942-4D32-41C2-ADB5-3AB6F20159BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13066942-4D32-41C2-ADB5-3AB6F20159BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{888CD802-4D0F-492A-9A7F-0237E3E68FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{888CD802-4D0F-492A-9A7F-0237E3E68FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{888CD802-4D0F-492A-9A7F-0237E3E68FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{888CD802-4D0F-492A-9A7F-0237E3E68FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
