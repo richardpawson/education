@@ -20,9 +20,8 @@ namespace Boom.ConsoleUI
                 MenuOption = GetMainMenuChoice();
                 if (MenuOption == 1)
                 {
-                    var board = new GameBoard(10, ImmutableArray<Ship>.Empty, "", noMisses);
                     var ships = Ships.UnplacedShips5();
-                    board.PlaceShipsRandomlyOnBoard(ships, new Random());
+                    Board = GameBoardFunctions.PlaceShipsRandomlyOnBoard(10, ships, new Random());
                 }
                 if (MenuOption == 2)
                 {

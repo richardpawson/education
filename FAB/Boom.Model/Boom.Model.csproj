@@ -53,6 +53,7 @@
     <Compile Include="Bomb.cs" />
     <Compile Include="GameboardFunctions.cs" />
     <Compile Include="Gameboard.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Missile.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,6 +10,9 @@ namespace Boom.WinFormsUI
 {
     public partial class Form1 : Form
     {
+        private const int boardSize = 10;
+        const int squareSize = 30;
+
         private Pen blackPen = new Pen(Color.Black);
         private Brush redBrush = new SolidBrush(Color.Red);
         private Brush blueBrush = new SolidBrush(Color.Blue);
@@ -17,21 +20,14 @@ namespace Boom.WinFormsUI
 
         private GameBoard Board;
         private ImmutableList<Tuple<int, int>>  noMisses = ImmutableList<Tuple<int, int>>.Empty;
-        private Random random;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void InitializeGame(ImmutableArray<Ship> ships)
-        {
-            Board = new GameBoard(10, ships, "", noMisses);
-        }
-
         private void DrawBoard()
         {
-            const int squareSize = 30;
             var g = pictureBox1.CreateGraphics();
             for (int col = 0; col < Board.Size; col++)
             {
@@ -76,9 +72,12 @@ namespace Boom.WinFormsUI
         private void button1_Click(object sender, EventArgs e)
         {
             var ships = Ships.TrainingGame();
-            InitializeGame(ships);
+
+            Board = new GameBoard(boardSize, ships, "", ImmutableList<Tuple<int, int>>.Empty);
             DrawBoard();
         }
+
+
         private void button2_Click(object sender, EventArgs e)
         {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
@@ -90,8 +89,7 @@ namespace Boom.WinFormsUI
         private void button3_Click(object sender, EventArgs e)
         {
             var ships = Ships.UnplacedShips5();
-            InitializeGame(ships);
-            Board.PlaceShipsRandomlyOnBoard(ships, random);
+            Board = GameBoardFunctions.PlaceShipsRandomlyOnBoard(Board.Size, ships, new Random());
             DrawBoard();
         }
 

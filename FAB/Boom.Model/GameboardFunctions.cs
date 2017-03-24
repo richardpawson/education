@@ -36,9 +36,9 @@ namespace Boom.Model
             }
         }
 
-        public static bool IsValidPosition(this GameBoard board, ImmutableArray<Ship> existingShips, Ship shipToBePlaced, int row, int col, Orientations orientation)
+        public static bool IsValidPosition(int boardSize, ImmutableArray<Ship> existingShips, Ship shipToBePlaced, int row, int col, Orientations orientation)
         {
-            if (!ShipWouldFitWithinBoard(board, shipToBePlaced, row, col, orientation))
+            if (!ShipWouldFitWithinBoard(boardSize, shipToBePlaced, row, col, orientation))
             {
                 return false;
             }
@@ -74,10 +74,10 @@ namespace Boom.Model
             }
         }
 
-        private static bool ShipWouldFitWithinBoard(this GameBoard board, Ship ship, int row, int col, Orientations orientation)
+        public static bool ShipWouldFitWithinBoard(int boardSize, Ship ship, int row, int col, Orientations orientation)
         {
-            return (orientation == Orientations.Vertical && row + ship.Size <= board.Size) ||
-                   (orientation == Orientations.Horizontal && col + ship.Size <= board.Size);
+            return (orientation == Orientations.Vertical && row + ship.Size <= boardSize) ||
+                   (orientation == Orientations.Horizontal && col + ship.Size <= boardSize);
         }
 
         public static SquareValues ReadSquare(this GameBoard board, int col, int row)
@@ -96,16 +96,16 @@ namespace Boom.Model
             }
         }
 
-        public static GameBoard PlaceShipsRandomlyOnBoard(this GameBoard board, ImmutableArray<Ship> shipsToBePlaced, Random random)
+        public static GameBoard PlaceShipsRandomlyOnBoard(int boardSize, ImmutableArray<Ship> shipsToBePlaced, Random random)
         {
-            var noShipsPlaced = ImmutableArray<Ship>.Empty;
-            var shipPlacements = LocateShipsRandomly(board, shipsToBePlaced, noShipsPlaced, random);
-            var newShips = shipPlacements.Select(r => r.Item1);
+            var shipPlacements = LocateShipsRandomly(boardSize, shipsToBePlaced, ImmutableArray<Ship>.Empty, random);
+            var newShips = shipPlacements.Select(r => r.Item1).ToImmutableArray();
             string messages = shipPlacements.Select(r => r.Item2).Aggregate((r, s) => r + s);
-            return new GameBoard(board.Size, newShips.ToImmutableArray(), messages, board.Misses);
+            var noMisses = ImmutableList<Tuple<int, int>>.Empty;
+            return new GameBoard(boardSize, newShips, messages, noMisses);
         }
 
-        public static ImmutableList<Tuple<Ship, string>> LocateShipsRandomly(GameBoard boardWithNoShips, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, Random random)
+        public static ImmutableList<Tuple<Ship, string>> LocateShipsRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, Random random)
         {
             if (shipsToBePlaced.Count() == 0)
             {
@@ -114,46 +114,43 @@ namespace Boom.Model
             else
             {
                 var thisShip = shipsToBePlaced[0];
-                var result = LocateShipRandomly(boardWithNoShips, shipsAlreadyPlaced, thisShip, random);
+                var result = LocateShipRandomly(boardSize, shipsAlreadyPlaced, thisShip, random);
                 var shipPlacement = Tuple.Create(result.Item1, result.Item2);
                 var newRandom = result.Item3;
                 var newshipsAlreadyPlaced = shipsAlreadyPlaced.Add(result.Item1);
                 var newShipsToBePlaced = shipsToBePlaced.Remove(thisShip);
-                return LocateShipsRandomly(boardWithNoShips, newShipsToBePlaced, newshipsAlreadyPlaced, newRandom).Add(shipPlacement);
+                return LocateShipsRandomly(boardSize, newShipsToBePlaced, newshipsAlreadyPlaced, newRandom).Add(shipPlacement);
             }
         }
 
-        public static Tuple<Ship, string, Random> LocateShipRandomly(GameBoard boardWithNoShips, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
+        public static Tuple<Ship, string, Random> LocateShipRandomly(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
         {
-            var pos = GetValidRandomPosition(boardWithNoShips, shipsAlreadyLocated, shipToBeLocated, random);
+            var pos = GetValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, random);
             var message = "Computer placing the " + shipToBeLocated.Name + newLine;
             var newShip = shipToBeLocated.SetPosition(pos.Item1, pos.Item2, pos.Item3);
             return Tuple.Create(newShip, message, pos.Item4);
         }
 
-        public static Tuple<int, int, Orientations, Random> GetValidRandomPosition(this GameBoard boardWithNoShips, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
+        public static Tuple<int, int, Orientations, Random> GetValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
         {
-            var pos = GetRandomPosition(boardWithNoShips, random);
-            return IsValidPosition(boardWithNoShips, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2, pos.Item3) ?
+            var pos = GetRandomPosition(boardSize, random);
+            return IsValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2, pos.Item3) ?
                 pos :
-                GetValidRandomPosition(boardWithNoShips, shipsAlreadyLocated, shipToBeLocated, pos.Item4);
+                GetValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item4);
         }
 
-        public static Tuple<int, int, Orientations, Random> GetRandomPosition(this GameBoard board, Random random1)
+        public static Tuple<int, int, Orientations, Random> GetRandomPosition(int boardSize, Random random1)
         {
-            var result1 = RandomNumbers.Next(random1, 0, board.Size);
+            var result1 = RandomNumbers.Next(random1, 0, boardSize);
             var col = result1.Item1;
-            var random2 = result1.Item2;
 
-            var result2 = RandomNumbers.Next(random2, 0, board.Size);
+            var result2 = RandomNumbers.Next(result1.Item2, 0, boardSize);
             var row = result2.Item1;
-            var random3 = result2.Item2;
 
-            var result3 = RandomNumbers.Next(random3, 0, 2);
+            var result3 = RandomNumbers.Next(result2.Item2, 0, 2);
             var orientation = (Orientations)result3.Item1;
-            var random4 = result3.Item2;
 
-            return Tuple.Create(col, row, orientation, random4);
+            return Tuple.Create(col, row, orientation, result3.Item2);
         }
     }
 }

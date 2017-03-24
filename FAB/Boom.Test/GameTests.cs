@@ -122,8 +122,7 @@ namespace Boom.Test
         public void TestRandomPlacement()
         {
             var ships = Ships.UnplacedShips4();
-            var board = new GameBoard(10, ships, "", noMisses);
-            board = board.PlaceShipsRandomlyOnBoard(ships, Random);
+            var board = GameBoardFunctions.PlaceShipsRandomlyOnBoard(10, ships, Random);
             ships = board.Ships;
             var s0 = ships[0];
             var s1 = ships[1];
