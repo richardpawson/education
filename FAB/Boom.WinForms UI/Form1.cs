@@ -17,6 +17,7 @@ namespace Boom.WinFormsUI
 
         private GameBoard Board;
         private ImmutableList<Tuple<int, int>>  noMisses = ImmutableList<Tuple<int, int>>.Empty;
+        private Random random;
 
         public Form1()
         {
@@ -25,8 +26,7 @@ namespace Boom.WinFormsUI
 
         private void InitializeGame(ImmutableArray<Ship> ships)
         {
-            var randomGenerator = new Random();
-            Board = new GameBoard(10, ships, "", randomGenerator, noMisses);
+            Board = new GameBoard(10, ships, "", noMisses);
         }
 
         private void DrawBoard()
@@ -91,7 +91,7 @@ namespace Boom.WinFormsUI
         {
             var ships = Ships.UnplacedShips5();
             InitializeGame(ships);
-            Board.RandomiseShipPlacement();
+            Board.PlaceShipsRandomlyOnBoard(ships, random);
             DrawBoard();
         }
 

@@ -26,7 +26,7 @@ namespace Boom.Model
                     }
                 }
             }
-            return new GameBoard(board.Size, board.Ships, messages.ToString(), board.RandomGenerator, board.Misses);
+            return new GameBoard(board.Size, board.Ships, messages.ToString(), board.Misses);
         }
 
         //public static GameBoard Fire(int col, int row, GameBoard board)

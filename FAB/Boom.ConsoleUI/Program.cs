@@ -10,7 +10,6 @@ namespace Boom.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var randomGenerator = new Random();
             var noMisses = ImmutableList<Tuple<int, int>>.Empty;
                 GameBoard Board = null;
 
@@ -21,14 +20,14 @@ namespace Boom.ConsoleUI
                 MenuOption = GetMainMenuChoice();
                 if (MenuOption == 1)
                 {
+                    var board = new GameBoard(10, ImmutableArray<Ship>.Empty, "", noMisses);
                     var ships = Ships.UnplacedShips5();
-                   var board = new GameBoard(10, ships, "", randomGenerator, noMisses);
-                    board.RandomiseShipPlacement();
+                    board.PlaceShipsRandomlyOnBoard(ships, new Random());
                 }
                 if (MenuOption == 2)
                 {
                     var ships = Ships.TrainingGame();
-                    Board = new GameBoard(10, ships, "", randomGenerator, noMisses);
+                    Board = new GameBoard(10, ships, "", noMisses);
                 }
                 PlayGame(Board);
             }
@@ -56,6 +55,7 @@ namespace Boom.ConsoleUI
         private static void PlayGame(GameBoard Board)
         {
             bool GameWon = false;
+            //TODO: Make recursive!
             while (!GameWon)
             {
                 PrintBoard(Board);

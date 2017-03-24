@@ -29,7 +29,7 @@ namespace Boom.Test
         public void TestHitWithMissile()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, "", Random, noMisses);       
+            var board = new GameBoard(10, ships, "", noMisses);       
             board = Missile.Fire(8, 1, board);
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
             var battleship = board.Ships[1];
@@ -42,7 +42,7 @@ namespace Boom.Test
         public void RepeatedHitOnSameSquareDoesNotIncreaseHitCount()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, "", Random, noMisses);
+            var board = new GameBoard(10, ships, "", noMisses);
             board = Missile.Fire(8, 1, board);
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
             var battleship = board.Ships[1];
@@ -61,7 +61,7 @@ namespace Boom.Test
         public void TestMissWithMissile()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, "", Random, noMisses);
+            var board = new GameBoard(10, ships, "", noMisses);
             board = Missile.Fire(7, 1, board);
             Assert.AreEqual(1, board.Misses.Count);
             Assert.AreEqual("Sorry, (7,1) is a miss.", board.Messages);
@@ -75,7 +75,7 @@ namespace Boom.Test
         public void TestBombWithHits()
         {
             var ships = Ships.TrainingGame();
-            var board = new GameBoard(10, ships, "", Random, noMisses);
+            var board = new GameBoard(10, ships, "", noMisses);
             board = Bomb.Fire(7, 2, board);
             var expected = "Sorry, (6,1) is a miss.Sorry, (6,2) is a miss.Sorry, (6,3) is a miss." +
                "Sorry, (7,1) is a miss.Sorry, (7,2) is a miss.Sorry, (7,3) is a miss." +
@@ -90,7 +90,7 @@ namespace Boom.Test
         public void TestSunk()
         {
             var ships = Ships.SmallTestGame();
-            var board = new GameBoard(10, ships, "", Random, noMisses);
+            var board = new GameBoard(10, ships, "", noMisses);
             board = Missile.Fire(4,5, board);
             Assert.AreEqual("Hit a Frigate at (4,5).", board.Messages);
             var frigate = board.Ships[1];
@@ -107,7 +107,7 @@ namespace Boom.Test
         public void TestGameOver()
         {
             var ships = Ships.SmallTestGame();
-            var board = new GameBoard(10, ships, "", Random, noMisses);
+            var board = new GameBoard(10, ships, "", noMisses);
             board = Missile.Fire(4, 5, board);
             Assert.AreEqual("Hit a Frigate at (4,5).", board.Messages);
             board = Missile.Fire(4, 6, board);
@@ -122,8 +122,8 @@ namespace Boom.Test
         public void TestRandomPlacement()
         {
             var ships = Ships.UnplacedShips4();
-            var board = new GameBoard(10, ships, "", Random, noMisses);
-            board = board.RandomiseShipPlacement();
+            var board = new GameBoard(10, ships, "", noMisses);
+            board = board.PlaceShipsRandomlyOnBoard(ships, Random);
             ships = board.Ships;
             var s0 = ships[0];
             var s1 = ships[1];
@@ -132,11 +132,11 @@ namespace Boom.Test
 
             //2 1 0 7 6 0
 
-            Assert.IsTrue(s0.ShipOccupiesLocation(2, 1));
-            Assert.IsTrue(s0.ShipOccupiesLocation(3, 1));
+            Assert.IsTrue(s3.ShipOccupiesLocation(2, 1));
+            Assert.IsTrue(s3.ShipOccupiesLocation(3, 1));
 
-            Assert.IsTrue(s1.ShipOccupiesLocation(7, 6));
-            Assert.IsTrue(s1.ShipOccupiesLocation(8, 6));
+            Assert.IsTrue(s2.ShipOccupiesLocation(7, 6));
+            Assert.IsTrue(s2.ShipOccupiesLocation(8, 6));
         }
 
     }
