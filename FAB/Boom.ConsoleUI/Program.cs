@@ -10,7 +10,7 @@ namespace Boom.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var noMisses = ImmutableList<Tuple<int, int>>.Empty;
+            var noMisses = ImmutableList<Location>.Empty;
                 GameBoard Board = null;
 
             int MenuOption = 0;
@@ -59,15 +59,14 @@ namespace Boom.ConsoleUI
             {
                 PrintBoard(Board);
                 var missileType = GetMissileType();
-                var col = GetColumn();
-                var row = GetRow();
+                var loc = GetLocation();
                 if (missileType == "M")
                 {
-                    Board = Missile.Fire(col, row, Board);
+                    Board = Missile.Fire(loc, Board);
                 }
                 if (missileType == "B")
                 {
-                    Board = Bomb.Fire(col, row, Board);
+                    Board = Bomb.Fire(loc, Board);
                 }
                 
             }
@@ -80,18 +79,14 @@ namespace Boom.ConsoleUI
             return Console.ReadLine().ToUpper();
         }
 
-        private static int GetColumn()
+        private static Location GetLocation()
         {
             Console.Write("Please enter column: ");
-            return Convert.ToInt32(Console.ReadLine());
-        }
-
-        private static int GetRow()
-        {
+            var col =  Convert.ToInt32(Console.ReadLine());
             Console.Write("Please enter row: ");
             var row = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
-            return row;
+            return new Location(col, row);
         }
 
         private static void PrintBoard(GameBoard board)
@@ -111,7 +106,9 @@ namespace Boom.ConsoleUI
                 Console.Write(row + " ");
                 for (int col = 0; col < boardSize; col++)
                 {
-                    SquareValues square = board.ReadSquare(col, row);
+                    //TODO: functionalise this!
+                    var loc = new Location(col, row);
+                    SquareValues square = board.ReadSquare(loc);
                     switch (square)
                     {
                         case SquareValues.Empty:

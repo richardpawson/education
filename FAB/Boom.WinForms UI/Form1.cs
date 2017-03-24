@@ -19,7 +19,7 @@ namespace Boom.WinFormsUI
         private Brush whiteBrush = new SolidBrush(Color.White);
 
         private GameBoard Board;
-        private ImmutableList<Tuple<int, int>>  noMisses = ImmutableList<Tuple<int, int>>.Empty;
+        private ImmutableList<Location>  noMisses = ImmutableList<Location>.Empty;
 
         public Form1()
         {
@@ -33,7 +33,8 @@ namespace Boom.WinFormsUI
             {
                 for (int row = 0; row < Board.Size; row++)
                 {
-                    var square = Board.ReadSquare(col, row);
+                    var loc = new Location(col, row);
+                    var square = Board.ReadSquare(loc);
                     Brush brush = null;
                     switch (square)
                     {
@@ -73,7 +74,7 @@ namespace Boom.WinFormsUI
         {
             var ships = Ships.TrainingGame();
 
-            Board = new GameBoard(boardSize, ships, "", ImmutableList<Tuple<int, int>>.Empty);
+            Board = new GameBoard(boardSize, ships, "", ImmutableList<Location>.Empty);
             DrawBoard();
         }
 
@@ -82,7 +83,8 @@ namespace Boom.WinFormsUI
         {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            Board = Missile.Fire(col, row, Board);
+            var loc = new Location(col, row);
+            Board = Missile.Fire(loc, Board);
             DrawBoard();
             richTextBox1.Text = Board.Messages;
         }
@@ -97,7 +99,8 @@ namespace Boom.WinFormsUI
         {
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
-            Board = Bomb.Fire(col, row, Board);
+            var loc = new Location(col, row);
+            Board = Bomb.Fire(loc, Board);
             DrawBoard();
             richTextBox1.Text = Board.Messages;
         }

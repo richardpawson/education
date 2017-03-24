@@ -5,10 +5,8 @@ using System.Linq;
 namespace Boom.Model
 {
     public class Ship
-    { 
-        public readonly int startRow;
-
-        public readonly int startCol;
+    {
+        public Location Location;
 
         public readonly Orientations Orientation;
 
@@ -16,16 +14,23 @@ namespace Boom.Model
 
         public readonly int Size;
 
-        public readonly ImmutableHashSet<Tuple<int,int>> Hits;
+        public readonly ImmutableHashSet<Location> Hits;
 
-        public Ship(string ShipName, int ShipSize, ImmutableHashSet<Tuple<int, int>> hits, int col = 0, int row = 0, Orientations orient = 0)
+        public Ship(string ShipName, int ShipSize, ImmutableHashSet<Location> hits, Location loc, Orientations orient = 0)
         {
             Name = ShipName;
             Size = ShipSize;
-            startCol = col;
-            startRow = row;
+            Location = loc;
             Orientation = orient;
             Hits = hits;
+        }
+
+        public Ship(string ShipName, int ShipSize)
+        {
+            Name = ShipName;
+            Size = ShipSize;
+            Orientation = Orientations.Horizontal;
+            Hits = ImmutableHashSet<Location>.Empty;
         }
 
     }

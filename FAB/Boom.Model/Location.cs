@@ -8,13 +8,18 @@ namespace Boom.Model
 {
     public struct Location
     {
-        public readonly int Item1;
-        public readonly int Item2;
+        public readonly int Col;
+        public readonly int Row;
 
         public Location(int col, int row)
         {
-            Item1 = col;
-            Item2 = row;
+            Col = col;
+            Row = row;
+        }
+
+        public Location Add(int colInc, int rowInc)
+        {
+            return new Location(Col + colInc, Row + rowInc);
         }
 
     }

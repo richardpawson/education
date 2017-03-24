@@ -9,7 +9,7 @@ namespace Boom.Model
     public class GameBoard
     {
         public readonly int Size;
-        public readonly ImmutableList<Tuple<int, int>> Misses;
+        public readonly ImmutableList<Location> Misses;
         public readonly ImmutableArray<Ship> Ships;
         public readonly string Messages;
         /// <summary>
@@ -19,7 +19,7 @@ namespace Boom.Model
         /// <param name="logger"></param>
         /// <param name="randomGenerator"></param>
         /// <param name="misses"></param>
-        public GameBoard(int size, ImmutableArray<Ship> ships, string messages, ImmutableList<Tuple<int, int>> misses)
+        public GameBoard(int size, ImmutableArray<Ship> ships, string messages, ImmutableList<Location> misses)
         {
             Size = size;
             Messages = messages;

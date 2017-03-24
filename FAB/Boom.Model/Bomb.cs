@@ -10,17 +10,20 @@ namespace Boom.Model
     {
         private static int blastRadius = 1;
 
-        public static GameBoard Fire(int col, int row, GameBoard board)
+        public static GameBoard Fire(Location loc, GameBoard board)
         {
+            //TODO: This needs refactoring to make it functional i.e. generate a list of hit locations first
             var messages = new StringBuilder();
-            for (int startCol = col - blastRadius; startCol <= col + blastRadius; startCol++)
+            for (int startCol = loc.Col - blastRadius; startCol <= loc.Col + blastRadius; startCol++)
             {
-                for (int startRow = row - blastRadius; startRow <= row + blastRadius; startRow++)
+                for (int startRow = loc.Row - blastRadius; startRow <= loc.Row + blastRadius; startRow++)
                 {
                     {
                         if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
                         {
-                            board =  board.CheckSquareAndRecordOutcome(startCol, startRow);
+                            //TODO: more refactoring needed
+                            var startLoc = new Location(startCol, startRow);
+                            board =  board.CheckSquareAndRecordOutcome(startLoc);
                             messages.Append(board.Messages);
                         }
                     }
@@ -40,9 +43,9 @@ namespace Boom.Model
 
         //}
 
-        //private static ImmutableArray<Tuple<int, int>> GenerateLocationsToHit(int row, int col, GameBoard board)
+        //private static ImmutableArray<Location> GenerateLocationsToHit(int row, int col, GameBoard board)
         //{
-        //    return ImmutableArray<Tuple<int, int>>.Empty;
+        //    return ImmutableArray<Location>.Empty;
         //}
     }
 }
