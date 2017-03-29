@@ -11,11 +11,9 @@
             {
                 for (int startRow = row - blastRadius; startRow <= row + blastRadius; startRow++)
                 {
+                    if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
                     {
-                        if (startCol >= 0 && startCol < 10 && startRow >= 0 && startRow < 10)
-                        {
-                            Board.CheckSquareAndRecordOutcome(startCol, startRow);
-                        }
+                        Board.CheckSquareAndRecordOutcome(startCol, startRow);
                     }
                 }
             }
