@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using TechnicalServices;
+﻿using System.Collections.Immutable;
 
 namespace Boom.Model
 {

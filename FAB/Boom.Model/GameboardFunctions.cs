@@ -9,6 +9,7 @@ namespace Boom.Model
     {
         private const string newLine = "\n";
 
+
         public static GameBoard CheckSquareAndRecordOutcome(this GameBoard board, Location loc)
         {
             var results = board.Ships.Select(s => s.FireAt(loc));
@@ -34,6 +35,26 @@ namespace Boom.Model
                 var newMessage = messages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss.";
                 return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, newMisses);
             }
+        }
+
+        public static GameBoard CheckSquaresAndRecordOutcome(this GameBoard board, ImmutableArray<Location> locs)
+        { 
+            if (locs.Count() == 1)
+            {
+                //TODO: de-duplicate code in two cases
+                var boardFromHead = CheckSquareAndRecordOutcome(board, locs.First());
+                var aggregatedMessages = board.Messages + boardFromHead.Messages;
+                //TODO push this into CheckSquareAndRecordOutcome
+                return new GameBoard(board.Size, boardFromHead.Ships, aggregatedMessages, boardFromHead.Misses);
+            }
+            else
+            {
+                var boardFromHead = CheckSquareAndRecordOutcome(board, locs.First());
+                var aggregatedMessages = board.Messages + boardFromHead.Messages;
+                //TODO push this into CheckSquareAndRecordOutcome
+                var newBoard = new GameBoard(board.Size, boardFromHead.Ships, aggregatedMessages, boardFromHead.Misses);
+                return CheckSquaresAndRecordOutcome(newBoard, locs.Remove(locs.First()));
+             }
         }
 
         public static bool IsValidPosition(int boardSize, ImmutableArray<Ship> existingShips, Ship shipToBePlaced, Location loc, Orientations orientation)
@@ -77,6 +98,13 @@ namespace Boom.Model
         {
             return (orientation == Orientations.Horizontal && loc.Col + ship.Size <= boardSize) ||
                 (orientation == Orientations.Vertical && loc.Row + ship.Size <= boardSize);
+            //TODO: could this delegate to  function below?
+        }
+
+        public static bool Contains(this GameBoard board, Location loc)
+        {
+            int boardSize = board.Size;
+            return loc.Col >= 0 && loc.Col < boardSize && loc.Row >= 0 && loc.Row < boardSize;
         }
 
         public static SquareValues ReadSquare(this GameBoard board, Location loc)
