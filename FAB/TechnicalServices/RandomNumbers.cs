@@ -7,13 +7,23 @@ using System.Threading.Tasks;
 
 namespace TechnicalServices
 {
+    public class RandomInt
+    {
+        public readonly int Number;
+        public readonly Random NewGenerator;
+        public RandomInt(int result, Random generator)
+        {
+            Number = result;
+            NewGenerator = generator;
+        }
+    }
     public static class RandomNumbers
     { 
-        public static Tuple<int, Random> Next(Random generator, int minValue, int maxValue)
+        public static RandomInt Next(Random generator, int minValue, int maxValue)
         {
             var clone = Clone(generator);
             var result = clone.Next(minValue, maxValue);
-            return Tuple.Create(result, clone);
+            return new RandomInt(result, clone);
         }
 
         //Acknowledgement

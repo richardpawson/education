@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using TechnicalServices;
@@ -9,55 +10,53 @@ namespace Boom.Model
     {
         private const string newLine = "\n";
 
+        public static bool AllShipsSunk(IEnumerable<Ship> ships)
+        {
+            return !ships.Any(ship => !ship.IsSunk());
+        }
 
-        public static GameBoard CheckSquareAndRecordOutcome(this GameBoard board, Location loc)
+        public static GameBoard CheckSquareAndRecordOutcome(this GameBoard board, Location loc, bool aggregateMessages = false)
         {
             var results = board.Ships.Select(s => s.FireAt(loc));
             var newShips = results.Select(r => r.Item1);
             var hit = results.Select(r => r.Item2).Aggregate((a, b) => a | b);
-            var messages = results.Select(r => r.Item3).Aggregate((a, b) => a + b);
+            string newMessages = results.Select(r => r.Item3).Aggregate((a, b) => a + b);
+            var aggregatedMessages = aggregateMessages ? board.Messages + newMessages : newMessages;
             var misses = board.Misses;
             if (hit)
             {
-                if (!newShips.Any(ship => !ship.IsSunk()))
+                if (AllShipsSunk(newShips))
                 {
-                    var newMessage = messages + "All ships sunk!";
+                    var newMessage = newMessages + "All ships sunk!";
                     return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, misses);
                 }
                 else
                 {
-                    return new GameBoard(board.Size, newShips.ToImmutableArray(), messages.ToString(), misses);
+                    return new GameBoard(board.Size, newShips.ToImmutableArray(), aggregatedMessages, misses);
                 }
             }
             else
             {
                 var newMisses = board.Misses.Add(loc);
-                var newMessage = messages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss.";
+                var newMessage = aggregatedMessages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss.";
                 return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, newMisses);
             }
         }
 
-        public static GameBoard CheckSquaresAndRecordOutcome(this GameBoard board, ImmutableArray<Location> locs)
-        { 
+        public static GameBoard CheckSquaresAndRecordOutcome(this GameBoard board, IImmutableList<Location> locs)
+        {
+            var boardFromHead = CheckSquareAndRecordOutcome(board, locs.First(), true);
             if (locs.Count() == 1)
             {
-                //TODO: de-duplicate code in two cases
-                var boardFromHead = CheckSquareAndRecordOutcome(board, locs.First());
-                var aggregatedMessages = board.Messages + boardFromHead.Messages;
-                //TODO push this into CheckSquareAndRecordOutcome
-                return new GameBoard(board.Size, boardFromHead.Ships, aggregatedMessages, boardFromHead.Misses);
+                return boardFromHead;
             }
             else
             {
-                var boardFromHead = CheckSquareAndRecordOutcome(board, locs.First());
-                var aggregatedMessages = board.Messages + boardFromHead.Messages;
-                //TODO push this into CheckSquareAndRecordOutcome
-                var newBoard = new GameBoard(board.Size, boardFromHead.Ships, aggregatedMessages, boardFromHead.Misses);
-                return CheckSquaresAndRecordOutcome(newBoard, locs.Remove(locs.First()));
-             }
+                return CheckSquaresAndRecordOutcome(boardFromHead, locs.Remove(locs.First()));
+            }
         }
 
-        public static bool IsValidPosition(int boardSize, ImmutableArray<Ship> existingShips, Ship shipToBePlaced, Location loc, Orientations orientation)
+        public static bool IsValidPosition(int boardSize, IImmutableList<Ship> existingShips, Ship shipToBePlaced, Location loc, Orientations orientation)
         {
             if (!ShipWouldFitWithinBoard(boardSize, shipToBePlaced, loc, orientation))
             {
@@ -66,7 +65,6 @@ namespace Boom.Model
             else
             {
                 var locs = LocationsThatShipWouldOccupy(loc, orientation, shipToBePlaced.Size);
-                //TODO: re-write using .SelectMany ?
                 var occupiedLocations = from l in locs
                                         from s in existingShips
                                         where s.ShipOccupiesLocation(l)
@@ -85,11 +83,11 @@ namespace Boom.Model
             {
                 if (orient == Orientations.Horizontal)
                 {
-                    return LocationsThatShipWouldOccupy(loc.Add(1,0), orient, locsToAdd - 1).Add(loc);
+                    return LocationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Add(loc);
                 }
-                else //i.e. vertical
+                else
                 {
-                    return LocationsThatShipWouldOccupy(loc.Add(0,1), orient, locsToAdd - 1).Add(loc);
+                    return LocationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Add(loc);
                 }
             }
         }
@@ -98,7 +96,6 @@ namespace Boom.Model
         {
             return (orientation == Orientations.Horizontal && loc.Col + ship.Size <= boardSize) ||
                 (orientation == Orientations.Vertical && loc.Row + ship.Size <= boardSize);
-            //TODO: could this delegate to  function below?
         }
 
         public static bool Contains(this GameBoard board, Location loc)
@@ -161,7 +158,7 @@ namespace Boom.Model
         public static Tuple<Location, Orientations, Random> GetValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
         {
             var pos = GetRandomPosition(boardSize, random);
-            return IsValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1,  pos.Item2) ?
+            return IsValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2) ?
                 pos :
                 GetValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item3);
         }
@@ -169,16 +166,18 @@ namespace Boom.Model
         public static Tuple<Location, Orientations, Random> GetRandomPosition(int boardSize, Random random)
         {
             var result1 = RandomNumbers.Next(random, 0, boardSize);
-            var col = result1.Item1;
+            var col = result1.Number;
 
-            var result2 = RandomNumbers.Next(result1.Item2, 0, boardSize);
-            var row = result2.Item1;
+            var result2 = RandomNumbers.Next(result1.NewGenerator, 0, boardSize);
+            var row = result2.Number;
 
-            var result3 = RandomNumbers.Next(result2.Item2, 0, 2);
-            var orientation = (Orientations)result3.Item1;
+            var result3 = RandomNumbers.Next(result2.NewGenerator, 0, 2);
+            var orientation = (Orientations)result3.Number;
 
             var loc = new Location(col, row);
-            return Tuple.Create(loc, orientation, result3.Item2);
+            return Tuple.Create(loc, orientation, result3.NewGenerator);
         }
+
+
     }
 }

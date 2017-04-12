@@ -11,7 +11,7 @@ namespace Boom.ConsoleUI
         static void Main(string[] args)
         {
             var noMisses = ImmutableList<Location>.Empty;
-                GameBoard Board = null;
+            GameBoard Board = null;
 
             int MenuOption = 0;
             while (MenuOption != 9)
@@ -51,24 +51,27 @@ namespace Boom.ConsoleUI
             return Choice;
         }
 
-        private static void PlayGame(GameBoard Board)
+        private static void PlayGame(GameBoard board)
         {
-            bool GameWon = false;
-            //TODO: Make recursive!
-            while (!GameWon)
+            if (GameBoardFunctions.AllShipsSunk(board.Ships))
             {
-                PrintBoard(Board);
+                return;
+            }
+            else
+            {
+                PrintBoard(board);
                 var missileType = GetMissileType();
                 var loc = GetLocation();
                 if (missileType == "M")
                 {
-                    Board = Missile.Fire(loc, Board);
+                    var newBoard = Missile.Fire(loc, board);
+                    PlayGame(newBoard);
                 }
                 if (missileType == "B")
                 {
-                    Board = Bomb.Fire(loc, Board);
+                    var newBoard = Bomb.Fire(loc, board);
+                    PlayGame(newBoard);
                 }
-                
             }
         }
 
@@ -82,7 +85,7 @@ namespace Boom.ConsoleUI
         private static Location GetLocation()
         {
             Console.Write("Please enter column: ");
-            var col =  Convert.ToInt32(Console.ReadLine());
+            var col = Convert.ToInt32(Console.ReadLine());
             Console.Write("Please enter row: ");
             var row = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
@@ -96,7 +99,7 @@ namespace Boom.ConsoleUI
             Console.WriteLine("The board looks like this: ");
             Console.WriteLine();
             Console.Write(" ");
-            for (int Column = 0; Column <boardSize; Column++)
+            for (int Column = 0; Column < boardSize; Column++)
             {
                 Console.Write(" " + Column + "  ");
             }
@@ -106,7 +109,6 @@ namespace Boom.ConsoleUI
                 Console.Write(row + " ");
                 for (int col = 0; col < boardSize; col++)
                 {
-                    //TODO: functionalise this!
                     var loc = new Location(col, row);
                     SquareValues square = board.ReadSquare(loc);
                     switch (square)
@@ -120,8 +122,8 @@ namespace Boom.ConsoleUI
                         case SquareValues.Hit:
                             Console.Write('h');
                             break;
-                    }        
-                    
+                    }
+
                     if (col != boardSize - 1)
                     {
                         Console.Write(" | ");
@@ -129,6 +131,9 @@ namespace Boom.ConsoleUI
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
+            Console.Write(board.Messages);
+            Console.WriteLine();
         }
     }
 }

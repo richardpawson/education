@@ -34,13 +34,13 @@ namespace Boom.Test
         public void TestSequenceFromFunctionalImplementation() { 
             var gen2 = new Random(1);
             var result1 = RandomNumbers.Next(gen2, 0, 10);
-            Assert.AreEqual(2, result1.Item1);
-            var result2 = RandomNumbers.Next(result1.Item2, 0, 10);
-            Assert.AreEqual(1, result2.Item1);
-            var result3 = RandomNumbers.Next(result2.Item2, 0, 2);
-            Assert.AreEqual(0, result3.Item1);
-            var result4 = RandomNumbers.Next(result3.Item2, 0, 10);
-            Assert.AreEqual(7, result4.Item1);
+            Assert.AreEqual(2, result1.Number);
+            var result2 = RandomNumbers.Next(result1.NewGenerator, 0, 10);
+            Assert.AreEqual(1, result2.Number);
+            var result3 = RandomNumbers.Next(result2.NewGenerator, 0, 2);
+            Assert.AreEqual(0, result3.Number);
+            var result4 = RandomNumbers.Next(result3.NewGenerator, 0, 10);
+            Assert.AreEqual(7, result4.Number);
 
         }
 
@@ -48,9 +48,9 @@ namespace Boom.Test
         public void TestFunctionRepeatability()
         {
             var gen = new Random(1);
-            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Item1);
-            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Item1);
-            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Item1);
+            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Number);
+            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Number);
+            Assert.AreEqual(2, RandomNumbers.Next(gen, 0, 10).Number);
         }       
     }
 }

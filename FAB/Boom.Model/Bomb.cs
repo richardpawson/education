@@ -11,16 +11,14 @@ namespace Boom.Model
     {
         public static GameBoard Fire(Location loc, GameBoard board)
         {
-            const int blastRadius = 1;
-            var locs = GenerateLocationsToHit(loc.Col, loc.Row, blastRadius, board);
+            var locs = GenerateLocationsToHit(loc.Col, loc.Row, board);
             return board.CheckSquaresAndRecordOutcome(locs);
         }
 
-        private static ImmutableArray<Location> GenerateLocationsToHit(int centreCol, int centreRow, int blastRadius, GameBoard board)
+        private static ImmutableArray<Location> GenerateLocationsToHit(int centreCol, int centreRow, GameBoard board)
         {
-            var diam = 1+ blastRadius * 2;
-            var colRange = Enumerable.Range(centreCol - blastRadius, diam);
-            var rowRange = Enumerable.Range(centreRow - blastRadius, diam);
+            var colRange = Enumerable.Range(centreCol - 1, 3);
+            var rowRange = Enumerable.Range(centreRow - 1, 3);
             var locations = colRange.SelectMany(col => rowRange, (col, row) => new Location(col, row));
             return ImmutableArray.CreateRange(locations);
         }
