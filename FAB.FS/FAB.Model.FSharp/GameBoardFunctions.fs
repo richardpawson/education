@@ -3,7 +3,7 @@ open FAB.Model
 open System
 open TechnicalServices
 
-let allShipsSunk ships  = ships |> Seq.exists(fun (ship : Ship)-> not(ship.isSunk))
+let allShipsSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ship.isSunk)))
 
 let rec locationsThatShipWouldOccupy (loc: Location) orient (locsToAdd: int)  =
     let result =
@@ -78,20 +78,20 @@ let checkSquareAndRecordOutcome (board: GameBoard) loc aggregateMessages =
     let newShips = results |> Seq.map(fun r -> match r with (ship,_,_) -> ship)
     let hits = results |> Seq.map(fun r -> match r with (_,hit,_) -> hit)
     let hit = hits |> Seq.fold (||) false
-    let newMessages = results |> Seq.map(fun r -> match r with (_,_,msg) -> msg)
-    let newMessage = newMessages |> Seq.fold (+) ""
-    let aggregatedMessages = if aggregateMessages then board.Messages + newMessage else newMessage
+    let messages = results |> Seq.map(fun r -> match r with (_,_,msg) -> msg)
+    let foldedMessages = messages |> Seq.fold (+) ""
+    let aggregatedMessages = if aggregateMessages then board.Messages + foldedMessages else foldedMessages
     let misses = board.Misses;
     if hit then
         if allShipsSunk newShips then
-            let newMessage = newMessage + "All ships sunk!"
-            new GameBoard(board.Size, newShips, newMessage, misses);
+            let allSunk = foldedMessages + "All ships sunk!"
+            new GameBoard(board.Size, newShips, allSunk, misses);
         else
              new GameBoard(board.Size, newShips, aggregatedMessages, misses);
     else
         let newMisses = loc :: Seq.toList(board.Misses)
-        let newMessage = aggregatedMessages + "Sorry, (" + loc.Col.ToString() + "," + loc.Row.ToString() + ") is a miss.";
-        new GameBoard(board.Size, newShips, newMessage, newMisses);
+        let sorry = aggregatedMessages + "Sorry, (" + loc.Col.ToString() + "," + loc.Row.ToString() + ") is a miss.";
+        new GameBoard(board.Size, newShips, sorry, newMisses);
 
     
 let rec checkSquaresAndRecordOutcome board (locs : List<Location>) =

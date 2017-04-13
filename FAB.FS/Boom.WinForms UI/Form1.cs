@@ -1,5 +1,5 @@
 ﻿using Boom.DataFixture;
-using Boom.Model;
+using FAB.Model;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
@@ -34,7 +34,7 @@ namespace Boom.WinFormsUI
                 for (int row = 0; row < Board.Size; row++)
                 {
                     var loc = new Location(col, row);
-                    var square = Board.ReadSquare(loc);
+                    var square = Board.readSquare(loc);
                     Brush brush = null;
                     switch (square)
                     {
@@ -84,14 +84,14 @@ namespace Boom.WinFormsUI
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             var loc = new Location(col, row);
-            Board = Missile.Fire(loc, Board);
+            Board = Missile.fireMissile(loc, Board);
             DrawBoard();
             richTextBox1.Text = Board.Messages;
         }
         private void button3_Click(object sender, EventArgs e)
         {
             var ships = Ships.UnplacedShips5();
-            Board = GameBoardFunctions.PlaceShipsRandomlyOnBoard(Board.Size, ships, new Random());
+            Board = GameBoardFunctions.placeShipsRandomlyOnBoard(Board.Size, ships, new Random());
             DrawBoard();
         }
 
@@ -100,7 +100,7 @@ namespace Boom.WinFormsUI
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             var loc = new Location(col, row);
-            Board = Bomb.Fire(loc, Board);
+            Board = Missile.fireBomb(loc, Board);
             DrawBoard();
             richTextBox1.Text = Board.Messages;
         }

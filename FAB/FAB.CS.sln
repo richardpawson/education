@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Test", "Boom.Test\Boom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.WinFormsUI", "Boom.WinForms UI\Boom.WinFormsUI.csproj", "{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FAB.Model.FSharp", "FAB.Model.FSharp\FAB.Model.FSharp.fsproj", "{C0F684EA-5A5B-4F26-9121-15D2F6784406}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

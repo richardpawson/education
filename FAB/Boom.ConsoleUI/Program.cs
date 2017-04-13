@@ -3,7 +3,7 @@ using TechnicalServices;
 
 using Boom.DataFixture;
 using System.Collections.Immutable;
-using FAB.Model;
+using Boom.Model;
 
 namespace Boom.ConsoleUI
 {
@@ -22,7 +22,7 @@ namespace Boom.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5();
-                    Board = GameBoardFunctions.placeShipsRandomlyOnBoard(10, ships, new Random());
+                    Board = GameBoardFunctions.PlaceShipsRandomlyOnBoard(10, ships, new Random());
                 }
                 if (MenuOption == 2)
                 {
@@ -54,7 +54,7 @@ namespace Boom.ConsoleUI
 
         private static void PlayGame(GameBoard board)
         {
-            if (GameBoardFunctions.allShipsSunk(board.Ships))
+            if (GameBoardFunctions.AllShipsSunk(board.Ships))
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace Boom.ConsoleUI
                 for (int col = 0; col < boardSize; col++)
                 {
                     var loc = new Location(col, row);
-                    SquareValues square = board.readSquare(loc);
+                    SquareValues square = GameBoardFunctions.ReadSquare(board, loc);
                     switch (square)
                     {
                         case SquareValues.Empty:

@@ -35,9 +35,10 @@ type Ship(name, size, hits, loc: Location, orient) =
                     loc.Row < this.Location.Row + this.Size;
     member this.fireAt loc =
         if this.occupiesLocation loc then
-            let newHits = loc :: this.Hits
+            //TODO -   error here  -  need to use a set so hit locations cannot be duplicated
+            let newHits = loc :: this.Hits 
             let newShip = new Ship(this.Name, this.Size, newHits, this.Location, this.Orientation)
-            let message = if this.isSunk then newShip.Name + " sunk!" else "Hit a " + newShip.Name + " at (" + loc.Col.ToString() + "," + loc.Row.ToString() + ")."
+            let message = if newShip.isSunk then newShip.Name + " sunk!" else "Hit a " + newShip.Name + " at (" + loc.Col.ToString() + "," + loc.Row.ToString() + ")."
             (newShip, true, message)
         else 
             (this, false, "")
