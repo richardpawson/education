@@ -8,13 +8,7 @@ namespace Boom.Model
         public readonly ImmutableList<Location> Misses;
         public readonly ImmutableArray<Ship> Ships;
         public readonly string Messages;
-        /// <summary>
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="ships"></param>
-        /// <param name="logger"></param>
-        /// <param name="randomGenerator"></param>
-        /// <param name="misses"></param>
+
         public GameBoard(int size, ImmutableArray<Ship> ships, string messages, ImmutableList<Location> misses)
         {
             Size = size;
