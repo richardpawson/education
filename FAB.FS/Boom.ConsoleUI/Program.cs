@@ -1,6 +1,6 @@
 ﻿using System;
 using TechnicalServices;
-
+using System.Linq;
 using Boom.DataFixture;
 using System.Collections.Immutable;
 using FAB.Model;
@@ -21,7 +21,7 @@ namespace Boom.ConsoleUI
                 MenuOption = GetMainMenuChoice();
                 if (MenuOption == 1)
                 {
-                    var ships = Ships.UnplacedShips5();
+                    var ships = Ships.UnplacedShips5().ToArray();
                     Board = GameBoardFunctions.placeShipsRandomlyOnBoard(10, ships, new Random());
                 }
                 if (MenuOption == 2)
@@ -65,12 +65,12 @@ namespace Boom.ConsoleUI
                 var loc = GetLocation();
                 if (missileType == "M")
                 {
-                    var newBoard = Missile.Fire(loc, board);
+                    var newBoard = Missile.fireMissile(loc, board);
                     PlayGame(newBoard);
                 }
                 if (missileType == "B")
                 {
-                    var newBoard = Bomb.Fire(loc, board);
+                    var newBoard = Missile.fireBomb(loc, board);
                     PlayGame(newBoard);
                 }
             }

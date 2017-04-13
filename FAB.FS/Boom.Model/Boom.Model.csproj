@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}</ProjectGuid>
+    <ProjectGuid>{AD9DEA29-4E95-4773-84F6-55243C946B8A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Boom.DataFixture</RootNamespace>
-    <AssemblyName>Boom.DataFixture</AssemblyName>
+    <RootNamespace>Boom.Model</RootNamespace>
+    <AssemblyName>Boom.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,12 +24,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,16 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ships.cs" />
+    <Compile Include="Bomb.cs" />
+    <Compile Include="GameboardFunctions.cs" />
+    <Compile Include="Gameboard.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Missile.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ship.cs" />
+    <Compile Include="ShipFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FAB.Model.FSharp\FAB.Model.FSharp.fsproj">
-      <Project>{c0f684ea-5a5b-4f26-9121-15d2f6784406}</Project>
-      <Name>FAB.Model.FSharp</Name>
+    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
+      <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
+      <Name>TechnicalServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

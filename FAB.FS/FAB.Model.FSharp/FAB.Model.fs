@@ -12,6 +12,10 @@ type Location(col: int, row: int) =
     member this.Add colInc rowInc = new Location(this.Col + colInc, this.Row + rowInc)
 
 type Ship(name, size, hits, loc: Location, orient) = 
+    new (name, size) =
+        Ship(name, size, [], new Location(0,0), Orientations.Horizontal)
+    new (name, size,loc: Location, orient) =
+        Ship(name, size, [], loc, orient)
     member this.Name = name
     member this.Size = size
     member this.Hits = hits
@@ -38,7 +42,7 @@ type Ship(name, size, hits, loc: Location, orient) =
         else 
             (this, false, "")
 
-type GameBoard(size, ships, messages, misses) = 
+type GameBoard(size, ships, messages: string, misses) = 
     member this.Size = size
     member this.Ships = ships
     member this.Messages = messages

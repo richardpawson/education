@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{3927F33C-FFCB-4AC1-829F-E47546B14E43}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Boom.DataFixture</RootNamespace>
-    <AssemblyName>Boom.DataFixture</AssemblyName>
+    <RootNamespace>Boom.ConsoleUI</RootNamespace>
+    <AssemblyName>Boom.ConsoleUI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -44,16 +48,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ships.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Boom.DataFixture\Boom.DataFixture.csproj">
+      <Project>{7ced0f0c-4586-43e8-93f1-2abc0ab82f4b}</Project>
+      <Name>Boom.DataFixture</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FAB.Model.FSharp\FAB.Model.FSharp.fsproj">
       <Project>{c0f684ea-5a5b-4f26-9121-15d2f6784406}</Project>
       <Name>FAB.Model.FSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
+      <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
+      <Name>TechnicalServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
