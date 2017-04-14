@@ -13,11 +13,11 @@ type Location(col: int, row: int) =
         member this.Add colInc rowInc = new Location(this.Col + colInc, this.Row + rowInc)
     end
 
-type Ship(name, size, hits, loc: Location, orient) = 
+type Ship(name, size, hits: Set<Location>, loc: Location, orient) = 
     new (name, size) =
-        Ship(name, size, [], new Location(0,0), Orientations.Horizontal)
+        Ship(name, size, Set.empty, new Location(0,0), Orientations.Horizontal)
     new (name, size,loc: Location, orient) =
-        Ship(name, size, [], loc, orient)
+        Ship(name, size, Set.empty, loc, orient)
     member this.Name = name
     member this.Size = size
     member this.Hits = hits
@@ -38,7 +38,7 @@ type Ship(name, size, hits, loc: Location, orient) =
     member this.fireAt loc =
         if this.occupiesLocation loc then
             //TODO -   error here  -  need to use a set so hit locations cannot be duplicated
-            let newHits = loc :: this.Hits 
+            let newHits =this.Hits.Add(loc)
             let newShip = new Ship(this.Name, this.Size, newHits, this.Location, this.Orientation)
             let message = if newShip.isSunk then newShip.Name + " sunk!" else "Hit a " + newShip.Name + " at (" + loc.Col.ToString() + "," + loc.Row.ToString() + ")."
             (newShip, true, message)
