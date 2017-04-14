@@ -7,9 +7,11 @@ type Orientations = Horizontal = 0|Vertical=1
 type SquareValues = Empty=0|Miss=1|Hit=2
 
 type Location(col: int, row: int) =
-    member this.Col = col
-    member this.Row = row   
-    member this.Add colInc rowInc = new Location(this.Col + colInc, this.Row + rowInc)
+    struct
+        member this.Col = col
+        member this.Row = row   
+        member this.Add colInc rowInc = new Location(this.Col + colInc, this.Row + rowInc)
+    end
 
 type Ship(name, size, hits, loc: Location, orient) = 
     new (name, size) =
@@ -49,6 +51,7 @@ type GameBoard(size, ships, messages: string, misses) =
     member this.Messages = messages
     member this.Misses = misses
     member this.readSquare loc =
+        //TODD: Use pattern matching here
         let result = 
             if this.Ships |> Seq.exists (fun (ship: Ship) -> ship.isHitInLocation loc) then
                 SquareValues.Hit
