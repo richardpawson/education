@@ -34,7 +34,7 @@ namespace Boom.WinFormsUI
                 for (int row = 0; row < Board.Size; row++)
                 {
                     var loc = new Location(col, row);
-                    var square = Board.readSquare(loc);
+                    var square = GameBoardFunctions.readSquare(Board, loc);
                     Brush brush = null;
                     switch (square)
                     {

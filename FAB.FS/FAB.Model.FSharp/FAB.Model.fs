@@ -45,20 +45,10 @@ type Ship(name, size, hits: Set<Location>, loc: Location, orient) =
         else 
             (this, false, "")
 
-type GameBoard(size, ships, messages: string, misses) = 
+type GameBoard(size: int, ships: seq<Ship>, messages: string, misses: seq<Location>) = 
     member this.Size = size
     member this.Ships = ships
     member this.Messages = messages
     member this.Misses = misses
-    member this.readSquare loc =
-        //TODD: Use pattern matching here
-        let result = 
-            if this.Ships |> Seq.exists (fun (ship: Ship) -> ship.isHitInLocation loc) then
-                SquareValues.Hit
-            else if this.Misses |> Seq.contains loc then
-                SquareValues.Miss
-            else 
-                SquareValues.Empty
-        result
-    member this.contains (loc: Location) =
-        loc.Col >= 0 && loc.Col < this.Size && loc.Row >= 0 && loc.Row < this.Size
+
+   

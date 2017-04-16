@@ -3,6 +3,20 @@ open FAB.Model
 open System
 open TechnicalServices
 
+let contains (ship:Ship, loc: Location) =
+        loc.Col >= 0 && loc.Col < ship.Size && loc.Row >= 0 && loc.Row < ship.Size
+
+let readSquare (board:GameBoard, loc:Location)=
+    //TODO: Use pattern matching here
+    let result = 
+        if board.Ships |> Seq.exists (fun (ship: Ship) -> ship.isHitInLocation loc) then
+            SquareValues.Hit
+        else if board.Misses |> Seq.contains loc then
+            SquareValues.Miss
+        else 
+            SquareValues.Empty
+    result
+
 let allShipsSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ship.isSunk)))
 
 let rec locationsThatShipWouldOccupy (loc: Location) orient (locsToAdd: int)  =

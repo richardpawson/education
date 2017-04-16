@@ -111,7 +111,7 @@ namespace Boom.ConsoleUI
                 for (int col = 0; col < boardSize; col++)
                 {
                     var loc = new Location(col, row);
-                    SquareValues square = board.readSquare(loc);
+                    SquareValues square = GameBoardFunctions.readSquare(board, loc);
                     switch (square)
                     {
                         case SquareValues.Empty:
