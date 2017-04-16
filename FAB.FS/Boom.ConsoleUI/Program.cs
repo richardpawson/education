@@ -22,7 +22,7 @@ namespace Boom.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5().ToArray();
-                    Board = GameBoardFunctions.placeShipsRandomlyOnBoard(10, ships, new Random());
+                    Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, ships, new Random());
                 }
                 if (MenuOption == 2)
                 {

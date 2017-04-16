@@ -27,19 +27,22 @@ let rec locationsThatShipWouldOccupy (loc: Location) orient (locsToAdd: int)  =
         else
             loc :: locationsThatShipWouldOccupy (loc.Add 0 1) orient (locsToAdd - 1)   
 
-//TODO: Move back onto Ship?
-let shipWouldFitWithinBoard  boardSize  (ship: Ship)  (loc: Location)  orientation =
+//TODO: As below
+let shipWouldFitWithinBoard  boardSize  (ship: Ship) =
+    let orientation = ship.Orientation
+    let loc = ship.Location
     (orientation = Orientations.Horizontal && loc.Col + ship.Size <= boardSize) ||
         (orientation = Orientations.Vertical && loc.Row + ship.Size <= boardSize)
 
 //TODO: If this is being done with a ship, why not set its location& test validity?
-let isValidPosition boardSize existingShips shipToBePlaced loc orientation =
-    if not(shipWouldFitWithinBoard boardSize shipToBePlaced loc orientation) then
+//TODO: pass in board, not size
+let isValidPosition boardSize existingShips ship =
+    if not(shipWouldFitWithinBoard boardSize ship) then
         false
     else
         let anyShipOccupiesLocation ships loc =
             ships |> Seq.exists( fun (ship: Ship) -> ShipFunctions.occupiesLocation(ship, loc))
-        let locs= locationsThatShipWouldOccupy loc orientation shipToBePlaced.Size
+        let locs= locationsThatShipWouldOccupy ship.Location ship.Orientation ship.Size
         not (locs |> Seq.exists( fun loc -> anyShipOccupiesLocation existingShips loc))
        
 let getRandomPosition boardSize  (random: Random) =
@@ -52,32 +55,27 @@ let getRandomPosition boardSize  (random: Random) =
     let loc = new Location(col, row)
     (loc, orientation, result3.NewGenerator)
 
-let rec getValidRandomPosition boardSize shipsAlreadyLocated  shipToBeLocated random = 
-    let pos = getRandomPosition boardSize  random
-    let loc,orient,random = pos
-    if isValidPosition boardSize shipsAlreadyLocated shipToBeLocated loc orient then
-        pos
+let rec setValidRandomPosition boardSize shipsAlreadyPlaced  (shipToBePlaced:Ship) random = 
+    let loc,orient,newRandom = getRandomPosition boardSize  random
+    let placedShip = new Ship(shipToBePlaced.Name, shipToBePlaced.Size, loc, orient)
+    if isValidPosition boardSize shipsAlreadyPlaced placedShip then
+        (placedShip, newRandom)
     else
-        getValidRandomPosition boardSize  shipsAlreadyLocated  shipToBeLocated  random
-    
-let locateShipRandomly boardSize shipsAlreadyLocated (shipToBeLocated: Ship) random =
-    let loc,orient,random = getValidRandomPosition boardSize  shipsAlreadyLocated  shipToBeLocated  random
-    let message = "Computer placing the " + shipToBeLocated.Name + "\n";
-    let newShip = ShipFunctions.setPosition(shipToBeLocated, loc, orient);
-    (newShip, message, random);
+        setValidRandomPosition boardSize  shipsAlreadyPlaced  shipToBePlaced  newRandom
 
 let rec locateShipsRandomly boardSize (shipsToBePlaced: seq<Ship>) shipsAlreadyPlaced random =
     if shipsToBePlaced |> Seq.isEmpty then
         List.empty
     else 
         let thisShip = shipsToBePlaced |> Seq.head;
-        let ship,message,newRandom = locateShipRandomly boardSize shipsAlreadyPlaced thisShip random
-        let shipPlacement = (ship, message)
-        let newshipsAlreadyPlaced = ship :: shipsAlreadyPlaced
+        let message = "Computer placing the " + thisShip.Name + "\n";
+        let placedShip, newRandom = setValidRandomPosition boardSize  shipsAlreadyPlaced  thisShip  random
+        let shipPlacement = (placedShip, message)
+        let newshipsAlreadyPlaced = placedShip :: shipsAlreadyPlaced
         let newShipsToBePlaced = shipsToBePlaced |> Seq.skip 1 
         shipPlacement :: locateShipsRandomly boardSize newShipsToBePlaced newshipsAlreadyPlaced newRandom
     
-let placeShipsRandomlyOnBoard boardSize shipsToBePlaced random =
+let createBoardWithShipsPlacedRandomly boardSize shipsToBePlaced random =
     let shipPlacements = locateShipsRandomly boardSize shipsToBePlaced List.Empty random
     let newShips = shipPlacements |> Seq.map(fun sp -> fst sp)
     let messages = shipPlacements |> Seq.map(fun sp -> snd sp)

@@ -91,7 +91,7 @@ namespace Boom.WinFormsUI
         private void button3_Click(object sender, EventArgs e)
         {
             var ships = Ships.UnplacedShips5();
-            Board = GameBoardFunctions.placeShipsRandomlyOnBoard(Board.Size, ships, new Random());
+            Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(Board.Size, ships, new Random());
             DrawBoard();
         }
 
