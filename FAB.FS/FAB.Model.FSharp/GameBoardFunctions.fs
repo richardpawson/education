@@ -3,21 +3,20 @@ open FAB.Model
 open System
 open TechnicalServices
 
+
 let contains (ship:Ship, loc: Location) =
         loc.Col >= 0 && loc.Col < ship.Size && loc.Row >= 0 && loc.Row < ship.Size
 
 let readSquare (board:GameBoard, loc:Location)=
     //TODO: Use pattern matching here
-    let result = 
-        if board.Ships |> Seq.exists (fun (ship: Ship) -> ship.isHitInLocation loc) then
+        if board.Ships |> Seq.exists (fun (ship: Ship) -> ShipFunctions.isHitInLocation(ship, loc)) then
             SquareValues.Hit
         else if board.Misses |> Seq.contains loc then
             SquareValues.Miss
         else 
             SquareValues.Empty
-    result
 
-let allShipsSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ship.isSunk)))
+let allShipsSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ShipFunctions.isSunk ship)))
 
 let rec locationsThatShipWouldOccupy (loc: Location) orient (locsToAdd: int)  =
     let result =
@@ -41,7 +40,7 @@ let isValidPosition boardSize existingShips shipToBePlaced loc orientation =
         false
     else
         let anyShipOccupiesLocation ships loc =
-            ships |> Seq.exists( fun (ship: Ship) -> ship.occupiesLocation(loc))
+            ships |> Seq.exists( fun (ship: Ship) -> ShipFunctions.occupiesLocation(ship, loc))
         let locs= locationsThatShipWouldOccupy loc orientation shipToBePlaced.Size
         not (locs |> Seq.exists( fun loc -> anyShipOccupiesLocation existingShips loc))
        
@@ -66,7 +65,7 @@ let rec getValidRandomPosition boardSize shipsAlreadyLocated  shipToBeLocated ra
 let locateShipRandomly boardSize shipsAlreadyLocated (shipToBeLocated: Ship) random =
     let loc,orient,random = getValidRandomPosition boardSize  shipsAlreadyLocated  shipToBeLocated  random
     let message = "Computer placing the " + shipToBeLocated.Name + "\n";
-    let newShip = shipToBeLocated.setPosition loc orient;
+    let newShip = ShipFunctions.setPosition(shipToBeLocated, loc, orient);
     (newShip, message, random);
 
 let rec locateShipsRandomly boardSize (shipsToBePlaced: seq<Ship>) shipsAlreadyPlaced random =
@@ -88,7 +87,7 @@ let placeShipsRandomlyOnBoard boardSize shipsToBePlaced random =
     new GameBoard(boardSize, newShips, aggregateMsg, List.Empty); 
 
 let checkSquareAndRecordOutcome (board: GameBoard) loc aggregateMessages =
-    let results = board.Ships |> Seq.map(fun (s: Ship) -> s.fireAt(loc))
+    let results = board.Ships |> Seq.map(fun (s: Ship) -> ShipFunctions.fireAt(s, loc))
     let newShips = results |> Seq.map(fun r -> match r with (ship,_,_) -> ship)
     let hits = results |> Seq.map(fun r -> match r with (_,hit,_) -> hit)
     let hit = hits |> Seq.fold (||) false
