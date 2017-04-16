@@ -5,29 +5,27 @@ open TechnicalServices
 
 
 let contains (ship:Ship, loc: Location) =
-        loc.Col >= 0 && loc.Col < ship.Size && loc.Row >= 0 && loc.Row < ship.Size
+    loc.Col >= 0 && loc.Col < ship.Size && loc.Row >= 0 && loc.Row < ship.Size
 
 let readSquare (board:GameBoard, loc:Location)=
     //TODO: Use pattern matching here
-        if board.Ships |> Seq.exists (fun (ship: Ship) -> ShipFunctions.isHitInLocation(ship, loc)) then
-            SquareValues.Hit
-        else if board.Misses |> Seq.contains loc then
-            SquareValues.Miss
-        else 
-            SquareValues.Empty
+    if board.Ships |> Seq.exists (fun (ship: Ship) -> ShipFunctions.isHitInLocation(ship, loc)) then
+        SquareValues.Hit
+    else if board.Misses |> Seq.contains loc then
+        SquareValues.Miss
+    else 
+        SquareValues.Empty
 
 let allShipsSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ShipFunctions.isSunk ship)))
 
 let rec locationsThatShipWouldOccupy (loc: Location) orient (locsToAdd: int)  =
-    let result =
-        if locsToAdd = 0 then
-            List.empty
+    if locsToAdd = 0 then
+        List.empty
+    else
+        if orient = Orientations.Horizontal then
+            loc :: locationsThatShipWouldOccupy (loc.Add 1 0) orient (locsToAdd - 1) 
         else
-            if orient = Orientations.Horizontal then
-                loc :: locationsThatShipWouldOccupy (loc.Add 1 0) orient (locsToAdd - 1) 
-            else
-                loc :: locationsThatShipWouldOccupy (loc.Add 0 1) orient (locsToAdd - 1)   
-    result
+            loc :: locationsThatShipWouldOccupy (loc.Add 0 1) orient (locsToAdd - 1)   
 
 //TODO: Move back onto Ship?
 let shipWouldFitWithinBoard  boardSize  (ship: Ship)  (loc: Location)  orientation =
