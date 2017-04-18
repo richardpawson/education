@@ -1,10 +1,9 @@
 ﻿using Boom.DataFixture;
-using FAB.Model;
+using FAB.Types;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Windows.Forms;
-using TechnicalServices;
 
 namespace Boom.WinFormsUI
 {

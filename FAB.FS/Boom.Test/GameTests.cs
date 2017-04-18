@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Boom.DataFixture;
 using System.Collections.Immutable;
 using System;
-using FAB.Model;
+using FAB.Types;
 using System.Linq;
 
 namespace Boom.Test
@@ -135,11 +135,11 @@ namespace Boom.Test
 
             //2 1 0 7 6 0
 
-            Assert.IsTrue(ShipFunctions.occupiesLocation(s0, new Location(2, 1)));
-            Assert.IsTrue(ShipFunctions.occupiesLocation(s0, new Location(3, 1)));
+            Assert.IsTrue(ShipFunctions.occupies(s0, new Location(2, 1)));
+            Assert.IsTrue(ShipFunctions.occupies(s0, new Location(3, 1)));
 
-            Assert.IsTrue(ShipFunctions.occupiesLocation(s1, new Location(7, 6)));
-            Assert.IsTrue(ShipFunctions.occupiesLocation(s1, new Location(8, 6)));
+            Assert.IsTrue(ShipFunctions.occupies(s1, new Location(7, 6)));
+            Assert.IsTrue(ShipFunctions.occupies(s1, new Location(8, 6)));
         }
     }
 }

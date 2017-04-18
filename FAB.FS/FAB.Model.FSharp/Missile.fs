@@ -1,5 +1,5 @@
 ﻿module Missile
-open FAB.Model
+open FAB.Types
 
 let generateLocationsToHit centreCol centreRow board =
     let colRange = [|centreCol - 1..centreCol + 1|]

@@ -1,9 +1,8 @@
 ﻿using System;
-using TechnicalServices;
 using System.Linq;
 using Boom.DataFixture;
 using System.Collections.Immutable;
-using FAB.Model;
+using FAB.Types;
 
 namespace Boom.ConsoleUI
 {
@@ -54,7 +53,7 @@ namespace Boom.ConsoleUI
 
         private static void PlayGame(GameBoard board)
         {
-            if (GameBoardFunctions.allShipsSunk(board.Ships))
+            if (GameBoardFunctions.allSunk(board.Ships))
             {
                 return;
             }

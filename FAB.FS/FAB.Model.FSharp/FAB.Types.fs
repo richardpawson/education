@@ -1,4 +1,4 @@
-﻿namespace FAB.Model
+﻿namespace FAB.Types
 open System
 open TechnicalServices
 

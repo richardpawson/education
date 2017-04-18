@@ -1,14 +1,9 @@
 ﻿module GameBoardFunctions
-open FAB.Model
+open FAB.Types
 open System
 open TechnicalServices
 
-
-let contains (ship:Ship, loc: Location) =
-    loc.Col >= 0 && loc.Col < ship.Size && loc.Row >= 0 && loc.Row < ship.Size
-
 let readSquare (board:GameBoard, loc:Location)=
-    //TODO: Use pattern matching here
     if board.Ships |> Seq.exists (fun (ship: Ship) -> ShipFunctions.isHitInLocation(ship, loc)) then
         SquareValues.Hit
     else if board.Misses |> Seq.contains loc then
@@ -16,33 +11,28 @@ let readSquare (board:GameBoard, loc:Location)=
     else 
         SquareValues.Empty
 
-let allShipsSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ShipFunctions.isSunk ship)))
+let allSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ShipFunctions.isSunk ship)))
 
-let rec locationsThatShipWouldOccupy (loc: Location) orient (locsToAdd: int)  =
-    if locsToAdd = 0 then
+let rec getLocations (start: Location) orient (numberToAdd: int)  =
+    if numberToAdd = 0 then
         List.empty
     else
-        if orient = Orientations.Horizontal then
-            loc :: locationsThatShipWouldOccupy (loc.Add 1 0) orient (locsToAdd - 1) 
-        else
-            loc :: locationsThatShipWouldOccupy (loc.Add 0 1) orient (locsToAdd - 1)   
+        match orient with
+        |Orientations.Horizontal -> start :: getLocations (start.Add 1 0) orient (numberToAdd - 1) 
+        |_ -> start :: getLocations (start.Add 0 1) orient (numberToAdd - 1)   
 
-//TODO: As below
-let shipWouldFitWithinBoard  boardSize  (ship: Ship) =
-    let orientation = ship.Orientation
-    let loc = ship.Location
-    (orientation = Orientations.Horizontal && loc.Col + ship.Size <= boardSize) ||
-        (orientation = Orientations.Vertical && loc.Row + ship.Size <= boardSize)
+let fitsWithinBoundaries  boardSize  (ship: Ship) =
+    match ship.Orientation with
+     |Orientations.Horizontal -> ship.Location.Col + ship.Size <= boardSize
+     |_ ->  ship.Location.Row + ship.Size <= boardSize
 
-//TODO: If this is being done with a ship, why not set its location& test validity?
-//TODO: pass in board, not size
 let isValidPosition boardSize existingShips ship =
-    if not(shipWouldFitWithinBoard boardSize ship) then
+    if not(fitsWithinBoundaries boardSize ship) then
         false
     else
         let anyShipOccupiesLocation ships loc =
-            ships |> Seq.exists( fun (ship: Ship) -> ShipFunctions.occupiesLocation(ship, loc))
-        let locs= locationsThatShipWouldOccupy ship.Location ship.Orientation ship.Size
+            ships |> Seq.exists( fun (ship: Ship) -> ShipFunctions.occupies(ship, loc))
+        let locs= getLocations ship.Location ship.Orientation ship.Size
         not (locs |> Seq.exists( fun loc -> anyShipOccupiesLocation existingShips loc))
        
 let getRandomPosition boardSize  (random: Random) =
@@ -92,7 +82,7 @@ let checkSquareAndRecordOutcome (board: GameBoard) loc aggregateMessages =
     let aggregatedMessages = if aggregateMessages then board.Messages + foldedMessages else foldedMessages
     let misses = board.Misses;
     if hit then
-        if allShipsSunk newShips then
+        if allSunk newShips then
             let allSunk = foldedMessages + "All ships sunk!"
             new GameBoard(board.Size, newShips, allSunk, misses);
         else

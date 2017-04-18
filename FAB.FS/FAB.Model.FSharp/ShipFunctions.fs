@@ -1,13 +1,13 @@
 ﻿module ShipFunctions
-open FAB.Model
+open FAB.Types
 
-let occupiesLocation (ship:Ship, loc: Location) =
-    if ship.Orientation = Orientations.Horizontal then
+let occupies (ship:Ship, loc: Location) =
+    match ship.Orientation with
+    | Orientations.Horizontal ->
         ship.Location.Row = loc.Row &&
             loc.Col >= ship.Location.Col && 
                 loc.Col < ship.Location.Col + ship.Size
-    else
-        ship.Location.Col = loc.Col &&
+    |_ -> ship.Location.Col = loc.Col &&
             loc.Row >= ship.Location.Row && 
                 loc.Row < ship.Location.Row + ship.Size;
 
@@ -15,7 +15,7 @@ let isSunk (ship:Ship) = ship.Hits |> Seq.length = ship.Size
 let setPosition (ship:Ship, loc, orient) = new Ship(ship.Name, ship.Size, ship.Hits, loc, orient)
 let isHitInLocation (ship:Ship, loc) = ship.Hits |> Seq.contains loc
 let fireAt  (ship:Ship, loc) =
-    if occupiesLocation(ship, loc) then
+    if occupies(ship, loc) then
         //TODO -   error here  -  need to use a set so hit locations cannot be duplicated
         let newHits =ship.Hits.Add(loc)
         let newShip = new Ship(ship.Name, ship.Size, newHits, ship.Location, ship.Orientation)

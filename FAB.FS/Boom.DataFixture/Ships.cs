@@ -1,4 +1,4 @@
-﻿using FAB.Model;
+﻿using FAB.Types;
 using System;
 using System.Collections.Immutable;
 
