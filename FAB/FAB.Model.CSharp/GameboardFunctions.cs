@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using TechnicalServices;
-using FAB;
 
-namespace FAB
+namespace FAB.Model
 {
     public static class GameBoardFunctions
     {

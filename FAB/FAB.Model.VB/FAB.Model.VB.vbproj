@@ -6,7 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F93FB26B-3060-42FD-B8E9-D0AB09D46D22}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>FAB.Model.VB</RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>FAB.Model.VB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -67,10 +68,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums.vb" />
-    <Compile Include="Gameboard.vb" />
+    <Compile Include="Types.vb" />
     <Compile Include="GameboardFunctions.vb" />
-    <Compile Include="Location.vb" />
     <Compile Include="Missile.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -87,7 +86,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Ship.vb" />
     <Compile Include="ShipFunctions.vb" />
   </ItemGroup>
   <ItemGroup>

@@ -51,12 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameboardFunctions.cs" />
-    <Compile Include="Gameboard.cs" />
-    <Compile Include="Location.cs" />
     <Compile Include="Missile.cs" />
-    <Compile Include="Enums.cs" />
+    <Compile Include="Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ship.cs" />
     <Compile Include="ShipFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +61,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
+    <ProjectReference Include="..\FAB.TechnicalServices\TechnicalServices.csproj">
       <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
       <Name>TechnicalServices</Name>
     </ProjectReference>

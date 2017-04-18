@@ -1,7 +1,6 @@
 ﻿using System;
-using FAB;
 
-namespace FAB
+namespace FAB.Model
 {
     public static class ShipFunctions
     {

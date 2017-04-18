@@ -1,9 +1,35 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Collections.Immutable;
 
-namespace FAB
-{
+namespace FAB.Model
+{ 
+    public enum Orientations
+    {
+        Horizontal, Vertical
+    }
+
+    public enum SquareValues
+    {
+        Empty, Miss, Hit
+    }
+
+    public struct Location
+    {
+        public readonly int Col;
+        public readonly int Row;
+
+        public Location(int col, int row)
+        {
+            Col = col;
+            Row = row;
+        }
+
+        public Location Add(int colInc, int rowInc)
+        {
+            return new Location(Col + colInc, Row + rowInc);
+        }
+
+    }
+
     public class Ship
     {
         public Location Location;
@@ -42,5 +68,21 @@ namespace FAB
             Hits = ImmutableHashSet<Location>.Empty;
         }
 
+    }
+
+    public class GameBoard
+    {
+        public readonly int Size;
+        public readonly ImmutableList<Location> Misses;
+        public readonly ImmutableArray<Ship> Ships;
+        public readonly string Messages;
+
+        public GameBoard(int size, ImmutableArray<Ship> ships, string messages, ImmutableList<Location> misses)
+        {
+            Size = size;
+            Messages = messages;
+            Ships = ships;
+            Misses = misses;
+        }
     }
 }

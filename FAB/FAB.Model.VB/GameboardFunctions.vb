@@ -1,11 +1,8 @@
-
-Imports System.Collections.Generic
 Imports System.Collections.Immutable
-Imports System.Linq
 Imports TechnicalServices
-Imports FAB
+Imports System.Runtime.CompilerServices
 
-Namespace FAB
+Namespace FAB.Model
     Public Module GameBoardFunctions
 
         Private Const newLine As String = vbLf
@@ -14,7 +11,7 @@ Namespace FAB
             Return Not ships.Any(Function(ship) Not ship.isSunk())
         End Function
 
-        <System.Runtime.CompilerServices.Extension>
+        <Extension>
         Public Function checkSquareAndRecordOutcome(board As GameBoard, loc As Location, Optional aggregateMessages As Boolean = False) As GameBoard
             Dim results = board.Ships.[Select](Function(s) s.fireAt(loc))
             Dim newShips = results.[Select](Function(r) r.Item1)
@@ -31,12 +28,12 @@ Namespace FAB
                 End If
             Else
                 Dim newMisses = board.Misses.Add(loc)
-                Dim newMessage = aggregatedMessages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss."
+                Dim newMessage = aggregatedMessages + "Sorry, (" + loc.Col.ToString() + "," + loc.Row.ToString() + ") is a miss."
                 Return New GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, newMisses)
             End If
         End Function
 
-        <System.Runtime.CompilerServices.Extension>
+        <Extension>
         Public Function checkSquaresAndRecordOutcome(board As GameBoard, locs As IImmutableList(Of Location)) As GameBoard
             Dim boardFromHead = checkSquareAndRecordOutcome(board, locs.First(), True)
             If locs.Count() = 1 Then
@@ -72,13 +69,13 @@ Namespace FAB
             Return (orientation = Orientations.Horizontal AndAlso loc.Col + ship.Size <= boardSize) OrElse (orientation = Orientations.Vertical AndAlso loc.Row + ship.Size <= boardSize)
         End Function
 
-        <System.Runtime.CompilerServices.Extension>
+        <Extension>
         Public Function contains(board As GameBoard, loc As Location) As Boolean
             Dim boardSize As Integer = board.Size
             Return loc.Col >= 0 AndAlso loc.Col < boardSize AndAlso loc.Row >= 0 AndAlso loc.Row < boardSize
         End Function
 
-        <System.Runtime.CompilerServices.Extension>
+        <Extension>
         Public Function readSquare(board As GameBoard, loc As Location) As SquareValues
             If board.Ships.Any(Function(s) s.isHitInLocation(loc)) Then
                 Return SquareValues.Hit

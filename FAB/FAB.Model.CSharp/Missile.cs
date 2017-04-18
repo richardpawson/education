@@ -1,8 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using FAB;
 
-namespace FAB
+namespace FAB.Model
 {
     public class Missile
     {
