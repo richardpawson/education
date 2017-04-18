@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using TechnicalServices;
+using FAB;
 
-namespace Boom.Model
+namespace FAB
 {
     public static class GameBoardFunctions
     {
         private const string newLine = "\n";
 
-        public static bool AllShipsSunk(IEnumerable<Ship> ships)
+        public static bool allSunk(IEnumerable<Ship> ships)
         {
-            return !ships.Any(ship => !ship.IsSunk());
+            return !ships.Any(ship => !ship.isSunk());
         }
 
-        public static GameBoard CheckSquareAndRecordOutcome(this GameBoard board, Location loc, bool aggregateMessages = false)
+        public static GameBoard checkSquareAndRecordOutcome(this GameBoard board, Location loc, bool aggregateMessages = false)
         {
-            var results = board.Ships.Select(s => s.FireAt(loc));
+            var results = board.Ships.Select(s => s.fireAt(loc));
             var newShips = results.Select(r => r.Item1);
             var hit = results.Select(r => r.Item2).Aggregate((a, b) => a | b);
             string newMessages = results.Select(r => r.Item3).Aggregate((a, b) => a + b);
@@ -25,7 +26,7 @@ namespace Boom.Model
             var misses = board.Misses;
             if (hit)
             {
-                if (AllShipsSunk(newShips))
+                if (allSunk(newShips))
                 {
                     var newMessage = newMessages + "All ships sunk!";
                     return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, misses);
@@ -43,37 +44,37 @@ namespace Boom.Model
             }
         }
 
-        public static GameBoard CheckSquaresAndRecordOutcome(this GameBoard board, IImmutableList<Location> locs)
+        public static GameBoard checkSquaresAndRecordOutcome(this GameBoard board, IImmutableList<Location> locs)
         {
-            var boardFromHead = CheckSquareAndRecordOutcome(board, locs.First(), true);
+            var boardFromHead = checkSquareAndRecordOutcome(board, locs.First(), true);
             if (locs.Count() == 1)
             {
                 return boardFromHead;
             }
             else
             {
-                return CheckSquaresAndRecordOutcome(boardFromHead, locs.Remove(locs.First()));
+                return checkSquaresAndRecordOutcome(boardFromHead, locs.Remove(locs.First()));
             }
         }
 
-        public static bool IsValidPosition(int boardSize, IImmutableList<Ship> existingShips, Ship shipToBePlaced, Location loc, Orientations orientation)
+        public static bool isValidPosition(int boardSize, IImmutableList<Ship> existingShips, Ship shipToBePlaced, Location loc, Orientations orientation)
         {
-            if (!ShipWouldFitWithinBoard(boardSize, shipToBePlaced, loc, orientation))
+            if (!shipWouldFitWithinBoard(boardSize, shipToBePlaced, loc, orientation))
             {
                 return false;
             }
             else
             {
-                var locs = LocationsThatShipWouldOccupy(loc, orientation, shipToBePlaced.Size);
+                var locs = locationsThatShipWouldOccupy(loc, orientation, shipToBePlaced.Size);
                 var occupiedLocations = from l in locs
                                         from s in existingShips
-                                        where s.ShipOccupiesLocation(l)
+                                        where s.occupies(l)
                                         select loc;
                 return occupiedLocations.Count() == 0;
             }
         }
 
-        public static ImmutableArray<Location> LocationsThatShipWouldOccupy(Location loc, Orientations orient, int locsToAdd)
+        public static ImmutableArray<Location> locationsThatShipWouldOccupy(Location loc, Orientations orient, int locsToAdd)
         {
             if (locsToAdd == 0)
             {
@@ -83,30 +84,30 @@ namespace Boom.Model
             {
                 if (orient == Orientations.Horizontal)
                 {
-                    return LocationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Add(loc);
+                    return locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Add(loc);
                 }
                 else
                 {
-                    return LocationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Add(loc);
+                    return locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Add(loc);
                 }
             }
         }
 
-        public static bool ShipWouldFitWithinBoard(int boardSize, Ship ship, Location loc, Orientations orientation)
+        public static bool shipWouldFitWithinBoard(int boardSize, Ship ship, Location loc, Orientations orientation)
         {
             return (orientation == Orientations.Horizontal && loc.Col + ship.Size <= boardSize) ||
                 (orientation == Orientations.Vertical && loc.Row + ship.Size <= boardSize);
         }
 
-        public static bool Contains(this GameBoard board, Location loc)
+        public static bool contains(this GameBoard board, Location loc)
         {
             int boardSize = board.Size;
             return loc.Col >= 0 && loc.Col < boardSize && loc.Row >= 0 && loc.Row < boardSize;
         }
 
-        public static SquareValues ReadSquare(this GameBoard board, Location loc)
+        public static SquareValues readSquare(this GameBoard board, Location loc)
         {
-            if (board.Ships.Any(s => s.IsHitInLocation(loc)))
+            if (board.Ships.Any(s => s.isHitInLocation(loc)))
             {
                 return SquareValues.Hit;
             }
@@ -120,16 +121,16 @@ namespace Boom.Model
             }
         }
 
-        public static GameBoard PlaceShipsRandomlyOnBoard(int boardSize, ImmutableArray<Ship> shipsToBePlaced, Random random)
+        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, Random random)
         {
-            var shipPlacements = LocateShipsRandomly(boardSize, shipsToBePlaced, ImmutableArray<Ship>.Empty, random);
+            var shipPlacements = locateShipsRandomly(boardSize, shipsToBePlaced, ImmutableArray<Ship>.Empty, random);
             var newShips = shipPlacements.Select(r => r.Item1).ToImmutableArray();
             string messages = shipPlacements.Select(r => r.Item2).Aggregate((r, s) => r + s);
             var noMisses = ImmutableList<Location>.Empty;
             return new GameBoard(boardSize, newShips, messages, noMisses);
         }
 
-        public static ImmutableList<Tuple<Ship, string>> LocateShipsRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, Random random)
+        public static ImmutableList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, Random random)
         {
             if (shipsToBePlaced.Count() == 0)
             {
@@ -138,32 +139,32 @@ namespace Boom.Model
             else
             {
                 var thisShip = shipsToBePlaced[0];
-                var result = LocateShipRandomly(boardSize, shipsAlreadyPlaced, thisShip, random);
+                var result = locateShipRandomly(boardSize, shipsAlreadyPlaced, thisShip, random);
                 var shipPlacement = Tuple.Create(result.Item1, result.Item2);
                 var newRandom = result.Item3;
                 var newshipsAlreadyPlaced = shipsAlreadyPlaced.Add(result.Item1);
                 var newShipsToBePlaced = shipsToBePlaced.Remove(thisShip);
-                return LocateShipsRandomly(boardSize, newShipsToBePlaced, newshipsAlreadyPlaced, newRandom).Add(shipPlacement);
+                return locateShipsRandomly(boardSize, newShipsToBePlaced, newshipsAlreadyPlaced, newRandom).Insert(0, shipPlacement);
             }
         }
 
-        public static Tuple<Ship, string, Random> LocateShipRandomly(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
+        public static Tuple<Ship, string, Random> locateShipRandomly(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
         {
-            var pos = GetValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, random);
+            var pos = getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, random);
             var message = "Computer placing the " + shipToBeLocated.Name + newLine;
-            var newShip = shipToBeLocated.SetPosition(pos.Item1, pos.Item2);
+            var newShip = shipToBeLocated.setPosition(pos.Item1, pos.Item2);
             return Tuple.Create(newShip, message, pos.Item3);
         }
 
-        public static Tuple<Location, Orientations, Random> GetValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
+        public static Tuple<Location, Orientations, Random> getValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
         {
-            var pos = GetRandomPosition(boardSize, random);
-            return IsValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2) ?
+            var pos = getRandomPosition(boardSize, random);
+            return isValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2) ?
                 pos :
-                GetValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item3);
+                getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item3);
         }
 
-        public static Tuple<Location, Orientations, Random> GetRandomPosition(int boardSize, Random random)
+        public static Tuple<Location, Orientations, Random> getRandomPosition(int boardSize, Random random)
         {
             var result1 = RandomNumbers.Next(random, 0, boardSize);
             var col = result1.Number;
@@ -177,7 +178,5 @@ namespace Boom.Model
             var loc = new Location(col, row);
             return Tuple.Create(loc, orientation, result3.NewGenerator);
         }
-
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿module ShipFunctions
-open FAB.Types
+open FAB.Model
 
 let occupies (ship:Ship) (loc: Location) =
     match ship.Orientation with

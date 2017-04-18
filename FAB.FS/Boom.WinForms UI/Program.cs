@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Boom.WinFormsUI
+namespace FAB.WinFormsUI
 {
     static class Program
     {

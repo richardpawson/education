@@ -1,5 +1,5 @@
-﻿namespace Boom.Model
-{
+﻿namespace FAB
+{ 
     public enum Orientations
     {
         Horizontal, Vertical

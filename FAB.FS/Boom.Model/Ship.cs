@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace Boom.Model
+namespace FAB
 {
     public class Ship
     {
@@ -23,6 +23,15 @@ namespace Boom.Model
             Location = loc;
             Orientation = orient;
             Hits = hits;
+        }
+
+        public Ship(string ShipName, int ShipSize, Location loc, Orientations orient = 0)
+        {
+            Name = ShipName;
+            Size = ShipSize;
+            Location = loc;
+            Orientation = orient;
+            Hits = ImmutableHashSet<Location>.Empty;
         }
 
         public Ship(string ShipName, int ShipSize)

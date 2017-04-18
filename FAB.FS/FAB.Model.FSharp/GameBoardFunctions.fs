@@ -1,5 +1,5 @@
 ﻿module GameBoardFunctions
-open FAB.Types
+open FAB.Model
 open System
 open TechnicalServices
 

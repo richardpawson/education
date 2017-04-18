@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="FAB.Types.fs" />
+    <Compile Include="Types.fs" />
     <Compile Include="ShipFunctions.fs" />
     <Compile Include="GameBoardFunctions.fs" />
     <Compile Include="Missile.fs" />

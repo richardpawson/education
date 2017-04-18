@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace Boom.Model
+namespace FAB
 {
     public class GameBoard
     {

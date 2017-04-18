@@ -1,12 +1,12 @@
 ﻿
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Boom.DataFixture;
+using FAB.DataFixture;
+using FAB.Model;
 using System.Collections.Immutable;
 using System;
-using FAB.Types;
 using System.Linq;
 
-namespace Boom.Test
+namespace FAB.Test
 {
     [TestClass]
     public class GameTests

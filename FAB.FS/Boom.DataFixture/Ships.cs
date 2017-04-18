@@ -1,8 +1,7 @@
-﻿using FAB.Types;
-using System;
+﻿using FAB.Model;
 using System.Collections.Immutable;
 
-namespace Boom.DataFixture
+namespace FAB.DataFixture
 {
     public static class Ships
     {

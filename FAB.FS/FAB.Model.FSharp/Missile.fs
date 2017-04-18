@@ -1,5 +1,5 @@
 ﻿module Missile
-open FAB.Types
+open FAB.Model
 
 let generateBombSpread centreCol centreRow board =
     let colRange = [|centreCol - 1..centreCol + 1|]

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
-using Boom.DataFixture;
+using FAB.DataFixture;
+using FAB.Model;
 using System.Collections.Immutable;
-using FAB.Types;
 
-namespace Boom.ConsoleUI
+namespace FAB.ConsoleUI
 {
     public class Program
     {
@@ -20,7 +19,7 @@ namespace Boom.ConsoleUI
                 MenuOption = GetMainMenuChoice();
                 if (MenuOption == 1)
                 {
-                    var ships = Ships.UnplacedShips5().ToArray();
+                    var ships = Ships.UnplacedShips5();
                     Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, ships, new Random());
                 }
                 if (MenuOption == 2)

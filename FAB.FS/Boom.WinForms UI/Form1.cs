@@ -1,11 +1,11 @@
-﻿using Boom.DataFixture;
-using FAB.Types;
+﻿using FAB.DataFixture;
+using FAB.Model;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Boom.WinFormsUI
+namespace FAB.WinFormsUI
 {
     public partial class Form1 : Form
     {

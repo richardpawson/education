@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
 using TechnicalServices;
 
-namespace Boom.Test
+namespace FAB.Test
 {
     [TestClass]
     public class RandomNumberTests

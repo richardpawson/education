@@ -1,4 +1,4 @@
-﻿namespace Boom.WinFormsUI
+﻿namespace FAB.WinFormsUI
 {
     partial class Form1
     {
