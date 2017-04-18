@@ -62,7 +62,7 @@
     <Compile Include="RandomNumberTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Boom.DataFixture\FAB.DataFixture.csproj">
+    <ProjectReference Include="..\FAB.DataFixture\FAB.DataFixture.csproj">
       <Project>{7ced0f0c-4586-43e8-93f1-2abc0ab82f4b}</Project>
       <Name>FAB.DataFixture</Name>
     </ProjectReference>
@@ -70,7 +70,7 @@
       <Project>{c0f684ea-5a5b-4f26-9121-15d2f6784406}</Project>
       <Name>FAB.Model.FSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
+    <ProjectReference Include="..\FAB.TechnicalServices\TechnicalServices.csproj">
       <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
       <Name>TechnicalServices</Name>
     </ProjectReference>

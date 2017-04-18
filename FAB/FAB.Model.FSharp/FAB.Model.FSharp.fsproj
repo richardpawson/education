@@ -50,7 +50,7 @@
     <Compile Include="Missile.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
+    <ProjectReference Include="..\FAB.TechnicalServices\TechnicalServices.csproj">
       <Name>TechnicalServices</Name>
       <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
       <Private>True</Private>

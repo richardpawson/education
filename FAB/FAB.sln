@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Model", "Boom.Model\Boom.Model.csproj", "{AD9DEA29-4E95-4773-84F6-55243C946B8A}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FAB.Model.FSharp", "FAB.Model.FSharp\FAB.Model.FSharp.fsproj", "{C0F684EA-5A5B-4F26-9121-15D2F6784406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.ConsoleUI", "Boom.ConsoleUI\Boom.ConsoleUI.csproj", "{3927F33C-FFCB-4AC1-829F-E47546B14E43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAB.Model.CSharp", "FAB.Model.CSharp\FAB.Model.CSharp.csproj", "{AD9DEA29-4E95-4773-84F6-55243C946B8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.DataFixture", "Boom.DataFixture\Boom.DataFixture.csproj", "{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAB.DataFixture", "FAB.DataFixture\FAB.DataFixture.csproj", "{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalServices", "TechnicalServices\TechnicalServices.csproj", "{B1014419-CEEC-4288-A9B4-B98C79ED9CB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnicalServices", "FAB.TechnicalServices\TechnicalServices.csproj", "{B1014419-CEEC-4288-A9B4-B98C79ED9CB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Test", "Boom.Test\Boom.Test.csproj", "{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAB.Test", "FAB.Test\FAB.Test.csproj", "{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.WinFormsUI", "Boom.WinForms UI\Boom.WinFormsUI.csproj", "{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAB.WinFormsUI", "FAB.WinForms UI\FAB.WinFormsUI.csproj", "{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +21,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F684EA-5A5B-4F26-9121-15D2F6784406}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD9DEA29-4E95-4773-84F6-55243C946B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD9DEA29-4E95-4773-84F6-55243C946B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD9DEA29-4E95-4773-84F6-55243C946B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD9DEA29-4E95-4773-84F6-55243C946B8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
