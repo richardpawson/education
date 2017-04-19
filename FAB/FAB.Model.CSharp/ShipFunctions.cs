@@ -24,7 +24,7 @@ namespace FAB.Model
             return ship.Hits.Contains(loc);
         }
 
-        public static Tuple<Ship, bool, String> fireAt(this Ship ship, Location loc)
+        public static Tuple<Ship, bool, string> fireAt(this Ship ship, Location loc)
         {
             if (ship.occupies(loc))
             {
