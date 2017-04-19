@@ -13,11 +13,14 @@ let readSquare (board:GameBoard) (loc:Location)=
 
 let allSunk ships  = not (ships |> Seq.exists(fun (ship : Ship)-> not(ShipFunctions.isSunk ship)))
 
-let rec getLocations (start: Location) orient (numberToAdd: int)  =
-    match orient with
-    |Orientations.Horizontal -> Seq.init numberToAdd (fun n -> start.Add n 0 )
-    |_ -> Seq.init numberToAdd (fun n -> start.Add 0 n)    
-         
+let getLocations (start: Location) orient (numberToAdd: int)  =
+     [for n in [1..numberToAdd] do 
+        yield
+            match orient with
+            |Orientations.Horizontal -> new Location(n, 0)
+            |_ ->  new Location(0, n)
+     ]
+
 let fitsWithinBoundaries  boardSize  (ship: Ship) =
     match ship.Orientation with
      |Orientations.Horizontal -> ship.Location.Col + ship.Size <= boardSize
