@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FunctionalLibrary", "FunctionalLibrary\FunctionalLibrary.fsproj", "{13F35BA3-DC43-499E-97F7-F454B544853A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ConsoleUI", "ConsoleUI\ConsoleUI.fsproj", "{75EDFD7D-0D8D-4B3A-BFBF-89A3757B1574}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "Tests\Tests.fsproj", "{CAD360A1-4230-46B9-BD61-1C489D4CA203}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13F35BA3-DC43-499E-97F7-F454B544853A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F35BA3-DC43-499E-97F7-F454B544853A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F35BA3-DC43-499E-97F7-F454B544853A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F35BA3-DC43-499E-97F7-F454B544853A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75EDFD7D-0D8D-4B3A-BFBF-89A3757B1574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75EDFD7D-0D8D-4B3A-BFBF-89A3757B1574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75EDFD7D-0D8D-4B3A-BFBF-89A3757B1574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75EDFD7D-0D8D-4B3A-BFBF-89A3757B1574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD360A1-4230-46B9-BD61-1C489D4CA203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD360A1-4230-46B9-BD61-1C489D4CA203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD360A1-4230-46B9-BD61-1C489D4CA203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD360A1-4230-46B9-BD61-1C489D4CA203}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
