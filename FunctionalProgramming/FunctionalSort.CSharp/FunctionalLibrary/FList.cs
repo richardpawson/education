@@ -1,55 +1,7 @@
-﻿using System;
+﻿using System.Linq;
 
-namespace ConsoleApplication16
+namespace FunctionalLibrary
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var list = FList.Cons("Flag", FList.Cons("Nest", FList.Cons("Cup", FList.Cons("Burg", FList.Cons("Yatch", FList.Cons("Next"))))));
-
-            var result = mergeSort(list);
-
-            Console.Write(result.ToString());
-
-            Console.ReadKey();
-        }
-
-
-        public static FList<string> mergeSort(FList<string> list)
-        {
-            if (list.Count() < 2)
-            {
-                return list;
-            }
-            else
-            {
-                var half = list.Count() / 2;
-                return Merge(mergeSort(list.Skip(half)), mergeSort(list.Take(half)));
-            }
-        }
-
-        public static FList<string> Merge(FList<string> a, FList<string> b)
-        {
-            if (a.IsEmpty)
-            {
-                return b;
-            }
-            else if (b.IsEmpty)
-            {
-                return a;
-            }
-            else if (string.Compare(a.Head, b.Head) < 0)
-            {
-                return FList.Cons(a.Head, Merge(a.Tail, b));
-            }
-            else
-            {
-                return FList.Cons(b.Head, Merge(a, b.Tail));
-            }
-        }
-    }
-
     public class FList<T>
     {
         // Creates a new list that is empty
@@ -84,7 +36,8 @@ namespace ConsoleApplication16
             else if (number == 1)
             {
                 return Tail;
-            } else
+            }
+            else
             {
                 return Tail.Skip(number - 1);
             }
@@ -121,6 +74,20 @@ namespace ConsoleApplication16
                 return Head + ", " + Tail;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is FList<T>))
+            {
+                return false;
+            }
+            else
+            {
+                var list = obj as FList<T>;
+                return (this.IsEmpty && list.IsEmpty) ||
+                    (Head.Equals(list.Head) && Tail.Equals(list.Tail));
+            }                
+        }
     }
 
     // Static class that provides nicer syntax for creating lists
@@ -135,10 +102,25 @@ namespace ConsoleApplication16
         {
             return new FList<T>(head, tail);
         }
-        public static FList<T> Cons<T>
-        (T head)
+        public static FList<T> Cons<T>(T head)
         {
             return new FList<T>(head, Empty<T>());
+        }
+
+        public static FList<T> Cons<T>(params T[] items)
+        {
+            if (items.Length == 0)
+            {
+                return Empty<T>();
+            }
+            else if (items.Length == 1)
+            {
+                return Cons<T>(items[0]);
+            }
+            else
+            {
+                return Cons(items[0], Cons(items.Skip(1).ToArray()));
+            }
         }
     }
 }
