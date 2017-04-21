@@ -35,7 +35,7 @@ let rec sort (list: List<'T>) greaterThan =
 //    else 
 //        let half = (list |> Seq.length) / 2
 //        merge (sort (list |> List.skip(half)) greaterThan) (sort (list |> List.take(half)) greaterThan) greaterThan
-
+//
 
 let rec mergeAlphabetical (a: List<string>) (b: List<string>) =
     if a.IsEmpty then

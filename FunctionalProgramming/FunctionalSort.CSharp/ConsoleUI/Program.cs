@@ -7,7 +7,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            var list = FList.Cons("Flag","Nest","Cup","Burg", "Yatch","Next");
+            var list = FList.Cons("Flag","Nest","Cup","Burg", "Yacht","Next");
 
 
             var sorted = MergeSort.SortAlphabetical(list);

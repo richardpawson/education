@@ -4,7 +4,7 @@ Imports FunctionalLibrary
 Namespace ConsoleUI
 	Class Program
         Public Shared Sub Main(args As String())
-            Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yatch", "Next")
+            Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next")
 
 
             Dim sorted = MergeSort.SortAlphabetical(list)

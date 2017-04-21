@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FunctionalLibrary;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -9,9 +11,9 @@ namespace Tests
         [TestMethod]
         public void TestSortAlphabeticalHappyCase()
         {
-            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yatch", "Next");
+            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
             var sorted = MergeSort.SortAlphabetical(list);
-            var expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yatch");
+            var expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yacht");
             Assert.AreEqual(expected, sorted);
         }
 
@@ -45,27 +47,36 @@ namespace Tests
         [TestMethod]
         public void TestSortWithAlphabeticalFunction()
         {
-            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yatch", "Next");
+            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
             var sorted = MergeSort.Sort(list, alphabetical);
-            var expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yatch");
+            var expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yacht");
             Assert.AreEqual(expected, sorted);
         }
 
         [TestMethod]
         public void TestSortWithReverseFunction()
         {
-            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yatch", "Next");
+            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
             var sorted = MergeSort.Sort(list, reverse);
-            var expected = FList.Cons("Yatch", "Next", "Nest", "Flag", "Cup","Burg");
+            var expected = FList.Cons("Yacht", "Next", "Nest", "Flag", "Cup","Burg");
             Assert.AreEqual(expected, sorted);
         }
 
         [TestMethod]
         public void TestSortByLengthDecreasing()
         {
-            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yatch", "Next");
-            var sorted = MergeSort.Sort(list, length);
-            var expected = FList.Cons( "Cup", "Flag", "Nest", "Burg","Next", "Yatch");
+            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
+            var sorted = MergeSort.Sort(list, (s1, s2) => s2.Length > s1.Length);
+            var expected = FList.Cons( "Cup", "Flag", "Nest", "Burg","Next", "Yacht");
+            Assert.AreEqual(expected, sorted);
+        }
+
+        [TestMethod]
+        public void TestSortByLengthDecreasingUsingLambda()
+        {
+            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", " Yacht ", "Next");
+            var sorted = MergeSort.Sort(list, (s1, s2) => s2.Length > s1.Length);
+            var expected = FList.Cons("Cup", "Flag", "Nest", "Burg", "Next", " Yacht ");
             Assert.AreEqual(expected, sorted);
         }
 

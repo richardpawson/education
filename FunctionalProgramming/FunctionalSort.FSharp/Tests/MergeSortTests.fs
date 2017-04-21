@@ -15,9 +15,9 @@ type  MergeSortTests() =
 
     [<TestMethod>]
     member  this.TestSortAlphabeticalHappyCase() =
-        let list = ["Flag";"Nest";"Cup";"Burg"; "Yatch";"Next"]
+        let list = ["Flag";"Nest";"Cup";"Burg"; "Yacht";"Next"]
         let sorted = sortAlphabetical list 
-        let expected = ["Burg";"Cup";"Flag";"Nest"; "Next";"Yatch"]
+        let expected = ["Burg";"Cup";"Flag";"Nest"; "Next";"Yacht"]
         Assert.AreEqual(expected, sorted)
 
     [<TestMethod>]
@@ -42,22 +42,29 @@ type  MergeSortTests() =
 
     [<TestMethod>]
     member  this.TestSortWithAlphabeticalFunction() =
-        let list = ["Flag";"Nest";"Cup";"Burg"; "Yatch";"Next"]
+        let list = ["Flag";"Nest";"Cup";"Burg"; "Yacht";"Next"]
         let sorted = sort list this.alphabetical
-        let expected = ["Burg";"Cup";"Flag";"Nest"; "Next";"Yatch"]
+        let expected = ["Burg";"Cup";"Flag";"Nest"; "Next";"Yacht"]
         Assert.AreEqual(expected, sorted);
 
     [<TestMethod>]
     member  this.TestSortWithReverseFunction() =
-        let list = ["Flag";"Nest";"Cup";"Burg"; "Yatch";"Next"]
+        let list = ["Flag";"Nest";"Cup";"Burg"; "Yacht";"Next"]
         let sorted = sort list this.reverse
-        let expected = ["Yatch"; "Next"; "Nest"; "Flag"; "Cup";"Burg"]
+        let expected = ["Yacht"; "Next"; "Nest"; "Flag"; "Cup";"Burg"]
         Assert.AreEqual(expected, sorted)
 
     [<TestMethod>]
     member  this.TestSortByLengthDecreasing() =
         let list = ["Flag";"Yachting";"Cup";"Burger"; ]
         let sorted = sort list this.length
+        let expected = ["Cup"; "Flag"; "Burger";"Yachting"]
+        Assert.AreEqual(expected, sorted);
+
+    [<TestMethod>]
+    member  this.TestSortByLengthDecreasingUsingLambda() =
+        let list = ["Flag";"Yachting";"Cup";"Burger"; ]
+        let sorted = sort list (fun (s1:string) (s2: string) -> s1.Length > s2.Length)
         let expected = ["Cup"; "Flag"; "Burger";"Yachting"]
         Assert.AreEqual(expected, sorted);
 

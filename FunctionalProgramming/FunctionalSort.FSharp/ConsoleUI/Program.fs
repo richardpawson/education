@@ -8,7 +8,7 @@ let reverse s1  s2 = s1 < s2
 
 [<EntryPoint>]
 let main argv = 
-    let list = ["Flag";"Nest";"Cup";"Burg"; "Yatch";"Next"]
+    let list = ["Flag";"Nest";"Cup";"Burg"; "Yacht";"Next"]
     let sorted = sortAlphabetical list 
     printfn "%A" sorted
     let alpha = sort list alphabetical
