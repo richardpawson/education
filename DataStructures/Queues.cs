@@ -43,13 +43,23 @@ namespace DataStructures
         [TestMethod]
         public void CustomLinearQueue()
         {
-            var q = new MyLinearQueue(5); //Initial capacity
+            var q = new MyLinearQueue(5);
             q.Enqueue("Pear");
             q.Enqueue("Cherry");
             q.Enqueue(3.141);  //Queue takes any type of object
             q.Enqueue("Apple");
             q.Enqueue("Raspberry");
             Assert.AreEqual(5, q.Count);
+            //Try exceeding size
+            try
+            {
+                q.Enqueue("Papaya");
+                Assert.Fail(); //Should not get here
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Queue full.", e.Message);
+            }
             Assert.AreEqual("Pear", q.Dequeue());
             Assert.AreEqual(4, q.Count);
             //Now show that the linear queue has been 'used up'
@@ -73,18 +83,16 @@ namespace DataStructures
                 q.Dequeue();
                 Assert.Fail(); //Should not get here!
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
-                // Test passes if correct exception thrown
+                Assert.AreEqual("Queue empty.", e.Message);
             }
-
-
         }
 
         [TestMethod]
         public void CustomCircularQueue()
         {
-            var q = new MyCircularQueue(5); //Initial capacity
+            var q = new MyCircularQueue(5);
             q.Enqueue("Pear");
             q.Enqueue("Cherry");
             q.Enqueue(3.141);  //Queue takes any type of object
@@ -95,6 +103,16 @@ namespace DataStructures
             Assert.AreEqual(4, q.Count);
             q.Enqueue("Banana");
             Assert.AreEqual(5, q.Count);
+            //Try exceeding size
+            try
+            {
+                q.Enqueue("Papaya");
+                Assert.Fail(); //Should not get here
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Queue full.", e.Message);
+            }
             for (int i = 0; i < 5; i++) //Now remove all items
             {
                 q.Dequeue();
@@ -105,11 +123,10 @@ namespace DataStructures
                 q.Dequeue();
                 Assert.Fail(); //Should not get here!
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
-                // Test passes if correct exception thrown
+                Assert.AreEqual("Queue empty.", e.Message);
             }
-
         }
     }
 
@@ -137,7 +154,7 @@ namespace DataStructures
             {
                 if (rear + 1 >=  elements.Length)
                 {
-                    throw new InvalidOperationException("Queue is full");
+                    throw new InvalidOperationException("Queue full.");
                 }
                 else
                 {
@@ -153,7 +170,7 @@ namespace DataStructures
             object item = null;
             if (front == -1 && rear == -1)
             {
-                throw new InvalidOperationException("Queue is empty");
+                throw new InvalidOperationException("Queue empty.");
             }
             else
             {
@@ -198,7 +215,7 @@ namespace DataStructures
             {
                 if ((rear + 1) % size == front)
                 {
-                    throw new InvalidOperationException("Queue is full");
+                    throw new InvalidOperationException("Queue full.");
                 }
                 else
                 {
@@ -214,7 +231,7 @@ namespace DataStructures
             object item = null;
             if (front == -1 && rear == -1)
             {
-                throw new InvalidOperationException("Queue is empty");
+                throw new InvalidOperationException("Queue empty.");
             }
             else
             {
