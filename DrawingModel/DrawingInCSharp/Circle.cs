@@ -1,3 +1,6 @@
+﻿using System;
+
+namespace DrawingCSharp
 {
     public class Circle : IShape
     {
@@ -6,6 +9,12 @@
         {
             radius = r;
         }
+
+        public byte[] DrawAsBitMap()
+        {
+            throw new NotImplementedException();
+        }
+
         public void GrowBy(double percent)
         {
             radius = radius * (1 + percent / 100);

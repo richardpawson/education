@@ -57,7 +57,7 @@ namespace DataStructures
             try
             {
                 q.Push("Lime");
-                Assert.Fail(); //Should not get to here
+                Assert.Fail("Should not get here!"); 
             }
             catch (InvalidOperationException e)
             {
@@ -75,7 +75,7 @@ namespace DataStructures
             try
             {
                 q.Pop();
-                Assert.Fail(); //Should not get here!
+                Assert.Fail("Should not get here!");
             }
             catch (InvalidOperationException e)
             {

@@ -107,7 +107,7 @@ namespace DataStructures
             try
             {
                 q.Enqueue("Papaya");
-                Assert.Fail(); //Should not get here
+                Assert.Fail("Should not get here!");
             }
             catch (Exception e)
             {
@@ -121,7 +121,7 @@ namespace DataStructures
             try
             {
                 q.Dequeue();
-                Assert.Fail(); //Should not get here!
+                Assert.Fail("Should not get here!");
             }
             catch (InvalidOperationException e)
             {

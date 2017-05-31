@@ -1,4 +1,6 @@
-﻿namespace InheritanceInCSharp
+﻿using System;
+
+namespace DrawingCSharp
 {
 
     public class Rectangle : IRotatable, IShape
@@ -28,6 +30,11 @@
         public void RotateBy(int degrees)
         {
             orientation = (orientation + degrees) % 360;
+        }
+
+        public byte[] DrawAsBitMap()
+        {
+            throw new NotImplementedException();
         }
     }
 

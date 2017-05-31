@@ -1,4 +1,4 @@
-﻿namespace InheritanceInCSharp
+﻿namespace DrawingCSharp
 {
     public interface IRotatable
     {

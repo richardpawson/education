@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-namespace InheritanceInCSharp
+namespace DrawingCSharp
 {
     public class Program
     {
-
         private static IShape[] drawing1 =
             new IShape[] { new Circle(3), new Circle(4), new Rectangle(2, 7), new Circle(10), new EquilateralTriangle(8) };
 
