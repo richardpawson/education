@@ -12,12 +12,12 @@ namespace Drawing2CSharp
             this.side = side;
         }
 
-        public void GrowBy(double percent)
+        public override void GrowBy(double percent)
         {
             side = side * (1 + percent / 100);
         }
 
-        public string Summary()
+        public override string Summary()
         {
             return "Equilateral Triangle, side: " + side + " orientation:" + orientation;
         }
@@ -27,7 +27,7 @@ namespace Drawing2CSharp
             orientation = (orientation + degrees) % 360;
         }
 
-        public byte[] DrawAsBitMap()
+        public override byte[] DrawAsBitMap()
         {
             throw new NotImplementedException();
         }
