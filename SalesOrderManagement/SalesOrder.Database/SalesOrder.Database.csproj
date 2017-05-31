@@ -58,7 +58,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SalesOrderEntry\SalesOrder.Model.csproj">
+    <ProjectReference Include="..\SalesOrder.Model\SalesOrder.Model.csproj">
       <Project>{7ed5e8cb-7f9c-40e7-b400-73d79c5f331a}</Project>
       <Name>SalesOrder.Model</Name>
     </ProjectReference>
