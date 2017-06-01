@@ -6,12 +6,6 @@ namespace SalesOrder.Model
 {
     public class Order
     {
-        //Constructor
-        public Order()
-        {
-            Details = new List<OrderLine>();
-        }
-
         public virtual int Id { get; set; }
 
         public virtual DateTime OrderDate { get; set; }
@@ -22,9 +16,8 @@ namespace SalesOrder.Model
 
         public virtual Address BillingAddress { get; set; }
 
-        public virtual List<OrderLine> Details { get; set; }
+        public virtual List<OrderLine> Details { get; set; } = new List<OrderLine>();
 
         public virtual int TotalValue { get; set; }
-
     }
 }

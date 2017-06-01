@@ -6,9 +6,9 @@ namespace SalesOrder.Database
 {
     public class SalesOrderDbContext : DbContext
     {
-        public SalesOrderDbContext(string dbName) : base(dbName)
+        public SalesOrderDbContext(string dbName, IDatabaseInitializer<SalesOrderDbContext> initializer) : base(dbName)
         {
-            System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<SalesOrderDbContext>());
+            System.Data.Entity.Database.SetInitializer(initializer);
         }
 
         public DbSet<Customer> Customers { get; set; }

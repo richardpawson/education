@@ -9,9 +9,11 @@
   </Class>
   <Class Name="SalesOrder.Model.Order">
     <Position X="2" Y="2.5" Width="2" />
-    <Members>
-      <Method Name="Order" Hidden="true" />
-    </Members>
+    <AssociationLine Name="Customer" Type="SalesOrder.Model.Customer">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.767" Y="0.233" />
+      </MemberNameLabel>
+    </AssociationLine>
     <AssociationLine Name="ShippingAddress" Type="SalesOrder.Model.Address" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="4" Y="2.644" />
@@ -20,6 +22,11 @@
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="1.048" Y="0.185" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="BillingAddress" Type="SalesOrder.Model.Address">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.95" Y="0.534" />
       </MemberNameLabel>
     </AssociationLine>
     <AssociationLine Name="Details" Type="SalesOrder.Model.OrderLine" FixedFromPoint="true" FixedToPoint="true">
@@ -32,23 +39,13 @@
         <Position X="0.273" Y="-0.309" Height="0.182" Width="1.898" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="Customer" Type="SalesOrder.Model.Customer">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.767" Y="0.233" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="BillingAddress" Type="SalesOrder.Model.Address">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="1.95" Y="0.534" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>CAECAAAAUAABAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ShippingAddress" />
       <Property Name="Customer" />
+      <Property Name="ShippingAddress" />
       <Property Name="BillingAddress" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
@@ -57,30 +54,23 @@
   </Class>
   <Class Name="SalesOrder.Model.Customer">
     <Position X="2" Y="0.5" Width="1.5" />
-    <Members>
-      <Method Name="Customer" Hidden="true" />
-    </Members>
-    <AssociationLine Name="Orders" Type="SalesOrder.Model.Order" FixedFromPoint="true">
-      <Path>
-        <Point X="2.375" Y="1.796" />
-        <Point X="2.375" Y="2.5" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.431" Y="0.307" />
-      </MemberNameLabel>
-    </AssociationLine>
     <AssociationLine Name="Addresses" Type="SalesOrder.Model.Address">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.546" Y="0.108" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="Orders" Type="SalesOrder.Model.Order">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.431" Y="0.307" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAFCAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAFCAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Customer.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="Orders" />
       <Property Name="Addresses" />
+      <Property Name="Orders" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="SalesOrder.Model.Address">

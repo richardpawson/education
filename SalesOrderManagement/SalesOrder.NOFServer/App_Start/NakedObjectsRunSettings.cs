@@ -7,6 +7,7 @@ using SalesOrder.Services;
 using SalesOrder.Database;
 using SalesOrder.SeedData;
 using TechnicalServices;
+using SalesOrder.Model;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings
@@ -20,7 +21,7 @@ namespace NakedObjects.Template {
         {
             get
             {
-                return new string[] { "SalesOrder" }; 
+                return new string[] { "SalesOrder", "TechnicalServices" }; 
             }
         }
 
@@ -40,7 +41,7 @@ namespace NakedObjects.Template {
                     typeof(CustomerRepository),
                     typeof(OrderRepository),
                     typeof(ProductRepository),
-                    typeof(SmtpEmailSender)
+                    typeof(MockEmailSender)
                 };
             }
         }
@@ -53,9 +54,9 @@ namespace NakedObjects.Template {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
         {
             var config = new EntityObjectStoreConfiguration();
-            var context = new SalesOrderDbContext("SalesOrders");
-            config.UsingCodeFirstContext(() => context);
-            SalesOrderDbInitilializer.Seed(context);
+            config.UsingCodeFirstContext(() => {
+                return new SalesOrderDbContext("SalesOrders", new SalesOrderDbInitilializer());
+            });
             return config;
         }
 
@@ -64,7 +65,7 @@ namespace NakedObjects.Template {
             return new IMenu[] {
                 factory.NewMenu<CustomerRepository>(true, "Customers"),
                 factory.NewMenu<OrderRepository>(true, "Orders"),
-                factory.NewMenu<ProductRepository>(true, "Products")
+                factory.NewMenu<ProductRepository>(true, "Products"),
             };
         }
     }
