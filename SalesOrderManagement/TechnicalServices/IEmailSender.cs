@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TechnicalServices
+﻿namespace TechnicalServices
 {
     public interface IEmailSender
     {
+        void SendMessage(string from, string to, string subject, string body);
     }
 }

@@ -6,6 +6,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using SalesOrder.Services;
 using SalesOrder.Database;
 using SalesOrder.SeedData;
+using TechnicalServices;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings
@@ -38,7 +39,8 @@ namespace NakedObjects.Template {
                 return new Type[] {
                     typeof(CustomerRepository),
                     typeof(OrderRepository),
-                    typeof(ProductRepository)
+                    typeof(ProductRepository),
+                    typeof(SmtpEmailSender)
                 };
             }
         }
