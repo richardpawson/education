@@ -8,6 +8,7 @@ namespace SalesOrder.Model
         public Customer()
         {
             Orders = new List<Order>();
+            Addresses = new List<Address>();
         }
 
         public virtual int Id { get; set; }

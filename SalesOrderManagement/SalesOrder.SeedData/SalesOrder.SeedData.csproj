@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D1BDF894-9E84-41F1-A15B-BCE02257BAD7}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{C2E12E98-7C15-4A63-A4D9-B12B07E6C0F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleApplication</RootNamespace>
-    <AssemblyName>ConsoleApplication</AssemblyName>
+    <RootNamespace>SalesOrder.SeedData</RootNamespace>
+    <AssemblyName>SalesOrder.SeedData</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -52,12 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <Compile Include="SalesOrderDbInitilializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SalesOrder.Database\SalesOrder.Database.csproj">
@@ -68,10 +61,10 @@
       <Project>{7ed5e8cb-7f9c-40e7-b400-73d79c5f331a}</Project>
       <Name>SalesOrder.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SalesOrder.SeedData\SalesOrder.SeedData.csproj">
-      <Project>{c2e12e98-7c15-4a63-a4d9-b12b07e6c0f5}</Project>
-      <Name>SalesOrder.SeedData</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

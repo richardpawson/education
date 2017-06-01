@@ -1,0 +1,7 @@
+ERROR 1 NakedObjects.Reflect.Component.Reflector - Attempting to introspect a non-introspectable type NakedObjects.Services.SimpleRepository`1[[SalesOrder.Model.Customer, SalesOrder.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] 
+ERROR 1 NakedObjects.Template.UnityWebApiActivator - Error on UnityWebApiActivator:Start : Attempting to introspect a non-introspectable type NakedObjects.Services.SimpleRepository`1[[SalesOrder.Model.Customer, SalesOrder.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] 
+ERROR 7 NakedObjects.Rest.RestfulObjectsControllerBase - Unhandled exception from frameworkFacade System.InvalidOperationException Sequence contains more than one matching element
+ERROR 12 NakedObjects.Rest.RestfulObjectsControllerBase - Unhandled exception from frameworkFacade System.InvalidOperationException Sequence contains more than one matching element
+ERROR 12 NakedObjects.Rest.RestfulObjectsControllerBase - Unhandled exception from frameworkFacade System.InvalidOperationException Sequence contains more than one matching element
+ERROR 7 NakedObjects.Rest.RestfulObjectsControllerBase - Unhandled exception from frameworkFacade System.InvalidOperationException Sequence contains more than one matching element
+ERROR 8 NakedObjects.Rest.RestfulObjectsControllerBase - Unhandled exception from frameworkFacade System.InvalidOperationException Sequence contains more than one matching element
