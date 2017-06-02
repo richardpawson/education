@@ -5,11 +5,6 @@ namespace SalesOrder.DataBase
 {
     public class SalesOrderDbContext : DbContext
     {
-        public SalesOrderDbContext(string dbName) : base(dbName)
-        {
-            Database.SetInitializer(new DropCreateDatabaseAlways<SalesOrderDbContext>());
-        }
-
         public SalesOrderDbContext(string dbName, IDatabaseInitializer<SalesOrderDbContext> initializer) : base(dbName)
         {
             Database.SetInitializer(initializer);
