@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProductRepository.cs" />
-    <Compile Include="GenericRepository.cs" />
     <Compile Include="OrderRepository.cs" />
     <Compile Include="CustomerRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
