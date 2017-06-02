@@ -23,6 +23,10 @@ namespace SalesOrder.SeedData
             var apple = AddNewProduct("Apple MacBook", 1595.00m);
             var dell = AddNewProduct("Dell Inspiron", 1250.50m);
             var yoga = AddNewProduct("Lenovo Yoga", 1370.95m);
+
+            var ord1 = AddNewOrder(aa, DateTime.Today, ad1);
+            var l1 = AddNewOrderLine(ord1, apple, 3);
+            var l2 = AddNewOrderLine(ord1, dell, 1);
         }
 
         private Address AddNewAddress(string line1, string line2, string postCode)
@@ -53,9 +57,9 @@ namespace SalesOrder.SeedData
             return prod;
         }
 
-        private Order AddNewOrder(Customer cus, DateTime date, Address shipping, Address billing)
+        private Order AddNewOrder(Customer cus, DateTime date, Address billing)
         {
-            var ord = new Order { Customer = cus, OrderDate = date, ShippingAddress = shipping, BillingAddress = billing };
+            var ord = new Order { Customer = cus, OrderDate = date, BillingAddress = billing };
             context.Orders.Add(ord);
             context.SaveChanges();
             return ord;
@@ -65,6 +69,7 @@ namespace SalesOrder.SeedData
         {
             var line = new OrderLine() { Product = product, Quantity = quantity };
             context.OrderLines.Add(line);
+            order.Details.Add(line);
             context.SaveChanges();
             return line;
         }
