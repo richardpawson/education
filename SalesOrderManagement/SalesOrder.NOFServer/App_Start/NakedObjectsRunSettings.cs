@@ -3,11 +3,10 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
-using SalesOrder.Services;
-using SalesOrder.Database;
+using SalesOrder.DataBase;
 using SalesOrder.SeedData;
 using TechnicalServices;
-using SalesOrder.Model;
+using SalesOrder.Services;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings

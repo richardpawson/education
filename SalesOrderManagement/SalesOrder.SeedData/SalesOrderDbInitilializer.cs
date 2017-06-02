@@ -1,5 +1,5 @@
 ﻿
-using SalesOrder.Database;
+using SalesOrder.DataBase;
 using SalesOrder.Model;
 using System;
 using System.Data.Entity;
@@ -15,7 +15,7 @@ namespace SalesOrder.SeedData
             var ad1 = AddNewAddress("The Cottage", "Lymeswold", "GL24 1XQ");
             var ad2 = AddNewAddress("13 Elm Street", "Woking", "GU17 9DD");
 
-            var aa = AddNewCustomer("Algie Algol", ad1, ad2);
+            var aa = AddNewCustomer("Alison Algol", ad1, ad2);
             var ff = AddNewCustomer("Forrest Fortran");
             var jj = AddNewCustomer("James Java");
             var ss = AddNewCustomer("Smilla Simula");
@@ -37,7 +37,10 @@ namespace SalesOrder.SeedData
         {
             var cus = new Customer() { Name = name };
             context.Customers.Add(cus);
-            //cus.Addresses.AddRange(addresses);
+            foreach (var addr in addresses)
+            {
+                cus.Addresses.Add(addr);
+            }
             context.SaveChanges();
             return cus;
         }
