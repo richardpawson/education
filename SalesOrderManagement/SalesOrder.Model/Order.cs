@@ -16,7 +16,7 @@ namespace SalesOrder.Model
 
         public virtual Address BillingAddress { get; set; }
 
-        public virtual List<OrderLine> Details { get; set; } = new List<OrderLine>();
+        public virtual ICollection<OrderLine> Details { get; set; } = new List<OrderLine>();
 
         public virtual int TotalValue { get; set; }
     }
