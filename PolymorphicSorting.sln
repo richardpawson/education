@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolymorphicSorting", "PolymorphicSorting\PolymorphicSorting.csproj", "{079B5B88-C796-4D6C-9D12-B38DCDE5E5B9}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PolymorphicSortingVB", "PolymorphicSortingVB\PolymorphicSortingVB.vbproj", "{4932D8A2-4296-4F59-B3CD-A9DAAABAEBB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{079B5B88-C796-4D6C-9D12-B38DCDE5E5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{079B5B88-C796-4D6C-9D12-B38DCDE5E5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{079B5B88-C796-4D6C-9D12-B38DCDE5E5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{079B5B88-C796-4D6C-9D12-B38DCDE5E5B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4932D8A2-4296-4F59-B3CD-A9DAAABAEBB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4932D8A2-4296-4F59-B3CD-A9DAAABAEBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4932D8A2-4296-4F59-B3CD-A9DAAABAEBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4932D8A2-4296-4F59-B3CD-A9DAAABAEBB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
