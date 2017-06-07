@@ -59,7 +59,6 @@
     <Compile Include="ProductRepository.cs" />
     <Compile Include="OrderRepository.cs" />
     <Compile Include="CustomerRepository.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -69,6 +68,9 @@
       <Project>{7ed5e8cb-7f9c-40e7-b400-73d79c5f331a}</Project>
       <Name>SalesOrder.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

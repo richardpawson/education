@@ -237,7 +237,6 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\RestfulObjectsController.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -259,10 +258,9 @@
       <Project>{46690051-B7E0-43EF-A657-CBCD451C015A}</Project>
       <Name>SalesOrder.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TechnicalServices\TechnicalServices.csproj">
-      <Project>{9850213d-73ce-4146-af8c-3e4b1685ad35}</Project>
-      <Name>TechnicalServices</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

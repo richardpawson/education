@@ -2,6 +2,7 @@
 using SalesOrder.Model;
 using System;
 using System.Linq;
+using System.Data.Entity;
 
 namespace ConsoleApplication
 {
@@ -11,7 +12,7 @@ namespace ConsoleApplication
 
         static void Main(string[] args)
         {
-            context = new SalesOrderDbContext("SalesOrders");
+            context = new SalesOrderDbContext("SalesOrders",new DropCreateDatabaseAlways<SalesOrderDbContext>());
             context.Customers.Add(new Customer() { Name = "Alison Algol" });
             context.Customers.Add(new Customer() { Name = "Forrest Fortran" });
             context.Customers.Add(new Customer() { Name = "James Java" });
