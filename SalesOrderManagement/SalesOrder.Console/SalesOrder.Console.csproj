@@ -59,9 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SalesOrder.Database\SalesOrder.Database.csproj">
+    <ProjectReference Include="..\SalesOrder.Database\SalesOrder.DataBase.csproj">
       <Project>{f2d3a54b-992d-497e-bb57-3087ef637bfd}</Project>
-      <Name>SalesOrder.Database</Name>
+      <Name>SalesOrder.DataBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\SalesOrder.Model\SalesOrder.Model.csproj">
       <Project>{7ed5e8cb-7f9c-40e7-b400-73d79c5f331a}</Project>

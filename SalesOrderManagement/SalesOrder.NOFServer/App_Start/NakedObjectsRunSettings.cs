@@ -5,7 +5,6 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using SalesOrder.DataBase;
 using SalesOrder.SeedData;
-using TechnicalServices;
 using SalesOrder.Services;
 
 namespace NakedObjects.Template {
@@ -40,7 +39,6 @@ namespace NakedObjects.Template {
                     typeof(CustomerRepository),
                     typeof(OrderRepository),
                     typeof(ProductRepository),
-                    typeof(MockEmailSender)
                 };
             }
         }
