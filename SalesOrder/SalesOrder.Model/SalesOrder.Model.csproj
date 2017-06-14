@@ -61,6 +61,9 @@
     <Compile Include="Order.cs" />
     <Compile Include="OrderLine.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="Services\CustomerRepository.cs" />
+    <Compile Include="Services\OrderRepository.cs" />
+    <Compile Include="Services\ProductRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

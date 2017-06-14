@@ -5,7 +5,7 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using SalesOrder.DataBase;
 using SalesOrder.SeedData;
-using SalesOrder.Services;
+using SalesOrder.Model;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings

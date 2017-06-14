@@ -2,7 +2,7 @@
 using SalesOrder.Model;
 using System.Linq;
 
-namespace SalesOrder.Services
+namespace SalesOrder.Model
 {
     public class CustomerRepository 
     {
