@@ -98,7 +98,7 @@ namespace RayTracer {
             {
                 for (int x = 0; x < screenWidth; x++)
                 {
-                    if (x == 300 && y == 300) Debugger.Break();
+                    //if (x == 300 && y == 300) Debugger.Break();
                     Color color = TraceRay(new Ray(scene.Camera.Pos,GetPoint(x, y, scene.Camera) ), scene, 0);
                     setPixel(x, y, color.ToDrawingColor());
                 }

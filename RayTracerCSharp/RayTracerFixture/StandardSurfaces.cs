@@ -22,5 +22,12 @@ namespace RayTracer
                pos => new Color(.5, .5, .5),
                pos => .6,
                50);
+
+        public static readonly SurfaceTexture Matt =
+    new SurfaceTexture(
+       pos => new Color(1, 1, 1),
+       pos => new Color(0, 0, 0),
+       pos => 0,
+       50);
     }
 }
