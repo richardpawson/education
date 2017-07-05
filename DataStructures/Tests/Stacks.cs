@@ -5,12 +5,12 @@ using System.Collections;
 namespace DataStructures
 {
     [TestClass]
-    public class Stacks
+    public class StackTests
     {
         [TestMethod]
         public void ReadyMadeStack()
         {
-            var q = new Stack(5); //Initial capacity
+            var q = new System.Collections.Stack(5); //Initial capacity
             q.Push("Pear");
             q.Push("Cherry");
             q.Push(3.141);  //Stack takes any type of object
@@ -43,7 +43,7 @@ namespace DataStructures
         [TestMethod]
         public void CustomStack()
         {
-            var q = new MyStack(5);
+            var q = new Stack(5);
             q.Push("Pear");
             q.Push("Cherry");
             q.Push(3.141);  //Stack takes any type of object
@@ -82,71 +82,5 @@ namespace DataStructures
                 Assert.AreEqual("Stack empty.", e.Message);
             }
         }
-
-
     }
-
-
-    public class MyStack
-    {
-        private int size;
-        private object[] elements;
-        private int pointer;
-
-        public MyStack(int size)
-        {
-            this.size = size;
-            elements = new object[size];
-            pointer = -1;
-        }
-
-        public int Count
-        {
-            get
-            {
-                return pointer + 1;
-            }
-        }
-
-        public void Push(object obj)
-        {
-            if (pointer +1 < size)
-            {
-                pointer += 1;
-                elements[pointer] = obj;
-            } else
-            {
-                throw new InvalidOperationException("Stack full.");
-            }
-        }
-
-        public object Pop()
-        {
-            if (pointer == -1)
-            {
-                throw new InvalidOperationException("Stack empty.");
-            }
-            else
-            {
-                object item = elements[pointer];
-                pointer -= 1;
-                return item;
-            }
-        }
-
-        public object Peek()
-        {
-            if (pointer == -1)
-            {
-                throw new InvalidOperationException("Stack empty.");
-            } else
-            {
-                return elements[pointer];
-            }
-        }
-    }
-  
-
-   
-
 }

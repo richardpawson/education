@@ -5,7 +5,7 @@ using System.Collections;
 namespace DataStructures
 {
     [TestClass]
-    public class Queues
+    public class QueueTests
     {
         [TestMethod]
         public void ReadyMadeQueue()
@@ -43,7 +43,7 @@ namespace DataStructures
         [TestMethod]
         public void CustomLinearQueue()
         {
-            var q = new MyLinearQueue(5);
+            var q = new LinearQueue(5);
             q.Enqueue("Pear");
             q.Enqueue("Cherry");
             q.Enqueue(3.141);  //Queue takes any type of object
@@ -92,7 +92,7 @@ namespace DataStructures
         [TestMethod]
         public void CustomCircularQueue()
         {
-            var q = new MyCircularQueue(5);
+            var q = new CircularQueue(5);
             q.Enqueue("Pear");
             q.Enqueue("Cherry");
             q.Enqueue(3.141);  //Queue takes any type of object
@@ -129,125 +129,4 @@ namespace DataStructures
             }
         }
     }
-
-    public class MyLinearQueue
-    {
-        private object[] elements;
-        private int front;
-        private int rear;
-        public int Count { get; private set; }
-
-        public MyLinearQueue(int size)
-        {
-            elements = new object[size];
-            front = rear = -1;
-            Count = 0;
-        }
-
-        public void Enqueue(object obj)
-        {
-            if (front == -1 && rear == -1)
-            {
-                front = rear = 0;
-            }
-            else
-            {
-                if (rear + 1 >=  elements.Length)
-                {
-                    throw new InvalidOperationException("Queue full.");
-                }
-                else
-                {
-                    rear += 1;
-                }
-            }
-            elements[rear] = obj;
-            Count += 1;
-        }
-
-        public object Dequeue()
-        {
-            object item = null;
-            if (front == -1 && rear == -1)
-            {
-                throw new InvalidOperationException("Queue empty.");
-            }
-            else
-            {
-                item = elements[front];
-                if (front == rear)
-                {
-                    front = rear = -1;
-                }
-                else
-                {
-                    front += 1;
-                }
-            }
-            Count -= 1;
-            return item;
-        }
-    }
-
-    public class MyCircularQueue
-    {
-        private int size;
-        private object[] elements;
-        private int front;
-        private int rear;
-        public int Count { get; private set; }
-
-        public MyCircularQueue(int size)
-        {
-            this.size = size;
-            elements = new object[size];
-            front = rear = -1;
-            Count = 0;
-        }
-
-        public void Enqueue(object obj)
-        {
-            if (front == -1 && rear == -1)
-            {
-                front = rear = 0;
-            }
-            else
-            {
-                if ((rear + 1) % size == front)
-                {
-                    throw new InvalidOperationException("Queue full.");
-                }
-                else
-                {
-                    rear = (rear + 1) % size;
-                }
-            }
-            elements[rear] = obj;
-            Count += 1;
-        }
-
-        public object Dequeue()
-        {
-            object item = null;
-            if (front == -1 && rear == -1)
-            {
-                throw new InvalidOperationException("Queue empty.");
-            }
-            else
-            {
-                item = elements[front];
-                if (front == rear)
-                {
-                    front = rear = -1;
-                }
-                else
-                {
-                    front = (front + 1) % size;
-                }
-            }
-            Count -= 1;
-            return item;
-        }
-    }
-
 }

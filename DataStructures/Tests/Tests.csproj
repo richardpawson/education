@@ -52,9 +52,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Graphs.cs" />
     <Compile Include="Stacks.cs" />
     <Compile Include="Queues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{5e939a73-6e69-41b6-985e-2eee9445a797}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
