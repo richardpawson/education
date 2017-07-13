@@ -1,7 +1,7 @@
 Imports System.Collections.Immutable
 
 Namespace FAB.Model
-    Public Class Missile
+    Public Class MissileFunctions
         Public Shared Function fireMissile(loc As Location, board As GameBoard) As GameBoard
             Return board.checkSquareAndRecordOutcome(loc)
         End Function

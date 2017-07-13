@@ -70,7 +70,7 @@
   <ItemGroup>
     <Compile Include="Types.vb" />
     <Compile Include="GameboardFunctions.vb" />
-    <Compile Include="Missile.vb" />
+    <Compile Include="MissileFunctions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

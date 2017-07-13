@@ -1,4 +1,4 @@
-﻿module Missile
+﻿module MissileFunctions
 open FAB.Model
 
 let generateBombSpread centreCol centreRow board =

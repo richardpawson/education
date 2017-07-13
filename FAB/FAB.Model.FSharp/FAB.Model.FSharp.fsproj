@@ -47,7 +47,7 @@
     <Compile Include="Types.fs" />
     <Compile Include="ShipFunctions.fs" />
     <Compile Include="GameBoardFunctions.fs" />
-    <Compile Include="Missile.fs" />
+    <Compile Include="MissileFunctions.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FAB.TechnicalServices\TechnicalServices.csproj">

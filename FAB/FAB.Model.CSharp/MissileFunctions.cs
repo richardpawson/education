@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FAB.Model
 {
-    public class Missile
+    public class MissileFunctions
     {
         public static GameBoard fireMissile(Location loc, GameBoard board)
         {
