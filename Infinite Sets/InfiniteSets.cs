@@ -10,9 +10,9 @@ namespace ConsoleApp1
 
         static void Main()
         {
-            //var set = NaturalNumbers();
+            var set = NaturalNumbers();
             //var set = EvenMembersOf(NaturalNumbers());
-            var set = SquaresOf(NaturalNumbers());
+            //var set = SquaresOf(NaturalNumbers());
             foreach (var n in set)
             {
                 Console.WriteLine(n);
@@ -22,8 +22,7 @@ namespace ConsoleApp1
 
         static IEnumerable<long> NaturalNumbers()
         {
-            yield return 0;
-            long n = 1;
+            long n = 0;
             while (true)
             {
                 yield return n;
