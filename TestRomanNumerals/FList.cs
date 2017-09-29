@@ -31,33 +31,33 @@ namespace FunctionalLibrary
         public FList<T> Skip(int number)
         {
             return number <= 0 ?
-                 this :
-                 number == 1 ?
-                    Tail :
+                 this:
+                 number == 1?
+                    Tail:
                     Tail.Skip(number - 1);
         }
 
         public FList<T> Take(int number)
         {
             return number <= 0 ?
-                FList.Empty<T>() :
+                FList.Empty<T>():
                 number == 1 ?
-                    FList.Cons(Head) :
+                    FList.Cons(Head):
                     FList.Cons(Head, Tail.Take(number - 1));
         }
 
         public override string ToString()
         {
-            return IsEmpty ? "" :
-                Tail.IsEmpty ?
-                    Head.ToString() :
+            return IsEmpty? "":
+                Tail.IsEmpty?
+                    Head.ToString():
                      Head + ", " + Tail;
         }
 
         public override bool Equals(object obj)
         {
-            return !(obj is FList<T>) ?
-                false :
+            return !(obj is FList<T>)?
+                false:
                 (this.IsEmpty && (obj as FList<T>).IsEmpty) ||
                     (Head.Equals((obj as FList<T>).Head) && Tail.Equals((obj as FList<T>).Tail));
         }

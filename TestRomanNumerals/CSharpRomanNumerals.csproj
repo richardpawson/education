@@ -50,8 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Convertor.cs" />
+    <Compile Include="FList.cs" />
     <Compile Include="Tests.cs" />
+    <Compile Include="UsingRecursion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Choose>
