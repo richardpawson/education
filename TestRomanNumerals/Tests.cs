@@ -41,6 +41,16 @@ namespace CSharpRomanNumerals
             Assert.AreEqual("VI", Convertor.AsRomanNumeral(6));
         }
         [TestMethod]
+        public void Test___7()
+        {
+            Assert.AreEqual("VII", Convertor.AsRomanNumeral(7));
+        }
+        [TestMethod]
+        public void Test___8()
+        {
+            Assert.AreEqual("VIII", Convertor.AsRomanNumeral(8));
+        }
+        [TestMethod]
         public void Test___9()
         {
             Assert.AreEqual("IX", Convertor.AsRomanNumeral(9));
@@ -50,6 +60,11 @@ namespace CSharpRomanNumerals
         public void Test__10()
         {
             Assert.AreEqual("X", Convertor.AsRomanNumeral(10));
+        }
+        [TestMethod]
+        public void Test__11()
+        {
+            Assert.AreEqual("XI", Convertor.AsRomanNumeral(11));
         }
 
         [TestMethod]
@@ -187,9 +202,9 @@ namespace CSharpRomanNumerals
         }
 
         [TestMethod]
-        public void Test2016()
+        public void Test2017()
         {
-            Assert.AreEqual("MMXVI", Convertor.AsRomanNumeral(2016));
+            Assert.AreEqual("MMXVII", Convertor.AsRomanNumeral(2017));
         }
     }
 }
