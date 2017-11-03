@@ -1,0 +1,3 @@
+﻿1. Include one ONLY of the following files in the project: spiral, snowflake, regularTree, realisticTree
+2. Edit index.html line 29 to refer to the .js version of this file
+3. Run & if necessary refresh browser

@@ -5,7 +5,7 @@
         let shoot = length - trunk;
         p.go(trunk);
         p.draw();
-        let angle = 20;
+        let angle = 30;
         p.turn(angle);
         fork(shoot, p);
         p.turn(-angle);

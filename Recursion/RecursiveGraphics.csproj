@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -24,13 +24,14 @@
   <ItemGroup>
     <Content Include="browser.html" />
     <Content Include="fractal.html" />
-    <Content Include="hsv.js" />
     <Content Include="index.html" />
+    <Content Include="INSTRUCTIONS.txt" />
     <Content Include="pen.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="pen.ts" />
+    <TypeScriptCompile Include="snowflake.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.mdown" />
