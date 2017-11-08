@@ -31,7 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="pen.ts" />
-    <TypeScriptCompile Include="snowflake.ts" />
+    <TypeScriptCompile Include="regularTree.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.mdown" />
