@@ -4,7 +4,7 @@ namespace CSharpRomanNumerals
 {
     public static class Convertor
     {
-        public static string AsRomanNumeral(int number, int[] values, string[] symbols)
+        private static string AsRomanNumeral(int number, int[] values, string[] symbols)
         {
             return number >= values[0] ?
                 symbols[0] + AsRomanNumeral(number - values[0], values, symbols):
