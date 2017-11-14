@@ -1,21 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace StudentRecords
 {
     class Program
     {
-        static string[] records = new string[5];
+        static List<string> records = new List<string>();
 
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Student Records");
-            while (true)
+            bool keepGoing = true;
+            while (keepGoing)
             {
                 Console.WriteLine("1 - Read File");
                 Console.WriteLine("2 - Find Student by index No.");
+                Console.WriteLine("3 - Find First Match");
+                Console.WriteLine("9 - Quit");
                 Console.Write("Select an option: ");
-                char menuChoice = Console.ReadKey().KeyChar;
+                char menuChoice = Console.ReadLine().ToCharArray()[0];
                 Console.WriteLine();
                 switch (menuChoice)
                 {
@@ -24,6 +29,12 @@ namespace StudentRecords
                         break;
                     case '2':
                         FindRecordByIndex();
+                        break;
+                    case '3':
+                        FindFirstMatch();
+                        break;
+                    case '9':
+                        keepGoing = false;
                         break;
                     default:
                         Console.WriteLine("Invalid menu choice");
@@ -49,15 +60,32 @@ namespace StudentRecords
         static void FindRecordByIndex()
         {
             Console.Write("Enter Index No. :");
-            int index = Convert.ToInt32(Console.ReadLine());
             try
             {
-                WriteRecordToConsole(records[index]));
+                int index = Convert.ToInt32(Console.ReadLine());
+                WriteRecordToConsole(records[index]);
             }
             catch (IndexOutOfRangeException)
             {
                 Console.WriteLine("Not a valid index");
             }
+            catch (FormatException)
+            {
+                Console.WriteLine("Not a number");
+            }
+        }
+
+        static void FindFirstMatch()
+        {
+            Console.Write("Enter a search string: ");
+            string searchString = Console.ReadLine();
+            var record = FindFirstMatch(searchString);
+            WriteRecordToConsole(record);
+        }
+
+        static string FindFirstMatch(string searchString)
+        {
+            return records.Where(r => r.Contains(searchString)).First();
         }
 
         static void ReadFileIntoRecordsArray(string fileName)
@@ -67,7 +95,7 @@ namespace StudentRecords
                 int i = 0;
                 while (!reader.EndOfStream)
                 {
-                    records[i] = reader.ReadLine();
+                    records.Add(reader.ReadLine());
                     i++;
                 }
             }
@@ -75,7 +103,7 @@ namespace StudentRecords
 
         static void WriteRecordToConsole(string record)
         {
-            var formatted = record.Replace(",", "/t");
+            var formatted = record.Replace(",", "\t");
             Console.WriteLine(formatted);
         }
     }
