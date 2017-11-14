@@ -7,21 +7,19 @@ namespace SortingTestbed
     public static class SortAlgorithms
     {
 
-        public static void BubbleSort(int[] values)
+        public static void BubbleSort(int[] items)
         {
-            int n = values.Length;
-            //A total of n passes (where n is length of array)
-            //each passing getting one shorter
-            for (int i = n; i > 0; i--)
+            int n = items.Length;
+
+            for (int i = 0; i < n-1; i++)
             {
-                //Within a pass, compare pairs from the start of the array to the end of the unsorted section
-                for (int j = 0; j < i-1; j++)
+                for (int j = 0; j < n-1-i; j++)
                 {
-                    if (values[j] > values[j + 1]) //then swap them
+                    if (items[j] > items[j + 1]) //then swap them
                     {
-                        var temp = values[j + 1];
-                        values[j + 1] = values[j];
-                        values[j] = temp;
+                        var temp = items[j + 1];
+                        items[j + 1] = items[j];
+                        items[j] = temp;
                     }
                 }
             }

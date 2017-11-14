@@ -23,6 +23,22 @@ namespace SortingTestbed
             TestHelpers.AssertArraysAreIdentical(reference, data);
         }
         [TestMethod]
+        public void Bubble3()
+        {
+            var data = TestHelpers.GenerateRandomisedArray(3);
+            SortAlgorithms.BubbleSort(data);
+            var reference = TestHelpers.GenerateOrderedArray(3);
+            TestHelpers.AssertArraysAreIdentical(reference, data);
+        }
+        [TestMethod]
+        public void Bubble2()
+        {
+            var data = TestHelpers.GenerateRandomisedArray(2);
+            SortAlgorithms.BubbleSort(data);
+            var reference = TestHelpers.GenerateOrderedArray(2);
+            TestHelpers.AssertArraysAreIdentical(reference, data);
+        }
+        [TestMethod]
         public void Bubble1()
         {
             var data = TestHelpers.GenerateRandomisedArray(1);
