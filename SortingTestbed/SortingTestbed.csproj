@@ -48,9 +48,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MergeSortTests.cs" />
     <Compile Include="SortAlgorithms.cs" />
     <Compile Include="TestHelpers.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="BubbleSortTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
