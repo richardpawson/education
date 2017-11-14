@@ -42,13 +42,13 @@ namespace SortingTestbed
                     if (leftHalf[i] < rightHalf[j])
                     {
                         mergeList[k] = leftHalf[i];
-                        i += 1;
+                        i++;
                     } else
                     {
                         mergeList[k] = rightHalf[j];
-                        j += 1;
+                        j++;
                     }
-                    k += 1;
+                    k++;
                 }
                 //Check if left half has elements not merged
                 while (i < leftHalf.Length)
