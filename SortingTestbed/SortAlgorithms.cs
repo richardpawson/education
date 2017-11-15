@@ -6,7 +6,7 @@ namespace SortingTestbed
 {
     public static class SortAlgorithms
     {
-
+        //Implementation of the pseudo-code in Heathcote p238
         public static void BubbleSort(int[] items)
         {
             int n = items.Length;
@@ -25,6 +25,7 @@ namespace SortingTestbed
             }
         }
 
+        //Implementation of the pseudo-code in Heathcote p240
         public static void MergeSort(int[] mergeList)
         {
           if (mergeList.Length > 1)
