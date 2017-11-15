@@ -16,8 +16,9 @@ namespace StudentRecords
             while (keepGoing)
             {
                 Console.WriteLine("1 - Read File");
-                Console.WriteLine("2 - Find Student by index No.");
-                Console.WriteLine("3 - Find First Match");
+                Console.WriteLine("2 - List All Records");
+                Console.WriteLine("3 - Find Student by index No.");
+                Console.WriteLine("4 - Find First Match");
                 Console.WriteLine("9 - Quit");
                 Console.Write("Select an option: ");
                 char menuChoice = Console.ReadLine().ToCharArray()[0];
@@ -28,9 +29,12 @@ namespace StudentRecords
                         ReadInFile();
                         break;
                     case '2':
-                        FindRecordByIndex();
+                        ListAllRecords();
                         break;
                     case '3':
+                        FindRecordByIndex();
+                        break;
+                    case '4':
                         FindFirstMatch();
                         break;
                     case '9':
@@ -45,11 +49,12 @@ namespace StudentRecords
 
         static void ReadInFile()
         {
-            Console.Write("Enter FileName: ");
-            string fileName = Console.ReadLine() + ".csv";
+            Console.Write("Enter FileName (including extension): ");
+            string fileName = Console.ReadLine();
             try
             {
-                ReadFileIntoRecordsArray(fileName);
+                int number = ReadFileIntoRecordsList(fileName);
+                Console.WriteLine("{0} Records read in", number);
             }
             catch (FileNotFoundException)
             {
@@ -85,26 +90,37 @@ namespace StudentRecords
 
         static string FindFirstMatch(string searchString)
         {
-            return records.Where(r => r.Contains(searchString)).First();
+            var searchUC = searchString.ToUpper();
+            return records.Where(r => r.ToUpper().Contains(searchUC)).First();
         }
 
-        static void ReadFileIntoRecordsArray(string fileName)
+        //Returns the number of records read in
+        static int ReadFileIntoRecordsList(string fileName)
         {
+            int i = 0;
             using (StreamReader reader = new StreamReader(fileName))
             {
-                int i = 0;
                 while (!reader.EndOfStream)
                 {
                     records.Add(reader.ReadLine());
                     i++;
                 }
             }
+            return i;
         }
 
         static void WriteRecordToConsole(string record)
         {
             var formatted = record.Replace(",", "\t");
             Console.WriteLine(formatted);
+        }
+
+        static void ListAllRecords()
+        {
+            foreach (var record in records)
+            {
+                WriteRecordToConsole(record);
+            }
         }
     }
 }
