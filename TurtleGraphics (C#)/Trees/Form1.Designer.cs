@@ -150,7 +150,7 @@
             this.level.Size = new System.Drawing.Size(120, 38);
             this.level.TabIndex = 5;
             this.level.Value = new decimal(new int[] {
-            6,
+            8,
             0,
             0,
             0});
@@ -262,7 +262,7 @@
             this.size.Size = new System.Drawing.Size(120, 38);
             this.size.TabIndex = 21;
             this.size.Value = new decimal(new int[] {
-            100,
+            300,
             0,
             0,
             0});
