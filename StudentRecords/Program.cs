@@ -12,13 +12,15 @@ namespace StudentRecords
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Student Records");
+            ReadInFile("Records1.csv");
+            Console.WriteLine();
             bool keepGoing = true;
             while (keepGoing)
             {
-                Console.WriteLine("1 - Read File");
-                Console.WriteLine("2 - List All Records");
-                Console.WriteLine("3 - Find Student by index No.");
-                Console.WriteLine("4 - Find First Match");
+                Console.WriteLine("1 - List All Records");
+                Console.WriteLine("2 - Find Student by Index");
+                Console.WriteLine("3 - Update a Student's Grade");
+                Console.WriteLine("4 - Write to file");
                 Console.WriteLine("9 - Quit");
                 Console.Write("Select an option: ");
                 char menuChoice = Console.ReadLine().ToCharArray()[0];
@@ -26,16 +28,16 @@ namespace StudentRecords
                 switch (menuChoice)
                 {
                     case '1':
-                        ReadInFile();
-                        break;
-                    case '2':
                         ListAllRecords();
                         break;
+                    case '2':
+                        FindStudentByIndex();
+                        break;
                     case '3':
-                        FindRecordByIndex();
+                        UpdateGrade();
                         break;
                     case '4':
-                        FindFirstMatch();
+                        WriteToFile();
                         break;
                     case '9':
                         keepGoing = false;
@@ -47,10 +49,8 @@ namespace StudentRecords
             }
         }
 
-        static void ReadInFile()
+        static void ReadInFile(string fileName)
         {
-            Console.Write("Enter FileName (including extension): ");
-            string fileName = Console.ReadLine();
             try
             {
                 int number = ReadFileIntoRecordsList(fileName);
@@ -58,41 +58,55 @@ namespace StudentRecords
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine("File does not exist");
+                Console.WriteLine("File " + fileName + " not found.");
             }
         }
 
-        static void FindRecordByIndex()
+        static void WriteToFile()
         {
-            Console.Write("Enter Index No. :");
-            try
+            Console.WriteLine("Enter file name to write to: ");
+            string fileName = Console.ReadLine();
+            using (StreamWriter writer = new StreamWriter(fileName))
             {
-                int index = Convert.ToInt32(Console.ReadLine());
-                WriteRecordToConsole(records[index]);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Not a valid index");
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Not a number");
+                foreach(var record in records )
+                {
+                    writer.WriteLine(record);
+                }
+                writer.Flush();
             }
         }
 
-        static void FindFirstMatch()
+        static void UpdateGrade()
         {
-            Console.Write("Enter a search string: ");
-            string searchString = Console.ReadLine();
-            var record = FindFirstMatch(searchString);
-            WriteRecordToConsole(record);
+            int index = FindStudentByIndex();
+            Console.Write("Enter new grade:");
+            string newGrade = Console.ReadLine().First().ToString();
+            string record = records[index];
+            records[index] = record.Substring(0, record.Length - 1) + newGrade;
+            Console.WriteLine("Updated record: ");
+            WriteRecordToConsole(records[index]);
         }
 
-        static string FindFirstMatch(string searchString)
+        static int FindStudentByIndex()
         {
-            var searchUC = searchString.ToUpper();
-            return records.Where(r => r.ToUpper().Contains(searchUC)).First();
+                Console.Write("Enter Student Index (not the Student number):");
+                try
+                {
+                    int index = Convert.ToInt32(Console.ReadLine());
+                    WriteRecordToConsole(records[index]);
+                return index;
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Console.WriteLine("Not a valid index");
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Not a number");
+                }
+            return -1;
         }
+
 
         //Returns the number of records read in
         static int ReadFileIntoRecordsList(string fileName)
