@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{036F20FC-DB8B-4705-ABFC-35634CB2A295}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CDStore2</RootNamespace>
-    <AssemblyName>CDStore2</AssemblyName>
+    <RootNamespace>CDStore</RootNamespace>
+    <AssemblyName>CDStore</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -8,10 +8,12 @@ namespace CDStore
         static void Main(string[] args)
         {
             var context = new CDStoreDbContext();
+            int CDcount = context.Artists.Count();
+            Console.WriteLine("Welcome to the CD Store, where we have records of "+CDcount+" CDs");
             bool keepGoing = true;
             while (keepGoing)
             {
-                Console.Write("\n\nEnter 1 to add an Artist \n2 to List Artists \n3 Find artist\n4 Find CD \n9 to Quit : ");
+                Console.Write("\n\nMain Menu:\n1 to add an Artist \n2 to List Artists \n3 Find artist\n4 Find CD \n9 Quit : ");
                 char key = Console.ReadLine()[0];
                 switch (key)
                 {
