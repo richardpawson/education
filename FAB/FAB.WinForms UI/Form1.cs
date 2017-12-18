@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Windows.Forms;
+using TechnicalServices;
 
 namespace FAB.WinFormsUI
 {
@@ -83,14 +84,14 @@ namespace FAB.WinFormsUI
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             var loc = new Location(col, row);
-            Board = Missile.fireMissile(loc, Board);
+            Board = MissileFunctions.fireMissile(loc, Board);
             DrawBoard();
             richTextBox1.Text = Board.Messages;
         }
         private void button3_Click(object sender, EventArgs e)
         {
             var ships = Ships.UnplacedShips5();
-            Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(Board.Size, ships, new Random());
+            Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(Board.Size, ships, new RandomResult());
             DrawBoard();
         }
 
@@ -99,7 +100,7 @@ namespace FAB.WinFormsUI
             var row = Convert.ToInt16(comboBox1.SelectedItem);
             var col = Convert.ToInt16(comboBox2.SelectedItem);
             var loc = new Location(col, row);
-            Board = Missile.fireBomb(loc, Board);
+            Board = MissileFunctions.fireBomb(loc, Board);
             DrawBoard();
             richTextBox1.Text = Board.Messages;
         }

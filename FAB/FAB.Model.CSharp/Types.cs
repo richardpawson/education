@@ -12,27 +12,23 @@ namespace FAB.Model
         Empty, Miss, Hit
     }
 
-    public struct Location
+    public class Location
     {
+        //All properties are readonly ...
         public readonly int Col;
         public readonly int Row;
 
+        //...set in the constructor and never changed
         public Location(int col, int row)
         {
             Col = col;
             Row = row;
         }
-
-        public Location Add(int colInc, int rowInc)
-        {
-            return new Location(Col + colInc, Row + rowInc);
-        }
-
     }
 
     public class Ship
     {
-        public Location Location;
+        public readonly Location Location;
 
         public readonly Orientations Orientation;
 
@@ -73,7 +69,7 @@ namespace FAB.Model
     public class GameBoard
     {
         public readonly int Size;
-        public readonly ImmutableList<Location> Misses;
+        public readonly ImmutableList<Location> Misses; //Use only immutable collections (library)
         public readonly ImmutableArray<Ship> Ships;
         public readonly string Messages;
 

@@ -120,7 +120,7 @@ namespace FAB.Model
             }
         }
 
-        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, Random random)
+        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, RandomResult random)
         {
             var shipPlacements = locateShipsRandomly(boardSize, shipsToBePlaced, ImmutableArray<Ship>.Empty, random);
             var newShips = shipPlacements.Select(r => r.Item1).ToImmutableArray();
@@ -129,7 +129,7 @@ namespace FAB.Model
             return new GameBoard(boardSize, newShips, messages, noMisses);
         }
 
-        public static ImmutableList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, Random random)
+        public static ImmutableList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, RandomResult random)
         {
             if (shipsToBePlaced.Count() == 0)
             {
@@ -147,7 +147,7 @@ namespace FAB.Model
             }
         }
 
-        public static Tuple<Ship, string, Random> locateShipRandomly(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
+        public static Tuple<Ship, string, RandomResult> locateShipRandomly(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
         {
             var pos = getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, random);
             var message = "Computer placing the " + shipToBeLocated.Name + newLine;
@@ -155,7 +155,7 @@ namespace FAB.Model
             return Tuple.Create(newShip, message, pos.Item3);
         }
 
-        public static Tuple<Location, Orientations, Random> getValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, Random random)
+        public static Tuple<Location, Orientations, RandomResult> getValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
         {
             var pos = getRandomPosition(boardSize, random);
             return isValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2) ?
@@ -163,19 +163,24 @@ namespace FAB.Model
                 getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item3);
         }
 
-        public static Tuple<Location, Orientations, Random> getRandomPosition(int boardSize, Random random)
+        public static Tuple<Location, Orientations, RandomResult> getRandomPosition(int boardSize, RandomResult random)
         {
-            var result1 = RandomNumbers.Next(random, 0, boardSize);
-            var col = result1.Number;
+            var random1 = random.Next(0, boardSize);
+            var col = random1.Number;
 
-            var result2 = RandomNumbers.Next(result1.NewGenerator, 0, boardSize);
-            var row = result2.Number;
+            var random2 = random1.Next(0, boardSize);
+            var row = random2.Number;
 
-            var result3 = RandomNumbers.Next(result2.NewGenerator, 0, 2);
-            var orientation = (Orientations)result3.Number;
+            var random3 = random2.Next(0, 2);
+            var orientation = (Orientations)random3.Number;
 
             var loc = new Location(col, row);
-            return Tuple.Create(loc, orientation, result3.NewGenerator);
+            return Tuple.Create(loc, orientation, random3);
+        }
+
+        public static Location Add(this Location loc, int colInc, int rowInc)
+        {
+            return new Location(loc.Col + colInc, loc.Row + rowInc);
         }
     }
 }

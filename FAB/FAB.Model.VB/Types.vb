@@ -20,11 +20,6 @@ Namespace FAB.Model
             Col = col__1
             Row = row__2
         End Sub
-
-        Public Function Add(colInc As Integer, rowInc As Integer) As Location
-            Return New Location(Col + colInc, Row + rowInc)
-        End Function
-
     End Structure
 
     Public Class Ship

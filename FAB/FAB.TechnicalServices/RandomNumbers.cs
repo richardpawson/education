@@ -7,43 +7,45 @@ using System.Threading.Tasks;
 
 namespace TechnicalServices
 {
-    public class RandomInt
+    public class RandomResult
     {
         public readonly int Number;
-        public readonly Random NewGenerator;
-        public RandomInt(int result, Random generator)
+        internal readonly uint U;
+        internal readonly uint V;
+        public RandomResult(int result, uint u, uint v)
         {
             Number = result;
-            NewGenerator = generator;
-        }
-    }
-    public static class RandomNumbers
-    { 
-        public static RandomInt Next(Random generator, int minValue, int maxValue)
-        {
-            var clone = Clone(generator);
-            var result = clone.Next(minValue, maxValue);
-            return new RandomInt(result, clone);
+            U = u;
+            V = v;
         }
 
-        //Acknowledgement
-        //http://stackoverflow.com/questions/17420424/determine-the-seed-of-c-sharp-random-instance 
-       public static Random Clone(this Random source)
+        public RandomResult(uint u)
         {
-            var clone = new Random();
-            var type = typeof(Random);
-            var field = type.GetField("inext",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-            field.SetValue(clone, field.GetValue(source));
-            field = type.GetField("inextp",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-            field.SetValue(clone, field.GetValue(source));
-            field = type.GetField("SeedArray",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-            int[] arr = (int[])field.GetValue(source);
-            field.SetValue(clone, arr.Clone());
-            return clone;
+            U = u;
+            V = 0;
         }
+
+        //Create Random initialied with the system clock
+        public RandomResult()
+        {
+            U = (uint)DateTime.Now.Ticks >> 16;
+            V = 0;
+        }
+    }
+    public static class RandomGeneration
+    { 
+        public static RandomResult Next(this RandomResult result, int minValue, int maxValue)
+        {
+            var u = result.U;
+            var v = result.V;
+            uint u2 = 36969 * (u & 65535) + (u >> 16);
+            uint v2 = 18000 * (v & 65535) + (v >> 16);
+            double r1 = ((u2 << 16) + v2 + 1.0) * 2.328306435454494e-10;
+            int r2 = (int) (minValue + r1 * (maxValue - minValue));
+            return new RandomResult(r2, u2, v2);
+        }
+
+
     }
 }
 

@@ -133,6 +133,12 @@ Namespace FAB.Model
             Dim loc = New Location(col, row)
             Return Tuple.Create(loc, orientation, result3.NewGenerator)
         End Function
+
+        <Extension>
+        Public Function Add(loc As Location, colInc As Integer, rowInc As Integer) As Location
+            Return New Location(loc.Col + colInc, loc.Row + rowInc)
+        End Function
+
     End Module
 End Namespace
 

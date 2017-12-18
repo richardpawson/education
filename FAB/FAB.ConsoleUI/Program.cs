@@ -2,6 +2,7 @@
 using FAB.DataFixture;
 using FAB.Model;
 using System.Collections.Immutable;
+using TechnicalServices;
 
 namespace FAB.ConsoleUI
 {
@@ -20,7 +21,7 @@ namespace FAB.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5();
-                    Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, ships, new Random());
+                    Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, ships, new RandomResult());
                 }
                 if (MenuOption == 2)
                 {
@@ -63,12 +64,12 @@ namespace FAB.ConsoleUI
                 var loc = GetLocation();
                 if (missileType == "M")
                 {
-                    var newBoard = Missile.fireMissile(loc, board);
+                    var newBoard = MissileFunctions.fireMissile(loc, board);
                     PlayGame(newBoard);
                 }
                 if (missileType == "B")
                 {
-                    var newBoard = Missile.fireBomb(loc, board);
+                    var newBoard = MissileFunctions.fireBomb(loc, board);
                     PlayGame(newBoard);
                 }
             }
