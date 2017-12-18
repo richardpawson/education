@@ -13,7 +13,7 @@ namespace CDStore
 
         public virtual string Title { get; set; }
 
-        public virtual string RecordCompany { get; set; }
+        public virtual RecordCompany RecordCompany { get; set; }
 
         public virtual DateTime Published { get; set; }
 

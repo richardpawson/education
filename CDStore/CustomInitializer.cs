@@ -26,13 +26,17 @@ namespace CDStore
             var sheetSteel = CreateSong(context, "Sheet Steel", rap, "Heavy Metal");
             var hereWithYou = CreateSong(context, "Here with you", bh, "Art Pop");
 
-            var shadows = CreateCD(context, "Shadows", "ABC", "2014/05/06");
-            var nightTurnedDay = CreateCD(context, "Night Turned Day", "GHK", "2015/03/24");
-            var autumn = CreateCD(context, "Autumn", "ABC", "2015/10/11");
-            var basicPoetry = CreateCD(context, "Basic Poetry", "GHK", "2016/02/01");
-            var luckyOnes = CreateCD(context, "The Lucky Ones", "DEF", "2016/02/16");
-            var luckyMe = CreateCD(context, "Lucky Me", "ABC", "2014/05/24");
-            var flyingHigh = CreateCD(context, "Flying High", "DEF", "2015/07/31");
+            var abc = CreateRecordCompany(context, "ABC");
+            var def = CreateRecordCompany(context, "DEF");
+            var ghk = CreateRecordCompany(context, "GHK");
+
+            var shadows = CreateCD(context, "Shadows", abc, "2014/05/06");
+            var nightTurnedDay = CreateCD(context, "Night Turned Day", ghk, "2015/03/24");
+            var autumn = CreateCD(context, "Autumn", abc, "2015/10/11");
+            var basicPoetry = CreateCD(context, "Basic Poetry", ghk, "2016/02/01");
+            var luckyOnes = CreateCD(context, "The Lucky Ones", def, "2016/02/16");
+            var luckyMe = CreateCD(context, "Lucky Me", abc, "2014/05/24");
+            var flyingHigh = CreateCD(context, "Flying High", def, "2015/07/31");
 
             AddSongsToCD(context, shadows, waterfall,  comeAway, rightHere );
             AddSongsToCD(context, nightTurnedDay, waterfall, complicatedGame, clouds, hereWithYou);
@@ -57,7 +61,7 @@ namespace CDStore
             return a;
         }
 
-        private CD CreateCD(CDStoreDbContext context, string title, string recordCompany, string published)
+        private CD CreateCD(CDStoreDbContext context, string title, RecordCompany recordCompany, string published)
         {
             var cd = new CD()
               { Title = title, RecordCompany = recordCompany, Published = Convert.ToDateTime(published) };
@@ -74,6 +78,15 @@ namespace CDStore
                cd.Songs.Add(song);
             }
             context.SaveChanges();
+        }
+
+        private RecordCompany CreateRecordCompany(CDStoreDbContext context, string name)
+        {
+            var rc = new RecordCompany()
+            { Name = name };
+            context.RecordCompanies.Add(rc);
+            context.SaveChanges();
+            return rc;
         }
     }
 }

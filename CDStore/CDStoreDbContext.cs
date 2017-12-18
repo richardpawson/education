@@ -13,6 +13,7 @@ namespace CDStore
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<CD> CDs { get; set; }
+        public DbSet<RecordCompany> RecordCompanies { get; set; }
     }
 }
 
