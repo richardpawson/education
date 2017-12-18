@@ -5,33 +5,29 @@ t = turtle.Turtle()      # create a t named t
 t.left(90)
 t.pensize(1)
 t.pencolor('brown')
-t.speed(0)
+t.speed(1)
 
-size = 200
-trunkPercent = 0.40
+length = 200
 angle = 30
-maxLevel = 6
-
-
+    
 def Draw(length):
-    if length <= 10 :
-        return
-    else :
-        trunk = length * trunkPercent
+        trunk = length * 0.4
         shoot = length - trunk
         t.forward(trunk)
         t.right(angle)
-        Draw(shoot)
+        t.forward(shoot)
+        t.backward(shoot)
         t.left(angle*2)
-        Draw(shoot)
+        t.forward(shoot)
+        t.backward(shoot)
         t.right(angle)
         t.backward(trunk)
         
 
-
 #Main program begins here
 
-Draw(size)
+Draw(200)
+Draw(250)
 
 
 

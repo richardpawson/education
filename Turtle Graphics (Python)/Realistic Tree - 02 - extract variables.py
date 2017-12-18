@@ -10,7 +10,7 @@ t.speed(1)
     
 #Main program begins here
 length = 200
-trunk = length * 0.4
+trunk = length * 0.20
 shoot = length - trunk
 angle = 30
 

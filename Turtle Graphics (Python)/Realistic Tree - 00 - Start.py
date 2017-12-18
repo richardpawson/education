@@ -5,7 +5,7 @@ t = turtle.Turtle()      # create a t named t
 t.left(90)
 t.pensize(1)
 t.pencolor('brown')
-t.speed(0)
+t.speed(1)
 
     
 #Main program begins here

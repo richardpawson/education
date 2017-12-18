@@ -50,7 +50,11 @@ def Draw(length, level):
 
 #Main program begins here
 
-Draw(size, maxLevel)
+for n in range(0,5):
+    t.right(90)
+    t.forward(100)
+    t.left(90)
+    Draw(size, maxLevel)
 
 
 
