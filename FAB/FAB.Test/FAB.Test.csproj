@@ -57,11 +57,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GameBoardFunctionsTest.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomNumberTests.cs" />
+    <Compile Include="ShipFunctionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FunctionalProgramming\FunctionalLibrary.CSharp\FunctionalLibrary.csproj">
+      <Project>{7f308878-fd25-41ba-84be-d96d6334b48f}</Project>
+      <Name>FunctionalLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FAB.DataFixture\FAB.DataFixture.csproj">
       <Project>{7ced0f0c-4586-43e8-93f1-2abc0ab82f4b}</Project>
       <Name>FAB.DataFixture</Name>
@@ -69,10 +74,6 @@
     <ProjectReference Include="..\FAB.Model.CSharp\FAB.Model.CSharp.csproj">
       <Project>{ad9dea29-4e95-4773-84f6-55243c946b8a}</Project>
       <Name>FAB.Model.CSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FAB.TechnicalServices\TechnicalServices.csproj">
-      <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
-      <Name>TechnicalServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

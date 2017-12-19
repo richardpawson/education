@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FunctionalLibrary;
+using System;
 using System.Collections.Immutable;
 using System.Linq;
-using TechnicalServices;
 
 namespace FAB.Model
 {
@@ -10,7 +9,7 @@ namespace FAB.Model
     {
         private const string newLine = "\n";
 
-        public static bool allSunk(IEnumerable<Ship> ships)
+        public static bool allSunk(FList<Ship> ships)
         {
             return !ships.Any(ship => !ship.isSunk());
         }
@@ -28,56 +27,51 @@ namespace FAB.Model
                 if (allSunk(newShips))
                 {
                     var newMessage = newMessages + "All ships sunk!";
-                    return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, misses);
+                    return new GameBoard(board.Size, newShips, newMessage, misses);
                 }
                 else
                 {
-                    return new GameBoard(board.Size, newShips.ToImmutableArray(), aggregatedMessages, misses);
+                    return new GameBoard(board.Size, newShips, aggregatedMessages, misses);
                 }
             }
             else
             {
                 var newMisses = board.Misses.Add(loc);
                 var newMessage = aggregatedMessages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss.";
-                return new GameBoard(board.Size, newShips.ToImmutableArray(), newMessage, newMisses);
+                return new GameBoard(board.Size, newShips, newMessage, newMisses);
             }
         }
 
-        public static GameBoard checkSquaresAndRecordOutcome(this GameBoard board, IImmutableList<Location> locs)
+        public static GameBoard checkSquaresAndRecordOutcome(this GameBoard board, FList<Location> locs)
         {
-            var boardFromHead = checkSquareAndRecordOutcome(board, locs.First(), true);
+            var boardFromHead = checkSquareAndRecordOutcome(board, locs.Head, true);
             if (locs.Count() == 1)
             {
                 return boardFromHead;
             }
             else
             {
-                return checkSquaresAndRecordOutcome(boardFromHead, locs.Remove(locs.First()));
+                return checkSquaresAndRecordOutcome(boardFromHead, locs.Remove(locs.Head));
             }
         }
 
-        public static bool isValidPosition(int boardSize, IImmutableList<Ship> existingShips, Ship shipToBePlaced, Location loc, Orientations orientation)
+        public static bool isValidPosition(int boardSize, FList<Ship> existingShips, Ship shipToBePlaced)
         {
-            if (!shipWouldFitWithinBoard(boardSize, shipToBePlaced, loc, orientation))
+            if (!shipWouldFitWithinBoard(boardSize, shipToBePlaced))
             {
                 return false;
             }
             else
             {
-                var locs = locationsThatShipWouldOccupy(loc, orientation, shipToBePlaced.Size);
-                var occupiedLocations = from l in locs
-                                        from s in existingShips
-                                        where s.occupies(l)
-                                        select loc;
-                return occupiedLocations.Count() == 0;
+                return !existingShips.Any(s => s.intersects(shipToBePlaced));
             }
         }
 
-        public static ImmutableArray<Location> locationsThatShipWouldOccupy(Location loc, Orientations orient, int locsToAdd)
+        public static FList<Location> locationsThatShipWouldOccupy(Location loc, Orientations orient, int locsToAdd)
         {
             if (locsToAdd == 0)
             {
-                return ImmutableArray<Location>.Empty;
+                return FList.Empty<Location>();
             }
             else
             {
@@ -92,10 +86,10 @@ namespace FAB.Model
             }
         }
 
-        public static bool shipWouldFitWithinBoard(int boardSize, Ship ship, Location loc, Orientations orientation)
+        public static bool shipWouldFitWithinBoard(int boardSize, Ship ship)
         {
-            return (orientation == Orientations.Horizontal && loc.Col + ship.Size <= boardSize) ||
-                (orientation == Orientations.Vertical && loc.Row + ship.Size <= boardSize);
+            return (ship.Orientation == Orientations.Horizontal && ship.Location.Col + ship.Size <= boardSize) ||
+                (ship.Orientation == Orientations.Vertical && ship.Location.Row + ship.Size <= boardSize);
         }
 
         public static bool contains(this GameBoard board, Location loc)
@@ -120,34 +114,34 @@ namespace FAB.Model
             }
         }
 
-        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, RandomResult random)
+        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, FList<Ship> shipsToBePlaced, RandomResult random)
         {
-            var shipPlacements = locateShipsRandomly(boardSize, shipsToBePlaced, ImmutableArray<Ship>.Empty, random);
-            var newShips = shipPlacements.Select(r => r.Item1).ToImmutableArray();
+            var shipPlacements = locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random);
+            var newShips = shipPlacements.Select(r => r.Item1);
             string messages = shipPlacements.Select(r => r.Item2).Aggregate((r, s) => r + s);
-            var noMisses = ImmutableList<Location>.Empty;
+            var noMisses = FList.Empty<Location>();
             return new GameBoard(boardSize, newShips, messages, noMisses);
         }
 
-        public static ImmutableList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, ImmutableArray<Ship> shipsToBePlaced, ImmutableArray<Ship> shipsAlreadyPlaced, RandomResult random)
+        public static FList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, FList<Ship> shipsToBePlaced, FList<Ship> shipsAlreadyPlaced, RandomResult random)
         {
             if (shipsToBePlaced.Count() == 0)
             {
-                return ImmutableList<Tuple<Ship, string>>.Empty;
+                return FList.Empty<Tuple<Ship, string>>();
             }
             else
             {
-                var thisShip = shipsToBePlaced[0];
+                var thisShip = shipsToBePlaced.Head;
                 var result = locateShipRandomly(boardSize, shipsAlreadyPlaced, thisShip, random);
                 var shipPlacement = Tuple.Create(result.Item1, result.Item2);
                 var newRandom = result.Item3;
                 var newshipsAlreadyPlaced = shipsAlreadyPlaced.Add(result.Item1);
                 var newShipsToBePlaced = shipsToBePlaced.Remove(thisShip);
-                return locateShipsRandomly(boardSize, newShipsToBePlaced, newshipsAlreadyPlaced, newRandom).Insert(0, shipPlacement);
+                return FList.Cons(shipPlacement, locateShipsRandomly(boardSize, newShipsToBePlaced, newshipsAlreadyPlaced, newRandom));
             }
         }
 
-        public static Tuple<Ship, string, RandomResult> locateShipRandomly(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
+        public static Tuple<Ship, string, RandomResult> locateShipRandomly(int boardSize, FList<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
         {
             var pos = getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, random);
             var message = "Computer placing the " + shipToBeLocated.Name + newLine;
@@ -155,10 +149,11 @@ namespace FAB.Model
             return Tuple.Create(newShip, message, pos.Item3);
         }
 
-        public static Tuple<Location, Orientations, RandomResult> getValidRandomPosition(int boardSize, ImmutableArray<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
+        public static Tuple<Location, Orientations, RandomResult> getValidRandomPosition(int boardSize, FList<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
         {
             var pos = getRandomPosition(boardSize, random);
-            return isValidPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item1, pos.Item2) ?
+            var hypotheticalShip = new Ship(shipToBeLocated.Name, shipToBeLocated.Size, pos.Item1, pos.Item2);
+            return isValidPosition(boardSize, shipsAlreadyLocated, hypotheticalShip) ?
                 pos :
                 getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, pos.Item3);
         }

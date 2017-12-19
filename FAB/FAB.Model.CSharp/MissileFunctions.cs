@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using FunctionalLibrary;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace FAB.Model
@@ -16,12 +17,12 @@ namespace FAB.Model
             return board.checkSquaresAndRecordOutcome(locs);
         }
 
-        private static ImmutableArray<Location> GenerateLocationsToHit(int centreCol, int centreRow, GameBoard board)
+        private static FList<Location> GenerateLocationsToHit(int centreCol, int centreRow, GameBoard board)
         {
             var colRange = Enumerable.Range(centreCol - 1, 3);
             var rowRange = Enumerable.Range(centreRow - 1, 3);
             var locations = colRange.SelectMany(col => rowRange, (col, row) => new Location(col, row));
-            return ImmutableArray.CreateRange(locations);
+            return FList.Cons<Location>(locations.ToArray());
         }
     }
 }

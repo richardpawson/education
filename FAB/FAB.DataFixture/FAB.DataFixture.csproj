@@ -51,6 +51,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FunctionalProgramming\FunctionalLibrary.CSharp\FunctionalLibrary.csproj">
+      <Project>{7f308878-fd25-41ba-84be-d96d6334b48f}</Project>
+      <Name>FunctionalLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FAB.Model.CSharp\FAB.Model.CSharp.csproj">
       <Project>{ad9dea29-4e95-4773-84f6-55243c946b8a}</Project>
       <Name>FAB.Model.CSharp</Name>

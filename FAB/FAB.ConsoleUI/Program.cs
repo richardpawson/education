@@ -1,8 +1,7 @@
 ﻿using System;
 using FAB.DataFixture;
 using FAB.Model;
-using System.Collections.Immutable;
-using TechnicalServices;
+using FunctionalLibrary;
 
 namespace FAB.ConsoleUI
 {
@@ -10,7 +9,7 @@ namespace FAB.ConsoleUI
     {
         static void Main(string[] args)
         {
-            var noMisses = ImmutableList<Location>.Empty;
+            var noMisses = FList.Empty<Location>();
             GameBoard Board = null;
 
             int MenuOption = 0;

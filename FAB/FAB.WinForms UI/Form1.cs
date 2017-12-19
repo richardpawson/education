@@ -1,10 +1,10 @@
 ﻿using FAB.DataFixture;
 using FAB.Model;
+using FunctionalLibrary;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Windows.Forms;
-using TechnicalServices;
 
 namespace FAB.WinFormsUI
 {
@@ -19,7 +19,7 @@ namespace FAB.WinFormsUI
         private Brush whiteBrush = new SolidBrush(Color.White);
 
         private GameBoard Board;
-        private ImmutableList<Location>  noMisses = ImmutableList<Location>.Empty;
+        private FList<Location>  noMisses = FList.Empty<Location>();
 
         public Form1()
         {
@@ -74,7 +74,7 @@ namespace FAB.WinFormsUI
         {
             var ships = Ships.TrainingGame();
 
-            Board = new GameBoard(boardSize, ships, "", ImmutableList<Location>.Empty);
+            Board = new GameBoard(boardSize, ships, "", FList.Empty<Location>());
             DrawBoard();
         }
 

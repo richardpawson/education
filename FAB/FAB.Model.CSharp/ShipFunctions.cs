@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace FAB.Model
 {
@@ -17,6 +18,46 @@ namespace FAB.Model
                     loc.Col >= ship.Location.Col && loc.Col < ship.Location.Col + ship.Size :
                  ship.Location.Col == loc.Col &&
                     loc.Row >= ship.Location.Row && loc.Row < ship.Location.Row + ship.Size;
+        }
+
+        public static bool horizontal(this Ship ship)
+        {
+            return ship.Orientation == Orientations.Horizontal;
+        }
+
+        public static bool vertical(this Ship ship)
+        {
+            return ship.Orientation == Orientations.Vertical;
+        }
+
+        //If ship is horizontal, this will be the first and last column numbers;
+        //if vertical, the first and last row numbers
+        public static Tuple<int, int> extent(this Ship ship)
+        {
+            return ship.horizontal() ?
+                Tuple.Create(ship.Location.Col, ship.Location.Col + ship.Size-1) :
+                Tuple.Create(ship.Location.Row, ship.Location.Row + ship.Size-1);
+        }
+
+        public static bool overlaps(this Tuple<int, int> extent1, Tuple<int, int> extent2)
+        {
+            return extent1.covers(extent2.Item1) || 
+                extent1.covers(extent2.Item2) ||
+                extent2.covers(extent1.Item1); //No need for 4th test
+        }
+        public static bool covers(this Tuple<int, int> extent, int value)
+        {
+            return value >= extent.Item1 && value <= extent.Item2; 
+        }
+        //Returns true if the two ships would overlap.
+        public static bool intersects(this Ship ship1, Ship ship2)
+        {
+            return ship1.Orientation == ship2.Orientation ?
+                (ship1.horizontal() && ship1.Location.Row == ship2.Location.Row ||
+                    ship1.vertical() && ship1.Location.Col == ship2.Location.Col)
+                    && ship1.extent().overlaps(ship2.extent()) :
+                 ship1.horizontal() && ship1.extent().covers(ship2.Location.Col) && ship2.extent().covers(ship1.Location.Row)
+                    || ship1.vertical() && ship1.extent().covers(ship2.Location.Row) && ship2.extent().covers(ship1.Location.Col);
         }
 
         public static bool isHitInLocation(this Ship ship, Location loc)

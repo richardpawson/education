@@ -61,9 +61,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FAB.TechnicalServices\TechnicalServices.csproj">
-      <Project>{b1014419-ceec-4288-a9b4-b98c79ed9cb3}</Project>
-      <Name>TechnicalServices</Name>
+    <ProjectReference Include="..\..\FunctionalProgramming\FunctionalLibrary.CSharp\FunctionalLibrary.csproj">
+      <Project>{7f308878-fd25-41ba-84be-d96d6334b48f}</Project>
+      <Name>FunctionalLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

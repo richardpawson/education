@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using FunctionalLibrary;
+using System.Collections.Immutable;
 
 namespace FAB.Model
 { 
@@ -23,6 +24,11 @@ namespace FAB.Model
         {
             Col = col;
             Row = row;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}",Col, Row);
         }
     }
 
@@ -69,11 +75,11 @@ namespace FAB.Model
     public class GameBoard
     {
         public readonly int Size;
-        public readonly ImmutableList<Location> Misses; //Use only immutable collections (library)
-        public readonly ImmutableArray<Ship> Ships;
+        public readonly FList<Location> Misses; //Use only immutable collections (library)
+        public readonly FList<Ship> Ships;
         public readonly string Messages;
 
-        public GameBoard(int size, ImmutableArray<Ship> ships, string messages, ImmutableList<Location> misses)
+        public GameBoard(int size, FList<Ship> ships, string messages, FList<Location> misses)
         {
             Size = size;
             Messages = messages;

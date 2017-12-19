@@ -2,10 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FAB.DataFixture;
 using FAB.Model;
-using System.Collections.Immutable;
-using System;
 using System.Linq;
-using TechnicalServices;
+using FunctionalLibrary;
 
 namespace FAB.Test
 {
@@ -13,7 +11,7 @@ namespace FAB.Test
     public class GameTests
     {
         private RandomResult  Random = null;
-        private ImmutableList<Location>  noMisses = ImmutableList<Location>.Empty;
+        private FList<Location>  noMisses = FList.Empty<Location>();
         [TestInitialize] 
         public void TestInitialize()
         {
@@ -33,7 +31,7 @@ namespace FAB.Test
             var board = new GameBoard(10, ships, "", noMisses);       
             board = MissileFunctions.fireMissile(new Location(8, 1), board);
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
-            var battleship = board.Ships.ElementAt(1);
+            var battleship = board.Ships.Where(s => s.Name == Ships.Battleship).Head;
             Assert.AreEqual(1, battleship.Hits.Count());
             Assert.IsFalse(ShipFunctions.isSunk(battleship));
             Assert.AreEqual(0, board.Misses.Count());
@@ -47,17 +45,17 @@ namespace FAB.Test
             var loc = new Location(8, 1);
             board = MissileFunctions.fireMissile(loc, board);
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
-            var battleship = board.Ships.ElementAt(1);
+            var battleship = board.Ships.Where(s => s.Name == Ships.Battleship).Head;
             Assert.AreEqual(1, battleship.Hits.Count());
             Assert.IsFalse(ShipFunctions.isSunk(battleship));
             board = MissileFunctions.fireMissile(loc, board);
             Assert.AreEqual("Hit a Battleship at (8,1).", board.Messages);
-            battleship = board.Ships.ElementAt(1);
+             battleship = board.Ships.Where(s => s.Name == Ships.Battleship).Head;
             Assert.AreEqual(1, battleship.Hits.Count());
             board = MissileFunctions.fireMissile(loc, board);
             board = MissileFunctions.fireMissile(loc, board);
             board = MissileFunctions.fireMissile(loc, board);
-            battleship = board.Ships.ElementAt(1);
+            battleship = board.Ships.Where(s => s.Name == Ships.Battleship).Head;
             Assert.AreEqual(1, battleship.Hits.Count());
             Assert.IsFalse(ShipFunctions.isSunk(battleship));
         }
@@ -86,7 +84,7 @@ namespace FAB.Test
                "Sorry, (7,1) is a miss.Sorry, (7,2) is a miss.Sorry, (7,3) is a miss." +
                "Hit a Battleship at (8,1).Hit a Battleship at (8,2).Hit a Battleship at (8,3).";
             Assert.AreEqual(expected, board.Messages);
-            var battleship = board.Ships.ElementAt(1);
+            var battleship = board.Ships.Where(s => s.Name == Ships.Battleship).Head;
             Assert.AreEqual(3, battleship.Hits.Count());
             Assert.IsFalse(ShipFunctions.isSunk(battleship));
         }
@@ -98,11 +96,11 @@ namespace FAB.Test
             var board = new GameBoard(10, ships, "", noMisses);
             board = MissileFunctions.fireMissile(new Location(4,5), board);
             Assert.AreEqual("Hit a Frigate at (4,5).", board.Messages);
-            var frigate = board.Ships.ElementAt(1);
+            var frigate = board.Ships.Where(s => s.Name == Ships.Frigate).Head;
             Assert.AreEqual(1, frigate.Hits.Count());
             Assert.IsFalse(ShipFunctions.isSunk(frigate));
             board = MissileFunctions.fireMissile(new Location(4, 6), board);
-            frigate = board.Ships.ElementAt(1);
+            frigate = board.Ships.Where(s => s.Name == Ships.Frigate).Head;
             Assert.AreEqual(2, frigate.Hits.Count());
             Assert.IsTrue(ShipFunctions.isSunk(frigate));
             Assert.AreEqual("Frigate sunk!", board.Messages);
@@ -129,10 +127,10 @@ namespace FAB.Test
             var unplacedShips = Ships.UnplacedShips4();
             var board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, unplacedShips, Random);
             var ships = board.Ships;
-            var s0 = ships.ElementAt(0);
-            var s1 = ships.ElementAt(1);
-            var s2 = ships.ElementAt(2);
-            var s3 = ships.ElementAt(3);
+            var s0 = ships.Head;
+            var s1 = ships.Tail.Head;
+            var s2 = ships.Tail.Tail.Head;
+            var s3 = ships.Tail.Tail.Tail.Head;
 
             //2 1 0 7 6 0
 
