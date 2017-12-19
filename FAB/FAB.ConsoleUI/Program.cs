@@ -24,7 +24,7 @@ namespace FAB.ConsoleUI
                 }
                 if (MenuOption == 2)
                 {
-                    var ships = Ships.TrainingGame();
+                    var ships = ShipFunctions.TrainingGame();
                     Board = new GameBoard(10, ships, "", noMisses);
                 }
                 PlayGame(Board);

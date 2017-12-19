@@ -72,7 +72,7 @@ namespace FAB.WinFormsUI
         #region Button clicks
         private void button1_Click(object sender, EventArgs e)
         {
-            var ships = Ships.TrainingGame();
+            var ships = ShipFunctions.TrainingGame();
 
             Board = new GameBoard(boardSize, ships, "", FList.Empty<Location>());
             DrawBoard();

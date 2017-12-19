@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AD9DEA29-4E95-4773-84F6-55243C946B8A}</ProjectGuid>
+    <ProjectGuid>{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FAB</RootNamespace>
-    <AssemblyName>FAB.Model.CSharp</AssemblyName>
+    <RootNamespace>Boom.DataFixture</RootNamespace>
+    <AssemblyName>Boom.DataFixture</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,16 +22,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,20 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameboardFunctions.cs" />
-    <Compile Include="MissileFunctions.cs" />
-    <Compile Include="Types.cs" />
+    <Compile Include="Ships.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShipFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FunctionalProgramming\FunctionalLibrary.CSharp\FunctionalLibrary.csproj">
       <Project>{7f308878-fd25-41ba-84be-d96d6334b48f}</Project>
       <Name>FunctionalLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FAB.Model.CSharp\FAB.Model.csproj">
+      <Project>{ad9dea29-4e95-4773-84f6-55243c946b8a}</Project>
+      <Name>FAB.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

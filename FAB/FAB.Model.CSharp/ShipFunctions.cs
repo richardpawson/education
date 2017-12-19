@@ -1,10 +1,19 @@
-﻿using System;
+﻿using FunctionalLibrary;
+using System;
 using System.Linq;
 
 namespace FAB.Model
 {
     public static class ShipFunctions
     {
+        public const string AircraftCarrier = "Aircraft Carrier";
+        public const string Battleship = "Battleship";
+        public const string Submarine = "Submarine";
+        public const string Destroyer = "Destroyer";
+        public const string PatrolBoat = "Patrol Boat";
+        public const string Minesweeper = "Minesweeper";
+        public const string Frigate = "Frigate";
+
         public static Ship setPosition(this Ship ship, Location loc, Orientations orient)
         {
             return new Ship(ship.Name, ship.Size, ship.Hits, loc, orient);
@@ -83,6 +92,17 @@ namespace FAB.Model
         public static bool isSunk(this Ship ship)
         {
             return ship.Hits.Count >= ship.Size;
+        }
+
+        public static FList<Ship> TrainingGame()
+        {
+            return FList.Cons(
+                new Ship(AircraftCarrier, 5, new Location(1, 8), Orientations.Horizontal),
+                new Ship(Battleship, 4, new Location(8, 1), Orientations.Vertical),
+                new Ship(Submarine, 3, new Location(7, 6), Orientations.Vertical),
+                new Ship(Destroyer, 3, new Location(5, 9), Orientations.Horizontal),
+                new Ship(PatrolBoat, 2, new Location(1, 4), Orientations.Vertical)
+            );
         }
     }
 }
