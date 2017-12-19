@@ -74,7 +74,7 @@ namespace FAB.WinFormsUI
         {
             var ships = ShipFunctions.TrainingGame();
 
-            Board = new GameBoard(boardSize, ships, "", FList.Empty<Location>());
+            Board = new GameBoard(boardSize, ships, "", ImmutableHashSet.Create<Location>());
             DrawBoard();
         }
 

@@ -30,6 +30,18 @@ namespace FAB.Model
         {
             return string.Format("{0}, {1}",Col, Row);
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Location ?
+                ((Location)obj).Col == this.Col && ((Location)obj).Row == this.Row
+                : false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Col.GetHashCode()+Row.GetHashCode();
+        }
     }
 
     public class Ship
@@ -83,11 +95,11 @@ namespace FAB.Model
     public class GameBoard
     {
         public readonly int Size;
-        public readonly FList<Location> Misses; //Use only immutable collections (library)
+        public readonly ImmutableHashSet<Location> Misses; //Use only immutable collections (library)
         public readonly FList<Ship> Ships;
         public readonly string Messages;
 
-        public GameBoard(int size, FList<Ship> ships, string messages, FList<Location> misses)
+        public GameBoard(int size, FList<Ship> ships, string messages, ImmutableHashSet<Location> misses)
         {
             Size = size;
             Messages = messages;

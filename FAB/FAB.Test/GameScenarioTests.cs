@@ -4,6 +4,7 @@ using FAB.DataFixture;
 using FAB.Model;
 using System.Linq;
 using FunctionalLibrary;
+using System.Collections.Immutable;
 
 namespace FAB.Test
 {
@@ -11,7 +12,7 @@ namespace FAB.Test
     public class GameScenarioTests
     {
         private RandomResult  Random = null;
-        private FList<Location>  noMisses = FList.Empty<Location>();
+        private ImmutableHashSet<Location>  noMisses = ImmutableHashSet.Create<Location>();
         [TestInitialize] 
         public void TestInitialize()
         {

@@ -80,7 +80,7 @@ namespace FAB.Model
             var shipPlacements = locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random);
             var newShips = shipPlacements.Select(r => r.Item1);
             var messages = shipPlacements.Select(r => r.Item2).Aggregate((r, s) => r + s);
-            var noMisses = FList.Empty<Location>();
+            var noMisses = ImmutableHashSet.Create<Location>();
             return new GameBoard(boardSize, newShips, messages, noMisses);
         }
 
