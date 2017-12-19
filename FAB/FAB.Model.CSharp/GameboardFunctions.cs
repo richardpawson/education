@@ -22,103 +22,64 @@ namespace FAB.Model
             string newMessages = results.Select(r => r.Item3).Aggregate((a, b) => a + b);
             var aggregatedMessages = aggregateMessages ? board.Messages + newMessages : newMessages;
             var misses = board.Misses;
-            if (hit)
-            {
-                if (allSunk(newShips))
-                {
-                    var newMessage = newMessages + "All ships sunk!";
-                    return new GameBoard(board.Size, newShips, newMessage, misses);
-                }
-                else
-                {
-                    return new GameBoard(board.Size, newShips, aggregatedMessages, misses);
-                }
-            }
-            else
-            {
-                var newMisses = board.Misses.Add(loc);
-                var newMessage = aggregatedMessages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss.";
-                return new GameBoard(board.Size, newShips, newMessage, newMisses);
-            }
+            return hit?
+                allSunk(newShips) ?
+                     new GameBoard(board.Size, newShips, newMessages + "All ships sunk!", misses)
+                     : new GameBoard(board.Size, newShips, aggregatedMessages, misses) 
+                : new GameBoard(board.Size, newShips, aggregatedMessages + "Sorry, (" + loc.Col + "," + loc.Row + ") is a miss.", board.Misses.Add(loc));
         }
 
         public static GameBoard checkSquaresAndRecordOutcome(this GameBoard board, FList<Location> locs)
         {
-            var boardFromHead = checkSquareAndRecordOutcome(board, locs.Head, true);
-            if (locs.Count() == 1)
-            {
-                return boardFromHead;
-            }
-            else
-            {
-                return checkSquaresAndRecordOutcome(boardFromHead, locs.Remove(locs.Head));
-            }
+            return locs.Count() == 1 ?
+                checkSquareAndRecordOutcome(board, locs.Head, true)
+                : checkSquaresAndRecordOutcome(checkSquareAndRecordOutcome(board, locs.Head, true), locs.Remove(locs.Head));
         }
 
         public static bool isValidPosition(int boardSize, FList<Ship> existingShips, Ship shipToBePlaced)
         {
-            if (!shipWouldFitWithinBoard(boardSize, shipToBePlaced))
-            {
-                return false;
-            }
-            else
-            {
-                return !existingShips.Any(s => s.intersects(shipToBePlaced));
-            }
+           return !shipWouldFitWithinBoard(boardSize, shipToBePlaced) ?
+                false
+                :!existingShips.Any(s => s.intersects(shipToBePlaced));
         }
 
         public static FList<Location> locationsThatShipWouldOccupy(Location loc, Orientations orient, int locsToAdd)
         {
-            if (locsToAdd == 0)
-            {
-                return FList.Empty<Location>();
-            }
-            else
-            {
-                if (orient == Orientations.Horizontal)
-                {
-                    return locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Add(loc);
-                }
-                else
-                {
-                    return locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Add(loc);
-                }
-            }
+           return locsToAdd == 0 ?
+                FList.Empty<Location>() 
+                :orient == Orientations.Horizontal ?
+                        locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Add(loc)
+                        :locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Add(loc);
         }
 
         public static bool shipWouldFitWithinBoard(int boardSize, Ship ship)
         {
-            return (ship.Orientation == Orientations.Horizontal && ship.Location.Col + ship.Size <= boardSize) ||
-                (ship.Orientation == Orientations.Vertical && ship.Location.Row + ship.Size <= boardSize);
+            return (ship.Orientation == Orientations.Horizontal 
+                        && ship.Location.Col + ship.Size <= boardSize) 
+                    ||
+                    (ship.Orientation == Orientations.Vertical 
+                        && ship.Location.Row + ship.Size <= boardSize);
         }
 
         public static bool contains(this GameBoard board, Location loc)
         {
-            int boardSize = board.Size;
-            return loc.Col >= 0 && loc.Col < boardSize && loc.Row >= 0 && loc.Row < boardSize;
+            return loc.Col >= 0 && loc.Col < board.Size && loc.Row >= 0 && loc.Row < board.Size;
         }
 
         public static SquareValues readSquare(this GameBoard board, Location loc)
         {
-            if (board.Ships.Any(s => s.isHitInLocation(loc)))
-            {
-                return SquareValues.Hit;
-            }
-            else if (board.Misses.Contains(loc))
-            {
-                return SquareValues.Miss;
-            }
-            else
-            {
-                return SquareValues.Empty;
-            }
+            return board.Ships.Any(s => s.isHitInLocation(loc)) ?
+                SquareValues.Hit
+                : board.Misses.Contains(loc) ?
+                    SquareValues.Miss
+                    : SquareValues.Empty;
         }
 
         public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, FList<Ship> shipsToBePlaced, RandomResult random)
         {
             var shipPlacements = locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random);
             var newShips = shipPlacements.Select(r => r.Item1);
-            string messages = shipPlacements.Select(r => r.Item2).Aggregate((r, s) => r + s);
+            var messages = shipPlacements.Select(r => r.Item2).Aggregate((r, s) => r + s);
             var noMisses = FList.Empty<Location>();
             return new GameBoard(boardSize, newShips, messages, noMisses);
         }

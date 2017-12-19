@@ -70,6 +70,14 @@ namespace FAB.Model
             Hits = ImmutableHashSet<Location>.Empty;
         }
 
+        public int HeadCol
+        {
+            get { return Location.Col; }
+        }
+        public int HeadRow
+        {
+            get { return Location.Row; }
+        }
     }
 
     public class GameBoard

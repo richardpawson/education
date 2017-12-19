@@ -15,8 +15,8 @@ namespace FAB.Model
         {
             return ship.Orientation == Orientations.Horizontal ?
                  ship.Location.Row == loc.Row &&
-                    loc.Col >= ship.Location.Col && loc.Col < ship.Location.Col + ship.Size :
-                 ship.Location.Col == loc.Col &&
+                    loc.Col >= ship.Location.Col && loc.Col < ship.Location.Col + ship.Size
+                 : ship.Location.Col == loc.Col &&
                     loc.Row >= ship.Location.Row && loc.Row < ship.Location.Row + ship.Size;
         }
 
@@ -35,8 +35,8 @@ namespace FAB.Model
         public static Tuple<int, int> extent(this Ship ship)
         {
             return ship.horizontal() ?
-                Tuple.Create(ship.Location.Col, ship.Location.Col + ship.Size-1) :
-                Tuple.Create(ship.Location.Row, ship.Location.Row + ship.Size-1);
+                Tuple.Create(ship.HeadCol, ship.HeadCol + ship.Size-1) :
+                Tuple.Create(ship.HeadRow, ship.HeadRow + ship.Size-1);
         }
 
         public static bool overlaps(this Tuple<int, int> extent1, Tuple<int, int> extent2)
@@ -53,11 +53,11 @@ namespace FAB.Model
         public static bool intersects(this Ship ship1, Ship ship2)
         {
             return ship1.Orientation == ship2.Orientation ?
-                (ship1.horizontal() && ship1.Location.Row == ship2.Location.Row ||
-                    ship1.vertical() && ship1.Location.Col == ship2.Location.Col)
-                    && ship1.extent().overlaps(ship2.extent()) :
-                 ship1.horizontal() && ship1.extent().covers(ship2.Location.Col) && ship2.extent().covers(ship1.Location.Row)
-                    || ship1.vertical() && ship1.extent().covers(ship2.Location.Row) && ship2.extent().covers(ship1.Location.Col);
+                (ship1.horizontal() && ship1.HeadRow == ship2.HeadRow ||
+                    ship1.vertical() && ship1.HeadCol == ship2.HeadCol)
+                    && ship1.extent().overlaps(ship2.extent()) 
+                 : ship1.horizontal() && ship1.extent().covers(ship2.HeadCol) && ship2.extent().covers(ship1.Location.Row)
+                    || ship1.vertical() && ship1.extent().covers(ship2.HeadRow) && ship2.extent().covers(ship1.HeadCol);
         }
 
         public static bool isHitInLocation(this Ship ship, Location loc)
