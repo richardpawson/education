@@ -7,7 +7,7 @@
     <ProjectGuid>{AD9DEA29-4E95-4773-84F6-55243C946B8A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FAB</RootNamespace>
+    <RootNamespace>FAB.Model</RootNamespace>
     <AssemblyName>FAB.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,8 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameboardFunctions.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="MissileFunctions.cs" />
-    <Compile Include="Types.cs" />
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="Ship.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShipFunctions.cs" />
   </ItemGroup>
