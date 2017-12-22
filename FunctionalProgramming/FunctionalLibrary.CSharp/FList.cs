@@ -17,10 +17,7 @@ namespace FunctionalLibrary
             Head = head;
             Tail = tail;
         }
-
-        // Is the list empty?
         public bool IsEmpty { get; private set; }
-        // Properties valid for a non-empty list
         public T Head { get; private set; }
         public FList<T> Tail { get; private set; }
 

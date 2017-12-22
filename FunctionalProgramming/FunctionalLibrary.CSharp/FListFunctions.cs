@@ -31,10 +31,10 @@ namespace FunctionalLibrary
                     Cons(items[0], Cons(items.Skip(1).ToArray()));
         }
 
-        public static FList<T> Add<T>(this FList<T> list, T item)
-        {
-            return Cons(item, list);
-        }
+public static FList<T> Add<T>(this FList<T> list, T item)
+{
+    return new FList<T>(item, list);
+}
 
         public static FList<T> Remove<T>(this FList<T> list, T item)
         {
