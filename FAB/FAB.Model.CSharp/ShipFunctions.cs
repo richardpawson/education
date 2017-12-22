@@ -1,5 +1,6 @@
 ﻿using FunctionalLibrary;
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace FAB.Model
@@ -76,17 +77,19 @@ namespace FAB.Model
 
         public static Tuple<Ship, bool, string> fireAt(this Ship ship, Location loc)
         {
-            if (ship.occupies(loc))
-            {
-                var newHits = ship.Hits.Add(loc);
-                var newShip = new Ship(ship.Name, ship.Size, newHits, ship.Location, ship.Orientation);
-                var message = isSunk(newShip) ? newShip.Name + " sunk!" : "Hit a " + newShip.Name + " at (" + loc.Col + "," + loc.Row + ").";
-                return Tuple.Create(newShip, true, message);
-            }
-            else
-            {
-                return Tuple.Create(ship, false, "");
-            }
+            return ship.occupies(loc) ?
+                Tuple.Create(ship.AddHit(loc), true, HitMessage(ship, loc))
+                : Tuple.Create(ship, false, "");
+        }
+
+        private static string HitMessage(Ship ship, Location loc)
+        {
+            return isSunk(ship.AddHit(loc)) ? ship.AddHit(loc).Name + " sunk!" : "Hit a " + ship.AddHit(loc).Name + " at (" + loc.Col + "," + loc.Row + ").";
+        }
+
+        private static Ship AddHit(this Ship ship, Location loc)
+        {
+            return new Ship(ship.Name, ship.Size, ship.Hits.Add(loc), ship.Location, ship.Orientation);
         }
 
         public static bool isSunk(this Ship ship)

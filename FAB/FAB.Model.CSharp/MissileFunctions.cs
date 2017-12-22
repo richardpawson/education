@@ -13,16 +13,15 @@ namespace FAB.Model
 
         public static GameBoard fireBomb(Location loc, GameBoard board)
         {
-            var locs = GenerateLocationsToHit(loc.Col, loc.Row, board);
-            return board.checkSquaresAndRecordOutcome(locs);
+            return board.checkSquaresAndRecordOutcome(GenerateLocationsToHit(loc.Col, loc.Row, board));
         }
 
         private static FList<Location> GenerateLocationsToHit(int centreCol, int centreRow, GameBoard board)
         {
-            var colRange = Enumerable.Range(centreCol - 1, 3);
-            var rowRange = Enumerable.Range(centreRow - 1, 3);
-            var locations = colRange.SelectMany(col => rowRange, (col, row) => new Location(col, row));
-            return FList.Cons<Location>(locations.ToArray());
+            return FList.Cons(Enumerable.Range(centreCol - 1, 3)
+                .SelectMany(col => Enumerable.Range(centreRow - 1, 3), 
+                (col, row) => new Location(col, row))
+                .ToArray());
         }
     }
 }

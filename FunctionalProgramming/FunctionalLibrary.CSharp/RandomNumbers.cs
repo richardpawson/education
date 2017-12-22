@@ -19,6 +19,7 @@ namespace FunctionalLibrary
             V = v;
         }
 
+        //Create Random initialied with an explicit seed
         public RandomResult(uint u)
         {
             U = u;
