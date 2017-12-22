@@ -9,17 +9,30 @@ namespace FunctionalLibrary
     // Static class that provides functions relating to FLists
     public static class FList
     {
+        #region Constructing lists
+        /// <summary>
+        /// Construct an empty list of specified type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static FList<T> Empty<T>()
         {
             return new FList<T>();
         }
+        /// <summary>
+        /// Construct a list from a head and tail. If head param is null return the Tail only
+        /// </summary>
         public static FList<T> Cons<T>(T head, FList<T> tail)
         {
-            return new FList<T>(head, tail);
+            return head == null?
+                tail
+                :new FList<T>(head, tail);
         }
         public static FList<T> Cons<T>(T head)
         {
-            return new FList<T>(head, Empty<T>());
+            return head == null ?
+                Empty<T>()
+                : new FList<T>(head, Empty<T>());
         }
 
         public static FList<T> Cons<T>(params T[] items)
@@ -30,21 +43,9 @@ namespace FunctionalLibrary
                     Cons<T>(items[0]) :
                     Cons(items[0], Cons(items.Skip(1).ToArray()));
         }
+        #endregion
 
-public static FList<T> Add<T>(this FList<T> list, T item)
-{
-    return new FList<T>(item, list);
-}
-
-        public static FList<T> Remove<T>(this FList<T> list, T item)
-        {
-            return list.IsEmpty ?
-                list
-                : list.Head.Equals(item) ?
-                    list.Tail
-                    : Cons(list.Head, list.Tail.Remove(item));
-        }
-
+        #region Query methods (don't return a list)
         public static int Count<T>(this FList<T> list)
         {
             return list.IsEmpty ? 0 : 1 + list.Tail.Count();
@@ -58,9 +59,37 @@ public static FList<T> Add<T>(this FList<T> list, T item)
                     true
                     : list.Tail.Contains(item);
         }
+        #endregion
 
+        #region Simple functions to 'modify' a list (actually, make a new one)
+        /// <summary>
+        /// Adds new item, as the head of a new List
+        /// </summary>
+        public static FList<T> Prepend<T>(this FList<T> list, T item)
+        {
+            return new FList<T>(item, list);
+        }
 
-        #region  LINQ-style functions
+        /// <summary>
+        /// Adds new item at the end of the list
+        /// </summary>
+        public static FList<T> Append<T>(this FList<T> list, T item)
+        {
+            return list.IsEmpty ?
+                Cons(item)
+                : Cons(list.Head, list.Tail.Append(item));
+        }
+
+        // Remove item from list, wherever it is located,  multiple times if necessary
+        public static FList<T> Remove<T>(this FList<T> list, T item)
+        {
+            return list.IsEmpty ?
+                list
+                : list.Head.Equals(item) ?
+                    list.Tail.Remove(item)
+                    : Cons(list.Head, list.Tail.Remove(item));
+        }
+
         public static FList<T> Skip<T>(this FList<T> list, int number)
         {
             return number <= 0 ?
@@ -78,38 +107,39 @@ public static FList<T> Add<T>(this FList<T> list, T item)
                     FList.Cons(list.Head)
                     : FList.Cons(list.Head, list.Tail.Take(number - 1));
         }
+        #endregion
+
+        #region Higher-order functions: Map, Filter, Reduce, Any
         public static bool Any<T>(this FList<T> list, Func<T, bool> func)
         {
-            return list.IsEmpty ?
-                false
-                : func(list.Head) || list.Tail.Any(func);
+            return !list.Filter(func).IsEmpty;
         }
 
-        public static FList<T> Where<T>(this FList<T> list, Func<T, bool> func)
+        public static FList<T> Filter<T>(this FList<T> list, Func<T, bool> func)
         {
-            return list.Tail.IsEmpty ?
-                Cons(list.Head)
-            : func(list.Head) ?
-                    Cons(list.Head, list.Tail.Where(func)) :
-                    list.Tail.Where(func);
+            return list.IsEmpty ?
+                list
+                : func(list.Head) ?
+                        Cons(list.Head, list.Tail.Filter(func)) :
+                        list.Tail.Filter(func);
         }
 
-        public static FList<U> Select<T, U>(this FList<T> list, Func<T, U> func)
+        public static FList<U> Map<T, U>(this FList<T> list, Func<T, U> func)
         {
             return list.Tail.IsEmpty ?
                 func(list.Head) != null ?
                     Cons<U>(func(list.Head))
                     : FList.Empty<U>()
                 : func(list.Head) != null ?
-                    Cons<U>(func(list.Head), list.Tail.Select(func))
-                    : list.Tail.Select(func);
+                    Cons<U>(func(list.Head), list.Tail.Map(func))
+                    : list.Tail.Map(func);
         }
 
-        public static T Aggregate<T>(this FList<T> list, Func<T, T, T> func)
+        public static T Reduce<T>(this FList<T> list, Func<T, T, T> func)
         {
             return list.IsEmpty ?
                 default(T)
-                : func(list.Head, list.Tail.Aggregate(func));
+                : func(list.Head, list.Tail.Reduce(func));
         }
         #endregion
     }

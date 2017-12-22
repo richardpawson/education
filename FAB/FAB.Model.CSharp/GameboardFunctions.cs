@@ -25,17 +25,17 @@ namespace FAB.Model
 
         private static bool HitSomething(GameBoard board, Location loc)
         {
-            return board.Ships.Select(s => s.fireAt(loc).Item2).Aggregate((a, b) => a | b);
+            return board.Ships.Map(s => s.fireAt(loc).Item2).Reduce((a, b) => a | b);
         }
 
         private static string MessagesAfterFiring(GameBoard board, Location loc)
         {
-            return board.Ships.Select(s => s.fireAt(loc).Item3).Aggregate((a, b) => a + b);
+            return board.Ships.Map(s => s.fireAt(loc).Item3).Reduce((a, b) => a + b);
         }
 
         private static FList<Ship> ShipsAfterFiring(GameBoard board, Location loc)
         {
-            return board.Ships.Select(s => s.fireAt(loc).Item1);
+            return board.Ships.Map(s => s.fireAt(loc).Item1);
         }
 
         private static string AddMissMsg(GameBoard board, Location loc, bool aggregate, string newMessages)
@@ -67,8 +67,8 @@ namespace FAB.Model
             return locsToAdd == 0 ?
                  FList.Empty<Location>()
                  : orient == Orientations.Horizontal ?
-                         locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Add(loc)
-                         : locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Add(loc);
+                         locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Prepend(loc)
+                         : locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Prepend(loc);
         }
 
         public static bool shipWouldFitWithinBoard(int boardSize, Ship ship)
@@ -98,8 +98,8 @@ namespace FAB.Model
         {
             return new GameBoard(
                 boardSize,
-                locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random).Select(r => r.Item1),
-                locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random).Select(r => r.Item2).Aggregate((r, s) => r + s),
+                locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random).Map(r => r.Item1),
+                locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random).Map(r => r.Item2).Reduce((r, s) => r + s),
                 ImmutableHashSet.Create<Location>()
             );
         }
@@ -116,7 +116,8 @@ namespace FAB.Model
                     locateShipsRandomly(
                         boardSize,
                         shipsToBePlaced.Remove(shipsToBePlaced.Head),
-                        shipsAlreadyPlaced.Add(locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item1),
+                        shipsAlreadyPlaced.Prepend(
+                            locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item1),
                         locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item3
                     )
                 );

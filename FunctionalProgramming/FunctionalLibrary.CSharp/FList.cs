@@ -11,7 +11,8 @@ namespace FunctionalLibrary
             IsEmpty = true;
         }
         // Creates a new list containing value and a reference to tail
-        public FList(T head, FList<T> tail)
+        // Accessed only by FList functions.  Use FList.Cons in application code
+        internal FList(T head, FList<T> tail)
         {
             IsEmpty = false;
             Head = head;
