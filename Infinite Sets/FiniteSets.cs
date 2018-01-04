@@ -20,7 +20,7 @@ namespace ConsoleApp1
             Console.ReadKey();
         }
 
-        static IEnumerable<int> NaturalNumbers()
+        static int[] NaturalNumbers()
         {
             const int max = 10;
             int[] array = new int[max];
@@ -28,26 +28,27 @@ namespace ConsoleApp1
             {
                 array[i] = i;
             }
+            return array;
         }
 
-        static IEnumerable<int> EvenMembersOf(IEnumerable<int> inputs)
+        static int[] EvenMembersOf(IEnumerable<int> inputs)
         {
             var evens = new List<int>();
             foreach (var n in inputs)
             {
                 if (n % 2 == 0) evens.Add(n);
             }
-            return evens;
+            return evens.ToArray();
         }
 
-        static IEnumerable<int> SquaresOf(IEnumerable<int> inputs)
+        static int[] SquaresOf(IEnumerable<int> inputs)
         {
             var squares = new List<int>();
             foreach (var n in inputs)
             {
                 squares.Add(n*n);
             }
-            return squares;
+            return squares.ToArray();
         }
 
     }
