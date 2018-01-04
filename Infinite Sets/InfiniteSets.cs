@@ -6,36 +6,41 @@ namespace ConsoleApp1
 {
     class Program
     {
-        //NOTE: long has been used in place of int, to give greater range
-
+        private const int max = 100;
         static void Main()
         {
             var set = NaturalNumbers();
             //var set = EvenMembersOf(NaturalNumbers());
             //var set = SquaresOf(NaturalNumbers());
-            foreach (var n in set)
+            foreach (var n in set.Take(10))
             {
                 Console.WriteLine(n);
             }
             Console.ReadKey();
         }
 
-        static IEnumerable<long> NaturalNumbers()
+        static IEnumerable<int> NaturalNumbers()
         {
-            long n = 0;
-            while (true)
-            {
-                yield return n;
-                n++;
-            }
+            return Enumerable.Range(0, max);
         }
 
-        static IEnumerable<long> EvenMembersOf(IEnumerable<long> set)
+        //Alternatively: implement your own enumerable with 'yield'
+        //static IEnumerable<long> NaturalNumbers()
+        //{
+        //    long n = 0;
+        //    while (true)
+        //    {
+        //        yield return n;
+        //        n++;
+        //    }
+        //}
+
+        static IEnumerable<int> EvenMembersOf(IEnumerable<int> set)
         {
             return set.Where(n => n % 2 == 0);
         }
 
-        static IEnumerable<long> SquaresOf(IEnumerable<long> set)
+        static IEnumerable<int> SquaresOf(IEnumerable<int> set)
         {
             return set.Select(n => n * n);
         }

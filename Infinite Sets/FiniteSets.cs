@@ -13,16 +13,21 @@ namespace ConsoleApp1
             var set = NaturalNumbers();
             //var set = EvenMembersOf(NaturalNumbers());
             //var set = SquaresOf(NaturalNumbers());
-            foreach (var n in set) 
+            for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine(n);
+                Console.WriteLine(set[i]);
             }
             Console.ReadKey();
         }
 
         static IEnumerable<int> NaturalNumbers()
         {
-            return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            const int max = 10;
+            int[] array = new int[max];
+            for (int i = 0; i < max; i++)
+            {
+                array[i] = i;
+            }
         }
 
         static IEnumerable<int> EvenMembersOf(IEnumerable<int> inputs)
