@@ -45,16 +45,12 @@ right:
 mov r11,#2
 mvright: add r9,r9,#1
 and r0,r9,#31
-cmp r0,#0
-beq over					// wrapped to next line
 b drawHead
 
 down:
 mov r11,#4
 mvdown: add r9,r9,#32	// 32 per row
 add r0,r12,r6				// r6 has 767
-cmp r9,r0
-bgt over					// hit the bottom
 
 drawHead:
 mov r0,#0				// black is 0
@@ -81,9 +77,6 @@ ldr r4,abody
 draw: inp r0,8			// a random 32 bit pattern
 str r0,[r8]				// apple is a random colour
 b loop
-
-over: halt
-b over
 
 abody: dat body
 body: dat 0
