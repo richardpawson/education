@@ -9,6 +9,8 @@ mov r2,#0
 mvn r1,#0xff000000
 ldr r3,bodyAddr
 add r4,r3,#1
+mov r6,#768
+sub r6,r6,#1
 
 loop:
 inp r0,4
@@ -17,10 +19,16 @@ beq down
 
 right:
 add r5,r5,#1
+and r0,r5,#31
+cmp r0,#0
+beq over
 b draw
 
 down:
 add r5,r5,#32
+add r0,r12,r6
+cmp r5,r0
+bgt over
 
 draw:
 str r2,[r5]  
@@ -36,6 +44,7 @@ add r4,r4,#1
  
 b loop
 	
+over: 
 halt
 
 bodyAddr: dat body0
