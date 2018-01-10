@@ -127,8 +127,6 @@ and r8,r8,r7				// r7 has 1023
 cmp r8,r6				// r6 has 767
 bgt apple2				// restrict random range
 add r8,r8,r12
-cmp r8,r9
-beq apple2				// choose again if same as head
 
 // update the segment head pointer and save the head
 mvhead: str r9,[r4]		// add to list (for later tail delete)
