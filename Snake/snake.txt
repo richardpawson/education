@@ -106,20 +106,7 @@ drawHead:
 mov r0,#0				// black is 0
 str r0,[r9]				// draw snake head
 
-// check if caught apple
-cmp r8,r9
-beq apple2
-b mvtail
-
-// generate the new apple position
-apple2:
-inp r8,8				// gets a random 32 bit pattern
-and r8,r8,r7				// r7 has 1023
-cmp r8,r6				// r6 has 767
-bgt apple2				// restrict random range
-add r8,r8,r12
-
-// delete the tail and move it if not caught an apple
+// delete the tail and move it
 mvtail: ldr r1,[r3]
 mvn r0,#0xff000000		// white is ffffff (MVN is NOT)
 str r0,[r1]				// write tail as white
