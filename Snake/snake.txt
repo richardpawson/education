@@ -38,16 +38,8 @@ add r4,r3,#1				// place to put next first segment
 // main loop
 loop:
 inp r0,4					// read last key pressed (note get uppercase value)
-cmp r0,#83				// S = right (not original)
-beq right
 cmp r0,#90				// Z = down
 beq down
-// for other chars use stored direction
-cmp r11,#2
-beq mvright
-cmp r11,#4
-beq mvdown
-halt						// bad
 
 right:
 mov r11,#2
