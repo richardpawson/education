@@ -58,16 +58,14 @@ beq mvleft
 halt						// bad
 
 // combine key and new snake head position code
-up: cmp r11,#4			// test if currently down
-beq mvdown				// ignore and move down
+up:
 mov r11,#1
 mvup: sub r9,r9,#32		// 32 per row
 cmp r9,r12				// beware twos complement
 blt over					// hit the top
 b drawHead
 
-right: cmp r11,#8			// test if currently left
-beq mvleft				// ignore and move left
+right:
 mov r11,#2
 mvright: add r9,r9,#1
 and r0,r9,#31
@@ -75,8 +73,7 @@ cmp r0,#0
 beq over					// wrapped to next line
 b drawHead
 
-left: cmp r11,#2			// test if currently right
-beq mvright				// ignore and move right
+left:
 mov r11,#8
 mvleft: sub r9,r9,#1
 and r0,r9,#31
@@ -84,8 +81,7 @@ cmp r0,#31
 beq over					// wrapped to previous line
 b drawHead
 
-down: cmp r11,#1		// test if currently up
-beq mvup				// ignore and move up
+down:
 mov r11,#4
 mvdown: add r9,r9,#32	// 32 per row
 add r0,r12,r6				// r6 has 767
