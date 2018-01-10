@@ -1,0 +1,163 @@
+// general setup
+mov r12,#0x8000000		// video memory base in word mode (0x20000000)
+mov r11,#2				// snake moves to right first
+add r9,r12,#272			// initial snake head position
+sub r0,r9,#1				// #271 (too many bits for an immediate)
+str r0,body				// setup the snake body
+sub r0,r0,#1
+str r0,body1				// 2 segments to start
+
+// it saves space to put these constants in registers
+mov r7,#1024
+sub r7,r7,#1				// 1023 in r7
+mov r6,#768
+sub r6,r6,#1				// 767 in r6
+mov r0,#200
+ldr r3,abody				// address of last snake segment
+add r4,r3,#1				// place to put next first segment
+
+// register use
+// r12 video memory base
+// r11 direction
+// r10 spare
+// r9  snake head position
+// r8  apple position
+// r7 the constant 1023
+// r6 the constant 767
+// r5 spare
+// r4 pointer to snake first segment
+// r3 pointer to snake last segment
+
+// this code does not prevent the apple to appear in the snake body
+// it should stay there and the snake will eventually leave it behind
+
+// The original algorithm copied the segment list up memory as the
+// snake moved. This slows down horribly as the snake gets longer.
+// Now the segment list grows downwards and pointers move/wrap
+
+// generate the apple position *** assembler bug comment not allowed on of after AQA label
+apple1:
+inp r8,8					// gets a random 32 bit pattern
+and r8,r8,r7				// r7 has 1023
+cmp r8,r6				// r6 has 767
+bgt apple1				// restrict random range
+add r8,r8,r12
+cmp r8,r9
+beq apple1				// choose again if same as head
+
+// main loop
+loop:
+inp r0,4					// read last key pressed (note get uppercase value)
+cmp r0,#87				// W = up
+beq up
+cmp r0,#83				// S = right (not original)
+beq right
+cmp r0,#65				// A = left
+beq left
+cmp r0,#90				// Z = down
+beq down
+// for other chars use stored direction
+cmp r11,#1				// switch on direction
+beq mvup
+cmp r11,#2
+beq mvright
+cmp r11,#4
+beq mvdown
+cmp r11,#8
+beq mvleft
+halt						// bad
+
+// combine key and new snake head position code
+up: cmp r11,#4			// test if currently down
+beq mvdown				// ignore and move down
+mov r11,#1
+mvup: sub r9,r9,#32		// 32 per row
+cmp r9,r12				// beware twos complement
+blt over					// hit the top
+b check
+
+right: cmp r11,#8			// test if currently left
+beq mvleft				// ignore and move left
+mov r11,#2
+mvright: add r9,r9,#1
+and r0,r9,#31
+cmp r0,#0
+beq over					// wrapped to next line
+b check
+
+left: cmp r11,#2			// test if currently right
+beq mvright				// ignore and move right
+mov r11,#8
+mvleft: sub r9,r9,#1
+and r0,r9,#31
+cmp r0,#31
+beq over					// wrapped to previous line
+b check
+
+down: cmp r11,#1		// test if currently up
+beq mvup				// ignore and move up
+mov r11,#4
+mvdown: add r9,r9,#32	// 32 per row
+add r0,r12,r6				// r6 has 767
+cmp r9,r0
+bgt over					// hit the bottom
+
+// check if the snake has hit itself
+check:
+ldr r0,[r9]				// read snake head colour
+cmp r0,#0				// black is 0
+beq over					// game over
+
+// earliest we can draw the snake head so do it now
+mov r0,#0				// black is 0
+str r0,[r9]				// draw snake head
+
+// check if caught apple
+cmp r8,r9
+beq apple2
+
+// delete the tail and move it if not caught an apple
+mvtail: ldr r1,[r3]
+mvn r0,#0xff000000		// white is ffffff (MVN is NOT)
+str r0,[r1]				// write tail as white
+add r3,r3,#1				// step to next location
+cmp r3,#200
+bne mvhead
+ldr r3,abody
+b mvhead
+
+// generate the new apple position
+apple2:
+inp r8,8					// gets a random 32 bit pattern
+and r8,r8,r7				// r7 has 1023
+cmp r8,r6				// r6 has 767
+bgt apple2				// restrict random range
+add r8,r8,r12
+cmp r8,r9
+beq apple2				// choose again if same as head
+
+// update the segment head pointer and save the head
+mvhead: str r9,[r4]		// add to list (for later tail delete)
+add r4,r4,#1
+cmp r4,#200
+bne mvh2
+ldr r4,abody
+
+// instead of counting, we can use pointer wrap
+mvh2: cmp r3,r4
+bne draw
+halt						// snake too long for memory
+b mvh2
+
+// draw the apple
+draw: inp r0,8			// a random 32 bit pattern
+str r0,[r8]				// apple is a random colour
+b loop
+
+over: halt
+b over
+
+abody: dat body
+body: dat 0
+body1: dat 0
+// snake body extends from here to end of memory
