@@ -28,43 +28,16 @@ add r4,r3,#1				// place to put next first segment
 // r4 pointer to snake first segment
 // r3 pointer to snake last segment
 
-// this code does not prevent the apple to appear in the snake body
-// it should stay there and the snake will eventually leave it behind
-
-// The original algorithm copied the segment list up memory as the
-// snake moved. This slows down horribly as the snake gets longer.
-// Now the segment list grows downwards and pointers move/wrap
-
-// main loop
-loop:
-mov r11,#2
-mvright: add r9,r9,#1
-and r0,r9,#31
-b drawHead
 
 drawHead:
 mov r0,#0				// black is 0
 str r0,[r9]				// draw snake head
+ldr r1,body
+str r0, [r1]
+ldr r1,body1
+str r0, [r1]
 
-// delete the tail and move it
-mvtail: ldr r1,[r3]
-mvn r0,#0xff000000		// white is ffffff (MVN is NOT)
-str r0,[r1]				// write tail as white
-add r3,r3,#1				// step to next location
-cmp r3,#200
-bne mvhead
-ldr r3,abody
-b mvhead
-
-// update the segment head pointer and save the head
-mvhead: str r9,[r4]		// add to list (for later tail delete)
-add r4,r4,#1
-cmp r4,#200
-bne draw
-ldr r4,abody
-
-b loop
-
+halt
 abody: dat body
 body: dat 0
 body1: dat 0
