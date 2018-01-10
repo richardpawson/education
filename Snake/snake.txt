@@ -1,23 +1,14 @@
-// register use
+// register use:
 // r12 video memory base
 // r5 snake head position
-// r4 pointer to snake first segment
-// r3 pointer to snake last segment
-// r2 body colour
+// r2 snake colour
 
 // general setup
 mov r12,#0x8000000		// video memory base in word mode (0x20000000)
-add r5,r12,#272			// snake head position
-sub r4,r5,#1			
-sub r3,r5,#2
+add r5,r12,#272			// snake initial head position
 mov r2,#0			//Body colour: 0 = black
 			
 //drawHead
-				// black is 0
 str r2,[r5]				// draw snake head
-
-//Draw body
-str r2, [r4]
-str r2, [r3]
 
 halt
