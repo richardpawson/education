@@ -35,16 +35,6 @@ add r4,r3,#1				// place to put next first segment
 // snake moved. This slows down horribly as the snake gets longer.
 // Now the segment list grows downwards and pointers move/wrap
 
-// generate the apple position *** assembler bug comment not allowed on of after AQA label
-apple1:
-inp r8,8					// gets a random 32 bit pattern
-and r8,r8,r7				// r7 has 1023
-cmp r8,r6				// r6 has 767
-bgt apple1				// restrict random range
-add r8,r8,r12
-cmp r8,r9
-beq apple1				// choose again if same as head
-
 // main loop
 loop:
 inp r0,4					// read last key pressed (note get uppercase value)
