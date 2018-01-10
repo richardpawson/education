@@ -1,18 +1,16 @@
-// general setup
-mov r12,#0x8000000		// video memory base in word mode (0x20000000)
-
-add r5,r12,#272			// initial snake head position
-sub r4,r5,#1			
-str r4,body1				// setup the snake body
-sub r3,r4,#1
-str r3,body0				// 2 segments to start
-
 // register use
 // r12 video memory base
 // r5 snake head position
 // r4 pointer to snake first segment
 // r3 pointer to snake last segment
 
+// general setup
+mov r12,#0x8000000		// video memory base in word mode (0x20000000)
+add r5,r12,#272			// snake head position
+sub r4,r5,#1			
+str r4,body1				// setup the snake body
+sub r3,r4,#1
+str r3,body0				// 2 segments to start
 
 //drawHead
 mov r0,#0				// black is 0
