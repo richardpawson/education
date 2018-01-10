@@ -74,7 +74,7 @@ mov r11,#1
 mvup: sub r9,r9,#32		// 32 per row
 cmp r9,r12				// beware twos complement
 blt over					// hit the top
-b check
+b drawHead
 
 right: cmp r11,#8			// test if currently left
 beq mvleft				// ignore and move left
@@ -83,7 +83,7 @@ mvright: add r9,r9,#1
 and r0,r9,#31
 cmp r0,#0
 beq over					// wrapped to next line
-b check
+b drawHead
 
 left: cmp r11,#2			// test if currently right
 beq mvright				// ignore and move right
@@ -92,7 +92,7 @@ mvleft: sub r9,r9,#1
 and r0,r9,#31
 cmp r0,#31
 beq over					// wrapped to previous line
-b check
+b drawHead
 
 down: cmp r11,#1		// test if currently up
 beq mvup				// ignore and move up
@@ -102,13 +102,7 @@ add r0,r12,r6				// r6 has 767
 cmp r9,r0
 bgt over					// hit the bottom
 
-// check if the snake has hit itself
-check:
-ldr r0,[r9]				// read snake head colour
-cmp r0,#0				// black is 0
-beq over					// game over
-
-// earliest we can draw the snake head so do it now
+drawHead:
 mov r0,#0				// black is 0
 str r0,[r9]				// draw snake head
 
