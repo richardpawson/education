@@ -37,20 +37,10 @@ add r4,r3,#1				// place to put next first segment
 
 // main loop
 loop:
-inp r0,4					// read last key pressed (note get uppercase value)
-cmp r0,#90				// Z = down
-beq down
-
-right:
 mov r11,#2
 mvright: add r9,r9,#1
 and r0,r9,#31
 b drawHead
-
-down:
-mov r11,#4
-mvdown: add r9,r9,#32	// 32 per row
-add r0,r12,r6				// r6 has 767
 
 drawHead:
 mov r0,#0				// black is 0
