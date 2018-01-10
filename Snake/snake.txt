@@ -63,9 +63,6 @@ cmp r4,#200
 bne draw
 ldr r4,abody
 
-// draw the apple
-draw: inp r0,8			// a random 32 bit pattern
-str r0,[r8]				// apple is a random colour
 b loop
 
 abody: dat body
