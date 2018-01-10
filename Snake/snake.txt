@@ -128,7 +128,7 @@ b mvhead
 
 // generate the new apple position
 apple2:
-inp r8,8					// gets a random 32 bit pattern
+inp r8,8				// gets a random 32 bit pattern
 and r8,r8,r7				// r7 has 1023
 cmp r8,r6				// r6 has 767
 bgt apple2				// restrict random range
@@ -140,14 +140,8 @@ beq apple2				// choose again if same as head
 mvhead: str r9,[r4]		// add to list (for later tail delete)
 add r4,r4,#1
 cmp r4,#200
-bne mvh2
-ldr r4,abody
-
-// instead of counting, we can use pointer wrap
-mvh2: cmp r3,r4
 bne draw
-halt						// snake too long for memory
-b mvh2
+ldr r4,abody
 
 // draw the apple
 draw: inp r0,8			// a random 32 bit pattern
