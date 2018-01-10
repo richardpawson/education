@@ -1,14 +1,13 @@
-// register use:
-// r12 video memory base
-// r5 snake head position
-// r2 snake colour
-
-// general setup
-mov r12,#0x8000000		// video memory base in word mode (0x20000000)
-add r5,r12,#272			// snake initial head position
-mov r2,#0			//Body colour: 0 = black
+setUp:
+mov r12,#0x8000000	
+add r5,r12,#272	
+sub r4,r5,#1			
+sub r3,r5,#2	
+mov r2,#0 		
 			
-//drawHead
-str r2,[r5]				// draw snake head
+drawHead:
+str r2,[r5]
 
-halt
+drawBody:
+str r2, [r4]
+str r2, [r3]	
