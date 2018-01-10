@@ -1,31 +1,41 @@
 setUp:
 mov r12,#0x8000000	
 add r5,r12,#272	
-sub r4,r5,#1
-str r4,body1			
-sub r3,r5,#2					
-str r3,body0	
+sub r0,r5,#1
+str r0,body1			
+sub r0,r5,#2					
+str r0,body0	
 mov r2,#0 
 mvn r1,#0xff000000
-
-drawStartingSnake:
-str r2,[r5]
-str r2, [r4]
-str r2, [r3]	
+ldr r3,bodyAddr
+add r4,r3,#1
 
 loop:
-add r5,r5,#1
-str r2,[r5]
+inp r0,4
+cmp r0,#83 //S key
+beq down
 
-mvrear: 
-str r1,[r3]
+right:
+add r5,r5,#1
+b draw
+
+down:
+add r5,r5,#32
+
+draw:
+str r2,[r5]  
+
+mvTail:
+ldr r0,[r3]
+str r1,[r0]  
 add r3,r3,#1
 
-mvfront: 
-str r5,[r4]
+mvHead:
+str r5,[r4]  
 add r4,r4,#1
-
-b loop	
+ 
+b loop
+	
 halt
 
 bodyAddr: dat body0
