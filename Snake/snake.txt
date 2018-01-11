@@ -22,10 +22,11 @@ bgt apple1	// restrict random range
 add r8,r8,r12
 cmp r8,r9
 beq apple1
+
+loop:
 inp r0,8	// a random 32 bit pattern
 str r0,[r8]	// apple is a random colour
 
-loop:
 inp r0,4
 cmp r0,#87 //W key
 beq up
@@ -76,6 +77,16 @@ bgt over
 
 draw:
 str r2,[r5]  
+
+cmp r8,r5 // check if caught apple
+bne mvTail
+
+newApple:
+inp r8,8				// gets a random 32 bit pattern
+and r8,r8,r7				// r7 has 1023
+cmp r8,r6				// r6 has 767
+bgt newApple				// restrict random range
+add r8,r8,r12
 
 mvTail:
 ldr r0,[r3]
