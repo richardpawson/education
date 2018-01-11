@@ -80,7 +80,13 @@ cmp r5,r0
 bgt over
 
 draw:
-str r2,[r5]  
+
+check:  // check if the snake has hit itself
+//ldr r0,[r9+256]			// read snake head colour
+//cmp r0,#0				// black is 0
+//beq over					// game over
+
+str r2,[r5]  //This is easliest we can write
 
 cmp r8,r5 // check if caught apple
 beq resetApple
