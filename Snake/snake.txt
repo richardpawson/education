@@ -13,21 +13,22 @@ mov r6,#768
 sub r6,r6,#1
 mov r7,#1024
 sub r7,r7,#1				// 1023 in r7
+mov r11,#68 //Move right initially
 
-apple1:
+apple:
 inp r8,8	// gets a random 32 bit pattern
 and r8,r8,r7	// r7 has 1023
 cmp r8,r6	// r6 has 767
-bgt apple1	// restrict random range
+bgt apple	// restrict random range
 add r8,r8,r12
 cmp r8,r9
-beq apple1
-
-loop:
+beq apple
 inp r0,8	// a random 32 bit pattern
 str r0,[r8]	// apple is a random colour
 
+loop:
 inp r0,4
+testKeys:
 cmp r0,#87 //W key
 beq up
 cmp r0,#65 //A key
@@ -36,6 +37,8 @@ cmp r0,#68 //D key
 beq right
 cmp r0,#83 //S key
 beq down
+mov r0, r11
+b testKeys
 
 up:
 cmp r11,#83
@@ -79,24 +82,23 @@ draw:
 str r2,[r5]  
 
 cmp r8,r5 // check if caught apple
-beq newApple
+beq resetApple
 
 mvTail:
 ldr r0,[r3]
 str r1,[r0]  
 add r3,r3,#1
+b mvHead
 
-newApple:
-inp r8,8				// gets a random 32 bit pattern
-and r8,r8,r7				// r7 has 1023
-cmp r8,r6				// r6 has 767
-bgt newApple				// restrict random range
-add r8,r8,r12
+resetApple:
+mov r8,#0
 
 mvHead:
 str r5,[r4]  
 add r4,r4,#1
 
+cmp r8, #0
+beq apple
 b loop
 	
 over: 
