@@ -14,8 +14,27 @@ sub r6,r6,#1
 
 loop:
 inp r0,4
+cmp r0,#87 //W key
+beq up
+cmp r0,#65 //A key
+beq left
+cmp r0,#68 //D key
+beq right
 cmp r0,#83 //S key
 beq down
+
+up:
+sub r5,r5,#32
+cmp r5,r12
+blt over
+b draw
+
+left:
+sub r5,r5,#1
+and r0,r5,#31
+cmp r0,#31
+beq over
+b draw
 
 right:
 add r5,r5,#1
