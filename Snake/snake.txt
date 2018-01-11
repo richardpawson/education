@@ -100,10 +100,13 @@ mvHead:
 str r5,[r4]		// add to list (for later tail delete)
 add r4,r4,#1
 cmp r4,#200
-bne finally
+bne testLength
 ldr r4, bodyAddr 
 
-finally:
+testLength:
+cmp r3,r4
+beq over // snake too long for memory
+
 cmp r8, #0
 beq apple
 b loop
