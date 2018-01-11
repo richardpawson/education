@@ -15,19 +15,20 @@ mov r7,#1024
 sub r7,r7,#1				// 1023 in r7
 mov r11,#68 //Move right initially
 
-apple:
+createApple:
 inp r8,8	// gets a random 32 bit pattern
 and r8,r8,r7	// r7 has 1023
 cmp r8,r6	// r6 has 767
-bgt apple	// restrict random range
+bgt createApple // restrict random range
 add r8,r8,r12
 cmp r8,r9
-beq apple
-inp r0,8	// a random 32 bit pattern
-str r0,[r8]	// apple is a random colour
+beq createApple 
+inp r9,8  //r9 is Apple colour (random 32-bit pattern)
 
-loop:
-inp r0,4
+moveSnake:
+str r9,[r8]	// draw apple
+inp r0,4  // get latest key pressed
+
 testKeys:
 cmp r0,#87 //W key
 beq up
@@ -108,8 +109,8 @@ cmp r3,r4
 beq over // snake too long for memory
 
 cmp r8, #0
-beq apple
-b loop
+beq createApple
+b moveSnake
 	
 over: 
 halt
