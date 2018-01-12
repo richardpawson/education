@@ -1,18 +1,15 @@
 setUp:
-mov r5,#528
-sub r0,r5,#1
-str r0,body1			
-sub r0,r5,#2					
-str r0,body0	
-mov r2,#0 
-mov r1,#0xffffff
-ldr r3,bodyAddr
+mov r5,#528		//Initial position for Snake's head
+str r5,body1		//Set front-of-body pointer to head	
+sub r0,r5,#1					
+str r0,body0		//Set rear-of-body pointer to one behind head
+mov r1,#0xffffff 	//Colour white
+mov r2,#0 		//Colour black
+ldr r3,bodyAddr         
 add r4,r3,#1
-mov r6,#768
-sub r6,r6,#1
-mov r7,#1024
-sub r7,r7,#1				// 1023 in r7
-mov r11,#68 //Move right initially
+mov r6,#767
+mov r7,#1023
+mov r11,#68 		//Initial direction is right ('D' key)
 
 createApple:
 inp r8,8	// gets a random 32 bit pattern
