@@ -1,111 +1,113 @@
-setUp:
-mov r5,#528		//Initial position for Snake's head
-str r5,body1		//Set front-of-body pointer to head	
-sub r0,r5,#1					
-str r0,body0		//Set rear-of-body pointer to one behind head
+constants:
+mov r12,#256		//Start of video memory
 mov r1,#0xffffff 	//Colour white
 mov r2,#0 		//Colour black
-ldr r3,bodyAddr         
-add r4,r3,#1
 mov r6,#767
 mov r7,#1023
-mov r11,#68 		//Initial direction is right ('D' key)
+
+initialise:
+      add r5,r12,#272 	//Initial position for head - middle of screen
+      mov r11,#68 	//Initial direction is right (= 'D' key)
+      mov r3, #body     //Set pointers to first two locations in body data
+      add r4, r3, #1 
+      str r5, [r4]      //r4 points to the head address
+      sub r0, r5, #1
+      str r0, [r3]      //r3 points to the tail address
 
 createApple:
-inp r8,8	// gets a random 32 bit pattern
-and r8,r8,r7	// r7 has 1023
-cmp r8,r6	// r6 has 767
-bgt createApple // restrict random range
+inp r8,8		// gets a random 32 bit pattern
+and r8,r8,r7		// r7 has 1023
+cmp r8,r6		// r6 has 767
+bgt createApple 	// restrict random range
 add r8,r8,#256
 cmp r8,r9
 beq createApple 
-inp r9,8  //r9 is Apple colour (random 32-bit pattern)
+inp r9,8  		//r9 is apple colour (random 32-bit pattern)
 
 moveSnake:
-str r9,[r8]	// draw apple
-inp r0,4  // get latest key pressed
+str r9,[r8]		// draw apple
+inp r0,4  		// get latest key pressed
 
-testKeys:
-cmp r0,#87 //W key
+switchOnKey:
+cmp r0,#87 		//W key
 beq up
-cmp r0,#65 //A key
+cmp r0,#65 		//A key
 beq left
-cmp r0,#68 //D key
+cmp r0,#68 		//D key
 beq right
-cmp r0,#83 //S key
+cmp r0,#83 		//S key
 beq down
-mov r0, r11
-b testKeys
+mov r0, r11		//If not any of the recognised keys, set r0 to prev direction
+b switchOnKey 		//and re-run the switch on keys
 
 up:
 cmp r11,#83
 beq down
 mov r11,#87
-sub r5,r5,#32
-cmp r5,#256
-blt over
-b afterMove
+sub r5,r5,#32		//Subtract 32 (= one row) to head location
+cmp r5,#256		//Test if < start of video memory
+blt gameOver
+b executeMove
 
 left:
 cmp r11,#68
 beq right
 mov r11,#65	
-sub r5,r5,#1
+sub r5,r5,#1  		//Subtract one from head location
 and r0,r5,#31
-cmp r0,#31
-beq over
-b afterMove
+cmp r0,#31		//Test if it has hit the left wall
+beq gameOver
+b executeMove
 
 right:
 cmp r11,#65
 beq left
 mov r11,#68	
-add r5,r5,#1
+add r5,r5,#1   		//Add one to head location
 and r0,r5,#31
-cmp r0,#0
-beq over
-b afterMove
+cmp r0,#0		//Test if it has hit the right wall
+beq gameOver
+b executeMove
 
 down:
 cmp r11,#87
 beq up
 mov r11,#83
-add r5,r5,#32
+add r5,r5,#32		//Add 32 (one row) to head location
 add r0,r6,#256
-cmp r5,r0
-bgt over
+cmp r5,r0		//Test if > end of video memory
+bgt gameOver
 
-afterMove:
-cmp r8,r5 // check if caught apple
-beq clearApple
+executeMove:
 
-moveRear:
+cmp r8,r5 	   	// check if caught apple
+bne moveRearPointer
+mov r8,#0	   	//Clear the apple address
+b moveFrontPointer 	//By leaving the rear pointer untouched, the snake grows
+
+moveRearPointer:
 ldr r0,[r3]
-str r1,[r0]  //Paint vacated cell white
+str r1,[r0]  		//Paint vacated cell white
 add r3,r3,#1
 cmp r3,#200
-blt moveFront
-ldr r3,bodyAddr
-b moveFront
+blt moveFrontPointer
+mov r3, #body
 
-clearApple:
-mov r8,#0
-
-moveFront:
-str r5,[r4]		// add to list (for later tail delete)
-add r4,r4,#1
+moveFrontPointer:
+str r5,[r4]
+add r4,r4,#1		
 cmp r4,#200
 blt checkForCrossing
-ldr r4, bodyAddr 
+mov r4, #body
 
-checkForCrossing: // check if the snake has hit itself
-ldr r0,[r5] // read colour of pixel head is moving onto
+checkForCrossing: 	// check if the snake has hit itself
+ldr r0,[r5] // read, from screen, colour of pixel head is moving onto
 cmp r0,r2  //If it is black (already occupied by snake body)...
-beq over
+beq gameOver
 
 checkForMaxLength:
 cmp r3,r4 //If the front has caught up with the tail, then the body data is full
-beq over 
+beq gameOver 
 
 drawHead:
 str r2,[r5]  //This is easliest we can the head in its new position
@@ -115,9 +117,7 @@ cmp r8, #0  //If no apple...
 beq createApple //First create a new one
 b moveSnake  //Otherwise just repeat the move cycle
 	
-over: 
+gameOver: 
 halt
 
-bodyAddr: dat body0
-body0: dat 0
-body1: dat 0
+body: dat 0 //body segment pointers extend from here downwards
