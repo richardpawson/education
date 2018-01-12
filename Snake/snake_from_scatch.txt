@@ -1,0 +1,84 @@
+setUp:
+      mov r2,#0  //Body colour -  black
+      mov r1,#0xffffff  //Background colour - white
+      mov r5,#528 //Initial position for Snake's head
+      mov r6, #767
+      mov r7, #1023
+      ldr r4, bodyAddr
+      str r5, [r4]
+      sub r3, r4, #1
+      sub r0, r5, #1
+      str r0, [r3]
+
+
+      ldr r0, [r3] //Load screen address of tail into r0
+      str r2, [r0] //Write body color into that address
+
+      ldr r0, [r4] //Load screen address of head into r0
+      str r2,[r0]  //Write body colour into that address
+
+
+createApple:
+inp r8,8	// gets a random 32 bit pattern
+and r8,r8,r7	// r7 has 1023
+cmp r8,r6	// r6 has 767
+bgt createApple // restrict random range
+add r8,r8,#256
+cmp r8,r9
+beq createApple 
+inp r9,8  //r9 is Apple colour (random 32-bit pattern)
+
+loop:
+str r9,[r8]	// draw apple
+inp r0,4  // get key
+cmp r0,#87 //W key
+beq up
+cmp r0,#65 //A key
+beq left
+cmp r0,#68 //D key
+beq right
+cmp r0,#83 //S key
+beq down
+
+up:
+sub r5,r5,#32
+cmp r5,#256
+blt over
+b draw
+
+left:
+sub r5,r5,#1
+and r0,r5,#31
+cmp r0,#31
+beq over
+b draw
+
+right:
+add r5,r5,#1
+and r0,r5,#31
+cmp r0,#0
+beq over
+b draw
+
+down:
+add r5,r5,#32
+add r0,r6,#256
+cmp r5,r0
+bgt over
+
+draw:
+	ldr r0,[r3]
+	str r1,[r0]  //Reset vacated cell to background colour
+	add r3,r3,#1 //Move tail pointer forward in memory
+
+	add r4,r4,#1 //Move front pointer forward in memory
+	str r5,[r4]  //Copy new head location into the front of the body data
+	
+	str r2,[r5]  //Draw the head in its new position
+	b loop
+
+over:
+halt  //To stop program execution running into data area
+
+bodyAddr: dat body
+body: dat 0

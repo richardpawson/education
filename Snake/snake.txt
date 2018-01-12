@@ -81,7 +81,7 @@ beq clearApple
 
 moveRear:
 ldr r0,[r3]
-str r1,[r0]  
+str r1,[r0]  //Paint vacated cell white
 add r3,r3,#1
 cmp r3,#200
 blt moveFront
@@ -100,7 +100,7 @@ ldr r4, bodyAddr
 
 checkForCrossing: // check if the snake has hit itself
 ldr r0,[r5] // read colour of pixel head is moving onto
-cmp r0,#0  //If it is black (already occupied by snake body)...
+cmp r0,r2  //If it is black (already occupied by snake body)...
 beq over
 
 checkForMaxLength:
