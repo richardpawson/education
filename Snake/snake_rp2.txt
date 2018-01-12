@@ -1,18 +1,16 @@
 setUp:
-mov r12,#256	
+mov r12,#256
 add r5,r12,#272	
 sub r0,r5,#1
 str r0,body1			
 sub r0,r5,#2					
 str r0,body0	
 mov r2,#0 
-mvn r1,#0xff000000
-ldr r3,bodyAddr
+mov r1,#0xffffff
+mov r3,#body0
 add r4,r3,#1
-mov r6,#768
-sub r6,r6,#1
-mov r7,#1024
-sub r7,r7,#1				// 1023 in r7
+mov r6,#767
+mov r7,#1023
 mov r11,#68 //Move right initially
 
 createApple:
@@ -23,9 +21,9 @@ bgt createApple // restrict random range
 add r8,r8,r12
 cmp r8,r9
 beq createApple 
-inp r9,8  //r9 is Apple colour (random 32-bit pattern)
 
 moveSnake:
+inp r9,8  //r9 is Apple colour (random 32-bit pattern)
 str r9,[r8]	// draw apple
 inp r0,4  // get latest key pressed
 
@@ -48,7 +46,7 @@ mov r11,#87
 sub r5,r5,#32
 cmp r5,r12
 blt over
-b afterMove
+b draw
 
 left:
 cmp r11,#68
@@ -58,7 +56,7 @@ sub r5,r5,#1
 and r0,r5,#31
 cmp r0,#31
 beq over
-b afterMove
+b draw
 
 right:
 cmp r11,#65
@@ -68,7 +66,7 @@ add r5,r5,#1
 and r0,r5,#31
 cmp r0,#0
 beq over
-b afterMove
+b draw
 
 down:
 cmp r11,#87
@@ -79,7 +77,9 @@ add r0,r12,r6
 cmp r5,r0
 bgt over
 
-afterMove:
+draw:
+str r2,[r5]  
+
 cmp r8,r5 // check if caught apple
 beq resetApple
 
@@ -88,8 +88,8 @@ ldr r0,[r3]
 str r1,[r0]  
 add r3,r3,#1
 cmp r3,#200
-blt mvHead
-ldr r3,bodyAddr
+bne mvHead
+mov r3,#body0
 b mvHead
 
 resetApple:
@@ -99,27 +99,19 @@ mvHead:
 str r5,[r4]		// add to list (for later tail delete)
 add r4,r4,#1
 cmp r4,#200
-blt checkForCrossing
-ldr r4, bodyAddr 
+bne testLength
+mov r4, #body0
 
-checkForCrossing: // check if the snake has hit itself
-ldr r0,[r5] // read colour of pixel head is moving onto
-cmp r0,#0  //If it is black (already occupied by snake body)...
-beq over
-
-checkForMaxLength:
-cmp r3,r4 
+testLength:
+cmp r3,r4
 beq over // snake too long for memory
-
-str r2,[r5]  //This is easliest we can the head in its new position
 
 cmp r8, #0
 beq createApple
 b moveSnake
-	
+
 over: 
 halt
 
-bodyAddr: dat body0
 body0: dat 0
 body1: dat 0
