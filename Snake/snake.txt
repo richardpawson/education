@@ -80,21 +80,21 @@ bgt over
 
 afterMove:
 cmp r8,r5 // check if caught apple
-beq resetApple
+beq clearApple
 
-mvTail:
+moveRear:
 ldr r0,[r3]
 str r1,[r0]  
 add r3,r3,#1
 cmp r3,#200
-blt mvHead
+blt moveFront
 ldr r3,bodyAddr
-b mvHead
+b moveFront
 
-resetApple:
+clearApple:
 mov r8,#0
 
-mvHead:
+moveFront:
 str r5,[r4]		// add to list (for later tail delete)
 add r4,r4,#1
 cmp r4,#200
@@ -107,14 +107,16 @@ cmp r0,#0  //If it is black (already occupied by snake body)...
 beq over
 
 checkForMaxLength:
-cmp r3,r4 
-beq over // snake too long for memory
+cmp r3,r4 //If the front has caught up with the tail, then the body data is full
+beq over 
 
+drawHead:
 str r2,[r5]  //This is easliest we can the head in its new position
 
-cmp r8, #0
-beq createApple
-b moveSnake
+repeat:
+cmp r8, #0  //If no apple...
+beq createApple //First create a new one
+b moveSnake  //Otherwise just repeat the move cycle
 	
 over: 
 halt
