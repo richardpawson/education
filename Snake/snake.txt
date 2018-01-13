@@ -6,22 +6,22 @@ mov r9,#1023
 mov r8,#767
 
 initialiseSnake:
-mov r5, #272 		//Initial position for head - middle of screen
-mov r6,#68 		//Initial direction is right (= 'D' key)
-mov r3, #body     	//Set pointers to first two locations in body data
-sub r0, r5, #1
-str r0, [r3]      	//r3 points to the tail address 
-add r4,r3,#1
-str r5, [r4]      	//r4 points to the head address
+mov r2, #272 		//Initial position for head - middle of screen
+mov r4, #body     	//Set pointers to first two locations in body data
+sub r0, r2, #1
+str r0, [r4]      	//r4 points to the tail address 
+add r3,r4,#1
+str r2, [r3]      	//r3 points to the head address
 str r12, [r0+256]	//Draw tail on screen
-str r12, [r5+256]	//Draw head on screen
+str r12, [r2+256]	//Draw head on screen
+mov r5,#68 		//Initial direction is right (= 'D' key)
 
 createApple:
 inp r7,8		// gets a random 32 bit pattern
 and r7,r7,r9		// r9 has 1023
 cmp r7,r8		// r8 has 767
 bgt createApple 	// restrict random range
-cmp r7,r5		// If apple on snake's head, find another position
+cmp r7,r2		// If apple on snake's head, find another position
 beq createApple 
 
 moveSnake:
@@ -37,79 +37,79 @@ cmp r0,#68 		//D key
 beq right
 cmp r0,#83 		//S key
 beq down
-mov r0, r6		//If not any of the recognised keys, set r0 to prev direction
+mov r0, r5		//If not any of the recognised keys, set r0 to prev direction
 b switchOnKey 		//and re-run the switch on keys
 
 up:
-cmp r6,#83
+cmp r5,#83
 beq down
-mov r6,#87
-sub r5,r5,#32		//Subtract 32 (= one row) to head location
-cmp r5,#0		//Test if < start of video memory
+mov r5,#87
+sub r2,r2,#32		//Subtract 32 (= one row) to head location
+cmp r2,#0		//Test if < start of video memory
 blt gameOver
 b executeMove
 
 left:
-cmp r6,#68
+cmp r5,#68
 beq right
-mov r6,#65	
-sub r5,r5,#1  		//Subtract one from head location
-and r0,r5,#31
+mov r5,#65	
+sub r2,r2,#1  		//Subtract one from head location
+and r0,r2,#31
 cmp r0,#31		//Test if it has hit the left wall
 beq gameOver
 b executeMove
 
 right:
-cmp r6,#65
+cmp r5,#65
 beq left
-mov r6,#68	
-add r5,r5,#1   		//Add one to head location
-and r0,r5,#31
+mov r5,#68	
+add r2,r2,#1   		//Add one to head location
+and r0,r2,#31
 cmp r0,#0		//Test if it has hit the right wall
 beq gameOver
 b executeMove
 
 down:
-cmp r6,#87
+cmp r5,#87
 beq up
-mov r6,#83
-add r5,r5,#32		//Add 32 (one row) to head location
-cmp r5,r8		//Test if > end of video memory
+mov r5,#83
+add r2,r2,#32		//Add 32 (one row) to head location
+cmp r2,r8		//Test if > end of video memory
 bgt gameOver
 
 executeMove:
-cmp r7,r5 	   	// check if caught apple
+cmp r7,r2 	   	// check if caught apple
 beq moveFront		//By leaving the rear pointer as is, the snake grows
 
 moveRear:
-ldr r0,[r3]
+ldr r0,[r4]
 str r11,[r0+256]  		//Restore vacated cell to background colour
-add r3,r3,#1
-cmp r3,#200
+add r4,r4,#1
+cmp r4,#200
 blt moveFront
-mov r3, #body			//Loop pointer back to start of body data
+mov r4, #body			//Loop pointer back to start of body data
 
 moveFront:
-add r4,r4,#1	
-cmp r4,#200
+add r3,r3,#1	
+cmp r3,#200
 blt updatePointer		//Loop pointer back to start of body data
-mov r4, #body
-updatePointer: str r5,[r4]	
+mov r3, #body
+updatePointer: str r2,[r3]	
 
 checkForCrossing: 		// check if the snake has hit itself
-ldr r0,[r5+256] 		// read, from screen, colour of pixel head is moving onto
+ldr r0,[r2+256] 		// read, from screen, colour of pixel head is moving onto
 cmp r0,r12  			//If it is snake colour (already occupied by snake body)...
 beq gameOver
 
 checkForMaxLength:
-cmp r3,r4 			//If the front has caught up with the tail, then the body data is full
+cmp r4,r3 			//If the front has caught up with the tail, then the body data is full
 beq gameOver 
 
 drawHead:
-str r12,[r5+256]  		//This is easliest we can the head in its new position
+str r12,[r2+256]  		//This is easliest we can the head in its new position
 
 repeat:
-cmp r7, r5 			//Check again if the apple was eaten this cycle		
+cmp r7, r2 			//Check again if the apple was eaten this cycle		
 beq createApple 		//If so, loop back to creating the apple
 b moveSnake  			//Otherwise just repeat the move cycle
 	
