@@ -27,9 +27,16 @@ moveTail:
     ldr r2, [r4]
     str r11,[r2+256]        //Reset tail to Background
     add r4,r4,#1            //Increment the tail pointer (for use next cycle)
+    cmp r4,#200
+    blt moveHead
+    mov r4, #body			//Loop pointer back to start of body data
 moveHead:
     add r3,r3,#1            //Increment the head pointer
-    str r1, [r3]            //Store the nee head location in data
+    cmp r3,#200
+    blt updatePointer		//Loop pointer back to start of body data
+    mov r3, #body
+updatePointer:
+    str r1, [r3]            //Store the new head location in data
     str r12,[r1+256]        //Draw new head
     b loop  
 
