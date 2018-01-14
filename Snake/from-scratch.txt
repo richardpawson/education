@@ -16,6 +16,9 @@ drawSnake:
 loop:
     add r3,r3,#1            //Increment the head pointer
     str r12,[r3]            //Draw new head
+    cmp r3,r5               //If the head is in same location as apple...
+    beq endOfLoop           //...Skip updating the tail, to make snake grow
     str r11,[r4]            //Reset tail to Background
     add r4,r4,#1            //Increment the tail pointer (for use next cycle)
+endOfLoop:
     b loop  
