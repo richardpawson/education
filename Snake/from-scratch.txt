@@ -14,8 +14,8 @@ drawSnake:
     str r12,[r3]            //Head
 
 loop:
-    str r11,[r4]            //Reset tail to Background
-    add r4,r4,#1              //Increment the tail pointer
-    add r3,r3,#1              //Increment the head pointer
+    add r3,r3,#1            //Increment the head pointer
     str r12,[r3]            //Draw new head
+    str r11,[r4]            //Reset tail to Background
+    add r4,r4,#1            //Increment the tail pointer (for use next cycle)
     b loop  
