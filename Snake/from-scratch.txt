@@ -1,0 +1,6 @@
+constants: 
+    mov r0,#0x008844    //Dark green colour
+
+drawSnake:
+      str r0,271        //Tail
+      str r0,272        //Head

@@ -14,14 +14,15 @@ add r3,r4,#1
 str r2, [r3]      	//r3 points to the head address
 str r12, [r0+256]	//Draw tail on screen
 str r12, [r2+256]	//Draw head on screen
-mov r5,#68 		//Initial direction is right (= 'D' key)
+mov r5,#68 		    //Initial direction is right (= 'D' key)
 
 createApple:
-inp r7,8		// gets a random 32 bit pattern
+inp r7,8		    // gets a random 32 bit pattern
 and r7,r7,r9		// r9 has 1023
-cmp r7,r8		// r8 has 767
+cmp r7,r8		    // r8 has 767
 bgt createApple 	// restrict random range
-cmp r7,r2		// If apple on snake's head, find another position
+cmp r7,r2		    
+// If apple on snake's head, find another position
 beq createApple 
 
 moveSnake:
