@@ -1,7 +1,17 @@
-constants: 
-    mov r12,#0x008844    //Snake colour (green)
+defineRegisters: 
+    mov r12,#0x008844       //Snake colour (green)
+    mov r11,#0xffffff       //Background colour (white)
+    mov r3, #528            //Head position, initialised
+    mov r4, #527            //Tail position, initialised
 
 drawSnake:
-      str r12,271        //Tail
-      str r12,272        //Head
+    str r12,[r4]            //Tail
+    str r12,[r3]            //Head
+
+loop:
+    str r11,[r4]            //Reset tail to Background
+    add r4,r4,#1              //Increment the tail pointer
+    add r3,r3,#1              //Increment the head pointer
+    str r12,[r3]            //Draw new head
+    b loop  
     
