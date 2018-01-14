@@ -1,6 +1,7 @@
 constants: 
-    mov r0,#0x008844    //Dark green colour
+    mov r12,#0x008844    //Snake colour (green)
 
 drawSnake:
-      str r0,271        //Tail
-      str r0,272        //Head
+      str r12,271        //Tail
+      str r12,272        //Head
+    
