@@ -1,21 +1,18 @@
 defineRegisters: 
     mov r1,#0x008844   	//Snake colour
     mov r2,#0xffffff   	//Background colour (white)
-    mov r3, #271        //Tail position, initialised
-    mov r4, #272      	//Head position, initialised
-    //  r5		//Apple position
+    ldr r3, body0      //Tail position, initialised
+    ldr r4, body1     	//Head position, initialised
+    //  r5				//Apple position
     mov r6,#0xff8800	//Apple colour
-    mov r7, #body     	//Pointer front of queue, initialised to first data loc
-    add r8,r7,#1        //Pointer to head address in body data (1 after tail)
+    mov r7, #body0     	//Pointer front of queue, initialised to first data loc
+    mov r8, #body1       //Pointer to head address in body data (1 after tail)
     //  r9   		//ASCII value of the key pressed
     mov r10, #767	//Constant representing the size of screen memory
     mov r11, #68	//Current direction of movement, initialised to 'right'
     mov r12, #1023	//Constant
-InitialisePointers:
-    str r3, [r7]      	//r4 points to the tail address
-    str r4, [r8]      	//r3 points to the head address
 drawSnake:
-    str r1,[r3+256]     //Tail
+    //str r1,[r3+256]     //Tail
     str r1,[r4+256]     //Head
 createApple:
     inp r5,8		// gets a random 32 bit pattern
@@ -24,8 +21,8 @@ createApple:
     bgt createApple 	// restrict random range
     cmp r5,r4		// Make sure apples is not located on head of snake
     beq createApple 
+moveSnake:		// redraw apple because might be in snake
     str r6,[r5+256]
-moveSnake:
     inp r9,4
 switchOnKey:
     cmp r9,#87 //W key
@@ -36,6 +33,7 @@ switchOnKey:
     beq down
     cmp r9,#68 //D key
     beq right
+dontChangeDirection:
     mov r9, r11		//If not any of the recognised keys, set r0 to prev direction
     b switchOnKey 	//and re-run the switch on keys
 right:
@@ -67,10 +65,6 @@ left:
     and r0,r4,#31
     cmp r0,#31
     beq gameOver
-    b reDraw
-dontChangeDirection:
-    mov r11,r9
-
 reDraw:
     mov r11,r9		 //Update current direction with latest key
     cmp r4,r5               //If the head is in same location as apple...
@@ -81,12 +75,12 @@ moveTail:
     add r7,r7,#1            //Increment the tail pointer (for use next cycle)
     cmp r7,#200		//Check pointer is still within memory
     blt moveHead
-    mov r7, #body		//If not loop pointer back to start of body data
+    mov r7, #body0		//If not loop pointer back to start of body data
 moveHead:
     add r8,r8,#1            //Increment the head pointer
     cmp r8,#200		//Check pointer is still within memory
     blt updatePointer
-    mov r8, #body    	//If not loop pointer back to start of body data
+    mov r8, #body0    	//If not loop pointer back to start of body data
 updatePointer:
     str r4, [r8]            	//Store the new head location in data
 checkForCrossing: 		// check if the snake has hit itself
@@ -105,4 +99,5 @@ checkForMaxLength:
 gameOver:
     halt  //To stop program execution running into data area
 	
-body: dat 0 //body segment pointers extend from here to end of memory (addr 199)
+body0: dat 271 //body segment pointers extend from here to end of memory (addr 199)
+body1: dat 272
