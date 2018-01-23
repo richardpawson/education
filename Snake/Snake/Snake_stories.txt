@@ -17,13 +17,26 @@ drawSnake:
 moveSnake:
     str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
     inp r9,4			//Read the last key pressed (but don’t wait for one)
+    cmp r9,#87 //W key
+    beq up
+    cmp r9,#65 //A key
+    beq left
     cmp r9,#83  		//S key
     beq down
+    cmp r9,#68 //D key
+    beq right
 right:
     add r4,r4,#1           //r9 holds the increment for the position...
     b reDraw			// Unconditional branch
 down:
     add r4,r4,#32           //...32 moves down one row on screen
+    b reDraw
+up:
+    sub r4,r4,#32           //-32 moves up one row on screen
+    b reDraw
+left:
+    sub r4,r4,#1           //-1 moves left
+    b reDraw
 reDraw:  
     cmp r4,r5				//If the head is in same location as apple...
     beq moveHead			//...Skip updating the tail, to make snake grow
