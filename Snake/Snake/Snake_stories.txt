@@ -8,8 +8,9 @@
     mov r7, #body     		//Pointer front of queue, initialised to first data loc
     add r8,r7,#1			//Pointer to head address in body data (1 after tail)
     mov r9, #0				//ASCII value of last key pressed
-	mov r10, #767			//Constant representing the size of screen memory
+    mov r10, #767			//Constant representing the size of screen memory
     mov r11, #1023			//Constant
+    mov r12, #68	        //Current direction of movement, initialised to 'right'
 InitialisePointers:
     str r3, [r7]      		//r4 points to the tail address
     str r4, [r8]      		//r3 points to the head address
@@ -26,6 +27,7 @@ createApple:
 moveSnake:
     str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
     inp r9,4			//Read the last key pressed (but don’t wait for one)
+switchOnKey:
     cmp r9,#87 //W key
     beq up
     cmp r9,#65 //A key
@@ -34,6 +36,8 @@ moveSnake:
     beq down
     cmp r9,#68 //D key
     beq right
+    mov r9, r12		//If not any of the recognised keys, use prev direction
+    b switchOnKey 	      //and re-run the switch on key
 right:
     add r4,r4,#1           //r9 holds the increment for the position...
     b reDraw			// Unconditional branch
@@ -47,6 +51,7 @@ left:
     sub r4,r4,#1           //-1 moves left
     b reDraw
 reDraw:  
+    mov r12,r9				//Update current direction with latest key
     cmp r4,r5				//If the head is in same location as apple...
     beq moveHead			//...Skip updating the tail, to make snake grow
 moveTail:
