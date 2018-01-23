@@ -10,8 +10,12 @@ drawSnake:
     str r1,[r4+256]			//Head
 moveSnake:
 	str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
+    add r4,r4,#1        	//Increment the head location by 1
+    cmp r4,r5             //If the head is in same location as apple...
+    beq moveHead          //...Skip updating the tail, to make snake grow
+moveTail:
     str r2,[r3+256]			//Reset tail to Background
     add r3,r3,#1      		//Increment the tail pointer by 1
-    add r4,r4,#1        	//Increment the head pointer by 1
+moveHead:
     str r1,[r4+256]			//Draw new head
     b moveSnake				//Loop
