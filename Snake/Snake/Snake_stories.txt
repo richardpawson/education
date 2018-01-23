@@ -7,6 +7,7 @@
     mov r6, #0xff8800		//Apple colour
     mov r7, #body     		//Pointer front of queue, initialised to first data loc
     add r8,r7,#1			//Pointer to head address in body data (1 after tail)
+    mov r9, #0				//ASCII value of last key pressed
 InitialisePointers:
     str r3, [r7]      		//r4 points to the tail address
     str r4, [r8]      		//r3 points to the head address
@@ -15,7 +16,15 @@ drawSnake:
     str r1,[r4+256]			//Head
 moveSnake:
     str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
-    add r4,r4,#1        	//Increment the head location by 1
+    inp r9,4			//Read the last key pressed (but don’t wait for one)
+    cmp r9,#83  		//S key
+    beq down
+right:
+    add r4,r4,#1           //r9 holds the increment for the position...
+    b reDraw			// Unconditional branch
+down:
+    add r4,r4,#32           //...32 moves down one row on screen
+reDraw:  
     cmp r4,r5				//If the head is in same location as apple...
     beq moveHead			//...Skip updating the tail, to make snake grow
 moveTail:
