@@ -1,0 +1,5 @@
+﻿defineRegisters: 
+    	mov r1,#0x008844       	//Snake colour (green)
+drawSnake:
+    	str r1,527             	//Tail
+    	str r1,528             	//Head
