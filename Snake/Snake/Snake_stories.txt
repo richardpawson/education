@@ -5,17 +5,26 @@
     mov r4, #272			//Head position, initialised
 	mov r5, #520			//Apple position
     mov r6, #0xff8800		//Apple colour
+    mov r7, #body     		//Pointer front of queue, initialised to first data loc
+    add r8,r7,#1			//Pointer to head address in body data (1 after tail)
+InitialisePointers:
+    str r3, [r7]      	//r4 points to the tail address
+    str r4, [r8]      	//r3 points to the head address
 drawSnake:
     str r1,[r3+256]			//Tail
     str r1,[r4+256]			//Head
 moveSnake:
 	str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
     add r4,r4,#1        	//Increment the head location by 1
-    cmp r4,r5             //If the head is in same location as apple...
-    beq moveHead          //...Skip updating the tail, to make snake grow
+    cmp r4,r5				//If the head is in same location as apple...
+    beq moveHead			//...Skip updating the tail, to make snake grow
 moveTail:
-    str r2,[r3+256]			//Reset tail to Background
-    add r3,r3,#1      		//Increment the tail pointer by 1
+    ldr r0, [r7]
+    str r2,[r0+256]			//Reset tail to Background
+    add r7,r7,#1            //Increment the tail pointer (for use next cycle)
 moveHead:
+    add r8,r8,#1            //Increment the head pointer
+    str r4, [r8]            //Store the new head location in data
     str r1,[r4+256]			//Draw new head
     b moveSnake				//Loop
+body: dat 0 				//Initial front of queue (screen address for tail)
