@@ -1,14 +1,17 @@
 ﻿defineRegisters: 
-    mov r1,#0x008844       	//Snake colour (green)
-	mov r2,#0xffffff       //Background colour (white)
-    mov r3, #271           //Tail position, initialised
-    mov r4, #272         	 //Head position, initialised
+	mov r1,#0x008844       	//Snake colour (green)
+	mov r2,#0xffffff		//Background colour (white)
+	mov r3, #271			//Tail position, initialised
+    mov r4, #272			//Head position, initialised
+	mov r5, #520			//Apple position
+    mov r6, #0xff8800		//Apple colour
 drawSnake:
-    	str r1,[r3+256]             	//Tail
-    	str r1,[r4+256]             	//Head
+    str r1,[r3+256]			//Tail
+    str r1,[r4+256]			//Head
 moveSnake:
-    str r2,[r3+256]          	//Reset tail to Background
-    add r3,r3,#1      	//Increment the tail pointer by 1
+	str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
+    str r2,[r3+256]			//Reset tail to Background
+    add r3,r3,#1      		//Increment the tail pointer by 1
     add r4,r4,#1        	//Increment the head pointer by 1
-    str r1,[r4+256]         	//Draw new head
-    b moveSnake		//Loop
+    str r1,[r4+256]			//Draw new head
+    b moveSnake				//Loop
