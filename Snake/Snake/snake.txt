@@ -1,46 +1,46 @@
 defineRegisters: 
-    mov r1,#0x008844   	//Snake colour
-    mov r2,#0xffffff   	//Background colour (white)
-    mov r3, #271        //Tail position, initialised
-    mov r4, #272      	//Head position, initialised
-    //  r5				//Apple position
-    mov r6,#0xff8800	//Apple colour
-    mov r7, #body     	//Pointer front of queue, initialised to first data loc
-    add r8,r7,#1        //Pointer to head address in body data (1 after tail)
-    //  r9   		//ASCII value of the key pressed
-    mov r10, #767	//Constant representing the size of screen memory
-    mov r11, #68	//Current direction of movement, initialised to 'right'
-    mov r12, #1023	//Constant
+    mov r1,#0x008844		//Snake colour (green)
+    mov r2,#0xffffff		//Background colour (white)
+    mov r3, #271			//Tail position, initialised
+    mov r4, #272			//Head position, initialised
+    mov r5, #0				//Apple position
+    mov r6, #0xff8800		//Apple colour
+    mov r7, #body     		//Pointer front of queue, initialised to first data loc
+    add r8,r7,#1			//Pointer to head address in body data (1 after tail)
+    mov r9, #0				//ASCII value of last key pressed
+    mov r10, #767			//Constant representing the size of screen memory
+    mov r11, #1023			//Constant
+    mov r12, #68	        //Current direction of movement, initialised to 'right'
 InitialisePointers:
-    str r3, [r7]      	//r4 points to the tail address
-    str r4, [r8]      	//r3 points to the head address
+    str r3, [r7]      		//r4 points to the tail address
+    str r4, [r8]      		//r3 points to the head address
 drawSnake:
-    //str r1,[r3+256]     //Tail
-    str r1,[r4+256]     //Head
+    str r1,[r3+256]			//Tail
+    str r1,[r4+256]			//Head
 createApple:
-    inp r5,8		// gets a random 32 bit pattern
-    and r5,r5,r12	// r12 has 1023
-    cmp r5,r10		// r10 has 767
+    inp r5,8			// gets a random 32 bit pattern
+    and r5,r5,r11		// r11 has 1023
+    cmp r5,r10			// r10 has 767
     bgt createApple 	// restrict random range
-    cmp r5,r4		// Make sure apples is not located on head of snake
+    cmp r5,r4			// Make sure apples is not located on head of snake
     beq createApple 
-moveSnake:		// redraw apple because might be in snake
-    str r6,[r5+256]
-    inp r9,4
+moveSnake:
+    str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
+    inp r9,4			//Read the last key pressed (but don’t wait for one)
 switchOnKey:
     cmp r9,#87 //W key
     beq up
     cmp r9,#65 //A key
     beq left
-    cmp r9,#83 //S key
+    cmp r9,#83  		//S key
     beq down
     cmp r9,#68 //D key
     beq right
 dontChangeDirection:
-    mov r9, r11		//If not any of the recognised keys, set r0 to prev direction
-    b switchOnKey 	//and re-run the switch on keys
+    mov r9, r12		//If not any of the recognised keys, use prev direction
+    b switchOnKey 	      //and re-run the switch on key
 right:
-    cmp r11,#65
+    cmp r12,#65
     beq dontChangeDirection
     add r4,r4,#1            //Adding 1 to location moves right
     and r0,r4,#31
@@ -48,57 +48,57 @@ right:
     beq gameOver
     b reDraw
 down:
-    cmp r11,#87
+    cmp r12,#87
     beq dontChangeDirection
     add r4,r4,#32           //32 moves down one row on screen
     cmp r4,r10
     bgt gameOver
     b reDraw
 up:
-    cmp r11,#83
+    cmp r12,#83
     beq dontChangeDirection
     sub r4,r4,#32           //-32 moves up one row on screen
     cmp r4,#0
     blt gameOver
     b reDraw
-left:
-    cmp r11,#68
+left:    
+    cmp r12,#68
     beq dontChangeDirection
     sub r4,r4,#1           //-1 moves left
     and r0,r4,#31
     cmp r0,#31
     beq gameOver
-reDraw:
-    mov r11,r9		 //Update current direction with latest key
-    cmp r4,r5               //If the head is in same location as apple...
-    beq moveHead            //...Skip updating the tail, to make snake grow
+    b reDraw
+
+reDraw:  
+    mov r12,r9				//Update current direction with latest key
+    cmp r4,r5				//If the head is in same location as apple...
+    beq moveHead			//...Skip updating the tail, to make snake grow
 moveTail:
     ldr r0, [r7]
-    str r2,[r0+256]        //Reset tail to Background
+    str r2,[r0+256]			//Reset tail to Background
     add r7,r7,#1            //Increment the tail pointer (for use next cycle)
-    cmp r7,#200		//Check pointer is still within memory
+    cmp r7,#200				//Check pointer is still within memory
     blt moveHead
-    mov r7, #body		//If not loop pointer back to start of body data
+    mov r7, #body			//If not loop pointer back to start of body data
 moveHead:
     add r8,r8,#1            //Increment the head pointer
-    cmp r8,#200		//Check pointer is still within memory
+    cmp r8,#200				//Check pointer is still within memory
     blt updatePointer
-    mov r8, #body    	//If not loop pointer back to start of body data
+    mov r8, #body    		//If not loop pointer back to start of body data
 updatePointer:
-    str r4, [r8]            	//Store the new head location in data
+    str r4, [r8]            //Store the new head location in data
 checkForCrossing: 		// check if the snake has hit itself
-    ldr r0,[r4+256] 		// read, from screen, colour of pixel head is moving onto
-    cmp r0,r1  			//If it is snake colour (already occupied by snake body)...
+    ldr r0,[r4+256] 	// read, from screen, colour of pixel head is moving to
+    cmp r0,r1  	      //If it is snake colour …
     beq gameOver
 checkForMaxLength:
-    cmp r7,r8		//If the front has caught up with the tail, then the body data is full
+    cmp r7,r8		//If the front has caught up with rear, then body data full
     beq gameOver 
-    str r1,[r4+256]         	//Draw new head
-    cmp r4, r5 			//Check again if the apple was eaten this cycle		
+    str r1,[r4+256]			//Draw new head
+    cmp r4, r5 			//Check again if the apple was eaten this cycle
     beq createApple 		//If so, loop back to creating the apple
-    b moveSnake  		/Otherwise just repeat the move cycle
-
+    b moveSnake  			//Otherwise just repeat the move cycle
 gameOver:
     halt  //To stop program execution running into data area
-	
-body: dat 0 //body segment pointers extend from here to end of memory (addr 199)
+body: dat 0 				//Initial front of queue (screen address for tail)

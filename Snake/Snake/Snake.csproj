@@ -44,7 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="snake.txt" />
-    <Content Include="Snake_stories.txt" />
+    <Content Include="%28temp%29 Snake_stories.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Story plan.docx" />
+    <None Include="Teacher%27s Guide.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
