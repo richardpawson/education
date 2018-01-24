@@ -39,17 +39,28 @@ switchOnKey:
     mov r9, r12		//If not any of the recognised keys, use prev direction
     b switchOnKey 	      //and re-run the switch on key
 right:
-    add r4,r4,#1           //r9 holds the increment for the position...
-    b reDraw			// Unconditional branch
+    add r4,r4,#1            //Adding 1 to location moves right
+    and r0,r4,#31
+    cmp r0,#0
+    beq gameOver
+    b reDraw
 down:
-    add r4,r4,#32           //...32 moves down one row on screen
+    add r4,r4,#32           //32 moves down one row on screen
+    cmp r4,r10
+    bgt gameOver
     b reDraw
 up:
     sub r4,r4,#32           //-32 moves up one row on screen
+    cmp r4,#0
+    blt gameOver
     b reDraw
 left:
     sub r4,r4,#1           //-1 moves left
+    and r0,r4,#31
+    cmp r0,#31
+    beq gameOver
     b reDraw
+
 reDraw:  
     mov r12,r9				//Update current direction with latest key
     cmp r4,r5				//If the head is in same location as apple...
@@ -72,4 +83,6 @@ updatePointer:
     cmp r4, r5 			//Check again if the apple was eaten this cycle
     beq createApple 		//If so, loop back to creating the apple
     b moveSnake  			//Otherwise just repeat the move cycle
+gameOver:
+    halt  //To stop program execution running into data area
 body: dat 0 				//Initial front of queue (screen address for tail)
