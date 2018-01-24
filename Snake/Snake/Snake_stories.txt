@@ -88,6 +88,10 @@ moveHead:
     mov r8, #body    		//If not loop pointer back to start of body data
 updatePointer:
     str r4, [r8]            //Store the new head location in data
+checkForCrossing: 		// check if the snake has hit itself
+    ldr r0,[r4+256] 	// read, from screen, colour of pixel head is moving to
+    cmp r0,r1  	      //If it is snake colour …
+    beq gameOver
     str r1,[r4+256]			//Draw new head
     cmp r4, r5 			//Check again if the apple was eaten this cycle
     beq createApple 		//If so, loop back to creating the apple
