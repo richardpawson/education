@@ -94,11 +94,17 @@ checkForCrossing: 		// check if the snake has hit itself
     beq gameOver
 checkForMaxLength:
     cmp r7,r8		//If the front has caught up with rear, then body data full
-    beq gameOver 
+    beq gameWin 
     str r1,[r4+256]			//Draw new head
     cmp r4, r5 			//Check again if the apple was eaten this cycle
     beq createApple 		//If so, loop back to creating the apple
     b moveSnake  			//Otherwise just repeat the move cycle
+gameWin:
+    mov r0, #message
+	out r0,8			//Write message as text into output window
 gameOver:
     halt  //To stop program execution running into data area
+message:					//ASCII encoding of 'You win' message (in reverse)
+	dat 0x20756f59			//' uoY'
+	dat 0x006e6977          //'niw'
 body: dat 0 				//Initial front of queue (screen address for tail)
