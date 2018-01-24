@@ -28,13 +28,13 @@ moveSnake:
     str r6,[r5+256]			//Draw Apple each cycle, in case it is on snake
     inp r9,4				//Read the last key pressed (but don’t wait for one)
 switchOnKey:
-    cmp r9,#87 //W key
+    cmp r9,#87				//W key
     beq up
-    cmp r9,#65 //A key
+    cmp r9,#65				//A key
     beq left
     cmp r9,#83  			//S key
     beq down
-    cmp r9,#68 //D key
+    cmp r9,#68				//D key
     beq right
 dontChangeDirection:
     mov r9, r12				//If not any of the recognised keys, use prev direction
