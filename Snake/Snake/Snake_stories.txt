@@ -36,25 +36,34 @@ switchOnKey:
     beq down
     cmp r9,#68 //D key
     beq right
+dontChangeDirection:
     mov r9, r12		//If not any of the recognised keys, use prev direction
     b switchOnKey 	      //and re-run the switch on key
 right:
+    cmp r12,#65
+    beq dontChangeDirection
     add r4,r4,#1            //Adding 1 to location moves right
     and r0,r4,#31
     cmp r0,#0
     beq gameOver
     b reDraw
 down:
+    cmp r12,#87
+    beq dontChangeDirection
     add r4,r4,#32           //32 moves down one row on screen
     cmp r4,r10
     bgt gameOver
     b reDraw
 up:
+    cmp r12,#83
+    beq dontChangeDirection
     sub r4,r4,#32           //-32 moves up one row on screen
     cmp r4,#0
     blt gameOver
     b reDraw
-left:
+left:    
+    cmp r12,#68
+    beq dontChangeDirection
     sub r4,r4,#1           //-1 moves left
     and r0,r4,#31
     cmp r0,#31
