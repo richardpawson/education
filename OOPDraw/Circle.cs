@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using Nakov.TurtleGraphics;
+using System;
 
 namespace OOPDraw
 {
@@ -17,6 +19,18 @@ namespace OOPDraw
             PositionX = x;
             PositionY = y;
             Radius = radius;
+        }
+
+        public void Draw()
+        {
+            Turtle.X = PositionX;
+            Turtle.Y = PositionY;
+            Turtle.PenColor = LineColor;
+            for (int i = 0; i < 360; i++)
+            {
+                Turtle.Forward((float)(2 * Math.PI * Radius / 360));
+                Turtle.Rotate(1);
+            }
         }
     }
 }
