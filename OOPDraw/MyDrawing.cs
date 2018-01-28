@@ -8,32 +8,36 @@ namespace OOPDraw
     {
         public static void Draw()
         {
-            Square(0,0,Color.Blue, 100);
-            Square(100, 0, Color.Red, 50);
-            Circle(125, -10, Color.Black, 10);
-            Circle(25, -10, Color.Black, 10);
+            var body = new Square(0,0,Color.Blue, 100);
+            DrawSquare(body);
+            var cab = new Square(100, 0, Color.Red, 50);
+            DrawSquare(cab);
+            var frontWheel = new Circle(125, -10, Color.Black, 10);
+            DrawCircle(frontWheel);
+            var rearWheel = new Circle(25, -10, Color.Black, 10);
+            DrawCircle(rearWheel);
         }
 
-        private static void Square(float positionX, float positionY, Color color, float sideLength)
+        private static void DrawSquare(Square sq)
         {
-            Turtle.X = positionX;
-            Turtle.Y = positionY;
-            Turtle.PenColor = color;
+            Turtle.X = sq.PositionX;
+            Turtle.Y = sq.PositionY;
+            Turtle.PenColor = sq.LineColor;
             for (int i = 0; i < 4; i++)
             {
-                Turtle.Forward(sideLength);
+                Turtle.Forward(sq.SideLength);
                 Turtle.Rotate(90);
             }
         }
 
-        private static void Circle(float positionX, float positionY, Color color, float radius)
+        private static void DrawCircle(Circle c)
         {
-            Turtle.X = positionX;
-            Turtle.Y = positionY;
-            Turtle.PenColor = color;
+            Turtle.X =c.PositionX;
+            Turtle.Y = c.PositionY;
+            Turtle.PenColor = c.LineColor;
             for (int i = 0; i < 360; i++)
             {
-                Turtle.Forward((float) (2 * Math.PI * radius /360));
+                Turtle.Forward((float) (2 * Math.PI * c.Radius /360));
                 Turtle.Rotate(1);
             }
         }
