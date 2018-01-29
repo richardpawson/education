@@ -28,7 +28,7 @@ namespace OOPDraw
         public static void DrawPicture(object sender, EventArgs e)
         {
             ClearDisplay();
-            MyDrawing.Draw();
+            MyDrawing.Execute();
         }
 
         public static void ClearDisplay()
