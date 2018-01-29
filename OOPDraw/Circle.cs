@@ -7,9 +7,6 @@ namespace OOPDraw
     public class Circle : Shape
     {
         //Properties
-        public float CentreX { get; set; }
-        public float CentreY { get; set; }
-        public Color LineColor { get; set; }
         public float Radius { get; set; }
 
         //The 'Constructor

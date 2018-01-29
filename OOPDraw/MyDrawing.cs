@@ -16,9 +16,12 @@ namespace OOPDraw
             list.Add(frontWheel);
             var rearWheel = new Circle(25, -10, Color.Black, 10);
             list.Add(rearWheel);
+            var warning = new EquilateralTriangle(-30, -40, Color.Red, 20);
+            list.Add(warning);
 
             foreach (var item in list)
             {
+                item.MoveCentreBy(20, 0);
                 item.GrowBy(2);
                 item.Draw();
             }

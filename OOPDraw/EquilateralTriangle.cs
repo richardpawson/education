@@ -1,16 +1,16 @@
 ﻿using Nakov.TurtleGraphics;
-using System.Drawing;
 using System;
+using System.Drawing;
 
 namespace OOPDraw
 {
-    public class Square : Shape
+    public class EquilateralTriangle : Shape
     {
         //Properties
         public float SideLength { get; set; }
 
         //The 'Constructor
-        public Square(float centreX, float centreY, Color lineColor, float sideLength)
+        public EquilateralTriangle(float centreX, float centreY, Color lineColor, float sideLength)
         {
             LineColor = lineColor;
             CentreX = centreX;
@@ -20,21 +20,19 @@ namespace OOPDraw
 
         public override void Draw()
         {
-            Turtle.Angle = 0;
-            Turtle.X = CentreX-SideLength/2; //To ensure shape is centred correctly
-            Turtle.Y = CentreY-SideLength/2;
+            Turtle.Angle = -90;
+            Turtle.X = CentreX - SideLength / 2; //To ensure shape is centred correctly
+            Turtle.Y = CentreY - (float) (SideLength * Math.Sin(60) /3); //Centre is at a third of the height
             Turtle.PenColor = LineColor;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Turtle.Forward(SideLength);
-                Turtle.Rotate(90);
+                Turtle.Rotate(120);
             }
         }
 
         public override void GrowBy(float factor)
         {
-            CentreX *= factor;
-            CentreY *= factor;
             SideLength *= factor;
         }
     }
