@@ -18,7 +18,7 @@ namespace Boom.Model
 
         //Corresponds to the length of the ship to know which squares
         //have already been hit and prevent double-counting hits on same position
-        private HashSet<Tuple<int,int>> Hits = new HashSet<Tuple<int, int>>();
+        private HashSet<Location> Hits = new HashSet<Location>();
 
         public Ship(string ShipName, int ShipSize, int col =0, int row = 0, Orientations orient = 0)
         {
@@ -51,7 +51,7 @@ namespace Boom.Model
 
         public bool ShipIsHitInLocation(int col, int row)
         {
-            return Hits.Contains(Tuple.Create(col, row));
+            return Hits.Contains(new Location(col, row));
         }
 
         private int PositionOnShip(int col, int row)
@@ -69,7 +69,7 @@ namespace Boom.Model
         //Increments the hit count
         public void Hit(int col, int row)
         {
-            Hits.Add(Tuple.Create(col, row));
+            Hits.Add(new Location(col, row));
         }
 
         public int HitCount()

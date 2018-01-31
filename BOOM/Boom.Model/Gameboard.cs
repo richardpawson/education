@@ -8,7 +8,7 @@ namespace Boom.Model
     public class GameBoard
     {
         public int Size { get; private set; }
-        private List<Tuple<int, int>> Misses = new List<Tuple<int, int>>();
+        private List<Location> Misses = new List<Location>();
         private Ship[] Ships;
         private ILogger Logger;
         private IRandomGenerator RandomGenerator;
@@ -46,7 +46,7 @@ namespace Boom.Model
                     return;
                 }
             }
-            Misses.Add(Tuple.Create(col, row));
+            Misses.Add(new Location(col, row));
             Logger.WriteLine("Sorry, (" + col + "," + row + ") is a miss.");
         }
 
@@ -94,7 +94,7 @@ namespace Boom.Model
             {
                 return SquareValues.Hit;
             }
-            else if (Misses.Contains(Tuple.Create(col, row)))
+            else if (Misses.Contains(new Location(col, row)))
             {
                 return SquareValues.Miss;
             }
