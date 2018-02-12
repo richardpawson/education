@@ -10,20 +10,20 @@ namespace OOPDraw
         public float Radius { get; set; }
 
         //The 'Constructor
-        public Circle(float centreX, float centreY, Color lineColor, float radius)
+        public Circle(float centreX, float centreY, Color lineColor, float radius) : base(centreX, centreY, lineColor)
         {
-            LineColor = lineColor;
-            CentreX = centreX;
-            CentreY = centreY;
             Radius = radius;
+        }
+
+        public Circle() : base()
+        {
+            Radius = 20;
         }
 
         public override void Draw()
         {
-            Turtle.Angle = 0;
-            Turtle.X = CentreX - Radius;
-            Turtle.Y = CentreY;
-            Turtle.PenColor = LineColor;
+            ResetTurtle();
+            Turtle.X -= Radius; 
             for (int i = 0; i < 360; i++)
             {
                 Turtle.Forward((float)(2 * Math.PI * Radius / 360));
@@ -31,11 +31,9 @@ namespace OOPDraw
             }
         }
 
-        public override void GrowBy(float factor)
+        public override void Resize(float x, float y)
         {
-            CentreX *= factor;
-            CentreY *= factor;
-            Radius *= factor;
+            Radius = (float) Math.Sqrt(Math.Pow(x - CentreX, 2) + Math.Pow(y - CentreY,2));
         }
     }
 }

@@ -21,23 +21,10 @@ namespace OOPDraw
             Application.SetCompatibleTextRenderingDefault(false);
 
             Form f1 = new Form1();
-            f1.Shown += new EventHandler(DrawPicture);
-
             Application.Run(f1);
         }
-        public static void DrawPicture(object sender, EventArgs e)
-        {
-            ClearDisplay();
-            MyDrawing.Execute();
-        }
 
-        public static void ClearDisplay()
-        {
-            Turtle.Dispose();
-            Turtle.PenSize = 2;
-            Turtle.ShowTurtle = false;
-            Turtle.PenColor = Color.Azure;
-        }
+
 
         public static void WaitASecond()
         {
