@@ -31,10 +31,10 @@ namespace OOPDraw
             Turtle.Forward(side);
         }
 
-        public override void Resize(float x, float y)
+        public override void ResizeBy(float x, float y)
         {
-            Base = (x - CentreX) * 2;
-            Height = y - CentreY;
+            Base = (x) * 2;
+            Height = y;
         }
     }
 }

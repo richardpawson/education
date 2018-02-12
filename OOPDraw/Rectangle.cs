@@ -37,10 +37,10 @@ namespace OOPDraw
             }
         }
 
-        public override void Resize(float x, float y)
+        public override void ResizeBy(float x, float y)
         {
-            Width = Math.Abs(x - CentreX) * 2;
-            Height = Math.Abs(y - CentreY) * 2;
+            Width = Math.Abs(x) * 2;
+            Height = Math.Abs(y) * 2;
         }
     }
 }

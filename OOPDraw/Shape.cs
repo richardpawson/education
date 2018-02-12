@@ -1,5 +1,6 @@
 ﻿using Nakov.TurtleGraphics;
 using System.Drawing;
+using System;
 
 namespace OOPDraw
 {
@@ -32,7 +33,12 @@ namespace OOPDraw
         //Abstract methods -  to be implemeted in sub-types
         public abstract void Draw();
 
-        public abstract void Resize(float x, float y);
+        public void ResizeTo(int x, int y)
+        {
+            ResizeBy(Math.Abs(x - CentreX), Math.Abs(y - CentreY));
+        }
+
+        public abstract void ResizeBy(float x, float y);
 
         //Concrete methods
         public virtual void MoveTo(float x, float y)
@@ -58,6 +64,7 @@ namespace OOPDraw
             Turtle.X = CentreX;
             Turtle.Y = CentreY;
         }
+
 
         public virtual void Select()
         {

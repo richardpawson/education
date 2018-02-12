@@ -23,12 +23,11 @@ namespace OOPDraw
             Roof.Draw();
         }
 
-        public override void Resize(float x, float y)
+        public override void ResizeBy(float x, float y)
         {
-            Walls.Resize(x, y);
-            Roof.Base = Walls.Width;
-            Roof.Height = Walls.Height;
-            Roof.CentreY = Walls.CentreY + Walls.Height / 2;
+            Roof.ResizeBy(x, y * 2);
+            Roof.MoveBy(0, y - Walls.Height / 2); //TODO: make equivalent to group
+            Walls.ResizeBy(x, y);
         }
 
         public override void MoveTo(float x, float y)

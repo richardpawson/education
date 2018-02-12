@@ -18,11 +18,6 @@ namespace OOPDraw
             return Shapes.ElementAt(activeShapeNumber);
         }
 
-        public List<Shape> SelectedShapes()
-        {
-            return Shapes.Where(shape => shape.Selected).ToList();
-        }
-
         public void SelectNextShape()
         {
             activeShapeNumber = activeShapeNumber + 1;
@@ -66,7 +61,7 @@ namespace OOPDraw
 
         public void ResizeActiveShape(int x, int y)
         {
-            ActiveShape().Resize(x, y);
+            ActiveShape().ResizeTo(x, y);
         }
 
         public void AddShape(Shape shape)
@@ -76,14 +71,6 @@ namespace OOPDraw
             activeShapeNumber = Shapes.Count - 1; //i.e. the shape just added
             shape.Select();
             DrawAll();
-        }
-
-        internal void MakeSelectionIntoGroup()
-        {
-            var group = new Group(SelectedShapes());
-            Shapes.RemoveAll(shape => shape.Selected);
-            Shapes.Add(group);
-            group.Select();
         }
     }
 }

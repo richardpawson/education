@@ -79,10 +79,5 @@ namespace OOPDraw
             drawing.Clear();
             drawing.DrawAll();
         }
-
-        private void Group_Click(object sender, EventArgs e)
-        {
-            drawing.MakeSelectionIntoGroup();
-        }
     }
 }

@@ -31,9 +31,9 @@ namespace OOPDraw
             }
         }
 
-        public override void Resize(float x, float y)
+        public override void ResizeBy(float x, float y)
         {
-            Radius = (float) Math.Sqrt(Math.Pow(x - CentreX, 2) + Math.Pow(y - CentreY,2));
+            Radius = (float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y,2));
         }
     }
 }
