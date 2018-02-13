@@ -10,14 +10,9 @@ namespace OOPDraw
         public float Radius { get; set; }
 
         //The 'Constructor
-        public Circle(float centreX, float centreY, Color lineColor, float radius) : base(centreX, centreY, lineColor)
+        public Circle(float originX, float originY,float radius) : base(originX, originY)
         {
             Radius = radius;
-        }
-
-        public Circle() : base()
-        {
-            Radius = 20;
         }
 
         public override void Draw()
@@ -31,9 +26,9 @@ namespace OOPDraw
             }
         }
 
-        public override void ResizeBy(float x, float y)
+        public override void Resize(float x, float y)
         {
-            Radius = (float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y,2));
+            Radius = (float) Math.Sqrt(x*x+ y*y);
         }
     }
 }

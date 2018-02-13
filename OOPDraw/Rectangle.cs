@@ -11,23 +11,15 @@ namespace OOPDraw
         public float Height { get; set; }
 
         //The 'Constructor
-        public Rectangle(float centreX, float centreY, Color lineColor, float width, float height) : base(centreX, centreY, lineColor)
+        public Rectangle(float centreX, float centreY, float width, float height) : base(centreX, centreY)
         {
             Width  = width;
             Height = height;
         }
 
-        public Rectangle() : base()
-        {
-            Width = 100;
-            Height = 50;
-        }
-
         public override void Draw()
         {
             ResetTurtle();
-            Turtle.X -= Width/2; //To ensure shape is centred correctly
-            Turtle.Y -= Height/2;
             for (int i = 0; i < 2; i++)
             {
                 Turtle.Forward(Height);
@@ -37,10 +29,10 @@ namespace OOPDraw
             }
         }
 
-        public override void ResizeBy(float x, float y)
+        public override void Resize(float x, float y)
         {
-            Width = Math.Abs(x) * 2;
-            Height = Math.Abs(y) * 2;
+            Width = Math.Abs(x);
+            Height = Math.Abs(y);
         }
     }
 }

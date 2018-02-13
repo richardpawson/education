@@ -7,25 +7,22 @@ namespace OOPDraw
     public abstract class Shape
     {
         //Properties
-        public float CentreX { get;  set; }
-        public float CentreY { get;  set; }
-        public Color LineColor { get; private set; }
+        public float OriginX { get;  set; }
+        public float OriginY { get;  set; }
         public float LineWidth { get; private set; }
         public bool Selected { get; private set; }
 
-        public Shape(float centreX, float centreY, Color lineColor) : this()
+        public Shape(float centreX, float centreY) : this()
         {
-            LineColor = lineColor;
-            CentreX = centreX;
-            CentreY = centreY;
+            OriginX = centreX;
+            OriginY = centreY;
         }
 
         //Default constructor
         public Shape()
         {
-            LineColor = Color.Black;
-            CentreX = 0;
-            CentreY = 0;
+            OriginX = 0;
+            OriginY = 0;
             LineWidth = 2;
             Selected = true;
         }
@@ -35,22 +32,22 @@ namespace OOPDraw
 
         public void ResizeTo(int x, int y)
         {
-            ResizeBy(Math.Abs(x - CentreX), Math.Abs(y - CentreY));
+            Resize(Math.Abs(x - OriginX), Math.Abs(y - OriginY));
         }
 
-        public abstract void ResizeBy(float x, float y);
+        public abstract void Resize(float x, float y);
 
         //Concrete methods
         public virtual void MoveTo(float x, float y)
         {
-            CentreX = x;
-            CentreY = y;
+            OriginX = x;
+            OriginY = y;
         }
 
         public virtual void MoveBy(float x, float y)
         {
-            CentreX += x;
-            CentreY += y;
+            OriginX += x;
+            OriginY += y;
         }
 
         /// <summary>
@@ -59,10 +56,10 @@ namespace OOPDraw
         protected void ResetTurtle()
         {
             Turtle.Angle = 0;
-            Turtle.PenColor = LineColor;
+            Turtle.PenColor = Color.Black;
             Turtle.PenSize = Selected ? LineWidth*2 : LineWidth;
-            Turtle.X = CentreX;
-            Turtle.Y = CentreY;
+            Turtle.X = OriginX;
+            Turtle.Y = OriginY;
         }
 
 

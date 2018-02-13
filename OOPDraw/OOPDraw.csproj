@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Triangle.cs" />
+    <Compile Include="EquliateralTriangle.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

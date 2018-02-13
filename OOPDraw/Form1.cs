@@ -36,7 +36,7 @@ namespace OOPDraw
 
         private void Circle_Click(object sender, EventArgs e)
         {
-            drawing.AddShape(new Circle());
+            drawing.AddShape(new Circle(0,0,20));
             drawing.DrawAll();
         }
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -58,19 +58,19 @@ namespace OOPDraw
 
         private void Rectangle_Click(object sender, EventArgs e)
         {
-            drawing.AddShape(new Rectangle());
+            drawing.AddShape(new Rectangle(0,0,100, 50));
             drawing.DrawAll();
         }
 
         private void Triangle_Click(object sender, EventArgs e)
         {
-            drawing.AddShape(new Triangle());
+            drawing.AddShape(new EquliateralTriangle(0,0, 100));
             drawing.DrawAll();
         }
 
         private void House_Click(object sender, EventArgs e)
         {
-            drawing.AddShape(new House());
+            drawing.AddShape(new House(0,0,100, 70));
             drawing.DrawAll();
         }
 

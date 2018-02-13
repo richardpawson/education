@@ -7,14 +7,17 @@ namespace OOPDraw
 {
     public class House : Shape
     {
+        public float Width { get; set; }
+        public float WallHeight { get; set; }
         public Rectangle Walls { get; set; }
-        public Triangle Roof { get; set; }
+        public EquliateralTriangle Roof { get; set; }
 
-        public House(): base()
+        public House(float originX, float originY, float width, float wallHeight) : base(originX, originY)
         {
-            Walls = new Rectangle();
-            Roof = new Triangle();
-            Roof.CentreY = Walls.Height / 2;
+            Width = width;
+            WallHeight = wallHeight;
+            Walls = new Rectangle(originX, originY, width, wallHeight);
+            Roof = new EquliateralTriangle(originX, wallHeight, width);
         }
 
         public override void Draw()
@@ -23,18 +26,21 @@ namespace OOPDraw
             Roof.Draw();
         }
 
-        public override void ResizeBy(float x, float y)
+        public override void Resize(float x, float y)
         {
-            Roof.ResizeBy(x, y * 2);
-            Roof.MoveBy(0, y - Walls.Height / 2); //TODO: make equivalent to group
-            Walls.ResizeBy(x, y);
+            Width = x;
+            var yDiff = y - WallHeight;
+            WallHeight = y;
+            Walls.Resize(x, y);
+            Roof.Resize(x, 0);
+            Roof.MoveBy(0, yDiff);
         }
 
         public override void MoveTo(float x, float y)
         {
             base.MoveTo(x, y);
             Walls.MoveTo(x, y);
-            Roof.MoveTo(x, y + Walls.Height / 2);
+            Roof.MoveTo(x, y + WallHeight);
         }
 
         public override void Select()
