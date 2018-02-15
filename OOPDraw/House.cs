@@ -17,7 +17,7 @@ namespace OOPDraw
             Width = width;
             WallHeight = wallHeight;
             Walls = new Rectangle(originX, originY, width, wallHeight);
-            Roof = new EquliateralTriangle(originX, wallHeight, width);
+            Roof = new EquliateralTriangle(originX, originY + wallHeight, width);
         }
 
         public override void Draw()

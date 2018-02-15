@@ -12,17 +12,10 @@ namespace OOPDraw
         public float LineWidth { get; private set; }
         public bool Selected { get; private set; }
 
-        public Shape(float centreX, float centreY) : this()
+        public Shape(float centreX, float centreY)
         {
             OriginX = centreX;
             OriginY = centreY;
-        }
-
-        //Default constructor
-        public Shape()
-        {
-            OriginX = 0;
-            OriginY = 0;
             LineWidth = 2;
             Selected = true;
         }
