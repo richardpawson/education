@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Model", "Boom.Model\Boom.Model.csproj", "{AD9DEA29-4E95-4773-84F6-55243C946B8A}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.Test", "Boom.Test\Boom.Test.csproj", "{2B57A55A-F8E6-403B-8D6A-B5BD8CD67E4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom.WinFormsUI", "Boom.WinForms UI\Boom.WinFormsUI.csproj", "{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{A1AD2D7C-0612-455C-BF1D-ABB9737D3FDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1AD2D7C-0612-455C-BF1D-ABB9737D3FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1AD2D7C-0612-455C-BF1D-ABB9737D3FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1AD2D7C-0612-455C-BF1D-ABB9737D3FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1AD2D7C-0612-455C-BF1D-ABB9737D3FDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
