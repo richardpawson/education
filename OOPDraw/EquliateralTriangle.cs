@@ -7,7 +7,7 @@ namespace OOPDraw
     public class EquliateralTriangle : Shape
     {
         //Properties
-        public float Side { get; set; }
+        private float Side { get; set; }
 
         //The 'Constructor
         public EquliateralTriangle(float originX, float originY, float side) : base(originX, originY)
@@ -29,7 +29,7 @@ namespace OOPDraw
         public override void Resize(float x, float y)
         {
             //Ignore Y
-            Side = x;
+            Side =x;
         }
     }
 }

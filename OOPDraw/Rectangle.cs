@@ -7,8 +7,8 @@ namespace OOPDraw
     public class Rectangle : Shape
     {
         //Properties
-        public float Width { get; set; }
-        public float Height { get; set; }
+        private float Width { get; set; }
+        private float Height { get; set; }
 
         //The 'Constructor
         public Rectangle(float centreX, float centreY, float width, float height) : base(centreX, centreY)
