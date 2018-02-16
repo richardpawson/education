@@ -1,10 +1,4 @@
-﻿using Nakov.TurtleGraphics;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace OOPDraw
@@ -19,21 +13,7 @@ namespace OOPDraw
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            Form f1 = new Form1();
-            Application.Run(f1);
-        }
-
-
-
-        public static void WaitASecond()
-        {
-            Thread.Sleep(1000);
-        }
-
-        public static void RefreshDisplay()
-        {
-            Form1.ActiveForm.Refresh();
+            Application.Run(new Form1());
         }
     }
 }

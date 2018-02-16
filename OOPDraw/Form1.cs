@@ -1,79 +1,93 @@
-﻿using System;
-
+﻿using Nakov.TurtleGraphics;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace OOPDraw
 {
     public partial class Form1 : Form
     {
-        private Drawing drawing;
-
         public Form1()
         {
             InitializeComponent();
-            drawing = new Drawing();
         }
 
-        private void Next_Click(object sender, EventArgs e)
-        {
-                drawing.UnselectAll();
-            drawing.SelectNextShape();
-            drawing.DrawAll();
-        }
+        private List<Shape> shapes = new List<Shape>();
 
-        private void Previous_click(object sender, EventArgs e)
-        {
-                drawing.UnselectAll();
-            drawing.SelectPreviousShape();
-            drawing.DrawAll();
-        }
+        private Shape mostRecent;
 
-        private void Circle_Click(object sender, EventArgs e)
-        {
-            drawing.AddShape(new Circle(0,0,20));
-            drawing.DrawAll();
-        }
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            //Map between window & Turtle coordinates
-            int x = e.X - Width / 2 + 8; 
-            int y = Height / 2 - e.Y -19;
-            string function = (string) Function.SelectedItem;
-            if (function == "New Rectangle")
+            //Transform windows coordinates to Turtle coordinates
+            float turtleX = e.X - Width / 2 + 8;
+            float turtleY = Height / 2 - e.Y - 19;
+            string selectedItem = (string)comboBox1.SelectedItem;
+            if (selectedItem == "Draw Triangle") //We will add more options later
             {
-                drawing.AddShape(new Rectangle(x, y, 100, 50));
-                drawing.DrawAll();
+                AddShape(new EquilateralTriangle(turtleX, turtleY, 50));
             }
-            else if (function == "New Circle")
+            else if (selectedItem == "Draw Rectangle")
             {
-                drawing.AddShape(new Circle(x, y, 20));
-                drawing.DrawAll();
+                AddShape(new Rectangle(turtleX, turtleY, 100, 50));
             }
-            else if (function == "New Triangle")
+            else if (selectedItem == "Draw House")
             {
-                drawing.AddShape(new EquliateralTriangle(x, y, 100));
-                drawing.DrawAll();
+                AddShape(new House(turtleX, turtleY, 100, 50));
             }
-            else if (function == "New House")
+            else if (selectedItem == "Move Shape")
             {
-                drawing.AddShape(new House(x, y, 100, 70));
-                drawing.DrawAll();
+                ActiveShape().MoveTo(turtleX, turtleY);
             }
-            else if (function == "Move")
+            else if (selectedItem == "Resize Shape")
             {
-                drawing.MoveActiveShape(x, y);
+               ActiveShape().ResizeAbsolute(turtleX, turtleY);
             }
-            else if (function == "Resize")
-            {
-                drawing.ResizeActiveShape(x, y);
-            }
-            drawing.DrawAll();
+            DrawAll();
         }
 
-        private void Clear_Click(object sender, EventArgs e)
+        private void AddShape(Shape shape)
         {
-            drawing.Clear();
-            drawing.DrawAll();
+            if (shapes.Count > 0) //i.e. this isn't the first shape
+            {
+                ActiveShape().Unselect();
+            }
+            shapes.Add(shape);
+            activeShapeNumber = shapes.Count - 1; //i.e. the shape just added
+            ActiveShape().Select();
+        }
+
+        public void DrawAll()
+        {
+            Turtle.Dispose();  //First clear all Turtle tracks to start afresh
+            foreach (var shape in shapes)
+            {
+                shape.Draw();
+            }
+        }
+
+        private int activeShapeNumber = 0;
+
+        private Shape ActiveShape()
+        {
+            return shapes[activeShapeNumber]; //List elements can be accessed like an array
+        }
+
+        private void Next_Click(object sender, System.EventArgs e)
+        {
+            ActiveShape().Unselect();
+            activeShapeNumber = activeShapeNumber + 1;
+            if (activeShapeNumber >= shapes.Count) activeShapeNumber = 0;
+            ActiveShape().Select();
+            DrawAll();
+        }
+
+        private void Prev_Click(object sender, System.EventArgs e)
+        {
+            ActiveShape().Unselect();
+            activeShapeNumber = activeShapeNumber - 1;
+            if (activeShapeNumber < 0) activeShapeNumber = shapes.Count - 1;
+            ActiveShape().Select();
+            DrawAll();
         }
     }
 }

@@ -1,44 +1,42 @@
-﻿using Nakov.TurtleGraphics;
-using System.Drawing;
-using System;
+﻿using System;
+using Nakov.TurtleGraphics;
 
 namespace OOPDraw
 {
     public abstract class Shape
     {
-        //Properties
-        public float OriginX { get;  set; }
-        public float OriginY { get;  set; }
-        public float LineWidth { get; private set; }
+        protected float XOrigin { get; set; }
+        protected float YOrigin { get; set; }
+        private float LineWidth { get; set; }
 
-        public Shape(float centreX, float centreY)
+        //The 'Constructor'
+        public Shape(float xOrigin, float yOrigin)
         {
-            OriginX = centreX;
-            OriginY = centreY;
+            XOrigin = xOrigin;
+            YOrigin = yOrigin;
         }
 
-        //Abstract methods -  to be implemeted in sub-types
+        //Abstract methods
         public abstract void Draw();
-
-        public void ResizeTo(int x, int y)
-        {
-            Resize(Math.Abs(x - OriginX), Math.Abs(y - OriginY));
-        }
-
-        public abstract void Resize(float x, float y);
 
         //Concrete methods
         public virtual void MoveTo(float x, float y)
         {
-            OriginX = x;
-            OriginY = y;
+            XOrigin = x;
+            YOrigin = y;
         }
 
         public virtual void MoveBy(float x, float y)
         {
-            OriginX += x;
-            OriginY += y;
+            XOrigin += x;
+            YOrigin += y;
         }
+        public void ResizeAbsolute(float turtleX, float turtleY)
+        {
+            Resize(Math.Abs(turtleX - XOrigin), Math.Abs(turtleY - YOrigin));
+        }
+
+        public abstract void Resize(float x, float y);
 
         public virtual void Select()
         {
@@ -50,16 +48,14 @@ namespace OOPDraw
             LineWidth = 2;
         }
 
-        /// <summary>
-        /// Reset's the position, angle, pen size and colour to the specified properties for this shape
-        /// </summary>
         protected void ResetTurtle()
         {
-            Turtle.Angle = 0;
-            Turtle.PenColor = Color.Black;
+            Turtle.ShowTurtle = false;
             Turtle.PenSize = LineWidth;
-            Turtle.X = OriginX;
-            Turtle.Y = OriginY;
+            Turtle.Angle = 0;  //Always start from North
+            Turtle.X = XOrigin;
+            Turtle.Y = YOrigin;
         }
+
     }
 }

@@ -2,7 +2,6 @@
 {
     partial class Form1
     {
-
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -29,98 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.Next = new System.Windows.Forms.Button();
-            this.Previous = new System.Windows.Forms.Button();
-            this.Function = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.Clear = new System.Windows.Forms.Button();
+            this.Prev = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Items.AddRange(new object[] {
+            "Draw Triangle",
+            "Draw Rectangle",
+            "Draw House",
+            "Move Shape",
+            "Resize Shape"});
+            this.comboBox1.Location = new System.Drawing.Point(13, 13);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 0;
             // 
             // Next
             // 
-            this.Next.Location = new System.Drawing.Point(73, 76);
-            this.Next.Margin = new System.Windows.Forms.Padding(1);
+            this.Next.Location = new System.Drawing.Point(13, 51);
             this.Next.Name = "Next";
-            this.Next.Size = new System.Drawing.Size(54, 44);
+            this.Next.Size = new System.Drawing.Size(48, 22);
             this.Next.TabIndex = 1;
             this.Next.Text = "Next";
             this.Next.UseVisualStyleBackColor = true;
             this.Next.Click += new System.EventHandler(this.Next_Click);
             // 
-            // Previous
+            // Prev
             // 
-            this.Previous.Location = new System.Drawing.Point(8, 76);
-            this.Previous.Margin = new System.Windows.Forms.Padding(1);
-            this.Previous.Name = "Previous";
-            this.Previous.Size = new System.Drawing.Size(52, 44);
-            this.Previous.TabIndex = 10;
-            this.Previous.Text = "Prev";
-            this.Previous.UseVisualStyleBackColor = true;
-            this.Previous.Click += new System.EventHandler(this.Previous_click);
-            // 
-            // Function
-            // 
-            this.Function.FormattingEnabled = true;
-            this.Function.Items.AddRange(new object[] {
-            "New Rectangle",
-            "New Triangle",
-            "New House",
-            "New Circle",
-            "Move",
-            "Resize"});
-            this.Function.Location = new System.Drawing.Point(8, 32);
-            this.Function.Margin = new System.Windows.Forms.Padding(1);
-            this.Function.Name = "Function";
-            this.Function.Size = new System.Drawing.Size(114, 21);
-            this.Function.TabIndex = 11;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Function:";
-            // 
-            // Clear
-            // 
-            this.Clear.Location = new System.Drawing.Point(8, 136);
-            this.Clear.Margin = new System.Windows.Forms.Padding(1);
-            this.Clear.Name = "Clear";
-            this.Clear.Size = new System.Drawing.Size(52, 41);
-            this.Clear.TabIndex = 16;
-            this.Clear.Text = "Clear";
-            this.Clear.UseVisualStyleBackColor = true;
-            this.Clear.Click += new System.EventHandler(this.Clear_Click);
+            this.Prev.Location = new System.Drawing.Point(79, 51);
+            this.Prev.Name = "Prev";
+            this.Prev.Size = new System.Drawing.Size(55, 22);
+            this.Prev.TabIndex = 2;
+            this.Prev.Text = "Prev";
+            this.Prev.UseVisualStyleBackColor = true;
+            this.Prev.Click += new System.EventHandler(this.Prev_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(722, 445);
-            this.Controls.Add(this.Clear);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.Function);
-            this.Controls.Add(this.Previous);
+            this.ClientSize = new System.Drawing.Size(385, 323);
+            this.Controls.Add(this.Prev);
             this.Controls.Add(this.Next);
-            this.Margin = new System.Windows.Forms.Padding(1);
+            this.Controls.Add(this.comboBox1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button Next;
-        private System.Windows.Forms.Button Previous;
-        private System.Windows.Forms.ComboBox Function;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button Clear;
+        private System.Windows.Forms.Button Prev;
     }
 }
 

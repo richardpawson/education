@@ -1,6 +1,4 @@
 ﻿using Nakov.TurtleGraphics;
-using System.Drawing;
-using System;
 
 namespace OOPDraw
 {
@@ -10,10 +8,10 @@ namespace OOPDraw
         private float Width { get; set; }
         private float Height { get; set; }
 
-        //The 'Constructor
-        public Rectangle(float centreX, float centreY, float width, float height) : base(centreX, centreY)
+        //The 'Constructor'
+        public Rectangle(float xOrigin, float yOrigin, float width, float height) : base(xOrigin, yOrigin)
         {
-            Width  = width;
+            Width = width;
             Height = height;
         }
 
@@ -31,8 +29,8 @@ namespace OOPDraw
 
         public override void Resize(float x, float y)
         {
-            Width = Math.Abs(x);
-            Height = Math.Abs(y);
+            Width = x;
+            Height = y;
         }
     }
 }
