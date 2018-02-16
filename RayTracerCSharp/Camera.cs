@@ -11,16 +11,19 @@ namespace RayTracer
 
         public Camera(Vector3D pos, Vector3D lookAt)
         {
+            var forward = lookAt - pos;
+            forward.Normalize();
+            var down = new Vector3D(0, -1, 0);
+            var right = Vector3D.CrossProduct(forward, down);
+            right.Normalize();
+            right *= 1.5;
+            var up = Vector3D.CrossProduct(forward, right);
+            up.Normalize();
+            up *= 1.5;
             Pos = pos;
-            Forward = lookAt - pos;
-            Forward.Normalize();
-            Vector3D Down = new Vector3D(0, -1, 0);
-            Right = Vector3D.CrossProduct(Forward, Down);
-            Right.Normalize();
-            Right *= 1.5;
-            Up = Vector3D.CrossProduct(Forward, Right);
-            Up.Normalize();
-            Up *= 1.5;
+            Forward = forward;
+            Up = up;
+            Right = right;
         }
     }
 }

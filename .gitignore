@@ -17,3 +17,5 @@ Snake/~$ory plan.docx
 /OOPDraw/~$udent Workbook.docx
 *.tmp
 /OOPDraw/.vs/OOPDraw/v15/Server/sqlite3
+*.lock
+*.ide
