@@ -19,3 +19,5 @@ Snake/~$ory plan.docx
 /OOPDraw/.vs/OOPDraw/v15/Server/sqlite3
 *.lock
 *.ide
+*.ide-shm
+*.ide-wal
