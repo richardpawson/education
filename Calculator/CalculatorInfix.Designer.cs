@@ -1,6 +1,6 @@
 ﻿namespace Calculator
 {
-    partial class InfixLayout
+    partial class CalculatorInfix
     {
         #region Windows Form Designer generated code
 

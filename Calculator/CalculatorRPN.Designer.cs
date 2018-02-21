@@ -1,6 +1,6 @@
 ﻿namespace Calculator
 {
-    partial class RPNLayout
+    partial class CalculatorRPN
     {
         #region Windows Form Designer generated code
 

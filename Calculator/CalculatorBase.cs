@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace Calculator
 {
-    public partial class BaseLayout : Form
+    public partial class CalculatorBase : Form
     {
         protected Core Calculator;
 
-        public BaseLayout()
+        public CalculatorBase()
         {
             InitializeComponent();
             Calculator = new Core();

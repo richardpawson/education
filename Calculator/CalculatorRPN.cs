@@ -2,9 +2,9 @@
 
 namespace Calculator
 {
-    public partial class RPNLayout : BaseLayout
+    public partial class CalculatorRPN : CalculatorBase
     {
-        public RPNLayout() : base()
+        public CalculatorRPN() : base()
         {
             InitializeComponent();
         }

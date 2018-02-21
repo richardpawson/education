@@ -49,34 +49,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
-    <Compile Include="InfixLayout.cs">
+    <Compile Include="CalculatorInfix.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InfixLayout.Designer.cs">
-      <DependentUpon>InfixLayout.cs</DependentUpon>
+    <Compile Include="CalculatorInfix.Designer.cs">
+      <DependentUpon>CalculatorInfix.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseLayout.cs">
+    <Compile Include="CalculatorBase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BaseLayout.Designer.cs">
-      <DependentUpon>BaseLayout.cs</DependentUpon>
+    <Compile Include="CalculatorBase.Designer.cs">
+      <DependentUpon>CalculatorBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="RPNLayout.cs">
+    <Compile Include="CalculatorRPN.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RPNLayout.Designer.cs">
-      <DependentUpon>RPNLayout.cs</DependentUpon>
+    <Compile Include="CalculatorRPN.Designer.cs">
+      <DependentUpon>CalculatorRPN.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="InfixLayout.resx">
-      <DependentUpon>InfixLayout.cs</DependentUpon>
+    <EmbeddedResource Include="CalculatorInfix.resx">
+      <DependentUpon>CalculatorInfix.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BaseLayout.resx">
-      <DependentUpon>BaseLayout.cs</DependentUpon>
+    <EmbeddedResource Include="CalculatorBase.resx">
+      <DependentUpon>CalculatorBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RPNLayout.resx">
-      <DependentUpon>RPNLayout.cs</DependentUpon>
+    <EmbeddedResource Include="CalculatorRPN.resx">
+      <DependentUpon>CalculatorRPN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -2,9 +2,9 @@
 
 namespace Calculator
 {
-    public partial class InfixLayout : BaseLayout
+    public partial class CalculatorInfix : CalculatorBase
     {
-        public InfixLayout() : base()
+        public CalculatorInfix() : base()
         {
             InitializeComponent();
 

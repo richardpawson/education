@@ -1,6 +1,6 @@
 ﻿namespace Calculator
 {
-    partial class BaseLayout
+    partial class CalculatorBase
     {
         /// <summary>
         /// Required designer variable.
