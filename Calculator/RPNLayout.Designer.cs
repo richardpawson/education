@@ -11,9 +11,7 @@
         private void InitializeComponent()
         {
             this.evaluate = new System.Windows.Forms.Button();
-            this.enter = new System.Windows.Forms.Button();
- //           this.SuspendLayout();
-           
+            this.enter = new System.Windows.Forms.Button();           
             // 
             // enter
             // 
@@ -36,7 +34,6 @@
             this.evaluate.Text = "evaluate";
             this.evaluate.UseVisualStyleBackColor = true;
             this.evaluate.Click += new System.EventHandler(this.evaluate_Click);
-        
             // 
             // RPN
             // 
@@ -45,7 +42,6 @@
             this.Name = "RPN";
             this.Text = "RPN Calculator";
         }
-
         #endregion
 
         private System.Windows.Forms.Button enter;

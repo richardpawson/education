@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Calculator
 {
-    public class Calculator
+    public class Core
     {
         private List<object> Tokens = new List<object>();
 
@@ -40,7 +40,7 @@ namespace Calculator
            return EvaluateAsRPN(Tokens);
         }
 
-        private double EvaluateAsRPN(List<object> Tokens)
+        public static double EvaluateAsRPN(List<object> Tokens)
         {
             var stack = new Stack<double>();
             foreach (object token in Tokens)
@@ -77,7 +77,7 @@ namespace Calculator
             return EvaluateAsRPN(tokensAsRPN);
         }
 
-        public List<object> ConvertInfixToPostfix(List<object> inputTokens)
+        public static List<object> ConvertInfixToPostfix(List<object> inputTokens)
         {
             var s = new Stack<char>();
             var outputList = new List<object>();
@@ -90,11 +90,26 @@ namespace Calculator
                 else
                 {
                     char token = (char)t;
-                    while (s.Count != 0 && Priority(s.Peek()) >= Priority(token))
+                    if (token == '(')
                     {
-                        outputList.Add(s.Pop());
+                        s.Push(token);
                     }
-                    s.Push(token);
+                    else if (token == ')')
+                    {
+                        while (s.Count != 0 && !s.Peek().Equals('('))
+                        {
+                            outputList.Add(s.Pop());
+                        }
+                        s.Pop();
+                    }
+                    else //must be operator
+                    {
+                        while (s.Count != 0 && Priority(s.Peek()) >= Priority(token))
+                        {
+                            outputList.Add(s.Pop());
+                        }
+                        s.Push(token);
+                    }
                 }
             }
             while (s.Count != 0)
@@ -104,19 +119,15 @@ namespace Calculator
             return outputList;
         }
 
-        private int Priority(char c)
+        public static int Priority(char c)
         {
-            if (c == '^')
-            {
-                return 3;
-            }
-            else if (c == '*' || c == '/')
+            if (c == '*' || c == '/')
             {
                 return 2;
             }
             else if (c == '+' || c == '-')
             {
-                return 2;
+                return 1;
             }
             else return 0;
         }

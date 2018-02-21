@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calculator.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="InfixLayout.cs">
       <SubType>Form</SubType>
     </Compile>

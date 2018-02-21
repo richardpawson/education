@@ -5,12 +5,12 @@ namespace Calculator
 {
     public partial class BaseLayout : Form
     {
-        protected Calculator Calculator;
+        protected Core Calculator;
 
         public BaseLayout()
         {
             InitializeComponent();
-            Calculator = new Calculator();
+            Calculator = new Core();
         }
 
         protected void TransferNumberToExpression()

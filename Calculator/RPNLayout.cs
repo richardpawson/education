@@ -16,7 +16,14 @@ namespace Calculator
 
         private void evaluate_Click(object sender, EventArgs e)
         {
-            DisplayResult(Calculator.EvaluateTokensAsRPN());
+            try
+            {
+                DisplayResult(Calculator.EvaluateTokensAsRPN());
+            }
+            catch (Exception)
+            {
+                numericDisplay.Text = "Error!";
+            }
         }
       
     }
