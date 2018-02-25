@@ -17,7 +17,7 @@
             // 
             // equals
             // 
-            this.equals.Location = new System.Drawing.Point(223, 306);
+            this.equals.Location = new System.Drawing.Point(226, 306);
             this.equals.Margin = new System.Windows.Forms.Padding(1);
             this.equals.Name = "equals";
             this.equals.Size = new System.Drawing.Size(71, 32);
@@ -46,14 +46,14 @@
             this.closeBracket.UseVisualStyleBackColor = true;
             this.closeBracket.Click += new System.EventHandler(this.closeBracket_Click);
             // 
-            // InfixLayout
+            // CalculatorInfix
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(324, 376);
             this.Controls.Add(this.closeBracket);
             this.Controls.Add(this.openBracket);
             this.Controls.Add(this.equals);
-            this.Name = "InfixLayout";
+            this.Name = "CalculatorInfix";
             this.Text = "Infix Calculator";
             this.Controls.SetChildIndex(this.equals, 0);
             this.Controls.SetChildIndex(this.button7, 0);

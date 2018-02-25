@@ -24,7 +24,6 @@ namespace Calculator
             {
                 numericDisplay.Text = "Error!";
             }
-        }
-      
+        }   
     }
 }

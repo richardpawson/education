@@ -37,11 +37,12 @@ namespace Calculator
 
         public double EvaluateTokensAsRPN()
         {
-           return EvaluateAsRPN(Tokens);
+            return EvaluateAsRPN(Tokens);
         }
 
         public static double EvaluateAsRPN(List<object> Tokens)
         {
+            double result = 0;
             var stack = new Stack<double>();
             foreach (object token in Tokens)
             {
@@ -57,18 +58,23 @@ namespace Calculator
                             stack.Push(stack.Pop() + stack.Pop());
                             break;
                         case '-':
-                            stack.Push(- stack.Pop() + stack.Pop());
+                            var b = stack.Pop();
+                            var a = stack.Pop();
+                            stack.Push(a - b);
                             break;
                         case '*':
                             stack.Push(stack.Pop() * stack.Pop());
                             break;
                         case '/':
-                            stack.Push(1 / stack.Pop() * stack.Pop());
+                            var d = stack.Pop();
+                            var c = stack.Pop();
+                            stack.Push(c / d);
                             break;
                     }
                 }
             }
-            return stack.Pop();
+            result = stack.Pop();
+            return result;
         }
 
         public double EvaluateTokensAsInfix()
@@ -90,33 +96,15 @@ namespace Calculator
                 else
                 {
                     char token = (char)t;
-                    if (token == '(')
+                    while (s.Count != 0 && Priority(s.Peek()) >= Priority(token))
                     {
-                        s.Push(token);
+                        outputList.Add(s.Pop());
                     }
-                    else if (token == ')')
-                    {
-                        while (s.Count != 0 && !s.Peek().Equals('('))
-                        {
-                            outputList.Add(s.Pop());
-                        }
-                        s.Pop();
-                    }
-                    else //must be operator
-                    {
-                        while (s.Count != 0 && Priority(s.Peek()) >= Priority(token))
-                        {
-                            outputList.Add(s.Pop());
-                        }
-                        s.Push(token);
-                    }
+                    s.Push(token);
                 }
             }
-            while (s.Count != 0)
-            {
-                outputList.Add(s.Pop());
-            }
             return outputList;
+
         }
 
         public static int Priority(char c)
