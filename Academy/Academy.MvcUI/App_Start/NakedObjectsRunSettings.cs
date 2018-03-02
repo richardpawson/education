@@ -37,7 +37,10 @@ namespace Academy {
         private static Type[] Services {
             get {
                 return new Type[] {
-                    typeof(StudentRepository)
+                    typeof(StudentRepository),
+                    typeof(TeacherRepository),
+                    typeof(SubjectRepository),
+                    typeof(SetRepository)
                 };
             }
         }

@@ -48,7 +48,10 @@ namespace NakedObjects.Template {
             get
             {
                 return new Type[] {
-                    typeof(StudentRepository)
+                    typeof(StudentRepository),
+                    typeof(TeacherRepository),
+                    typeof(SubjectRepository),
+                    typeof(SetRepository)
                 };
             }
         }

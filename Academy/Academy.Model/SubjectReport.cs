@@ -9,12 +9,15 @@ namespace Academy.Model
     {
         #region Injected Services
         public StudentRepository Students { set; protected get; }
+
+        public TeacherRepository Teachers { set; protected get; }
+
         #endregion
 
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        [MemberOrder(1)]
+        [MemberOrder(1), Disabled]
         public virtual Student Student { get; set; }
 
         [PageSize(10)]
@@ -23,7 +26,7 @@ namespace Academy.Model
             return Students.FindStudentByName(matching);
         }
 
-        [MemberOrder(2)]
+        [MemberOrder(2), Disabled]
         public virtual Subject Subject { get; set; }
 
         [MemberOrder(3)]
@@ -32,7 +35,11 @@ namespace Academy.Model
 
         [MemberOrder(4)]
         public virtual Teacher GivenBy { get; set; }
-
+        [PageSize(10)]
+        public IQueryable<Teacher> AutoCompleteGivenBy([MinLength(2)] string matching)
+        {
+            return Teachers.FindTeacherByName(matching);
+        }
 
         [MemberOrder(5)]
         [Mask("d")]

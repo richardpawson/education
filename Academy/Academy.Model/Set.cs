@@ -9,9 +9,7 @@ namespace Academy.Model
     public class Set
     {
         #region Injected Services
-        // This region should contain properties to hold references to any services required by the
-        // object.  Use the 'injs' shortcut to add a new service; 'injc' to add an injected Container
-
+        public IDomainObjectContainer Container { set; protected get; }
         #endregion
         #region Life Cycle Methods
         // This region should contain any of the 'life cycle' convention methods (such as
@@ -53,8 +51,39 @@ namespace Academy.Model
             }
         }
 
+        public void AddStudentToSet(Student student)
+        {
+            Students.Add(student);
+        }
 
+        public void RemoveStudentFromSet(Student student)
+        {
+            Students.Remove(student);
+        }
 
+        public IList<Student> Choices0RemoveStudentFromSet()
+        {
+            return Students.ToList();
+        }
+
+        public void TransferStudentTo(Student student, Set newSet)
+        {
+            this.RemoveStudentFromSet(student);
+            newSet.AddStudentToSet(student);
+        }
+
+        public IList<Student> Choices0TransferStudentTo()
+        {
+            return Students.ToList();
+        }
+
+        [PageSize(10)]
+        public IList<Set> Choices1TransferStudentTo()
+        {
+            int subjId = this.Subject.Id;
+            int yg = this.YearGroup;
+            return Container.Instances<Set>().Where(s => s.Subject.Id == subjId && s.YearGroup == yg).ToList();
+        }
     }
 }
 

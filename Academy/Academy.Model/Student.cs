@@ -16,18 +16,19 @@ namespace Academy.Model
         [NakedObjectsIgnore]//Indicates that this property will never be seen in the UI
         public virtual int Id { get; set; }
 
+        [MemberOrder(1)]
         [Title]//This property will be used for the object's title at the top of the view and in a link
         public virtual string FullName { get; set; }
 
-        [MemberOrder(1), Range(9, 13)]
+        [MemberOrder(2), Range(9, 13)]
         public virtual int CurrentYearGroup { get; set; }
 
-        [Optionally]
+        [Optionally, MemberOrder(4)]
         public virtual Teacher PersonalTutor { get; set; }
 
         private ICollection<Set> _sets = new List<Set>();
 
-        [MemberOrder(5)]
+        [MemberOrder(3)]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(false, "Subject",  "SetName", "Teacher" )]
         public virtual ICollection<Set> Sets
@@ -53,5 +54,15 @@ namespace Academy.Model
             }
             return studentReps.OrderByDescending(sr => sr.Date);
         }
+
+        public SubjectReport AddNewReport(Subject sub)
+        {
+            var rep = Container.NewTransientInstance<SubjectReport>();
+            rep.Student = this;
+            rep.Subject = sub;
+            return rep;
+        }
+
+
     }
 }
