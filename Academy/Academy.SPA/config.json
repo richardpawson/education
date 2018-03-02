@@ -1,0 +1,42 @@
+{
+  "authenticate": false,
+  "authClientId": "",
+  "authDomain": "",
+  "applicationName" : "Academy",
+  "appPath": "http://localhost:4001/",
+  "colors": {
+    "typeMap": {
+      "Academy.Student": 1
+    }
+  },
+  "masks": {
+    "currencyMasks": {
+      "C": {
+        "format": "decimal",
+        "symbol": "GBP",
+        "digits": "1.2-2"
+      },
+      "c": {
+        "format": "decimal",
+        "symbol": "GBP",
+        "digits": "1.2-2"
+      }
+    },
+    "dateMasks?": {
+      "d": {
+        "format": "date-time",
+        "mask": "D MMM YYYY",
+        "tz": "+0000"
+      },
+      "D": {
+        "format": "date",
+        "mask": "D MMM YYYY hh:mm:ss"
+      },
+      "T": {
+        "format": "time",
+        "mask": "HH:mm",
+        "tz": "+0000"
+      }
+    }
+  }
+}

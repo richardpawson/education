@@ -1,0 +1,40 @@
+﻿@using NakedObjects.Web.Mvc.Html
+@using System.Web.Optimization
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title</title>
+        @(Styles.Render("~/Content/css", "~/Content/themes/base/css", "~/Content/nakedobjectscss"))
+        @Scripts.Render("~/bundles/modernizr")
+
+    </head>
+
+    <body>
+        <header>        
+            
+         <div class="content-wrapper">
+          <h1>Academy</h1>
+          @(Html.MainMenus())
+         </div>
+           
+            <div class="no-home-path" style="display: none">@(Html.ActionLink("Home", "Index", "Home"))</div>
+        </header>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+        </div>
+
+        @RenderSection("Scripts", false)    
+        @(Scripts.Render(
+            "~/bundles/jquery", 
+            "~/bundles/bootstrap", 
+            "~/bundles/jqueryui", 
+            "~/bundles/jqueryval", 
+            "~/bundles/nakedobjectsajax", 
+            "~/bundles/jquerydatepicker" //Specifies UK date format!
+           ))       
+         
+    </body>
+</html>

@@ -1,0 +1,27 @@
+﻿@using NakedObjects.Web.Mvc.Html
+
+@{
+    Layout = "~/Views/Shared/_NofLayout.cshtml";
+    ViewBag.Title = "Home Page";
+}
+
+<div id="body">
+    <section class="main-content" >
+        @{ MvcHtmlString messages = Html.SystemMessages(); }
+        @if (!string.IsNullOrWhiteSpace(messages.ToString())) {
+            <h2>@(messages)</h2>
+        }
+        @Html.UserMessages()
+        <br/>
+
+        @{ MvcHtmlString[] warnings = Html.InitialisationWarnings(); }
+        @if (warnings.Any()) {
+            <h3>The following warnings were raised during initialisation of Naked Objects: </h3>
+            <ul>
+                @foreach (var warning in warnings) {
+                    <li><b>@(warning)</b></li>
+                }
+            </ul>
+        }
+    </section>
+</div>
