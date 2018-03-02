@@ -57,8 +57,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Set.cs" />
+    <Compile Include="SubjectReport.cs" />
+    <Compile Include="SetRepository.cs" />
+    <Compile Include="SubjectRepository.cs" />
+    <Compile Include="Subject.cs" />
+    <Compile Include="TeacherRepository.cs" />
+    <Compile Include="Teacher.cs" />
     <Compile Include="Student.cs" />
-    <Compile Include="ExampleService.cs" />
+    <Compile Include="StudentRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ namespace Academy {
         private static Type[] Services {
             get {
                 return new Type[] {
-                    typeof(ExampleService)
+                    typeof(StudentRepository)
                 };
             }
         }
@@ -62,7 +62,7 @@ namespace Academy {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new ExampleDbContext("AcademyConnection", new ExampleDbInitializer()));
+            config.UsingCodeFirstContext(() => new AcademyDbContext("AcademyConnection", new AcademyDbInitializer()));
             return config;
         }
 
@@ -97,7 +97,10 @@ namespace Academy {
         public static IMenu[] MainMenus(IMenuFactory factory)
         {
             return new IMenu[] {
-                factory.NewMenu<ExampleService>(true, "Menu")
+                factory.NewMenu<TeacherRepository>(true, "Teachers"),
+                factory.NewMenu<StudentRepository>(true, "Students"),
+                factory.NewMenu<SubjectRepository>(true, "Subjects"),
+                factory.NewMenu<SetRepository>(true, "Sets"),
             };
         }
     }
