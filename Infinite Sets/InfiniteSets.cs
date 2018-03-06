@@ -9,7 +9,7 @@ namespace ConsoleApp1
         private const int max = 100;
         static void Main()
         {
-            var set = NaturalNumbers();
+            var set = AllPrimes();
             //var set = EvenMembersOf(NaturalNumbers());
             //var set = SquaresOf(NaturalNumbers());
             foreach (var n in set.Take(10))
@@ -45,5 +45,15 @@ namespace ConsoleApp1
             return set.Select(n => n * n);
         }
 
+        static IEnumerable<long> AllPrimes()
+        {
+            var possiblePrimes = NaturalNumbers().Skip(2);
+            while (true)
+            {
+                int prime = possiblePrimes.First();
+                yield return prime;
+                possiblePrimes = possiblePrimes.Where(n => n % prime != 0);
+            }
+        }
     }
 }
