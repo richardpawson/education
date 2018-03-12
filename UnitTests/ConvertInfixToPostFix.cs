@@ -11,7 +11,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMethod1()
         {
-            var infix = new List<object>() { 3.1, '+', 4.25 }; ;
+            var infix = new List<object>() { 3.1, '+', 4.25 }; 
             var postfix = new List<object>() {3.1,4.25,'+' };
             CollectionAssert.AreEqual(postfix, Core.ConvertInfixToPostfix(infix));
         }
