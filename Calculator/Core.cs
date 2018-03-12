@@ -89,22 +89,40 @@ namespace Calculator
             var outputList = new List<object>();
             foreach (var t in inputTokens)
             {
-                if (t is double)
+                if (t is double)  //token is a value
                 {
-                    outputList.Add(t);
+                    outputList.Add(t);  //send it straight to the output
                 }
-                else
+                else 
                 {
-                    char token = (char)t;
-                    while (s.Count != 0 && Priority(s.Peek()) >= Priority(token))
+                    char token = (char)t;  ///... so cast it to a char
+                    if (token == '(')
                     {
-                        outputList.Add(s.Pop());
+                        s.Push(token);
                     }
-                    s.Push(token);
+                    else if (token == ')')
+                    {
+                        while (s.Count != 0 && !s.Peek().Equals('('))
+                        {
+                            outputList.Add(s.Pop());
+                        }
+                        s.Pop();
+                    }
+                    else
+                    {
+                        while (s.Count != 0 && Priority(s.Peek()) >= Priority(token))
+                        {
+                            outputList.Add(s.Pop());
+                        }
+                        s.Push(token);
+                    }
                 }
             }
+            while (s.Count != 0)  //Unload any remaining operators onto the stack
+            {
+                outputList.Add(s.Pop());
+            }
             return outputList;
-
         }
 
         public static int Priority(char c)
