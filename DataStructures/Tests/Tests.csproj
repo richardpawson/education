@@ -56,7 +56,6 @@
     <Compile Include="Queue_Linear.cs" />
     <Compile Include="Queue_Circular.cs" />
     <Compile Include="Stacks.cs" />
-    <Compile Include="Queue_ReadyMade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
