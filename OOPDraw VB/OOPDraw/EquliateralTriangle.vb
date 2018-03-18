@@ -1,25 +1,18 @@
 ﻿Imports Nakov.TurtleGraphics
 
 Public Class EquliateralTriangle
-    Implements Shape
+    Inherits Shape
     'Properties
-    Private Property XOrigin As Single
-    Private Property YOrigin As Single
     Private Property SideLength As Single
 
     'The 'Constructor'
     Public Sub New(xOrigin As Single, yOrigin As Single, sideLength As Single)
-        Me.XOrigin = xOrigin
-        Me.YOrigin = yOrigin
+        MyBase.New(xOrigin, yOrigin)
         Me.SideLength = sideLength
     End Sub
 
-    Public Sub Draw() Implements Shape.Draw
-        Turtle.ShowTurtle = False
-        Turtle.PenSize = 2
-        Turtle.Angle = 0  'Always start from North
-        Turtle.X = XOrigin
-        Turtle.Y = YOrigin
+    Public Overrides Sub Draw()
+        ResetTurtle()
         Turtle.Rotate(30)
         For i = 1 To 3
             Turtle.Forward(SideLength)
@@ -27,9 +20,8 @@ Public Class EquliateralTriangle
         Next
     End Sub
 
-    Public Sub MoveTo(x As Single, y As Single)
-        XOrigin = x
-        YOrigin = y
+    Public Overrides Sub Resize(x As Single, y As Single)
+        'Ignore y
+        SideLength = x
     End Sub
-
 End Class

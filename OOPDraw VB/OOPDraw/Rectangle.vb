@@ -1,27 +1,20 @@
 ﻿Imports Nakov.TurtleGraphics
 
 Public Class Rectangle
-    Implements Shape
+    Inherits Shape
     'Properties
-    Private Property XOrigin As Single
-    Private Property YOrigin As Single
     Private Property Width As Single
     Private Property Height As Single
 
     'The 'Constructor'
     Public Sub New(xOrigin As Single, yOrigin As Single, width As Single, height As Single)
-        Me.XOrigin = xOrigin
-        Me.YOrigin = yOrigin
+        MyBase.New(xOrigin, yOrigin)
         Me.Width = width
         Me.Height = height
     End Sub
 
-    Public Sub Draw() Implements Shape.Draw
-        Turtle.ShowTurtle = False
-        Turtle.PenSize = 2
-        Turtle.Angle = 0  'Always start from North
-        Turtle.X = XOrigin
-        Turtle.Y = YOrigin
+    Public Overrides Sub Draw()
+        ResetTurtle()
         For i = 1 To 10
             Turtle.Forward(Height)
             Turtle.Rotate(90)
@@ -29,4 +22,10 @@ Public Class Rectangle
             Turtle.Rotate(90)
         Next
     End Sub
+
+    Public Overrides Sub Resize(x As Single, y As Single)
+        Width = x
+        Height = y
+    End Sub
+
 End Class
