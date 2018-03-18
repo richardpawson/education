@@ -6,9 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A5DABFAA-5CBF-4CF4-B32D-AC8B9AF6C687}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>My.MyApplication</StartupObject>
-    <RootNamespace>
-    </RootNamespace>
+    <StartupObject>Calculator.My.MyApplication</StartupObject>
+    <RootNamespace>Calculator</RootNamespace>
     <AssemblyName>Calculator</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
