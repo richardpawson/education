@@ -9,6 +9,7 @@ namespace Academy.ExampleData
 {
     public class AcademyDbInitializer : DropCreateDatabaseAlways<AcademyDbContext>
     {
+        private const string EXAMPLE = "Example Data";
         private AcademyDbContext Context;
         protected override void Seed(AcademyDbContext context)
         {
@@ -74,7 +75,7 @@ namespace Academy.ExampleData
 
         private Teacher CreateNewTeacher(string name)
         {
-            var obj = new Teacher() { FullName = name };
+            var obj = new Teacher() { FullName = name, CreatedBy = EXAMPLE };
             Context.Teachers.Add(obj);
             Context.SaveChanges();
             return obj;
@@ -82,7 +83,7 @@ namespace Academy.ExampleData
 
         private Student CreateNewStudent(string name, int year)
         {
-            var st = new Student() { FullName = name, CurrentYearGroup = year };
+            var st = new Student() { FullName = name, CurrentYearGroup = year, CreatedBy = EXAMPLE };
             Context.Students.Add(st);
             Context.SaveChanges();
             return st;
@@ -90,7 +91,7 @@ namespace Academy.ExampleData
 
         private Subject CreateNewSubject(string name)
         {
-            var obj = new Subject() { Name = name };
+            var obj = new Subject() { Name = name, CreatedBy = EXAMPLE };
             Context.Subjects.Add(obj);
             Context.SaveChanges();
             return obj;
@@ -98,7 +99,7 @@ namespace Academy.ExampleData
 
         private Set CreateNewSet(string name, Subject subject, int yearGroup, Teacher teacher)
         {
-            var obj = new Set() { SetName = name, Subject = subject, YearGroup = yearGroup, Teacher = teacher };
+            var obj = new Set() { SetName = name, Subject = subject, YearGroup = yearGroup, Teacher = teacher, CreatedBy = EXAMPLE };
             Context.Sets.Add(obj);
             Context.SaveChanges();
             return obj;
@@ -106,7 +107,7 @@ namespace Academy.ExampleData
 
         private SubjectReport CreateNewSubjectReport(Student st, Subject sub, Grades grade, Teacher teach, DateTime date)
         {
-            var obj = new SubjectReport() { Student = st, Subject = sub, Grade = grade, GivenBy = teach, Date = date };
+            var obj = new SubjectReport() { Student = st, Subject = sub, Grade = grade, GivenBy = teach, Date = date, CreatedBy = EXAMPLE };
             Context.SubjectReports.Add(obj);
             Context.SaveChanges();
             return obj;

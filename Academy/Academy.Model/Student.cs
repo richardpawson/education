@@ -6,11 +6,20 @@ using System.Linq;
 
 namespace Academy.Model
 {
-    public class Student
+    public class Student : IPrivateData
     {
         #region Injected Services
 
         public IDomainObjectContainer Container { set; protected get; }
+
+        #endregion
+
+        #region LifeCycle methods
+
+        public void Persisting()
+        {
+            CreatedBy = Container.Principal.Identity.Name;
+        }
 
         #endregion
         [NakedObjectsIgnore]//Indicates that this property will never be seen in the UI
@@ -23,8 +32,12 @@ namespace Academy.Model
         [MemberOrder(2), Range(9, 13)]
         public virtual int CurrentYearGroup { get; set; }
 
-        [Optionally, MemberOrder(4)]
+        [MemberOrder(4), Optionally,]
         public virtual Teacher PersonalTutor { get; set; }
+
+        [MemberOrder(99), Disabled]
+        public virtual string CreatedBy { get; set; }
+
 
         private ICollection<Set> _sets = new List<Set>();
 

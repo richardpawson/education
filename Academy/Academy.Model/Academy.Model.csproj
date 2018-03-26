@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPrivateData.cs" />
     <Compile Include="Set.cs" />
     <Compile Include="SubjectReport.cs" />
     <Compile Include="SetRepository.cs" />
