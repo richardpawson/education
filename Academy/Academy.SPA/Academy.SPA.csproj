@@ -117,9 +117,7 @@
     <Content Include="styles.c5f9f995b6c4cda349cd.bundle.css" />
     <Content Include="vendor.0f54824ff19f03f84be7.bundle.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="web.config" />
   </ItemGroup>
@@ -128,6 +126,7 @@
     <Content Include="iconFont.2f87c9f2aedf8f582535.woff" />
     <Content Include="iconFont.0a1778b9b8be9e01db68.ttf" />
     <Content Include="assets\.npmignore" />
+    <None Include="Properties\PublishProfiles\AcademySPA - Web Deploy.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

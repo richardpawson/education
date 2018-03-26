@@ -13,6 +13,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using Academy.Model;
 using Academy.DataBase;
 using Academy.ExampleData;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings
@@ -56,6 +57,12 @@ namespace NakedObjects.Template {
             }
         }
 
+        public static IAuthorizationConfiguration AuthorizationConfig()
+        {
+            return new AuthorizationConfiguration<Authorizer>();
+        }
+
+
         public static ReflectorConfiguration ReflectorConfig()
         {
             return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
@@ -64,7 +71,7 @@ namespace NakedObjects.Template {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
         {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new AcademyDbContext("AcademyConnection", new AcademyDbInitializer()));
+            config.UsingCodeFirstContext(() => new AcademyDbContext("AcademyConnection",null));
             return config;
         }
 

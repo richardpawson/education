@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Academy.Model
 {
-    public class SubjectReport : IPrivateData
+    public class SubjectReport 
     {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
@@ -14,12 +14,7 @@ namespace Academy.Model
 
         public TeacherRepository Teachers { set; protected get; }
         #endregion
-        #region LifeCycle methods
-        public void Persisting()
-        {
-            CreatedBy = Container.Principal.Identity.Name;
-        }
-        #endregion
+
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
@@ -59,9 +54,6 @@ namespace Academy.Model
         [MemberOrder(6)]
         [MultiLine][Optionally]
         public virtual string Notes { get; set; }
-
-        [MemberOrder(99), Disabled]
-        public virtual string CreatedBy { get; set; }
     }
 
     public enum Grades

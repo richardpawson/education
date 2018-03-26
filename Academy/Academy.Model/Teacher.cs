@@ -4,29 +4,19 @@ using System.Linq;
 
 namespace Academy.Model
 {
-    public class Teacher :IPrivateData
+    public class Teacher
     {
         #region Injected Services
 
         public IDomainObjectContainer Container { set; protected get; }
 
         #endregion
-        #region LifeCycle methods
 
-        public void Persisting()
-        {
-            CreatedBy = Container.Principal.Identity.Name;
-        }
-
-        #endregion
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
         [Title][MemberOrder(1)]
         public virtual string FullName { get; set; }
-
-        [MemberOrder(99), Disabled]
-        public virtual string CreatedBy { get; set; }
 
         [MemberOrder(5)]
         [Eagerly(EagerlyAttribute.Do.Rendering)]

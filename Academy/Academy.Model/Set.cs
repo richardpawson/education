@@ -6,16 +6,10 @@ using NakedObjects;
 
 namespace Academy.Model
 {
-    public class Set : IPrivateData
+    public class Set
     {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
-        #endregion
-        #region LifeCycle methods
-        public void Persisting()
-        {
-            CreatedBy = Container.Principal.Identity.Name;
-        }
         #endregion
 
         [NakedObjectsIgnore]
@@ -33,10 +27,6 @@ namespace Academy.Model
 
         [MemberOrder(4)]
         public virtual Teacher Teacher { get; set; }
-
-        [MemberOrder(99), Disabled]
-        public virtual string CreatedBy { get; set; }
-
 
         private ICollection<Student> _students = new List<Student>();
 

@@ -19,6 +19,8 @@ using NakedObjects.Facade.Translation;
 using NakedObjects.Unity;
 using Common.Logging;
 using NakedObjects.Facade.Interface;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Template
 {
@@ -83,6 +85,12 @@ namespace NakedObjects.Template
 
                 //Externals
                 container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
+
+                container.RegisterType(typeof(IFacetDecorator), typeof(AuthorizationManager),
+           "AuthorizationManager", new ContainerControlledLifetimeManager());
+                container.RegisterInstance(typeof(IAuthorizationConfiguration),
+                            NakedObjectsRunSettings.AuthorizationConfig(), new ContainerControlledLifetimeManager());
+
             }
             catch (Exception e)
             {

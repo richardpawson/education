@@ -1,9 +1,9 @@
 {
-  "authenticate": true,
-  "authClientId": "S4esRnt1vKbvMHpRTr82tK33LPlga08B",
-  "authDomain": "nakedobjectsdemo.eu.auth0.com",
+  "authenticate": false,
+  "authClientId": "",
+  "authDomain": "",
   "applicationName": "Academy",
-  "appPath": "http://localhost:5000/",
+  "appPath": "http://academyrestfulapi.azurewebsites.net/",
   "colors": {
     "typeMap": {
       "Academy.Student": 1
