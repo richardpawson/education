@@ -15,7 +15,7 @@ using NakedObjects.Rest.Model;
 
 namespace NakedObjects.Academy.Controllers {
 
-    //[Authorize]
+    [Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 

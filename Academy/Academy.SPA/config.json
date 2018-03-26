@@ -1,8 +1,8 @@
 {
-  "authenticate": false,
-  "authClientId": "",
-  "authDomain": "",
-  "applicationName" : "Academy",
+  "authenticate": true,
+  "authClientId": "S4esRnt1vKbvMHpRTr82tK33LPlga08B",
+  "authDomain": "nakedobjectsdemo.eu.auth0.com",
+  "applicationName": "Academy",
   "appPath": "http://localhost:5000/",
   "colors": {
     "typeMap": {
