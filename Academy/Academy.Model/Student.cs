@@ -10,6 +10,8 @@ namespace Academy.Model
     {
         #region Injected Services
 
+        public TeacherRepository Teachers { set; protected get; }
+
         public IDomainObjectContainer Container { set; protected get; }
 
         #endregion
@@ -25,6 +27,11 @@ namespace Academy.Model
 
         [MemberOrder(4), Optionally,]
         public virtual Teacher PersonalTutor { get; set; }
+
+        public IList<Teacher> ChoicesPersonalTutor()
+        {
+            return Teachers.AllTeachers().ToList();
+        }
 
         private ICollection<Set> _sets = new List<Set>();
 

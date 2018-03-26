@@ -2,7 +2,6 @@
 
 namespace Academy.Model
 {
-    [Bounded]
     public class Subject
     {
         #region Injected Services

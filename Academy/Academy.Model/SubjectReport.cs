@@ -1,5 +1,6 @@
 ﻿using NakedObjects;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -13,6 +14,8 @@ namespace Academy.Model
         public StudentRepository Students { set; protected get; }
 
         public TeacherRepository Teachers { set; protected get; }
+
+        public SubjectRepository Subjects { set; protected get; }
         #endregion
 
         [NakedObjectsIgnore]
@@ -27,8 +30,13 @@ namespace Academy.Model
             return Students.FindStudentByName(matching);
         }
 
-        [MemberOrder(2), Disabled]
+        [MemberOrder(2)]
         public virtual Subject Subject { get; set; }
+
+        public IList<Subject> ChoicesSubject()
+        {
+            return Subjects.AllSubjects().ToList();
+        }
 
         [MemberOrder(3)]
         public virtual Grades Grade { get; set; }
@@ -36,10 +44,10 @@ namespace Academy.Model
 
         [MemberOrder(4)]
         public virtual Teacher GivenBy { get; set; }
-        [PageSize(10)]
-        public IQueryable<Teacher> AutoCompleteGivenBy([MinLength(2)] string matching)
+
+        public IList<Teacher> ChoicesGivenBy()
         {
-            return Teachers.FindTeacherByName(matching);
+            return Teachers.AllTeachers().ToList();
         }
 
         [MemberOrder(5)]
