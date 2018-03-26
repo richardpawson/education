@@ -237,7 +237,6 @@
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\RestfulObjectsController.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -251,10 +250,13 @@
       <Project>{b24f4158-9795-4e37-997c-0b25a6c4fc8a}</Project>
       <Name>Academy.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Academy.SeedData\Academy.SeedData.csproj">
+    <ProjectReference Include="..\Academy.SeedData\Academy.ExampleData.csproj">
       <Project>{da6c0059-19b9-47aa-9282-36a169d11672}</Project>
-      <Name>Academy.SeedData</Name>
+      <Name>Academy.ExampleData</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -272,7 +274,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60257</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:4001/</IISUrl>
+          <IISUrl>http://localhost:5000/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

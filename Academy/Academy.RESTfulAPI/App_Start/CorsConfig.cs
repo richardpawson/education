@@ -16,7 +16,7 @@ public class CorsConfig {
         // from the http://foo.com origin.
 
         corsConfig.ForResources("RestfulObjects").
-            ForOrigins("http://localhost:4002").
+            ForOrigins("http://localhost:5001").
            AllowAll().
            AllowResponseHeaders("Warning", "Set-Cookie", "ETag").
            AllowCookies();

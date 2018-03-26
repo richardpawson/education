@@ -7,8 +7,8 @@
     <ProjectGuid>{DA6C0059-19B9-47AA-9282-36A169D11672}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Academy.SeedData</RootNamespace>
-    <AssemblyName>Academy.SeedData</AssemblyName>
+    <RootNamespace>Academy.ExampleData</RootNamespace>
+    <AssemblyName>Academy.ExampleData</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -5,7 +5,7 @@ using System.Linq;
 using Academy.DataBase;
 using Academy.Model;
 
-namespace Academy.SeedData
+namespace Academy.ExampleData
 {
     public class AcademyDbInitializer : DropCreateDatabaseAlways<AcademyDbContext>
     {

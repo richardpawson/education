@@ -12,7 +12,7 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using Academy.Model;
 using Academy.DataBase;
-using Academy.SeedData;
+using Academy.ExampleData;
 
 namespace NakedObjects.Template {
     public class NakedObjectsRunSettings
