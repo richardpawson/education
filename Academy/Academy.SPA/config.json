@@ -6,7 +6,11 @@
   "appPath": "http://academyrestfulapi.azurewebsites.net/",
   "colors": {
     "typeMap": {
-      "Academy.Student": 1
+      "Academy.Model.Student": 1,
+      "Academy.Model.Teacher": 2,
+      "Academy.Model.Subject": 3,
+      "Academy.Model.Set": 4,
+      "Academy.Model.SubjectReport": 5
     }
   },
   "masks": {
