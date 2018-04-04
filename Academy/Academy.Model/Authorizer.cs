@@ -1,4 +1,5 @@
-﻿using NakedObjects.Security;
+﻿using NakedObjects;
+using NakedObjects.Security;
 using System.Security.Principal;
 
 namespace Academy.Model
@@ -7,13 +8,22 @@ namespace Academy.Model
     {
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
-            return false;
+            return IsInSysAdminMode;
         }
 
 
         public bool IsVisible(IPrincipal principal, object target, string memberName) {
 
-            return !memberName.Contains("New");
+            return true;
+        }
+
+        public const bool IsInSysAdminMode = false;
+
+        public static string DisableIfNotSysAdmin()
+        {
+            var rb = new ReasonBuilder();
+            rb.AppendOnCondition(!IsInSysAdminMode, "You are not authorized to use this action.");
+            return rb.Reason;
         }
     }
 

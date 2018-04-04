@@ -15,6 +15,11 @@ namespace Academy.Model
             return Container.NewTransientInstance<Student>();
         }
 
+        public string DisableCreateNewStudent()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
+        }
+
         public IQueryable<Student> AllStudents()
         {
             return Container.Instances<Student>();

@@ -50,9 +50,19 @@ namespace Academy.Model
             Students.Add(student);
         }
 
+        public string DisableAddStudentToSet()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
+        }
+
         public void RemoveStudentFromSet(Student student)
         {
             Students.Remove(student);
+        }
+
+        public string DisableRemoveStudentFromSet()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
         }
 
         public IList<Student> Choices0RemoveStudentFromSet()
@@ -64,6 +74,11 @@ namespace Academy.Model
         {
             this.RemoveStudentFromSet(student);
             newSet.AddStudentToSet(student);
+        }
+
+        public string DisableTransferStudentTo()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
         }
 
         public IList<Student> Choices0TransferStudentTo()

@@ -70,6 +70,11 @@ namespace Academy.Model
             return rep;
         }
 
+        public string DisableCreateNewReport()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
+        }
+
         public void SendMessage(string subject, string message)
         {
             Container.InformUser("Message sent to " + FullName);

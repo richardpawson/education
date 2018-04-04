@@ -14,6 +14,11 @@ namespace Academy.Model
             return Container.NewTransientInstance<Set>();
         }
 
+        public string DisableCreateNewSet()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
+        }
+
         public IQueryable<Set> ListSets([Optionally] Subject subject, [Optionally] int? yearGroup)
         {
             var sets = Container.Instances<Set>();

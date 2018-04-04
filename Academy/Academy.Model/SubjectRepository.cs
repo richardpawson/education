@@ -14,6 +14,11 @@ namespace Academy.Model
             return Container.NewTransientInstance<Subject>();
         }
 
+        public string DisableCreateNewSubject()
+        {
+            return Authorizer.DisableIfNotSysAdmin();
+        }
+
         public IQueryable<Subject> AllSubjects()
         {
             return Container.Instances<Subject>();
