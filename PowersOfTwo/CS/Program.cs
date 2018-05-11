@@ -60,5 +60,44 @@ namespace PowersOf2CS
                 }
             }
         }
+
+        #region MkII  -  work directly with strings
+        public static string TwoToThePowerOfMkII(int power)
+        {
+            var d = "1";
+            for (int i = 0; i < power; i++)
+            {
+                d = MultiplyByTwoMkII(d);
+            }
+            return d;
+        }
+        static string MultiplyByTwoMkII(string digits, int carryIn = 0)
+        {
+            if (digits.Count() == 0)
+            {
+                return digits;
+            }
+            else
+            {
+                //Double digit to get new digit and carry
+                int lowestDigit = Convert.ToInt32(digits.Last()) - 48; //ASCII 48 = '0'
+                var doubledValue = lowestDigit * 2 + carryIn;
+                int carry = doubledValue / 10;
+                var newLowestDigit = doubledValue % 10;
+
+                if (carry > 0 && digits.Count() == 1) //Create a new higher digit
+                {
+                    return carry.ToString() + newLowestDigit;
+                }
+                else
+                {
+                    var higherDigits = digits.Substring(0, digits.Count() - 1); //All but lowest digit
+                    var digitsDoubled = MultiplyByTwoMkII(higherDigits, carry); //Recursive call
+                    digitsDoubled += newLowestDigit;
+                    return digitsDoubled;
+                }
+            }
+        }
+        #endregion
     }
 }
