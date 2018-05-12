@@ -18,12 +18,13 @@ namespace PowersOf2CS
             }
         }
 
-        public static string TwoToThePowerOf(int power)
+        #region MkI - use int arrays
+        public static string TwoToThePowerOfMkI(int power)
         {
             var d = new List<int> { 1 };
             for (int i = 0; i < power; i++)
             {
-                d = MultiplyByTwo(d);
+                d = MultiplyByTwoMkI(d);
             }
             var builder = new StringBuilder();
             foreach (int digit in d)
@@ -33,7 +34,7 @@ namespace PowersOf2CS
             return builder.ToString();
         }
 
-        static List<int> MultiplyByTwo(List<int> digits, int carryIn = 0)
+        static List<int> MultiplyByTwoMkI(List<int> digits, int carryIn = 0)
         {
             if (digits.Count == 0)
             {
@@ -54,12 +55,13 @@ namespace PowersOf2CS
                 else
                 {
                     var higherDigits = digits.Take(digits.Count - 1).ToList(); //All but lowest digit
-                    var digitsDoubled = MultiplyByTwo(higherDigits, carry); //Recursive call
+                    var digitsDoubled = MultiplyByTwoMkI(higherDigits, carry); //Recursive call
                     digitsDoubled.Add(newLowestDigit);
                     return digitsDoubled;
                 }
             }
         }
+        #endregion
 
         #region MkII  -  work directly with strings
         public static string TwoToThePowerOfMkII(int power)
@@ -97,6 +99,38 @@ namespace PowersOf2CS
                     return digitsDoubled;
                 }
             }
+        }
+        #endregion
+
+        #region No recursion
+        public static string TwoToThePowerOf(int power)
+        {
+            string number = "1";
+            for (int i = 0; i < power; i++)
+            {
+                number = MultiplyByTwo(number);
+            }
+            return number;
+        }
+        private static string MultiplyByTwo(string digits)
+        {
+            StringBuilder builder = new StringBuilder(digits.Length + 1); //Initialising to maximum length is more efficient
+            int carry = 0;
+            for (int i = digits.Length-1; i >=0; i--) //Least significant digit first
+            {
+                //Double the digit:
+                int digit = Convert.ToInt32(digits[i]) - 48; //ASCII 48 = '0'
+                int doubledValue = digit * 2 + carry; //Carry is 'carry-in' here
+                carry = doubledValue / 10; //Carry is now 'carry-out'
+                int newDigit = doubledValue % 10;
+                //Add to front of new string:
+                builder.Insert(0, newDigit);
+            }
+            if (carry > 0) //Add final new digit up front
+            {
+                builder.Insert(0, carry);
+            }
+            return builder.ToString();
         }
         #endregion
     }

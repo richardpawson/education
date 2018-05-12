@@ -16,7 +16,7 @@ namespace UnitTests
             Assert.AreEqual("4", Program.TwoToThePowerOf(2));
             Assert.AreEqual("1024", Program.TwoToThePowerOf(10));
             Assert.AreEqual("65536", Program.TwoToThePowerOf(16));
-            Assert.AreEqual("1267650600228229401496703205376", Program.TwoToThePowerOf(100));
+            Assert.AreEqual("1267650600228229401496703205376", Program.TwoToThePowerOfMkI(100));
             
         }
 
