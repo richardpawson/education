@@ -10,88 +10,50 @@ public class BinarySearchTree
 
     private BinarySearchTree RightChild { get; set; }
 
-    public BinarySearchTree(string rootValue)
+    public BinarySearchTree(string rootValue) //Costructor
     {
         RootValue = rootValue;
     }
 
-    public override string ToString()
+    public override string ToString() //Helps with debugging to see the root value
     {
         return RootValue;
     }
 
-    public void Add(string value)
+    public bool Contains(string soughtValue)
     {
-        if (string.Compare(value, RootValue) > 0)
+        return RootValue == soughtValue || 
+               (LeftChild != null && LeftChild.Contains(soughtValue)) ||
+               (RightChild != null && RightChild.Contains(soughtValue));
+    }
+
+    public void Add(string newValue)
+    {
+        if (newValue.CompareTo(RootValue) >= 0)
         {
             if (RightChild is null)
             {
-                RightChild = new BinarySearchTree(value);
+                RightChild = new BinarySearchTree(newValue);
             }
             else
             {
-                RightChild.Add(value);
+                RightChild.Add(newValue);
             }
         }
         else
         {
             if (LeftChild is null)
             {
-                LeftChild = new BinarySearchTree(value);
+                LeftChild = new BinarySearchTree(newValue);
             }
             else
             {
-                LeftChild.Add(value);
+                LeftChild.Add(newValue);
             }
         }
     }
 
-    private void PushAllChildrenOntoStack(Stack<string> stack, BinarySearchTree tree)
-    {
-        if (tree != null)
-        {
-            stack.Push(tree.RootValue);
-            PushAllChildrenOntoStack(stack, tree.LeftChild);
-            PushAllChildrenOntoStack(stack, tree.RightChild);
-        }
-    }
-
-    public void Remove(string value)
-    {
-        if (RootValue == value)
-        {
-            RootValue = null;
-            var stack = new Stack<string>();
-            PushAllChildrenOntoStack(stack, LeftChild);
-            LeftChild = null;
-            PushAllChildrenOntoStack(stack, RightChild);
-            RightChild = null;
-            if (stack.Count > 0)
-            {
-                RootValue = stack.Pop();
-            }
-            while (stack.Count > 0)
-            {
-                Add(stack.Pop());
-            }
-        }
-        else if (LeftChild != null && LeftChild.Contains(value))
-        {
-            LeftChild.Remove(value);
-        }
-        else if (RightChild != null && RightChild.Contains(value))
-        {
-            RightChild.Remove(value);
-        }
-    }
-
-
-    public bool Contains(string value)
-    {
-        return RootValue == value || (LeftChild != null && LeftChild.Contains(value)) ||
-             (RightChild != null && RightChild.Contains(value));
-    }
-
+    #region Traverse
     //Returns a List of the string values in the tree, as traversed.
     //Follow 'left to right' convention
     public List<string> TraverseBreadthFirst()
@@ -154,4 +116,46 @@ public class BinarySearchTree
         visited.Add(RootValue);
         return visited;
     }
+#endregion
+
+    #region Remove
+    public void Remove(string value)
+    {
+        if (RootValue == value)
+        {
+            RootValue = null;
+            var stack = new Stack<string>();
+            PushAllChildrenOntoStack(stack, LeftChild);
+            LeftChild = null;
+            PushAllChildrenOntoStack(stack, RightChild);
+            RightChild = null;
+            if (stack.Count > 0)
+            {
+                RootValue = stack.Pop();
+            }
+            while (stack.Count > 0)
+            {
+                Add(stack.Pop());
+            }
+        }
+        else if (LeftChild != null && LeftChild.Contains(value))
+        {
+            LeftChild.Remove(value);
+        }
+        else if (RightChild != null && RightChild.Contains(value))
+        {
+            RightChild.Remove(value);
+        }
+    }
+
+    private void PushAllChildrenOntoStack(Stack<string> stack, BinarySearchTree tree)
+    {
+        if (tree != null)
+        {
+            stack.Push(tree.RootValue);
+            PushAllChildrenOntoStack(stack, tree.LeftChild);
+            PushAllChildrenOntoStack(stack, tree.RightChild);
+        }
+    }
+    #endregion
 }
