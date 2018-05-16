@@ -7,19 +7,16 @@ using System.Text;
 
 namespace Quadrivia
 {
-    public class QuestionAuthorizer : ITypeAuthorizer<Question>
+    public class TeacherAuthorizer : ITypeAuthorizer<Teacher>
     {
-        public bool IsEditable(IPrincipal principal, Question target, string memberName)
+        public bool IsEditable(IPrincipal principal, Teacher target, string memberName)
         {
             throw new NotImplementedException();
-            //No fields are editable once status is Final -  can only be superseded
-            //In draft, only editable by owning teacher
         }
 
-        public bool IsVisible(IPrincipal principal, Question target, string memberName)
+        public bool IsVisible(IPrincipal principal, Teacher target, string memberName)
         {
             throw new NotImplementedException();
-            //Visible directly only to Teachers
         }
     }
 }

@@ -88,7 +88,6 @@ namespace Quadrivia
         //Retrieve & summarise prior versions
         //Make a copy(for editing) no longer associated with this (anyone) - needs new metadata
         //Retrieve and/or store in summarised form: how many times question has been answered, and summarised results.
-        //Auto-mark answers, when requested to
         //Capture a rating by a teacher, and summarise ratings
         #endregion
     }
