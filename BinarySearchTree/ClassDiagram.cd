@@ -7,23 +7,23 @@
     </Members>
     <AssociationLine Name="RightChild" Type="BinarySearchTree" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="5.5" Y="1.824" />
-        <Point X="5.75" Y="1.824" />
-        <Point X="5.75" Y="1.294" />
-        <Point X="5.5" Y="1.294" />
+        <Point X="5.5" Y="1.926" />
+        <Point X="5.75" Y="1.926" />
+        <Point X="5.75" Y="1.331" />
+        <Point X="5.5" Y="1.331" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="LeftChild" Type="BinarySearchTree" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="3" Y="1.824" />
-        <Point X="2.75" Y="1.824" />
-        <Point X="2.75" Y="1.294" />
-        <Point X="3" Y="1.294" />
+        <Point X="3" Y="1.926" />
+        <Point X="2.75" Y="1.926" />
+        <Point X="2.75" Y="1.331" />
+        <Point X="3" Y="1.331" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAIAQEAAAAAAAAAFBAAABBAAAAAAAAAAAAACgBAQAAA=</HashCode>
-      <FileName>BinarySearchTree.cs</FileName>
+      <FileName>BinarySearchTree - Answer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="RightChild" />

@@ -6,6 +6,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 public class UnitTests
 {
     [TestMethod]
+    public void Test_1ConstructorAndToString()
+    {
+        var bst = new BinarySearchTree("Monkey");
+        Assert.AreEqual("Monkey", bst.ToString());
+    }
+
+    [TestMethod]
     public void Test_2ContainsRoot()
     {
         var bst = new BinarySearchTree("Monkey");
@@ -23,7 +30,7 @@ public class UnitTests
     public void Test_4AddMultiple()
     {
         var bst = new BinarySearchTree("Monkey");
-          bst.Add("Topi");
+        bst.Add("Topi");
         bst.Add("Zebra");
         Assert.IsTrue(bst.Contains("Monkey"));
         Assert.IsTrue(bst.Contains("Topi"));
@@ -53,7 +60,7 @@ public class UnitTests
         bst.Add("Topi");
         bst.Add("Cow");
         var actual = bst.TraverseBreadthFirst();
-        var expected = new List<string> { "Monkey",  "Aardvark", "Zebra", "Cow", "Topi", };
+        var expected = new List<string> { "Monkey", "Aardvark", "Zebra", "Cow", "Topi", };
         CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -66,7 +73,7 @@ public class UnitTests
         bst.Add("Topi");
         bst.Add("Zebra");
         var actual = bst.TraverseDepthFirstPreOrder();
-        var expected = new List<string> { "Monkey", "Cow",  "Aardvark", "Topi", "Zebra" };
+        var expected = new List<string> { "Monkey", "Cow", "Aardvark", "Topi", "Zebra" };
         CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -79,7 +86,7 @@ public class UnitTests
         bst.Add("Topi");
         bst.Add("Zebra");
         var actual = bst.TraverseDepthFirstInOrder();
-        var expected = new List<string> {"Aardvark", "Cow", "Monkey", "Topi", "Zebra" };
+        var expected = new List<string> { "Aardvark", "Cow", "Monkey", "Topi", "Zebra" };
         CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
@@ -91,7 +98,7 @@ public class UnitTests
         bst.Add("Topi");
         bst.Add("Zebra");
         var actual = bst.TraverseDepthFirstPostOrder();
-        var expected = new List<string> { "Aardvark", "Cow", "Zebra", "Topi","Monkey" };
+        var expected = new List<string> { "Aardvark", "Cow", "Zebra", "Topi", "Monkey" };
         CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -105,7 +112,7 @@ public class UnitTests
         bst.Add("Zebra");
         bst.Remove("Cow");
         var actual = bst.TraverseBreadthFirst();
-        var expected =  new List<string> { "Monkey", "Aardvark", "Topi",  "Zebra" };
+        var expected = new List<string> { "Monkey", "Aardvark", "Topi", "Zebra" };
         CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
@@ -118,7 +125,7 @@ public class UnitTests
         bst.Add("Zebra");
         bst.Remove("Monkey");
         var actual = bst.TraverseBreadthFirst();
-        var expected = new List<string> {"Zebra", "Topi", "Aardvark","Cow" };
+        var expected = new List<string> { "Zebra", "Topi", "Aardvark", "Cow" };
         CollectionAssert.AreEqual(expected, actual);
     }
 }
