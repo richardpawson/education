@@ -15,6 +15,7 @@ namespace SortingTestbed
             Assert.AreEqual(33, data[index]);
         }
 
+        [TestMethod]
         public void BinarySearchFor99()
         {
             var data = TestHelpers.GenerateOrderedArray(100);
@@ -23,6 +24,7 @@ namespace SortingTestbed
             Assert.AreEqual(99, data[index]);
         }
 
+        [TestMethod]
         public void BinarySearchFor0()
         {
             var data = TestHelpers.GenerateOrderedArray(100);
@@ -31,6 +33,7 @@ namespace SortingTestbed
             Assert.AreEqual(0, data[index]);
         }
 
+        [TestMethod]
         public void BinarySearchOnOddNumber()
         {
             var data = TestHelpers.GenerateOrderedArray(99);

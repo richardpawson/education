@@ -1,12 +1,25 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
+using System.Collections.Generic;
 
 namespace SortingTestbed
 {
     public static class TestHelpers
     {
-        
+        public static void AssertListsAreIdentical(List<int> expected, List<int> actual)
+        {
+            var expectedSB = new StringBuilder();
+            var actualSB = new StringBuilder();
+            Assert.AreEqual(expected.Count, actual.Count, "Lists not equal size");
+            for (int i = 0; i < expected.Count; i++)
+            {
+                expectedSB.Append(expected[i]).Append(",");
+                actualSB.Append(actual[i]).Append(",");
+            }
+            Assert.AreEqual(expectedSB.ToString(), actualSB.ToString());
+        }
+
 
         public static void AssertArraysAreIdentical(int[] expected, int[] actual)
         {
