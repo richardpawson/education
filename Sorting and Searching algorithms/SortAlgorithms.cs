@@ -8,7 +8,7 @@ namespace SortingTestbed
     {
         //In-place sort
         //You can use the pseudo-code in Heathcote p238
-        public static void BubbleSort(int[] items)
+        public static void BubbleSort(int[] list)
         {
             throw new NotImplementedException();
         }

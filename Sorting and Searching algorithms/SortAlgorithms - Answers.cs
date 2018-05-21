@@ -26,15 +26,15 @@ namespace SortingTestbed
         }
 
         //Implementation of the pseudo-code in Heathcote p240
-        public static void HeathcoteMergeSort(int[] mergeList)
+        public static void InPlaceMergeSort(int[] mergeList)
         {
           if (mergeList.Length > 1)
             {
                 int mid = mergeList.Length / 2; //Rounds down
                 var leftHalf = mergeList.Take(mid).ToArray();
                 var rightHalf = mergeList.Skip(mid).ToArray();
-                HeathcoteMergeSort(leftHalf);
-                HeathcoteMergeSort(rightHalf);
+                InPlaceMergeSort(leftHalf);
+                InPlaceMergeSort(rightHalf);
                 int i = 0;
                 int j = 0;
                 int k = 0;
@@ -69,7 +69,7 @@ namespace SortingTestbed
         }
 
         #region Elegant Merge Sort
-        public static List<int> ElegantMergeSort(List<int> mergeList)
+        public static List<int> OutOfPlaceMergeSort(List<int> mergeList)
         {
             if (mergeList.Count < 2)
             {
@@ -79,8 +79,8 @@ namespace SortingTestbed
             {
                 List<int> leftHalf = LeftHalfOf(mergeList);
                 List<int> rightHalf = RightHalfOf(mergeList);
-                List<int> leftSorted = ElegantMergeSort(leftHalf);
-                List<int> rightSorted = ElegantMergeSort(rightHalf);
+                List<int> leftSorted = OutOfPlaceMergeSort(leftHalf);
+                List<int> rightSorted = OutOfPlaceMergeSort(rightHalf);
                 return MergeOrderedLists(leftSorted, rightSorted);
             }
         }
