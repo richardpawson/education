@@ -26,19 +26,19 @@ namespace SortingTestbed
         }
 
         //Implementation of the pseudo-code in Heathcote p240
-        public static void InPlaceMergeSort(int[] mergeList)
+        public static void HeathcoteMergeSort(List<int> mergeList)
         {
-          if (mergeList.Length > 1)
+          if (mergeList.Count > 1)
             {
-                int mid = mergeList.Length / 2; //Rounds down
-                var leftHalf = mergeList.Take(mid).ToArray();
-                var rightHalf = mergeList.Skip(mid).ToArray();
-                InPlaceMergeSort(leftHalf);
-                InPlaceMergeSort(rightHalf);
+                int mid = mergeList.Count / 2; //Rounds down
+                var leftHalf = mergeList.Take(mid).ToList();
+                var rightHalf = mergeList.Skip(mid).ToList();
+                HeathcoteMergeSort(leftHalf);
+                HeathcoteMergeSort(rightHalf);
                 int i = 0;
                 int j = 0;
                 int k = 0;
-                while (i < leftHalf.Length && j < rightHalf.Length)
+                while (i < leftHalf.Count && j < rightHalf.Count)
                 {
                     if (leftHalf[i] < rightHalf[j])
                     {
@@ -52,14 +52,14 @@ namespace SortingTestbed
                     k++;
                 }
                 //Check if left half has elements not merged
-                while (i < leftHalf.Length)
+                while (i < leftHalf.Count)
                 {
                     mergeList[k] = leftHalf[i];
                     i += 1;
                     k += 1;
                 }
                 //Check if right half has elements not merged
-                while (j < rightHalf.Length)
+                while (j < rightHalf.Count)
                 {
                     mergeList[k] = rightHalf[j];
                     j += 1;
@@ -69,7 +69,7 @@ namespace SortingTestbed
         }
 
         #region Elegant Merge Sort
-        public static List<int> OutOfPlaceMergeSort(List<int> mergeList)
+        public static List<int> MergeSort(List<int> mergeList)
         {
             if (mergeList.Count < 2)
             {
@@ -79,8 +79,8 @@ namespace SortingTestbed
             {
                 List<int> leftHalf = LeftHalfOf(mergeList);
                 List<int> rightHalf = RightHalfOf(mergeList);
-                List<int> leftSorted = OutOfPlaceMergeSort(leftHalf);
-                List<int> rightSorted = OutOfPlaceMergeSort(rightHalf);
+                List<int> leftSorted = MergeSort(leftHalf);
+                List<int> rightSorted = MergeSort(rightHalf);
                 return MergeOrderedLists(leftSorted, rightSorted);
             }
         }

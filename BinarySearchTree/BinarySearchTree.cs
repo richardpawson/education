@@ -5,7 +5,7 @@ using System.Linq;
 public class BinarySearchTree
 {
 
-    public BinarySearchTree(string rootValue) //Costructor
+    public BinarySearchTree(string rootValue) //Constructor
     {
         throw new NotImplementedException();
     }

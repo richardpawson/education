@@ -13,18 +13,17 @@ namespace SortingTestbed
             throw new NotImplementedException();
         }
 
-        //In-place sort of array
-        //Implementation of the pseudo-code in Heathcote p240
-        public static void InPlaceMergeSort(int[] mergeList)
+        //Psuedo in-place sort of array as defined in Heathcote p240
+        public static void HeathcoteMergeSort(List<int> mergeList)
         {
             throw new NotImplementedException();
         }
 
-        //Not-in-place (or 'out-of-place') sort 
-        //(considered better practice  - and paves the way for 'functional programming')
-        public static List<int> OutOfPlaceMergeSort(List<int> mergeList)
+        //In-place sort of array
+        public static List<int> MergeSort(List<int> mergeList)
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -6,71 +6,89 @@ using System.Collections.Generic;
 namespace SortingTestbed
 {
     [TestClass]
-    public class OutOfPlaceMergeSortTests
+    public class MergeSortTests
     {
         [TestMethod]
-        public void OutOfPlaceMerge10()
+        public void Merge10()
         {
             var input = TestHelpers.GenerateRandomisedArray(10).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(10).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge11()
+        public void Merge11()
         {
             var input = TestHelpers.GenerateRandomisedArray(11).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(11).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge5()
+        public void Merge5()
         {
             var input = TestHelpers.GenerateRandomisedArray(5).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(5).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge4()
+        public void Merge4()
         {
             var input = new List<int> { 2, 0, 3, 1 };
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = new List<int> { 0, 1, 2, 3 };
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge3()
+        public void Merge3()
         {
             var input = TestHelpers.GenerateRandomisedArray(3).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(3).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge2()
+        public void Merge2()
         {
             var input = TestHelpers.GenerateRandomisedArray(2).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(2).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge1()
+        public void Merge1()
         {
             var input = TestHelpers.GenerateRandomisedArray(1).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(1).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void OutOfPlaceMerge0()
+        public void Merge0()
         {
             var input = TestHelpers.GenerateRandomisedArray(0).ToList();
-            var actual = SortAlgorithms.OutOfPlaceMergeSort(input);
+            var actual = SortAlgorithms.MergeSort(input);
             var expected = TestHelpers.GenerateOrderedArray(0).ToList();
             TestHelpers.AssertListsAreIdentical(expected, actual);
-        }       
+        }
+
+        //[TestMethod]
+        //public void TestLeftHalf()
+        //{
+        //    var input = new List<int> {1,2,3 };
+        //    var result = SortAlgorithms.LeftHalfOf(input);
+        //    var expected = new List<int> { 1 };
+        //    CollectionAssert.AreEqual(expected, result);
+        //}
+
+        //[TestMethod]
+        //public void TestRightHalf()
+        //{
+        //    var input = new List<int> { 1, 2, 3 };
+        //    var result = SortAlgorithms.RightHalfOf(input);
+        //    var expected = new List<int> { 2,3 };
+        //    CollectionAssert.AreEqual(expected, result);
+        //}
     }
 }
