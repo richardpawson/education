@@ -1,6 +1,5 @@
-// General machine definition
-
 // Registers
+main:
 	mov r12, #.CharScreen // Head position within char screen
         mov r11, #0 //Current state, initialised to S0
         //r10   -  symbol under head
@@ -8,6 +7,42 @@
         //r8   -  rule
         //r7   - movement direction 
         //r6   - halt state
+
+compactRules:
+	mov r0, #transitionRules
+        mov r3, #compactedRules
+nextRule:
+	ldrb r1, [r0]
+	cmp r1,#0x64	//'d
+        bne loadTape 	//All instructions compacted
+	mov r2, #0  	//Compacted instruction to be built-up here
+	add r0, r0, #3  //now points to 'current state'
+        ldrb r1, [r0]  
+	lsl r1, r1, #24  //Move to leftmost 8 bits
+        orr r2,r2,r1 	//build into compacted instruction
+	add r0, r0, #2  //now points to 'character read'
+        ldrb r1, [r0]  
+	lsl r1, r1, #16 //Move to next 8 bits
+	orr r2,r2,r1 	
+	add r0, r0, #5  //now points to 'new state'
+        ldrb r1, [r0]  
+	lsl r1, r1, #8  
+	orr r2,r2,r1 	
+	add r0, r0, #2  //now points to 'character write'
+        ldrb r1, [r0]  
+        orr r2,r2,r1 
+	add r0, r0, #2  //now points to 'movement'
+        ldrb r1, [r0]  
+	cmp r1, #0x46  	//'L' (bit 7 stays at 0)
+	bne right 	
+	b storeCompactedRule
+right:	mov r1, #0x80  	// set bit 7 to 1
+	orr r2,r2,r1
+storeCompactedRule:
+	str r2,[r3]	
+	add r3, r3, #4  //Point to next word for next compacted rule (if any)
+	add r0,r0,#2 //advance to start of next transition rule
+	b nextRule
 
 loadTape:
         mov r0, #0
@@ -33,7 +68,7 @@ runLoop:
         mov r0, #0       //Initialise rule counter
 
 findMatchingRule:
-	ldr r8,[r0+condensedRules]
+	ldr r8,[r0+compactedRules]
         ldr r2, selectorMask //Select only the 'selector' part of the rule
         and r1, r8, r2   
         cmp r9, r1   //Check for rule selector match
@@ -69,25 +104,23 @@ newStateMask:  .word 0x0000ff00
 writeCharMask: .word 0x0000007f
 movementMask:  .word 0x00000080
 
+//condensedRules:
+//	.word  0x303030b1    
+//	.word  0x303130b0
+//	.word  0x302031a0
+
 //Here is the specific machine definition
-
-startingTape: .asciz "0010   "
-
 initialState: .ascii "0"
 haltState:    .ascii "1"
-
 transitionRules:
 	.ascii "d(S0,0)=(S0,1,R)"
 	.ascii "d(S0,1)=(S0,0,R)"
 	.ascii "d(S0, )=(S1, ,R)"
-end:	.byte 0
+	.ascii "*"  //Any text not starting 'd' signals end of rules
+startingTape: .asciz "0010  " 
 
-//align?
-
-condensedRules:
-	.word  0x303030b1    
-	.word  0x303130b0
-	.word  0x302031a0
+compactedRules:
+	.word 0
 
 //Format for each transition rule -  8 hex digits
 //2 digits current state
