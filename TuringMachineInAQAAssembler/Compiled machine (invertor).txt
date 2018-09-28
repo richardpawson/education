@@ -1,0 +1,74 @@
+	//r12 Head position within char screen
+        //r11 Current state
+        //r10   -  symbol under head
+	//r7 - movement direction
+loadTape:
+        mov r0, #0
+loadNextSymbol:        
+	ldrb r1, [r0+startingTape]
+        cmp r1, #0  //0 marks end of data (because  of using 'asciz')
+        beq initialiseMachine
+        strb r1, [r0+.CharScreen]
+        add r0,r0,#1
+        b loadNextSymbol
+    
+initialiseMachine:        
+	mov r12, #.CharScreen //Initial head position (top-left of character screen)
+        mov r11, #0x30
+        mov r6, #0x31
+
+        b readSymbol
+
+writeCharAndMoveHead:
+        strb r10, [r12]
+        cmp r7, #1
+ 	beq moveRight
+        sub r12, r12, #1  //Move head left
+        b checkForHalt
+moveRight:
+	add r12, r12, #1
+checkForHalt:	
+        cmp r11, #0x31  
+        bne readSymbol
+        halt
+
+readSymbol:
+        ldrb r10,[r12]  
+
+rule0:  cmp r11,#0x30 	//Does rule selector match current state?
+	bne rule1
+	cmp r10, #0x30 //Does rule selector match symbol under head?
+	bne rule1
+	mov r11,#0x30  //New state
+	mov r10,#0x31  //Symbol to be written
+	mov r7,#1      //Movement
+	b writeCharAndMoveHead
+
+rule1:  cmp r11,#0x30
+	bne rule2
+	cmp r10, #0x31
+	bne rule2
+	mov r11,#0x30
+	mov r10,#0x30
+	mov r7,#1
+	b writeCharAndMoveHead
+
+rule2:  halt
+	cmp r11,#0x30
+	bne rule3
+	cmp r10, #0x20
+	bne rule3
+	mov r11,#0x31
+	mov r10,#0x20
+	mov r7,#1
+	b writeCharAndMoveHead
+
+rule3:  mov r0, #noMatchingRule
+	str r0, .WriteString
+	halt
+
+noMatchingRule: .asciz "Error! No matching rule"
+startingTape: .asciz "0010  "
+
+
+	
