@@ -1,0 +1,97 @@
+// General machine definition
+
+// Registers
+	mov r12, #.CharScreen // Head position within char screen
+        mov r11, #0 //Current state, initialised to S0
+        //r10   -  symbol under head
+        //r9   -  combination of r11 & r10, shifted, to constitute pattern match for rule
+        //r8   -  rule
+        //r7   - movement direction 
+        //r6   - halt state
+
+loadTape:
+        mov r0, #0
+loadNextSymbol:        ldrb r1, [r0+startingTape]
+        cmp r1, #0  //0 marks end of data (because  of using 'asciz')
+        beq initialiseMachine
+        strb r1, [r0+.CharScreen]
+        add r0,r0,#1
+        //TODO test for end of screen?
+        b loadNextSymbol
+    
+initialiseMachine:        
+	mov r12, #.CharScreen //Initial head position (top-left of character screen)
+        ldrb r11, initialState
+        ldrb r6, haltState
+        halt //temp
+runLoop:
+        lsl r9, r11, #24 //put current state as leftmost 4 bits of r9
+        //TODO: draw head using pixel screen
+	ldrb r0, [r12]
+	lsl r0, r0, #16  //put character under head as next 8 bits in r9
+        orr r9, r9, r0  
+        mov r0, #0       //Initialise rule counter
+
+findMatchingRule:
+	ldr r8,[r0+condensedRules]
+        ldr r2, selectorMask //Select only the 'selector' part of the rule
+        and r1, r8, r2   
+        cmp r9, r1   //Check for rule selector match
+        beq extractActionsFromRule  //r8 now contains the rule
+        add r0, r0, #4
+        //TODO check for end of rules & throw exception
+        b findMatchingRule
+
+extractActionsFromRule:
+        ldr r2, newStateMask
+        and r11, r8, r2 //Extract new state from rule
+        lsr r11,r11,#8
+        ldr r2, writeCharMask 
+        and r10, r8, r2  //Extract new character to be written from rule
+        ldr r1, movementMask
+        and r7, r8, r1//Extract movement 
+        cmp r11, r6  //Check if new state is halt state
+        bne continue
+        halt
+continue:
+        strb r10, [r12]  //Write character to current head position
+        //TODO: erase head
+        cmp r7, #0x80  //This means 'right'; otherwise left
+        beq moveRight
+        sub r12, r12, #1  //Move head left
+        b next
+moveRight:
+	add r12, r12, #1  //Move head right
+next:	b runLoop
+
+selectorMask:  .word 0xffff0000
+newStateMask:  .word 0x0000ff00
+writeCharMask: .word 0x0000007f
+movementMask:  .word 0x00000080
+
+//Here is the specific machine definition
+
+startingTape: .asciz "0010   "
+
+initialState: .ascii "0"
+haltState:    .ascii "1"
+
+transitionRules:
+	.ascii "d(S0,0)=(S0,1,R)"
+	.ascii "d(S0,1)=(S0,0,R)"
+	.ascii "d(S0, )=(S1, ,R)"
+end:	.byte 0
+
+//align?
+
+condensedRules:
+	.word  0x303030b1    
+	.word  0x303130b0
+	.word  0x302031a0
+
+//Format for each transition rule -  8 hex digits
+//2 digits current state
+//2 digits read symbol
+//2 digits new state
+//2 digits write symbol, but bit 7 is the movement (0 means Left; 1 means Right)
+
