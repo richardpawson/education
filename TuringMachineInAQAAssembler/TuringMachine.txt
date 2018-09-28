@@ -1,25 +1,24 @@
-// Registers
-main:
-	mov r12, #.CharScreen // Head position within char screen
-        mov r11, #0 //Current state, initialised to S0
+// Common machine definition
+	//r12 Head position within char screen
+        //r11 Current state
         //r10   -  symbol under head
         //r9   -  combination of r11 & r10, shifted, to constitute pattern match for rule
         //r8   -  rule
         //r7   - movement direction 
         //r6   - halt state
 
-compactRules:
+compressRules:
 	mov r0, #transitionRules
-        mov r3, #compactedRules
+        mov r3, #compressedRules
 nextRule:
 	ldrb r1, [r0]
 	cmp r1,#0x64	//'d
-        bne loadTape 	//All instructions compacted
-	mov r2, #0  	//Compacted instruction to be built-up here
+        bne loadTape 	//All rules compressed
+	mov r2, #0  	//Compressed rule to be built-up here
 	add r0, r0, #3  //now points to 'current state'
         ldrb r1, [r0]  
 	lsl r1, r1, #24  //Move to leftmost 8 bits
-        orr r2,r2,r1 	//build into compacted instruction
+        orr r2,r2,r1 	//build into compressed instruction
 	add r0, r0, #2  //now points to 'character read'
         ldrb r1, [r0]  
 	lsl r1, r1, #16 //Move to next 8 bits
@@ -35,12 +34,12 @@ nextRule:
         ldrb r1, [r0]  
 	cmp r1, #0x46  	//'L' (bit 7 stays at 0)
 	bne right 	
-	b storeCompactedRule
+	b storeCompressedRule
 right:	mov r1, #0x80  	// set bit 7 to 1
 	orr r2,r2,r1
-storeCompactedRule:
+storeCompressedRule:
 	str r2,[r3]	
-	add r3, r3, #4  //Point to next word for next compacted rule (if any)
+	add r3, r3, #4  //Point to next word for next compressed rule (if any)
 	add r0,r0,#2 //advance to start of next transition rule
 	b nextRule
 
@@ -68,7 +67,7 @@ runLoop:
         mov r0, #0       //Initialise rule counter
 
 findMatchingRule:
-	ldr r8,[r0+compactedRules]
+	ldr r8,[r0+compressedRules]
         ldr r2, selectorMask //Select only the 'selector' part of the rule
         and r1, r8, r2   
         cmp r9, r1   //Check for rule selector match
@@ -104,12 +103,8 @@ newStateMask:  .word 0x0000ff00
 writeCharMask: .word 0x0000007f
 movementMask:  .word 0x00000080
 
-//condensedRules:
-//	.word  0x303030b1    
-//	.word  0x303130b0
-//	.word  0x302031a0
-
-//Here is the specific machine definition
+//Specific machine definition
+startingTape: .asciz "0010  "
 initialState: .ascii "0"
 haltState:    .ascii "1"
 transitionRules:
@@ -117,9 +112,9 @@ transitionRules:
 	.ascii "d(S0,1)=(S0,0,R)"
 	.ascii "d(S0, )=(S1, ,R)"
 	.ascii "*"  //Any text not starting 'd' signals end of rules
-startingTape: .asciz "0010  " 
+ 
 
-compactedRules:
+compressedRules:
 	.word 0
 
 //Format for each transition rule -  8 hex digits
