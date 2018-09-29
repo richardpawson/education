@@ -84,9 +84,6 @@ extractActionsFromRule:
         and r10, r8, r2  //Extract new character to be written from rule
         ldr r1, movementMask
         and r7, r8, r1//Extract movement 
-        cmp r11, r6  //Check if new state is halt state
-        bne continue
-        halt
 continue:
         strb r10, [r12]  //Write character to current head position
 	//Highlight new head position
@@ -102,10 +99,13 @@ continue:
         cmp r7, #0x80  //This means 'right'; otherwise left
         beq moveRight
         sub r12, r12, #1  //Move head left
-        b next
+        b checkForHalt
 moveRight:
 	add r12, r12, #1  //Move head right
-next:	b runLoop
+checkForHalt:
+        cmp r11, r6  
+        bne runLoop
+        halt
 
 //Paint background colour behind a specific character position
 //Pass in char number (range 0-89) in R0
