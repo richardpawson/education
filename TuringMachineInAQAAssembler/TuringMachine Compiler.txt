@@ -1,0 +1,156 @@
+// Common machine definition
+	//r12 Head position within char screen
+        //r11 Current state
+        //r10   -  symbol under head
+        //r9   -  combination of r11 & r10, shifted, to constitute pattern match for rule
+        //r8   -  rule
+        //r7   - movement direction 
+        //r6   - halt state
+
+compileRules:
+	mov r0, #transitionRules
+        mov r3, #compiledRules
+	mov r4, #0xffff  //Relative addr of WriteCharAndMoveHead (decrements by 8 each rule)
+nextRule:
+	ldrb r1, [r0]
+	cmp r1,#0x64	//'d
+        bne endOfRules	//All rules compressed
+ 
+	//cmp r11,#0xAA   -  AA is ASCII of current state 
+        ldr r2, cmpR11CurrentState
+	add r0, r0, #3  //now points to 'current state'
+        ldrb r1, [r0]   //Read current state
+        orr r2,r2,r1 	//put argument into instruction
+	str r2,[r3]	
+	add r3, r3, #4  //Point to next word for next instruction
+
+	//bne rule1 //0x1a000005 - relative movement so same each time
+	ldr r2, bne5NextRule
+	str r2,[r3]	
+	add r3, r3, #4  
+
+	//cmp r10, #0xAA   -  AA is ASCII of read symbol  
+	ldr r2, cmpR10ReadSymbol
+	add r0, r0, #2  
+        ldrb r1, [r0]  
+	orr r2,r2,r1
+	str r2,[r3]	
+	add r3, r3, #4  
+
+	//bne rule1 //0x1a000003 - relative movement so same each time
+	ldr r2, bne3NextRule
+	str r2,[r3]	
+	add r3, r3, #4  	
+	
+	//mov r11,#0xAA   -  AA is ASCII of new state 
+	ldr r2, movR11NextState
+	add r0, r0, #5  
+        ldrb r1, [r0]   
+	orr r2,r2,r1 	
+	str r2,[r3]	
+	add r3, r3, #4 
+
+	//mov r10,#0xAA   -  AA is ASCII of write symbol  
+	ldr r2, movR10WriteSymbol
+	add r0, r0, #2  
+        ldrb r1, [r0]  
+        orr r2,r2,r1
+	str r2,[r3]	
+	add r3, r3, #4  
+	
+	//mov r7,#M      //M is 0 for L, 1 for R
+	ldr r2, movR7const1
+	add r0, r0, #2  //now points to 'movement'
+        ldrb r1, [r0]  
+	cmp r1, #0x46  	//'L' (argument M stays at 0)
+	beq store		
+	orr r2,r2,#1    //'R' (argument M set to 1)
+store:	str r2,[r3]
+	add r3, r3, #4  
+
+	//b writeCharAndMoveHead  //0xeafffff6  //ffee  //ffe6  reduces by 8 each time
+	ldr r2,bWriteCharAndMoveHead
+        orr r2, r2, r4
+	sub r4,r4,#8  //Reduce (negative) relative pointer to WriteCharAndMoveHead for next rule
+	str r2,[r3]	
+	add r3, r3, #4  
+
+	add r0,r0,#2 //advance to start of next transition rule
+	b nextRule
+
+endOfRules:
+//TODO: Now write this code on the end
+//rule3:  mov r0, #noMatchingRule
+//	str r0, .WriteString
+//	halt
+//noMatchingRule: .asciz "Error! No matching rule"
+//For moment, just write halt
+	ldr r2, haltMachine
+	str r2, [r3]
+
+//Can now execute compiled machine
+	b loadTape
+
+
+//Specific machine definition
+startingTape: .asciz "0010  "
+initialState: .ascii "0"
+haltState:    .ascii "1"
+transitionRules:
+	.ascii "d(S0,0)=(S0,1,R)"
+	.ascii "d(S0,1)=(S0,0,R)"
+	.ascii "d(S0, )=(S1, ,R)"
+	.ascii "*"  //Any text not starting 'd' signals end of rules
+ 
+
+cmpR11CurrentState: 	.word 0xe35b0000
+bne5NextRule: 		.word 0x1a000005 
+cmpR10ReadSymbol:	.word 0xe35a0000  
+bne3NextRule: 		.word 0x1a000003
+movR11NextState:	.word 0xe3a0b000
+movR10WriteSymbol:	.word 0xe3a0a000
+movR7const1:		.word 0xe3a07001  
+bWriteCharAndMoveHead:  .word 0xeafffff6 
+haltMachine:		.word 0xe1000070
+
+//compiledMachine starts here
+	//r12 Head position within char screen
+        //r11 Current state
+        //r10   -  symbol under head
+	//r7 - movement direction
+loadTape:
+        mov r0, #0
+loadNextSymbol:        
+	ldrb r1, [r0+startingTape]
+        cmp r1, #0  //0 marks end of data (because  of using 'asciz')
+        beq initialiseMachine
+        strb r1, [r0+.CharScreen]
+        add r0,r0,#1
+        b loadNextSymbol
+    
+initialiseMachine:        
+	mov r12, #.CharScreen //Initial head position (top-left of character screen)
+        mov r11, initialState//TODO:  This needs to be read from source code instruction
+        mov r6, haltState //TODO:  This needs to be read from source code instruction
+
+        b readSymbol
+
+writeCharAndMoveHead:
+        strb r10, [r12]
+        cmp r7, #1
+ 	beq moveRight
+        sub r12, r12, #1  //Move head left
+        b checkForHalt
+moveRight:
+	add r12, r12, #1
+checkForHalt:	
+        cmp r11, #0x31  
+        bne readSymbol
+        halt
+
+readSymbol:
+        ldrb r10,[r12] 
+
+compiledRules:
+	.word 0
+
