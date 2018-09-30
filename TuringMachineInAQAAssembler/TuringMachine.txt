@@ -44,16 +44,8 @@ storeCompressedRule:
 	b nextRule
 
 loadTape:
-      mov r0, #tape
+      mov r0, #.CharScreen
       str r0, .ReadString
-      mov r1, #0
-      ldrb r2, [r0]
-      cmp r2, #0 //end of string
-      beq initialiseMachine
-      strb r2, [r1 + .CharScreen]
-      add r0,r0,#1
-      add r1,r1,#1
-      b .-6
     
 initialiseMachine:        
 	mov r12, #.CharScreen //Initial head position (top-left of character screen)
@@ -144,7 +136,7 @@ movementMask:  .word 0x00000080
 //Specific machine definition
 tape: .block 16
 initialState: .ascii "0"
-haltState:    .ascii "1"
+haltState:    .ascii "*"
 transitionRules:
 	.ascii "d(S0,0)=(S0,1,R)"
 	.ascii "d(S0,1)=(S0,0,R)"
