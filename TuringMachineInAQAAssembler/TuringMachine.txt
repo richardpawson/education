@@ -44,20 +44,21 @@ storeCompressedRule:
 	b nextRule
 
 loadTape:
-        mov r0, #0
-loadNextSymbol:        ldrb r1, [r0+startingTape]
-        cmp r1, #0  //0 marks end of data (because  of using 'asciz')
-        beq initialiseMachine
-        strb r1, [r0+.CharScreen]
-        add r0,r0,#1
-        //TODO test for end of screen?
-        b loadNextSymbol
+      mov r0, #tape
+      str r0, .ReadString
+      mov r1, #0
+      ldrb r2, [r0]
+      cmp r2, #0 //end of string
+      beq initialiseMachine
+      strb r2, [r1 + .CharScreen]
+      add r0,r0,#1
+      add r1,r1,#1
+      b .-6
     
 initialiseMachine:        
 	mov r12, #.CharScreen //Initial head position (top-left of character screen)
         ldrb r11, initialState
         ldrb r6, haltState
-        halt //temp
 runLoop:
         lsl r9, r11, #24 //put current state as leftmost 4 bits of r9
         //TODO: draw head using pixel screen
@@ -141,7 +142,7 @@ writeCharMask: .word 0x0000007f
 movementMask:  .word 0x00000080
 
 //Specific machine definition
-startingTape: .asciz "0010  "
+tape: .block 16
 initialState: .ascii "0"
 haltState:    .ascii "1"
 transitionRules:
