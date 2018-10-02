@@ -1,0 +1,180 @@
+// Common machine definition
+	//r12 Head position within char screen
+        //r11 Current state
+        //r10   -  symbol under head
+        //r9   -  combination of r11 & r10, shifted, to constitute pattern match for rule
+        //r8   -  rule
+        //r7   - movement direction 
+        //r6   - halt state
+
+loadRules:
+	ldr r0, .OpenFile
+        mov r3, #compressedRules
+nextRule:
+	ldr r1, .FileLength
+	cmp r1,#1
+        blt loadTape 	//All rules compressed
+	mov r2, #0  	//Compressed rule to be built-up here
+	mov r0, #4
+	bl skipToFileChar
+	lsl r1, r1, #24  //Move to leftmost 8 bits
+        orr r2,r2,r1 	//build into compressed instruction
+	mov r0, #2
+	bl skipToFileChar
+	lsl r1, r1, #16 //Move to next 8 bits
+	orr r2,r2,r1 	
+	mov r0, #5
+	bl skipToFileChar
+	lsl r1, r1, #8  
+	orr r2,r2,r1 	
+	mov r0, #2
+	bl skipToFileChar 
+        orr r2,r2,r1 
+	mov r0, #2
+	bl skipToFileChar
+	cmp r1, #0x46  	//'L' (bit 7 stays at 0)
+	bne right 	
+	b storeCompressedRule
+right:	mov r1, #0x80  	// set bit 7 to 1
+	orr r2,r2,r1
+storeCompressedRule:
+	str r2,[r3]
+	add r3,r3,#4	
+	mov r0, #1  //Skip to 1st char in next rule
+	bl skipToFileChar
+	b nextRule
+loadTape:
+      mov r0, #tapeCopy
+      mov r1, #.CharScreen
+      str r0, .ReadString
+      ldrb r2,[r0]
+      cmp r2, #0
+      beq initialiseMachine
+      strb r2, [r1]
+      add r1,r1,#1
+      add r0,r0,#1
+      b .-6
+
+initialiseMachine:        
+	mov r12, #.CharScreen //Initial head position (top-left of character screen)
+        ldrb r11, initialState
+        ldrb r6, haltState
+	mov r0, #0
+	mov r1, #10 //highlight colour
+	bl highlightChar
+        halt
+runLoop:
+        lsl r9, r11, #24 //put current state as leftmost 4 bits of r9
+        //TODO: draw head using pixel screen
+	ldrb r0, [r12]
+	lsl r0, r0, #16  //put character under head as next 8 bits in r9
+        orr r9, r9, r0  
+        mov r0, #0       //Initialise rule counter
+
+//TODO: Must check for special case of null==blank space
+
+findMatchingRule:
+	ldr r8,[r0+compressedRules]
+        ldr r2, selectorMask //Select only the 'selector' part of the rule
+        and r1, r8, r2   
+        cmp r9, r1   //Check for rule selector match
+        beq extractActionsFromRule  //r8 now contains the rule
+        add r0, r0, #4
+        //TODO check for end of rules & throw exception
+        b findMatchingRule
+
+extractActionsFromRule:
+        ldr r2, newStateMask
+        and r11, r8, r2 //Extract new state from rule
+        lsr r11,r11,#8
+        ldr r2, writeCharMask 
+        and r10, r8, r2  //Extract new character to be written from rule
+        ldr r1, movementMask
+        and r7, r8, r1//Extract movement 
+continue:
+        strb r10, [r12]  //Write character to current head position
+	//Highlight new head position
+	mov r2, #.CharScreen
+	//Erase head position
+	mov r1,#0 //White (to erase background)
+	bl highlightChar
+        cmp r7, #0x80  //This means 'right'; otherwise left
+        beq moveRight
+        sub r12, r12, #1  //Move head left
+        b drawHead
+moveRight:
+	add r12, r12, #1  //Move head right
+drawHead:
+	sub r0, r12, r2
+	mov r1, #10 //highlight colour
+	bl highlightChar
+checkForHalt:
+	halt
+        cmp r11, r6  
+        bne runLoop
+        halt
+
+//Skips to the character on a file read.
+//Pass in number in r0 e.g. 4 will skip next 3 chars & read the 4th
+//Character read is placed in r1
+skipToFileChar:
+	push {r0}	
+	ldr r1, .ReadFileChar
+	sub r0,r0,#1
+	cmp r0, #0
+	bgt skipToFileChar
+	pop {r0}
+	ret
+
+//Paint background colour behind a specific character position
+//Pass in char number (range 0-89) in R0
+//Pass in colour in R1
+highlightChar:
+	push {r2-r6}
+	lsr r2, r0, #4 //charY = charN/16
+	and r3, r0, #15 //charX = charN mod 16
+	lsl r4, r2, #2 //PixelY = charY*4
+	lsl r5, r3, #1  //PixelX = charX*2
+	lsl r6, r4, #5  //PixelN = PixelY*32 ...
+	add r6,r6,r5 //... +PixelX
+	//Draw background
+	mov r2, #0 //x counter
+	mov r3, #0 //y counter
+//DrawLoop - nested loop to draw 2x4 pixel blockfrom PixelN
+	strb r1, [r6 + .PixelScreen]
+	add r6,r6,#1
+	add r2,r2,#1
+	cmp r2, #2
+	blt .-4 //DrawLoop
+	mov r2, #0
+	add r6,r6, #30
+	add r3,r3,#1  
+	cmp r3, #4
+	blt .-9 //DrawLoop
+        pop {r2-r6}
+	ret
+
+selectorMask:  .word 0xffff0000
+newStateMask:  .word 0x0000ff00
+writeCharMask: .word 0x0000007f
+movementMask:  .word 0x00000080
+
+//Specific machine definition
+tape: .block 16
+initialState: .ascii "0"
+haltState:    .ascii "*"
+
+tapeCopy:	
+	.block 16
+
+compressedRules:
+	.word 0
+	.block 12
+
+
+//Format for each transition rule -  8 hex digits
+//2 digits current state
+//2 digits read symbol
+//2 digits new state
+//2 digits write symbol, but bit 7 is the movement (0 means Left; 1 means Right)
+
