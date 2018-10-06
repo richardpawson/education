@@ -1,6 +1,7 @@
 	//r12 Head position within char screen
         //r11 Current state
         //r10   -  symbol under head
+        //r9 Combination of r10 & r11 bits
 	//r7 - movement direction
 loadTape:
         mov r0, #0
@@ -28,37 +29,33 @@ writeCharAndMoveHead:
 moveRight:
 	add r12, r12, #1
 checkForHalt:	
-        cmp r11, #0x31  
+        cmp r11, #0x2A
         bne readSymbol
         halt
 
 readSymbol:
         ldrb r10,[r12]  
+	//Combine state and symbol into 16 bits on r9
+	lsl r9, r11, #8
+	or r9, r9,r10
 
-rule0:  cmp r11,#0x30 	//Does rule selector match current state?
-	bne rule1
-	cmp r10, #0x30 //Does rule selector match symbol under head?
+rule0:  cmp r9,#0x3030 	//Does rule selector match current state
 	bne rule1
 	mov r11,#0x30  //New state
 	mov r10,#0x31  //Symbol to be written
 	mov r7,#1      //Movement
 	b writeCharAndMoveHead
 
-rule1:  cmp r11,#0x30
-	bne rule2
-	cmp r10, #0x31
+rule1:  cmp r9,#0x3031
 	bne rule2
 	mov r11,#0x30
 	mov r10,#0x30
 	mov r7,#1
 	b writeCharAndMoveHead
 
-rule2:  halt
-	cmp r11,#0x30
+rule2:  cmp r9,#0x3020
 	bne rule3
-	cmp r10, #0x20
-	bne rule3
-	mov r11,#0x31
+	mov r11,#0x2A
 	mov r10,#0x20
 	mov r7,#1
 	b writeCharAndMoveHead
