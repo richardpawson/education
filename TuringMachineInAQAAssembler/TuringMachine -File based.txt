@@ -1,10 +1,8 @@
 // Common machine definition
-	//r12 Head position relative to start of tape (i.e. starting at 0)
+	//r12 Head position (starting at 0)
         //r11 Current state
         //r10 Symbol under head
-        //r9  Combination of r11 & r10, shifted, to constitute pattern match for rule
-        //r8  Rule
-	mov r7, #.CharScreen  //Constant
+	mov r9, #.CharScreen  //Constant
 
 loadRules:
 	ldr r0, .OpenFile
@@ -53,38 +51,36 @@ initialiseMachine:
 	mov r12, #0 //Initial head position
         ldrb r11, initialState
 	bl drawTapeAndState
-	mov r0, #0x5E //'^' 
-	strb r0, [r7+24] //draw head
         halt
 runLoop:
-        lsl r9, r11, #24 //put current state as leftmost 4 bits of r9
+        lsl r3, r11, #24 //put current state as leftmost 4 bits of r9
 	ldrb r0, [r12+tape] 
 	cmp r0, #0  //Null
 	bne .+2  //Skip next line if not null
 	mov r0, #0x20  //Replace null with space
 	lsl r0, r0, #16  //put character under head as next 8 bits in r9
-        orr r9, r9, r0  
+        orr r3, r3, r0  
         mov r0, #0       //Initialise rule counter
 
 findMatchingRule:
-	ldr r8,[r0+compressedRules]
+	ldr r4,[r0+compressedRules]
         ldr r2, selectorMask //Select only the 'selector' part of the rule
-        and r1, r8, r2   
-        cmp r9, r1   //Check for rule selector match
-        beq extractActionsFromRule  //r8 now contains the rule
+        and r1, r4, r2   
+        cmp r3, r1   //Check for rule selector match
+        beq extractActionsFromRule  //r4 now contains the rule
         add r0, r0, #4
         //TODO check for end of rules & throw exception
         b findMatchingRule
 
 extractActionsFromRule:
         ldr r2, newStateMask
-        and r11, r8, r2 //Extract new state from rule
+        and r11, r4, r2 //Extract new state from rule
         lsr r11,r11,#8
         ldr r2, writeCharMask 
-        and r10, r8, r2  //Extract new character to be written from rule
+        and r10, r4, r2  //Extract new character to be written from rule
         strb r10, [r12+tape]  //Write character to current head position
 	ldr r1, movementMask
-        and r0, r8, r1//Extract movement 
+        and r0, r4, r1//Extract movement 
 	cmp r0, #0x80  //This means 'right'; otherwise left
         beq .+3
         sub r12, r12, #1  //Move head left
@@ -113,17 +109,19 @@ skipToFileChar:
 
 //r12 contains the position of the head relative to tape (start = 0)
 //r11 contains the current state (drawn under head)
-//r7 contains const #.CharScreen
+//r9 contains const #.CharScreen
 drawTapeAndState:
 	push {r0-r2}	
 	mov r0, #0
 	add r1, r12, #tapeHeader
 	ldrb r2, [r1 + r0]
-	strb r2, [r7 + r0]
+	strb r2, [r9 + r0]
 	add r0,r0,#1
 	cmp r0, #16
 	blt .-4
-	strb r11, [r7 + #40]  //Draw state
+	mov r0, #0x5E //'^' 
+	strb r0, [r9+#24] //draw head
+	strb r11, [r9 + #40]  //Draw state
 	pop {r0-r2}
 	ret
 
