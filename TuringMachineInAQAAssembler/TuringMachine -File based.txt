@@ -1,10 +1,10 @@
 // Common machine definition
-	//r12 Head position relative to start of charScreen 0-89
+	//r12 Head position relative to start of tape (i.e. starting at 0)
         //r11 Current state
         //r10 Symbol under head
         //r9  Combination of r11 & r10, shifted, to constitute pattern match for rule
         //r8  Rule
-	//r7  const #.CharScreen
+	mov r7, #.CharScreen  //Constant
 
 loadRules:
 	ldr r0, .OpenFile
@@ -42,30 +42,23 @@ storeCompressedRule:
 	mov r0, #1  //Skip to 1st char in next rule
 	bl skipToFileChar
 	b nextRule
+
 loadTape:
-	mov r7, #.CharScreen
-      //
-      mov r0, #tapeCopy
-      mov r1, #0
-      str r0, .ReadString
-      ldrb r2,[r0+r1]
-      cmp r2, #0
-      beq initialiseMachine
-      strb r2, [r7+r1]
-      add r1,r1,#1
-      b .-5
+	mov r0, #inputMsg
+	str r0, .WriteString
+	mov r0, #tape
+	str r0, .ReadString
 
 initialiseMachine:
-	mov r12, #0 //Initial head position (top-left of character screen)
+	mov r12, #0 //Initial head position
         ldrb r11, initialState
-	mov r0, #0
-	mov r1, #10 //highlight colour
-	bl highlightChar
+	bl drawTapeAndState
+	mov r0, #0x5E //'^' 
+	strb r0, [r7+24] //draw head
         halt
 runLoop:
         lsl r9, r11, #24 //put current state as leftmost 4 bits of r9
-        //TODO: draw head using pixel screen
-	ldrb r0, [r7+r12]
+	ldrb r0, [r12+tape] 
 	cmp r0, #0  //Null
 	bne .+2  //Skip next line if not null
 	mov r0, #0x20  //Replace null with space
@@ -89,23 +82,15 @@ extractActionsFromRule:
         lsr r11,r11,#8
         ldr r2, writeCharMask 
         and r10, r8, r2  //Extract new character to be written from rule
-        strb r10, [r12]  //Write character to current head position
-	//Erase head position
-        mov r0, r12
-	mov r1,#0 //White (to erase background)
-	bl highlightChar
+        strb r10, [r12+tape]  //Write character to current head position
 	ldr r1, movementMask
         and r0, r8, r1//Extract movement 
 	cmp r0, #0x80  //This means 'right'; otherwise left
-        beq moveRight
+        beq .+3
         sub r12, r12, #1  //Move head left
-        b drawHead
-moveRight:
+        b .+2
 	add r12, r12, #1  //Move head right
-drawHead:
-	mov r0, r12
-	mov r1, #10 //highlight colour
-	bl highlightChar
+	bl drawTapeAndState
 checkForHalt:
         ldrb r0, haltState
 	cmp r11, r0  
@@ -114,9 +99,11 @@ checkForHalt:
 
 //Skips to the character on a file read.
 //Pass in number in r0 e.g. 4 will skip next 3 chars & read the 4th
+
 //Character read is placed in r1
-skipToFileChar:
-	push {r0}	
+
+skipToFileChar:	
+	push {r0}
 	ldr r1, .ReadFileChar
 	sub r0,r0,#1
 	cmp r0, #0
@@ -124,46 +111,37 @@ skipToFileChar:
 	pop {r0}
 	ret
 
-//Paint background colour behind a specific character position
-//Pass in char number (range 0-89) in R0
-//Pass in colour in R1
-highlightChar:
-	push {r2-r6}
-	lsr r2, r0, #4 //charY = charN/16
-	and r3, r0, #15 //charX = charN mod 16
-	lsl r4, r2, #2 //PixelY = charY*4
-	lsl r5, r3, #1  //PixelX = charX*2
-	lsl r6, r4, #5  //PixelN = PixelY*32 ...
-	add r6,r6,r5 //... +PixelX
-	//Draw background
-	mov r2, #0 //x counter
-	mov r3, #0 //y counter
-//DrawLoop - nested loop to draw 2x4 pixel blockfrom PixelN
-	strb r1, [r6 + .PixelScreen]
-	add r6,r6,#1
-	add r2,r2,#1
-	cmp r2, #2
-	blt .-4 //DrawLoop
-	mov r2, #0
-	add r6,r6, #30
-	add r3,r3,#1  
-	cmp r3, #4
-	blt .-9 //DrawLoop
-        pop {r2-r6}
+//r12 contains the position of the head relative to tape (start = 0)
+//r11 contains the current state (drawn under head)
+//r7 contains const #.CharScreen
+drawTapeAndState:
+	push {r0-r2}	
+	mov r0, #0
+	add r1, r12, #tapeHeader
+	ldrb r2, [r1 + r0]
+	strb r2, [r7 + r0]
+	add r0,r0,#1
+	cmp r0, #16
+	blt .-4
+	strb r11, [r7 + #40]  //Draw state
+	pop {r0-r2}
 	ret
+
+
 
 selectorMask:  .word 0xffff0000
 newStateMask:  .word 0x0000ff00
 writeCharMask: .word 0x0000007f
 movementMask:  .word 0x00000080
 
-//Specific machine definition
-tape: .block 16
+inputMsg: .asciz "\n\n\n\n\nEnter start tape"
+
 initialState: .ascii "0"
 haltState:    .ascii "*"
 
-tapeCopy:	
-	.block 16
+tapeHeader: 
+	.ascii "        " //8 blanks - half screen width
+tape: .block 64 //chars max (divisble by four
 
 compressedRules:
 	.word 0
