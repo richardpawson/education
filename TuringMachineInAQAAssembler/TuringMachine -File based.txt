@@ -1,11 +1,10 @@
 // Common machine definition
-	//r12 Head position within char screen
+	//r12 Head position relative to start of charScreen 0-89
         //r11 Current state
-        //r10   -  symbol under head
-        //r9   -  combination of r11 & r10, shifted, to constitute pattern match for rule
-        //r8   -  rule
-        //r7   - movement direction 
-        //r6   - halt state
+        //r10 Symbol under head
+        //r9  Combination of r11 & r10, shifted, to constitute pattern match for rule
+        //r8  Rule
+	//r7  const #.CharScreen
 
 loadRules:
 	ldr r0, .OpenFile
@@ -44,21 +43,21 @@ storeCompressedRule:
 	bl skipToFileChar
 	b nextRule
 loadTape:
+	mov r7, #.CharScreen
+      //
       mov r0, #tapeCopy
-      mov r1, #.CharScreen
+      mov r1, #0
       str r0, .ReadString
-      ldrb r2,[r0]
+      ldrb r2,[r0+r1]
       cmp r2, #0
       beq initialiseMachine
-      strb r2, [r1]
+      strb r2, [r7+r1]
       add r1,r1,#1
-      add r0,r0,#1
-      b .-6
+      b .-5
 
-initialiseMachine:        
-	mov r12, #.CharScreen //Initial head position (top-left of character screen)
+initialiseMachine:
+	mov r12, #0 //Initial head position (top-left of character screen)
         ldrb r11, initialState
-        ldrb r6, haltState
 	mov r0, #0
 	mov r1, #10 //highlight colour
 	bl highlightChar
@@ -66,12 +65,13 @@ initialiseMachine:
 runLoop:
         lsl r9, r11, #24 //put current state as leftmost 4 bits of r9
         //TODO: draw head using pixel screen
-	ldrb r0, [r12]
+	ldrb r0, [r7+r12]
+	cmp r0, #0  //Null
+	bne .+2  //Skip next line if not null
+	mov r0, #0x20  //Replace null with space
 	lsl r0, r0, #16  //put character under head as next 8 bits in r9
         orr r9, r9, r0  
         mov r0, #0       //Initialise rule counter
-
-//TODO: Must check for special case of null==blank space
 
 findMatchingRule:
 	ldr r8,[r0+compressedRules]
@@ -89,28 +89,26 @@ extractActionsFromRule:
         lsr r11,r11,#8
         ldr r2, writeCharMask 
         and r10, r8, r2  //Extract new character to be written from rule
-        ldr r1, movementMask
-        and r7, r8, r1//Extract movement 
-continue:
         strb r10, [r12]  //Write character to current head position
-	//Highlight new head position
-	mov r2, #.CharScreen
 	//Erase head position
+        mov r0, r12
 	mov r1,#0 //White (to erase background)
 	bl highlightChar
-        cmp r7, #0x80  //This means 'right'; otherwise left
+	ldr r1, movementMask
+        and r0, r8, r1//Extract movement 
+	cmp r0, #0x80  //This means 'right'; otherwise left
         beq moveRight
         sub r12, r12, #1  //Move head left
         b drawHead
 moveRight:
 	add r12, r12, #1  //Move head right
 drawHead:
-	sub r0, r12, r2
+	mov r0, r12
 	mov r1, #10 //highlight colour
 	bl highlightChar
 checkForHalt:
-	halt
-        cmp r11, r6  
+        ldrb r0, haltState
+	cmp r11, r0  
         bne runLoop
         halt
 
