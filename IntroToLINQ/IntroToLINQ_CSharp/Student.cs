@@ -6,15 +6,15 @@ namespace IntroToLINQ
     {
         public int StudentID { get; set; }
         public string FullName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string PredictedGrade { get; set; }
+        public Sex Sex { get; set; }
+        public int GCSEGrade { get; set; }
 
-        public Student(string name, int id, DateTime dob, string grade)
+        public Student(string name, int id, Sex sx, int grade)
         {
             StudentID = id;
             FullName = name;
-            DateOfBirth = dob;
-            PredictedGrade = grade;
+            Sex = sx;
+            GCSEGrade = grade;
         }
 
         public Student()
@@ -24,8 +24,15 @@ namespace IntroToLINQ
 
         public string Summary()
         {
-            return FullName + " " + StudentID + " " + DateOfBirth + " " + PredictedGrade;
+            return StudentID + " " + FullName;
         }
 
     }
+
+    public enum Sex
+    {
+        Male,Female
+    }
+
+
 }

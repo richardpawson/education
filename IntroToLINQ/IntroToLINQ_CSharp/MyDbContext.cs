@@ -6,7 +6,7 @@ namespace IntroToLINQ
     {
         public MyDbContext(string name) : base(name)
         {
-
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>());
         }
         public DbSet<Student> Students { get; set; }
     }
