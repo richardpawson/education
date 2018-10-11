@@ -1,0 +1,54 @@
+//Roman Numerals
+start:
+	ldr r0, .InputNum
+	mov r1,#0  //Index into values & symbols arrays
+loop:
+	ldr r2,[r1 + values]  //Current value
+	cmp r2, #0  //Check for end
+	beq done
+	add r3, r1, #symbols //Address of current symbol string
+	cmp r0, r2
+	blt nextSymbol
+	sub r0,r0,r2
+	str r3, .WriteString
+	b loop
+nextSymbol:
+	add r1,r1,#4  //4 for word boundary
+	b loop
+done:
+   	mov r3, #10  //Line feed
+   	str r3, .WriteChar
+  	b start
+
+values:
+.word 1000
+.word 900
+.word 500
+.word 400
+.word 100
+.word 90
+.word 50
+.word 40
+.word 10
+.word 9
+.word 5
+.word 4
+.word 1
+.word 0
+
+symbols:
+.word 0x4D  	//M
+.word 0x4d43 	//CM (characters ordered L-R)
+.word 0x44 	//D
+.word 0x4443 	//CD
+.word 0x43 	//C
+.word 0x4358 	//XC
+.word 0x4C 	//L
+.word 0x4C58 	//XL
+.word 0x58 	//X
+.word 0x5849 	//IX
+.word 0x56 	//V
+.word 0x5649 	//IV
+.word 0x49 	//I
+
+	
