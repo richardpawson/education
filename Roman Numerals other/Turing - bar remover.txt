@@ -11,13 +11,13 @@ qinit,_,>
 qinit,A
 moveA,_,>
 
-seekNextNonBlank,|
-seekNextNonBlank,|,>
+nextChar,|
+nextChar,|,>
 
-seekNextNonBlank,_
-returnToStart,_,<
+nextChar,_
+return,_,<
 
-seekNextNonBlank,A
+nextChar,A
 moveA,|,>
 
 moveA,|
@@ -30,19 +30,27 @@ moveA,_
 writeA,_,<
 
 writeA,|
-seekNextNonBlank,A,>
+nextChar,A,>
 
 writeA,_
-seekNextNonBlank,A,>
+nextChar,A,>
 
-//returnToStart
-returnToStart,A
-returnToStart,A,<
+//return
+return,A
+return,A,<
 
-returnToStart,|
-returnToStart,|,<
+return,|
+continue,|,<
 
-returnToStart,_
+return,_
+qfin,_,>
+
+continue,A
+continue,A,<
+
+continue,|
+continue,|,<
+
+continue,_
 qinit,_,>
-
 
