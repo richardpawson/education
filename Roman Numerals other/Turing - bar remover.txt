@@ -1,30 +1,21 @@
-//[A|A]
+//|A||AA|A|
 
 name: Space Remover
 
 init: qinit
 accept: qfin
 
-qinit,[
-move[,_,>
+qinit,|
+qinit,_,>
 
-move[,|
-move[,_,>
-
-move[,A
-write[,A,<
-
-write[,|
-seekNextNonBlank,[,>
-
-write[,_
-seekNextNonBlank,[,>
+qinit,A
+moveA,_,>
 
 seekNextNonBlank,|
 seekNextNonBlank,|,>
 
-seekNextNonBlank,]
-returnToStart,],<
+seekNextNonBlank,_
+returnToStart,_,<
 
 seekNextNonBlank,A
 moveA,|,>
@@ -35,10 +26,13 @@ moveA,|,>
 moveA,A
 writeA,A,<
 
-moveA,]
-writeA,],<
+moveA,_
+writeA,_,<
 
 writeA,|
+seekNextNonBlank,A,>
+
+writeA,_
 seekNextNonBlank,A,>
 
 //returnToStart
@@ -48,7 +42,7 @@ returnToStart,A,<
 returnToStart,|
 returnToStart,|,<
 
-returnToStart,[
-move[,_,>
+returnToStart,_
+qinit,_,>
 
 
