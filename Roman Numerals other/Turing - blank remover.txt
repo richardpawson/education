@@ -1,0 +1,30 @@
+//|A^^^AA^^A^^^^A|
+
+name: Space Remover
+
+init: qinit
+accept: qfin
+
+qinit,|
+seekNextNonBlank,|,>
+
+seekNextNonBlank,^
+seekNextNonBlank,^,>
+
+seekNextNonBlank,|
+qfin,|,>
+
+seekNextNonBlank,A
+moveA,^,>
+
+moveA,^
+moveA,^,>
+
+moveA,A
+writeA,A,<
+
+moveA,|
+writeA,|,<
+
+writeA,^
+seekNextNonBlank,A,>
