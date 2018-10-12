@@ -6,13 +6,22 @@ init: qinit
 accept: qfin
 
 qinit,|
+move|,^,>
+
+move|,^
+move|,^,>
+
+move|,A
+write|,A,<
+
+write|,^
 seekNextNonBlank,|,>
 
 seekNextNonBlank,^
 seekNextNonBlank,^,>
 
 seekNextNonBlank,|
-qfin,|,>
+returnToStart,|,<
 
 seekNextNonBlank,A
 moveA,^,>
@@ -28,3 +37,15 @@ writeA,|,<
 
 writeA,^
 seekNextNonBlank,A,>
+
+//returnToStart
+returnToStart,A
+returnToStart,A,<
+
+returnToStart,^
+returnToStart,^,<
+
+returnToStart,|
+move|,^,>
+
+
