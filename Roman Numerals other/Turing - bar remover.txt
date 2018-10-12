@@ -21,7 +21,7 @@ nextChar,A
 moveA,|,>
 
 moveA,|
-moveA,|,>
+nextChar,A,>
 
 moveA,A
 writeA,A,<
