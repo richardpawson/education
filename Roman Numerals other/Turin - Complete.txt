@@ -18,9 +18,14 @@ qinit,2,>
 qinit,3
 qinit,3,>
 
+qinit,4
+qinit,4,>
+
+qinit,5
+qinit,5,>
+
 qinit,_
 return,],<
-
 
 //read digit
 readNextDigit,0
@@ -34,6 +39,12 @@ write2,[,>
 
 readNextDigit,3
 write3,[,>
+
+readNextDigit,4
+write4,[,>
+
+readNextDigit,5
+write5,[,>
 
 readNextDigit,]
 gotoEnd,_,>
@@ -51,11 +62,20 @@ write0,2,>
 write0,3
 write0,3,>
 
+write0,4
+write0,4,>
+
+write0,5
+write0,5,>
+
 write0,]
 write0,],>
 
 write0,I
 write0,I,>
+
+write0,V
+write0,V,>
 
 write0,|
 write0,|,>
@@ -76,11 +96,20 @@ write1,2,>
 write1,3
 write1,3,>
 
+write1,4
+write1,4,>
+
+write1,5
+write1,5,>
+
 write1,]
 write1,],>
 
 write1,I
 write1,I,>
+
+write1,V
+write1,V,>
 
 write1,|
 write1,|,>
@@ -101,11 +130,20 @@ write2,2,>
 write2,3
 write2,3,>
 
+write2,4
+write2,4,>
+
+write2,5
+write2,5,>
+
 write2,]
 write2,],>
 
 write2,I
 write2,I,>
+
+write2,V
+write2,V,>
 
 write2,|
 write2,|,>
@@ -126,17 +164,94 @@ write3,2,>
 write3,3
 write3,3,>
 
+write3,4
+write3,4,>
+
+write3,5
+write3,5,>
+
 write3,]
 write3,],>
 
 write3,I
 write3,I,>
 
+write3,V
+write3,V,>
+
 write3,|
 write3,|,>
 
 write3,_
 write2,I,>
+
+//write4
+write4,0  
+write4,0,>
+
+write4,1
+write4,1,>
+
+write4,2
+write4,2,>
+
+write4,3
+write4,3,>
+
+write4,4
+write4,4,>
+
+write4,5
+write4,5,>
+
+write4,]
+write4,],>
+
+write4,I
+write4,I,>
+
+write4,V
+write4,V,>
+
+write4,|
+write4,|,>
+
+write4,_
+write5,I,>
+
+//write5
+write5,0  
+write5,0,>
+
+write5,1
+write5,1,>
+
+write5,2
+write5,2,>
+
+write5,3
+write5,3,>
+
+write5,4
+write5,4,>
+
+write5,5
+write5,5,>
+
+write5,]
+write5,],>
+
+write5,I
+write5,I,>
+
+write5,V
+write5,V,>
+
+write5,|
+write5,|,>
+
+write5,_
+write0,V,>
 
 //return
 return,0
@@ -151,8 +266,17 @@ return,2,<
 return,3
 return,3,<
 
+return,4
+return,4,<
+
+return,5
+return,5,<
+
 return,I
 return,I,<
+
+return,V
+return,V,<
 
 return,|
 return,|,<
@@ -174,6 +298,9 @@ gotoEnd,|,>
 gotoEnd,I
 gotoEnd,I,>
 
+gotoEnd,V
+gotoEnd,V,>
+
 gotoEnd,_
 symbols0,_,<
 
@@ -184,20 +311,38 @@ symbols1,|,<
 symbols1,I
 symbols1,I,<
 
+symbols1,V
+symbols1,V,<
+
 symbols1,|
 symbols10,|,<
+
+symbols1,_
+removeBars,|,<
 
 symbols10,I
 symbols10,X,<
 
+symbols10,V
+symbols10,L,<
+
 symbols10,|
 symbols100,|,<
+
+symbols10,_
+removeBars,|,<
 
 symbols100,I
 symbols100,C,<
 
+symbols100,V
+symbols100,D,<
+
 symbols100,|
 symbols1000,|,<
+
+symbols100,_
+removeBars,|,<
 
 symbols1000,I
 symbols1000,M,<
@@ -342,6 +487,9 @@ writeC,L,<
 
 moveC,C
 writeC,C,<
+
+moveC,D
+writeC,D,<
 
 moveC,M
 writeC,M,<
