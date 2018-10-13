@@ -15,24 +15,30 @@ qinit,1,>
 qinit,2
 qinit,2,>
 
+qinit,3
+qinit,3,>
+
 qinit,_
 return,],<
 
 
 //read digit
-readDigit,0
+readNextDigit,0
 write0,[,>
 
-readDigit,1
+readNextDigit,1
 write1,[,>
 
-readDigit,2
+readNextDigit,2
 write2,[,>
 
-readDigit,]
+readNextDigit,3
+write3,[,>
+
+readNextDigit,]
 gotoEnd,_,>
 
-//write digit
+//write0
 write0,0  //0
 write0,0,>
 
@@ -41,6 +47,9 @@ write0,1,>
 
 write0,2
 write0,2,>
+
+write0,3
+write0,3,>
 
 write0,]
 write0,],>
@@ -54,7 +63,8 @@ write0,|,>
 write0,_
 return,|,<  //Write0, uniquely, moves left here
 
-write1,0  //1
+//write1
+write1,0  
 write1,0,>
 
 write1,1
@@ -62,6 +72,9 @@ write1,1,>
 
 write1,2
 write1,2,>
+
+write1,3
+write1,3,>
 
 write1,]
 write1,],>
@@ -75,7 +88,8 @@ write1,|,>
 write1,_
 write0,I,>
 
-write2,0  //2
+//write2
+write2,0  
 write2,0,>
 
 write2,1
@@ -83,6 +97,9 @@ write2,1,>
 
 write2,2
 write2,2,>
+
+write2,3
+write2,3,>
 
 write2,]
 write2,],>
@@ -96,6 +113,31 @@ write2,|,>
 write2,_
 write1,I,>
 
+//write3
+write3,0  
+write3,0,>
+
+write3,1
+write3,1,>
+
+write3,2
+write3,2,>
+
+write3,3
+write3,3,>
+
+write3,]
+write3,],>
+
+write3,I
+write3,I,>
+
+write3,|
+write3,|,>
+
+write3,_
+write2,I,>
+
 //return
 return,0
 return,0,<
@@ -105,6 +147,9 @@ return,1,<
 
 return,2
 return,2,<
+
+return,3
+return,3,<
 
 return,I
 return,I,<
@@ -116,10 +161,10 @@ return,]
 return,],<
 
 return,[
-readDigit,_,>
+readNextDigit,_,>
 
 return,_
-readDigit,_,>
+readNextDigit,_,>
 
 //gotoEnd -  only after deleting input.
 
