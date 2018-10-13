@@ -4,7 +4,6 @@ accept: qfin
 
 //Example tape input:  1453
 
-
 qinit,0
 qinit,0,>
 
@@ -25,6 +24,9 @@ qinit,5,>
 
 qinit,6
 qinit,6,>
+
+qinit,7
+qinit,7,>
 
 qinit,_
 return,],<
@@ -51,6 +53,9 @@ write5,[,>
 readNextDigit,6
 write6,[,>
 
+readNextDigit,7
+write7,[,>
+
 readNextDigit,]
 gotoEnd,_,>
 
@@ -75,6 +80,9 @@ write0,5,>
 
 write0,6
 write0,6,>
+
+write0,7
+write0,7,>
 
 write0,]
 write0,],>
@@ -113,6 +121,9 @@ write1,5,>
 write1,6
 write1,6,>
 
+write1,7
+write1,7,>
+
 write1,]
 write1,],>
 
@@ -149,6 +160,9 @@ write2,5,>
 
 write2,6
 write2,6,>
+
+write2,7
+write2,7,>
 
 write2,]
 write2,],>
@@ -187,6 +201,9 @@ write3,5,>
 write3,6
 write3,6,>
 
+write3,7
+write3,7,>
+
 write3,]
 write3,],>
 
@@ -223,6 +240,9 @@ write4,5,>
 
 write4,6
 write4,6,>
+
+write4,7
+write4,7,>
 
 write4,]
 write4,],>
@@ -261,6 +281,9 @@ write5,5,>
 write5,6
 write5,6,>
 
+write5,7
+write5,7,>
+
 write5,]
 write5,],>
 
@@ -298,6 +321,9 @@ write6,5,>
 write6,6
 write6,6,>
 
+write6,7
+write6,7,>
+
 write6,]
 write6,],>
 
@@ -313,6 +339,45 @@ write6,|,>
 write6,_
 write1,V,>
 
+//write7
+write7,0  
+write7,0,>
+
+write7,1
+write7,1,>
+
+write7,2
+write7,2,>
+
+write7,3
+write7,3,>
+
+write7,4
+write7,4,>
+
+write7,5
+write7,5,>
+
+write7,6
+write7,6,>
+
+write7,7
+write7,7,>
+
+write7,]
+write7,],>
+
+write7,I
+write7,I,>
+
+write7,V
+write7,V,>
+
+write7,|
+write7,|,>
+
+write7,_
+write2,V,>
 
 //return
 return,0
@@ -335,6 +400,9 @@ return,5,<
 
 return,6
 return,6,<
+
+return,7
+return,7,<
 
 return,I
 return,I,<
