@@ -434,12 +434,12 @@ gotoEnd,V
 gotoEnd,V,>
 
 gotoEnd,_
-symbols0,_,<
+deleteLastBar,_,<
+
+deleteLastBar,|
+symbols1,_,<
 
 //symbols1
-symbols0,|
-symbols1,|,<
-
 symbols1,I
 symbols1,I,<
 
