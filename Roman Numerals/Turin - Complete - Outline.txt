@@ -2,9 +2,8 @@ name: Denary to Roman Numerals
 init: qinit
 accept: qfin
 
-//Currently works only with input symbols 0,1,2
-//Example tape input:  1201
-//Intermediate |M|CC||I|
+//Example tape input:  1453
+
 
 qinit,0
 qinit,0,>
@@ -23,6 +22,9 @@ qinit,4,>
 
 qinit,5
 qinit,5,>
+
+qinit,6
+qinit,6,>
 
 qinit,_
 return,],<
@@ -46,6 +48,9 @@ write4,[,>
 readNextDigit,5
 write5,[,>
 
+readNextDigit,6
+write6,[,>
+
 readNextDigit,]
 gotoEnd,_,>
 
@@ -67,6 +72,9 @@ write0,4,>
 
 write0,5
 write0,5,>
+
+write0,6
+write0,6,>
 
 write0,]
 write0,],>
@@ -102,6 +110,9 @@ write1,4,>
 write1,5
 write1,5,>
 
+write1,6
+write1,6,>
+
 write1,]
 write1,],>
 
@@ -135,6 +146,9 @@ write2,4,>
 
 write2,5
 write2,5,>
+
+write2,6
+write2,6,>
 
 write2,]
 write2,],>
@@ -170,6 +184,9 @@ write3,4,>
 write3,5
 write3,5,>
 
+write3,6
+write3,6,>
+
 write3,]
 write3,],>
 
@@ -203,6 +220,9 @@ write4,4,>
 
 write4,5
 write4,5,>
+
+write4,6
+write4,6,>
 
 write4,]
 write4,],>
@@ -238,6 +258,9 @@ write5,4,>
 write5,5
 write5,5,>
 
+write5,6
+write5,6,>
+
 write5,]
 write5,],>
 
@@ -252,6 +275,44 @@ write5,|,>
 
 write5,_
 write0,V,>
+
+//write6
+write6,0  
+write6,0,>
+
+write6,1
+write6,1,>
+
+write6,2
+write6,2,>
+
+write6,3
+write6,3,>
+
+write6,4
+write6,4,>
+
+write6,5
+write6,5,>
+
+write6,6
+write6,6,>
+
+write6,]
+write6,],>
+
+write6,I
+write6,I,>
+
+write6,V
+write6,V,>
+
+write6,|
+write6,|,>
+
+write6,_
+write1,V,>
+
 
 //return
 return,0
@@ -271,6 +332,9 @@ return,4,<
 
 return,5
 return,5,<
+
+return,6
+return,6,<
 
 return,I
 return,I,<
@@ -512,6 +576,9 @@ writeD,X,<
 
 moveD,L
 writeD,L,<
+
+moveD,C
+writeD,C,<
 
 moveD,_
 writeD,_,<
