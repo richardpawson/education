@@ -1,13 +1,10 @@
 name: Denary to Roman Numerals
-init: removeBars
+init: readDigit
 accept: qfin
 
 
-//Example tape input:  [1201]
+//Example tape input:  1201]
 //Intermediate |M|CC||I|
-
-qinit,[
-readDigit,_,>
 
 //read digit
 readDigit,0
