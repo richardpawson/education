@@ -450,7 +450,7 @@ symbols1,|
 symbols10,|,<
 
 symbols1,_
-removeBars,|,<
+removeBars,_,>
 
 symbols10,I
 symbols10,X,<
@@ -462,7 +462,7 @@ symbols10,|
 symbols100,|,<
 
 symbols10,_
-removeBars,|,<
+removeBars,_,>
 
 symbols100,I
 symbols100,C,<
@@ -474,18 +474,15 @@ symbols100,|
 symbols1000,|,<
 
 symbols100,_
-removeBars,|,<
+removeBars,_,>
 
 symbols1000,I
 symbols1000,M,<
 
 symbols1000,_
-removeBars,|,<
-
-//Remove bars
-removeBars,_
 removeBars,_,>
 
+//Remove bars
 removeBars,|
 removeBars,_,>
 
