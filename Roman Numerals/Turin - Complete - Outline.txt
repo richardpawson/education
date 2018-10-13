@@ -28,6 +28,12 @@ qinit,6,>
 qinit,7
 qinit,7,>
 
+qinit,8
+qinit,8,>
+
+qinit,9
+qinit,9,>
+
 qinit,_
 return,],<
 
@@ -55,6 +61,12 @@ write6,[,>
 
 readNextDigit,7
 write7,[,>
+
+readNextDigit,8
+write8,[,>
+
+readNextDigit,9
+write9,[,>
 
 readNextDigit,]
 gotoEnd,_,>
@@ -84,6 +96,12 @@ write0,6,>
 write0,7
 write0,7,>
 
+write0,8
+write0,8,>
+
+write0,9
+write0,9,>
+
 write0,]
 write0,],>
 
@@ -92,6 +110,9 @@ write0,I,>
 
 write0,V
 write0,V,>
+
+write0,X
+write0,X,>
 
 write0,|
 write0,|,>
@@ -124,6 +145,12 @@ write1,6,>
 write1,7
 write1,7,>
 
+write1,8
+write1,8,>
+
+write1,9
+write1,9,>
+
 write1,]
 write1,],>
 
@@ -132,6 +159,9 @@ write1,I,>
 
 write1,V
 write1,V,>
+
+write1,X
+write1,X,>
 
 write1,|
 write1,|,>
@@ -164,6 +194,12 @@ write2,6,>
 write2,7
 write2,7,>
 
+write2,8
+write2,8,>
+
+write2,9
+write2,9,>
+
 write2,]
 write2,],>
 
@@ -172,6 +208,9 @@ write2,I,>
 
 write2,V
 write2,V,>
+
+write2,X
+write2,X,>
 
 write2,|
 write2,|,>
@@ -204,6 +243,12 @@ write3,6,>
 write3,7
 write3,7,>
 
+write3,8
+write3,8,>
+
+write3,9
+write3,9,>
+
 write3,]
 write3,],>
 
@@ -212,6 +257,9 @@ write3,I,>
 
 write3,V
 write3,V,>
+
+write3,X
+write3,X,>
 
 write3,|
 write3,|,>
@@ -244,6 +292,12 @@ write4,6,>
 write4,7
 write4,7,>
 
+write4,8
+write4,8,>
+
+write4,9
+write4,9,>
+
 write4,]
 write4,],>
 
@@ -252,6 +306,9 @@ write4,I,>
 
 write4,V
 write4,V,>
+
+write4,X
+write4,X,>
 
 write4,|
 write4,|,>
@@ -284,6 +341,12 @@ write5,6,>
 write5,7
 write5,7,>
 
+write5,8
+write5,8,>
+
+write5,9
+write5,9,>
+
 write5,]
 write5,],>
 
@@ -292,6 +355,9 @@ write5,I,>
 
 write5,V
 write5,V,>
+
+write5,X
+write5,X,>
 
 write5,|
 write5,|,>
@@ -324,6 +390,12 @@ write6,6,>
 write6,7
 write6,7,>
 
+write6,8
+write6,8,>
+
+write6,9
+write6,9,>
+
 write6,]
 write6,],>
 
@@ -332,6 +404,9 @@ write6,I,>
 
 write6,V
 write6,V,>
+
+write6,X
+write6,X,>
 
 write6,|
 write6,|,>
@@ -364,6 +439,12 @@ write7,6,>
 write7,7
 write7,7,>
 
+write7,8
+write7,8,>
+
+write7,9
+write7,9,>
+
 write7,]
 write7,],>
 
@@ -373,11 +454,116 @@ write7,I,>
 write7,V
 write7,V,>
 
+write7,X
+write7,X,>
+
 write7,|
 write7,|,>
 
 write7,_
 write2,V,>
+
+//write8
+write8,0  
+write8,0,>
+
+write8,1
+write8,1,>
+
+write8,2
+write8,2,>
+
+write8,3
+write8,3,>
+
+write8,4
+write8,4,>
+
+write8,5
+write8,5,>
+
+write8,6
+write8,6,>
+
+write8,7
+write8,7,>
+
+write8,8
+write8,8,>
+
+write8,9
+write8,9,>
+
+write8,]
+write8,],>
+
+write8,I
+write8,I,>
+
+write8,V
+write8,V,>
+
+write8,X
+write8,X,>
+
+write8,|
+write8,|,>
+
+write8,_
+write3,V,>
+
+//write9
+write9,0  
+write9,0,>
+
+write9,1
+write9,1,>
+
+write9,2
+write9,2,>
+
+write9,3
+write9,3,>
+
+write9,4
+write9,4,>
+
+write9,5
+write9,5,>
+
+write9,6
+write9,6,>
+
+write9,7
+write9,7,>
+
+write9,8
+write9,8,>
+
+write9,9
+write9,9,>
+
+write9,]
+write9,],>
+
+write9,I
+write9,I,>
+
+write9,V
+write9,V,>
+
+write9,X
+write9,X,>
+
+write9,|
+write9,|,>
+
+write9,_
+write10,I,>
+
+//Write10
+write10,_
+write0,X,>
 
 //return
 return,0
@@ -404,11 +590,20 @@ return,6,<
 return,7
 return,7,<
 
+return,8
+return,8,<
+
+return,9
+return,9,<
+
 return,I
 return,I,<
 
 return,V
 return,V,<
+
+return,X
+return,X,<
 
 return,|
 return,|,<
@@ -433,6 +628,9 @@ gotoEnd,I,>
 gotoEnd,V
 gotoEnd,V,>
 
+gotoEnd,X
+gotoEnd,X,>
+
 gotoEnd,_
 deleteLastBar,_,<
 
@@ -446,6 +644,9 @@ symbols1,I,<
 symbols1,V
 symbols1,V,<
 
+symbols1,X
+symbols1,X,<
+
 symbols1,|
 symbols10,|,<
 
@@ -458,6 +659,9 @@ symbols10,X,<
 symbols10,V
 symbols10,L,<
 
+symbols10,X
+symbols10,C,<
+
 symbols10,|
 symbols100,|,<
 
@@ -469,6 +673,9 @@ symbols100,C,<
 
 symbols100,V
 symbols100,D,<
+
+symbols100,X
+symbols100,M,<
 
 symbols100,|
 symbols1000,|,<
