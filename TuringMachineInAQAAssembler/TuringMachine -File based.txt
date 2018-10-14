@@ -37,7 +37,7 @@ right:	mov r1, #0x80  	// set bit 7 to 1
 storeCompressedRule:
 	str r2,[r3]
 	add r3,r3,#4	
-	mov r0, #1  //Skip to 1st char in next rule
+	mov r0, #3  //Skip to 1st char in next rule (allowing for cr/lf)
 	bl skipToFileChar
 	b nextRule
 
