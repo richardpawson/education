@@ -5,15 +5,15 @@ namespace ConsoleApp1
 {
     class Program
     {
-        const char blank = '_';
+        const char blank = ' ';
         const string startState = "S0";
-        const string haltState = "*";
+        const string haltState = "S*";
 
         static void Main(string[] args)
         {
-            foreach (var rule in RulesForRange(100))
+            foreach (var rule in RulesForRange(5))
             {
-                Console.WriteLine(rule.Format2());
+                Console.Write(rule.Format1());
             }
             Console.ReadKey();
         }
