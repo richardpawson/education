@@ -1,0 +1,23 @@
+start,D,start,D,R  //10
+start,_,return,_,L //end found
+
+return,D,1sL,D,L    //10
+return,_,halt,_,L  //No more digits
+1sL,D,10sL,D,L	//10
+1sL,_,1sR,_,R
+10sL,D,100sL,D,L 	//10
+10sL,_,10sR,_,R
+100sL,D,1000sR,D,L 	//10
+100sL,_,100sR,_,R
+
+1sR,D,WriteD,_,R   	//10
+10sR,D,WriteD0,_,R    	//10
+100sR,D,WriteD00,_,R    	//10
+1000sR,1,Write1000,_,R //only 2 digits possible in '000s column
+1000sR,2,Write2000,_,R 
+
+WriteN,*,WriteN,*,>   //Where * = 0-9,I-M   (0-9 removed where N<10, symbols reduced for higher values of N) & N = 1-9,10-90,100-900,1000,2000) PPROX: 444
+WriteN,_,WriteN-V,S(V),R   //or, where V=N, new state is Return  N = 1-9,10-90,100-900,1000,2000  32
+
+
+Approx 550 rules.
