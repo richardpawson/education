@@ -8,7 +8,7 @@ Namespace TechnicalServices
 		Implements IRandomGenerator
 		Private counter As Integer = 0
 		Private values As Integer() = Nothing
-        Public Function [Next](minValue As Integer, maxValue As Integer) As Integer Implements IRandomGenerator.Next
+        Public Function NextValue(minValue As Integer, maxValue As Integer) As Integer Implements IRandomGenerator.NextValue
             If counter >= values.Length Then
                 Throw New Exception("Insufficient values set")
             End If

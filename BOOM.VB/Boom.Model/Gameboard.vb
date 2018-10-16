@@ -103,9 +103,9 @@ Namespace Boom.Model
                 Dim col As Integer = 0
                 Dim valid As Boolean = False
                 While valid = False
-                    col = RandomGenerator.[Next](0, Size)
-                    row = RandomGenerator.[Next](0, Size)
-                    orientation = DirectCast(RandomGenerator.[Next](0, 2), Orientations)
+                    col = RandomGenerator.NextValue(0, Size)
+                    row = RandomGenerator.NextValue(0, Size)
+                    orientation = DirectCast(RandomGenerator.NextValue(0, 2), Orientations)
                     valid = IsValidPosition(ship, row, col, orientation)
                 End While
                 Logger.WriteLine("Computer placing the " + ship.Name)
