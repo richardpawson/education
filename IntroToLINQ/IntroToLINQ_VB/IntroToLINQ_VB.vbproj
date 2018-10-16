@@ -92,7 +92,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="MyDbContext.vb" />
-    <Compile Include="Program - with EF.vb" />
     <Compile Include="Student.vb" />
   </ItemGroup>
   <ItemGroup>

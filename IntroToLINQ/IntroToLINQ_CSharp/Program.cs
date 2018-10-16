@@ -22,7 +22,7 @@ namespace ConsoleUI
         static int[] testScores = { 45, 87, 23, 66, 70, 52, 48, 32, 90 };
 
 
-        static List<Student> Students() {
+        static List<Student> CreateStudents() {
             var list = new List<Student>();
             list.Add(new Student("Olivia", 345, new DateTime(2000,4,6),'C'));
             list.Add(new Student("Noah", 744, new DateTime(2001, 4, 6), 'A'));
