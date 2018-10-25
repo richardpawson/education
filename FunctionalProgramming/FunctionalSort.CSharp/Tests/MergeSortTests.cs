@@ -8,12 +8,23 @@ namespace Tests
     [TestClass]
     public class MergeSortTests
     {
+
+
+[TestMethod]
+public void TestSortWithAlphabeticalFunction()
+{
+    var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
+    var sorted = Sorting.MergeSort(list, alphabetical);
+    var expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yacht");
+    Assert.AreEqual(expected, sorted);
+}
+
         [TestMethod]
-        public void TestSortWithAlphabeticalFunction()
+        public void TestSortWithAnonymousFunction()
         {
             var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
-            var sorted = Sorting.MergeSort(list, alphabetical);
-            var expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yacht");
+            var sorted = Sorting.MergeSort(list, (s1,s2) => s1.Last() < s2.Last()) ;
+            var expected = FList.Cons("Flag", "Burg", "Cup", "Nest", "Yacht", "Next");
             Assert.AreEqual(expected, sorted);
         }
 
@@ -63,25 +74,25 @@ namespace Tests
             Assert.AreEqual(expected, sorted);
         }
 
-        static bool alphabetical(string s1, string s2)
-        {
-            return string.Compare(s2, s1) > 0;
-        }
+static bool alphabetical(string s1, string s2)
+{
+    return string.Compare(s2, s1) > 0;
+}
 
-        static bool reverse(string s1, string s2)
-        {
-            return string.Compare(s2, s1) < 0;
-        }
+static bool reverse(string s1, string s2)
+{
+    return string.Compare(s2, s1) < 0;
+}
 
-        static bool length(string s1, string s2)
-        {
-            return s2.Length > s1.Length;
-        }
+static bool length(string s1, string s2)
+{
+    return s2.Length > s1.Length;
+}
 
-        static bool greaterThan(int i1, int i2)
-        {
-            return i2 > i1;
-        }
+static bool greaterThan(int i1, int i2)
+{
+    return i2 > i1;
+}
 
         static bool reverse(int i1, int i2)
         {

@@ -40,6 +40,14 @@ Namespace Tests
         End Sub
 
         <TestMethod>
+        Public Sub TestSortWithAnonymousFunction()
+            Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next")
+            Dim sorted = Sorting.MergeSort(list, Function(s1, s2) s1.Last() < s2.Last())
+            Dim expected = FList.Cons("Flag", "Burg", "Cup", "Nest", "Yacht", "Next")
+            Assert.AreEqual(expected, sorted)
+        End Sub
+
+        <TestMethod>
         Public Sub TestSortIntegers()
             Dim list = FList.Cons(4, 7, 12, 3, 88, 9, 2, 7)
             Dim sorted = Sorting.MergeSort(list, AddressOf greaterThan)
