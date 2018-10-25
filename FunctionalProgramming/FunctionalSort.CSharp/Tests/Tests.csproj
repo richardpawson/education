@@ -54,7 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FunctionalLibrary\FunctionalLibrary.csproj">
+    <ProjectReference Include="..\..\FunctionalLibrary.CSharp\FunctionalLibrary.csproj">
       <Project>{7f308878-fd25-41ba-84be-d96d6334b48f}</Project>
       <Name>FunctionalLibrary</Name>
     </ProjectReference>
