@@ -10,21 +10,17 @@ namespace ConsoleUI
             var list = FList.Cons("Flag","Nest","Cup","Burg", "Yacht","Next");
 
 
-            var sorted = MergeSort.SortAlphabetical(list);
-            Console.WriteLine(sorted.ToString());
-
-
-            var alpha = MergeSort.Sort(list, alphabetical);
+            var alpha = Sorting.MergeSort(list, alphabetical);
             Console.WriteLine(alpha.ToString());
-            var rev = MergeSort.Sort(list, reverse);
+            var rev = Sorting.MergeSort(list, reverse);
             Console.WriteLine(rev.ToString());
-            var len = MergeSort.Sort(list, length);
+            var len = Sorting.MergeSort(list, length);
             Console.WriteLine(len.ToString());
 
             var iList = FList.Cons(4, 7, 12, 3, 88, 9, 2, 7);
-            var up = MergeSort.Sort(iList, greaterThan);
+            var up = Sorting.MergeSort(iList, greaterThan);
             Console.WriteLine(up.ToString());
-            var down = MergeSort.Sort(iList, reverse);
+            var down = Sorting.MergeSort(iList, reverse);
             Console.WriteLine(down.ToString());
 
             Console.ReadKey();

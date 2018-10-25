@@ -5,42 +5,12 @@ Imports FunctionalLibrary
 Namespace Tests
 	<TestClass> _
 	Public Class MergeSortTests
-        <TestMethod>
-        Public Sub TestSortAlphabeticalHappyCase()
-            Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next")
-            Dim sorted = MergeSort.SortAlphabetical(list)
-            Dim expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yacht")
-            Assert.AreEqual(expected, sorted)
-        End Sub
 
-        <TestMethod> _
-		Public Sub TestSortAlphabeticalWithDuplicates()
-			Dim list = FList.Cons("Flag", "Cup", "Cup", "Burg", "Cup", "Next")
-			Dim sorted = MergeSort.SortAlphabetical(list)
-			Dim expected = FList.Cons("Burg", "Cup", "Cup", "Cup", "Flag", "Next")
-			Assert.AreEqual(expected, sorted)
-		End Sub
-
-		<TestMethod> _
-		Public Sub TestSortAlphabeticalWithOne()
-			Dim list = FList.Cons("Flag")
-			Dim sorted = MergeSort.SortAlphabetical(list)
-			Dim expected = FList.Cons("Flag")
-			Assert.AreEqual(expected, sorted)
-		End Sub
-
-		<TestMethod> _
-		Public Sub TestSortAlphabeticalEmpty()
-			Dim list = FList.Empty(Of String)()
-			Dim sorted = MergeSort.SortAlphabetical(list)
-			Dim expected = FList.Empty(Of String)()
-			Assert.AreEqual(expected, sorted)
-		End Sub
 
         <TestMethod>
         Public Sub TestSortWithAlphabeticalFunction()
             Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next")
-            Dim sorted = MergeSort.Sort(list, AddressOf alphabetical)
+            Dim sorted = Sorting.MergeSort(list, AddressOf alphabetical)
             Dim expected = FList.Cons("Burg", "Cup", "Flag", "Nest", "Next", "Yacht")
             Assert.AreEqual(expected, sorted)
         End Sub
@@ -48,7 +18,7 @@ Namespace Tests
         <TestMethod>
         Public Sub TestSortWithReverseFunction()
             Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next")
-            Dim sorted = MergeSort.Sort(list, AddressOf reverse)
+            Dim sorted = Sorting.MergeSort(list, AddressOf reverse)
             Dim expected = FList.Cons("Yacht", "Next", "Nest", "Flag", "Cup", "Burg")
             Assert.AreEqual(expected, sorted)
         End Sub
@@ -56,7 +26,7 @@ Namespace Tests
         <TestMethod>
         Public Sub TestSortByLengthDecreasing()
             Dim list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next")
-            Dim sorted = MergeSort.Sort(list, AddressOf length)
+            Dim sorted = Sorting.MergeSort(list, AddressOf length)
             Dim expected = FList.Cons("Cup", "Flag", "Nest", "Burg", "Next", "Yacht")
             Assert.AreEqual(expected, sorted)
         End Sub
@@ -72,7 +42,7 @@ Namespace Tests
         <TestMethod>
         Public Sub TestSortIntegers()
             Dim list = FList.Cons(4, 7, 12, 3, 88, 9, 2, 7)
-            Dim sorted = MergeSort.Sort(list, AddressOf greaterThan)
+            Dim sorted = Sorting.MergeSort(list, AddressOf greaterThan)
             Dim expected = FList.Cons(2, 3, 4, 7, 7, 9, 12, 88)
             Assert.AreEqual(expected, sorted)
         End Sub
@@ -80,7 +50,7 @@ Namespace Tests
         <TestMethod>
         Public Sub TestSortIntegersInReverse()
             Dim list = FList.Cons(4, 7, 12, 3, 88, 9, 2, 7)
-            Dim sorted = MergeSort.Sort(list, AddressOf reverse)
+            Dim sorted = Sorting.MergeSort(list, AddressOf reverse)
             Dim expected = FList.Cons(88, 12, 9, 7, 7, 4, 3, 2)
             Assert.AreEqual(expected, sorted)
         End Sub
