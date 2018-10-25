@@ -19,14 +19,14 @@ public void TestSortWithAlphabeticalFunction()
     Assert.AreEqual(expected, sorted);
 }
 
-        [TestMethod]
-        public void TestSortWithAnonymousFunction()
-        {
-            var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
-            var sorted = Sorting.MergeSort(list, (s1,s2) => s1.Last() < s2.Last()) ;
-            var expected = FList.Cons("Flag", "Burg", "Cup", "Nest", "Yacht", "Next");
-            Assert.AreEqual(expected, sorted);
-        }
+[TestMethod]
+public void TestSortWithAnonymousFunction()
+{
+    var list = FList.Cons("Flag", "Nest", "Cup", "Burg", "Yacht", "Next");
+    var sorted = Sorting.MergeSort(list, (s1,s2) => s1.Last() < s2.Last()) ;
+    var expected = FList.Cons("Flag", "Burg", "Cup", "Nest", "Yacht", "Next");
+    Assert.AreEqual(expected, sorted);
+}
 
         [TestMethod]
         public void TestSortWithReverseFunction()
