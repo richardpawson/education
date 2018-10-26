@@ -4,16 +4,18 @@ namespace CSharpRomanNumerals
 {
     public static class Convertor
     {
-        public static string AsRomanNumeral(int number, FList<int> values, FList<string> symbols)
+        private static string RomanFrom(int d, FList<int> ns, FList<string> xs)
         {
-            return number >= values.Head ?
-                symbols.Head + AsRomanNumeral(number - values.Head, values, symbols):
-                   values.Tail.IsEmpty? "": AsRomanNumeral(number, values.Tail, symbols.Tail);
+            return ns.IsEmpty ?
+                 "" :
+                 d >= ns.Head ?
+                   xs.Head + RomanFrom(d - ns.Head, ns, xs) :
+                   RomanFrom(d, ns.Tail, xs.Tail);
         }
 
-        public static string AsRomanNumeral(int number)
+        public static string Roman(int d)
         {
-            return AsRomanNumeral(number,
+            return RomanFrom(d,
                 FList.Cons<int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1),
                 FList.Cons<string>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"));
         }

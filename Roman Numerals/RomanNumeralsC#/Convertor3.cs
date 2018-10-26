@@ -5,19 +5,17 @@ namespace CSharpRomanNumerals
 {
     public static class Convertor
     {
-        private static Dictionary<int, string> symbols = new Dictionary<int, string>
-            {
-                {1000, "M"},{900, "CM"},{500, "D"},{400, "CD"},{100, "C"},{90, "XC"},
-                { 50, "L"},{ 40, "XL"},{10, "X"},{9, "IX"},{5, "V"},{4, "IV"},{1, "I"}
-            };
         public static string Roman(int d)
         {
+            var values = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10,9, 5, 4, 1 };
+            var symbols = new string[] { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
             var result = new StringBuilder();
-            foreach (int value in symbols.Keys)
+            for (int i = 0; i < values.Length; i++)
             {
+                var value = values[i];
                 while (d >= value)
                 {
-                    result.Append(symbols[value]);
+                    result.Append(symbols[i]);
                     d -= value;
                 }
             }
