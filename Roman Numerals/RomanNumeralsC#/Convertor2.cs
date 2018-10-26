@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
-namespace CSharpRomanNumerals
+﻿namespace CSharpRomanNumerals
 {
     public static class Convertor
     {

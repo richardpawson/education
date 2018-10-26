@@ -7,6 +7,12 @@ namespace CSharpRomanNumerals
     public class Tests
     {
         [TestMethod]
+        public void Test___0()
+        {
+            Assert.AreEqual("", Convertor.Roman(0));
+        }
+
+        [TestMethod]
         public void Test___1()
         {
             Assert.AreEqual("I", Convertor.Roman(1));
