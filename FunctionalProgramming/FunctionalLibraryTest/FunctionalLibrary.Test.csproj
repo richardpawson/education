@@ -48,9 +48,27 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FListTests.cs" />
+    <Compile Include="Append.cs" />
+    <Compile Include="FoldR.cs" />
+    <Compile Include="Elem.cs" />
+    <Compile Include="Reverse.cs" />
+    <Compile Include="MergeSort.cs" />
+    <Compile Include="Tail.cs" />
+    <Compile Include="Init.cs" />
+    <Compile Include="Last..cs" />
+    <Compile Include="Head.cs" />
+    <Compile Include="Length.cs" />
+    <Compile Include="Take.cs" />
+    <Compile Include="Skip.cs" />
+    <Compile Include="Remove.cs" />
+    <Compile Include="Prepend.cs" />
+    <Compile Include="FoldL.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="Any.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomNumberTests.cs" />
+    <Compile Include="RandomNumbers.cs" />
+    <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

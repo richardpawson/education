@@ -2,7 +2,7 @@
 using System.Text;
 using FunctionalLibrary;
 
-namespace FAB.Test
+namespace FunctionalLibraryTest
 {
     [TestClass]
     public class RandomNumberTests

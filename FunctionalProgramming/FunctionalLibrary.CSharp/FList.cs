@@ -6,7 +6,7 @@ namespace FunctionalLibrary
     public class FList<T>
     {
         // Creates a new list that is empty
-        public FList()
+        internal FList()
         {
             IsEmpty = true;
         }
@@ -18,9 +18,9 @@ namespace FunctionalLibrary
             Head = head;
             Tail = tail;
         }
-        public bool IsEmpty { get; private set; }
-        public T Head { get; private set; }
-        public FList<T> Tail { get; private set; }
+        internal bool IsEmpty { get; private set; }
+        internal T Head { get; private set; }
+        internal FList<T> Tail { get; private set; }
 
         public override string ToString()
         {
