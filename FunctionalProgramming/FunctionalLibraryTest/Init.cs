@@ -9,18 +9,18 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Init1()
         {
-            var list = FC.NewFList(1, 2, 3,4,5);
-            var actual = FC.Init(list);
-            var expected = FC.NewFList(1, 2, 3, 4);
+            var list = FL.NewFList(1, 2, 3,4,5);
+            var actual = FL.Init(list);
+            var expected = FL.NewFList(1, 2, 3, 4);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Init2()
         {
-            var list = FC.NewFList(1);
-            var actual = FC.Init(list);
-            var expected = FC.EmptyList<int>();
+            var list = FL.NewFList(1);
+            var actual = FL.Init(list);
+            var expected = FL.EmptyList<int>();
             Assert.AreEqual(expected, actual);
         }
 

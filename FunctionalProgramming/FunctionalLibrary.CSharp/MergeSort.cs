@@ -7,17 +7,17 @@ namespace FunctionalLibrary
 
         public static FList<T> LeftHalf<T>(FList<T> list)
         {
-            return FC.Drop(FC.Length(list) / 2, list);
+            return FL.Drop(FL.Length(list) / 2, list);
         }
 
         public static FList<T> RightHalf<T>(FList<T> list)
         {
-            return FC.Take(FC.Length(list) / 2, list);
+            return FL.Take(FL.Length(list) / 2, list);
         }
 
         public static FList<T> MergeSort<T>( Func<T, T, bool> f, FList<T> list)
         {
-            return FC.Length(list) < 2 ?
+            return FL.Length(list) < 2 ?
                     list :
                     Merge(MergeSort(f, LeftHalf(list)), MergeSort(f, RightHalf(list)), f);
         }

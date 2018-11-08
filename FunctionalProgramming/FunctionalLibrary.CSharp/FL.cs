@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FunctionalLibrary
 {
     // Static class that provides functions relating to FLists
-    public static class FC
+    public static class FL
     {
         #region Constructing lists
         /// <summary>
@@ -119,11 +119,11 @@ namespace FunctionalLibrary
         /// <summary>
         /// Adds new item at the end of the list
         /// </summary>
-        public static FList<T> Append<T>(FList<T> list, T item)
+        public static FList<T> Append<T>(FList<T> inputList, FList<T> toAppend)
         {
-            return list.IsEmpty ?
-                NewFList(item)
-                : NewFList(list.Head, Append(Tail(list), item));
+            return inputList.IsEmpty ?
+                toAppend
+                : NewFList(inputList.Head, Append(Tail(inputList), toAppend));
         }
 
         // Remove item from list, wherever it is located,  multiple times if necessary
@@ -133,7 +133,7 @@ namespace FunctionalLibrary
                 list
                 : Head(list).Equals(item) ?
                     Tail( list)
-                    : NewFList(Head(list), FC.RemoveFirst(item, Tail(list)));
+                    : NewFList(Head(list), FL.RemoveFirst(item, Tail(list)));
         }
 
         public static FList<T> Drop<T>(int number, FList<T> list)
@@ -148,17 +148,17 @@ namespace FunctionalLibrary
         public static FList<T> Take<T>(int n, FList<T> list)
         {
             return n <= 0 || IsEmpty(list) ?
-                FC.EmptyList<T>()
+                FL.EmptyList<T>()
                 : n == 1 ?
-                    FC.NewFList(Head(list))
-                    : FC.NewFList(Head(list), Take(n - 1, Tail(list)));
+                    FL.NewFList(Head(list))
+                    : FL.NewFList(Head(list), Take(n - 1, Tail(list)));
         }
 
         public static FList<T> Reverse<T>( FList<T> list)
         {
             return IsEmpty(list) ?
                 list
-                : FC.NewFList(Last(list), Reverse(Init(list)));
+                : FL.NewFList(Last(list), Reverse(Init(list)));
         }
         #endregion
 

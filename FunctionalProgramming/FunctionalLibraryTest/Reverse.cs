@@ -9,36 +9,36 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Reverse1()
         {
-            var list = FC.NewFList(1, 2, 3, 4, 5);
-            var actual = FC.Reverse(list);
-            var expected = FC.NewFList(5,4,3,2,1);
+            var list = FL.NewFList(1, 2, 3, 4, 5);
+            var actual = FL.Reverse(list);
+            var expected = FL.NewFList(5,4,3,2,1);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Reverse2()
         {
-            var list = FC.NewFList(3,4);
-            var actual = FC.Reverse(list);
-            var expected = FC.NewFList(4,3);
+            var list = FL.NewFList(3,4);
+            var actual = FL.Reverse(list);
+            var expected = FL.NewFList(4,3);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Reverse3()
         {
-            var list = FC.NewFList(2);
-            var actual = FC.Reverse(list);
-            var expected = FC.NewFList(2);
+            var list = FL.NewFList(2);
+            var actual = FL.Reverse(list);
+            var expected = FL.NewFList(2);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Reverse4()
         {
-            var list = FC.EmptyList<int>();
-            var actual = FC.Reverse(list);
-            var expected = FC.EmptyList<int>();
+            var list = FL.EmptyList<int>();
+            var actual = FL.Reverse(list);
+            var expected = FL.EmptyList<int>();
             Assert.AreEqual(expected, actual);
         }
 

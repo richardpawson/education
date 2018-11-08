@@ -9,28 +9,36 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Append1()
         {
-            var list = FC.NewFList(1, 2, 3);
-            var actual = FC.Append(list, 4);
-            var expected = FC.NewFList(1, 2, 3, 4);
+            var list = FL.NewFList(1, 2, 3);
+            var actual = FL.Append(list, FL.NewFList(4));
+            var expected = FL.NewFList(1, 2, 3, 4);
             Assert.AreEqual(expected, actual);
         }
-
 
         [TestMethod]
         public void Append2()
         {
-            var list = FC.NewFList(1);
-            var actual = FC.Append(list, 4);
-            var expected = FC.NewFList(1, 4);
+            var list = FL.NewFList(1);
+            var actual = FL.Append(list, FL.NewFList(4));
+            var expected = FL.NewFList(1, 4);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Append3()
         {
-            var list = FC.EmptyList<int>();
-            var actual = FC.Append(list, 4);
-            var expected = FC.NewFList(4);
+            var list = FL.EmptyList<int>();
+            var actual = FL.Append(list, FL.NewFList(4));
+            var expected = FL.NewFList(4);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Append4()
+        {
+            var list = FL.NewFList(1,2);
+            var actual = FL.Append(list, FL.NewFList(4,7));
+            var expected = FL.NewFList(1,2,4,7);
             Assert.AreEqual(expected, actual);
         }
 

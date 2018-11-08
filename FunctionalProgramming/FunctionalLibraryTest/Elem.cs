@@ -9,8 +9,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Elem1()
         {
-            var list = FC.NewFList(1, 2, 3, 4, 5);
-            var actual = FC.Elem(3, list);
+            var list = FL.NewFList(1, 2, 3, 4, 5);
+            var actual = FL.Elem(3, list);
             var expected = true;
             Assert.AreEqual(expected, actual);
         }
@@ -18,8 +18,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Elem2()
         {
-            var list = FC.NewFList(1, 2, 2, 4, 5);
-            var actual = FC.Elem(2, list);
+            var list = FL.NewFList(1, 2, 2, 4, 5);
+            var actual = FL.Elem(2, list);
             var expected = true;
             Assert.AreEqual(expected, actual);
         }
@@ -27,8 +27,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Elem3()
         {
-            var list = FC.NewFList(1, 2, 3, 4, 5);
-            var actual = FC.Elem(6, list);
+            var list = FL.NewFList(1, 2, 3, 4, 5);
+            var actual = FL.Elem(6, list);
             var expected = false;
             Assert.AreEqual(expected, actual);
         }
@@ -36,8 +36,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Elem4()
         {
-            var list = FC.NewFList(5);
-            var actual = FC.Elem(5, list);
+            var list = FL.NewFList(5);
+            var actual = FL.Elem(5, list);
             var expected = true;
             Assert.AreEqual(expected, actual);
         }
@@ -45,8 +45,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Elem5()
         {
-            var list = FC.NewFList(5);
-            var actual = FC.Elem(6, list);
+            var list = FL.NewFList(5);
+            var actual = FL.Elem(6, list);
             var expected = false;
             Assert.AreEqual(expected, actual);
         }
@@ -54,8 +54,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Elem6()
         {
-            var list = FC.EmptyList<int>();
-            var actual = FC.Elem(6, list);
+            var list = FL.EmptyList<int>();
+            var actual = FL.Elem(6, list);
             var expected = false;
             Assert.AreEqual(expected, actual);
         }

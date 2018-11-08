@@ -9,8 +9,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Length1()
         {
-            var list = FC.NewFList(1, 2, 3, 4, 5);
-            var actual = FC.Length(list);
+            var list = FL.NewFList(1, 2, 3, 4, 5);
+            var actual = FL.Length(list);
             var expected = 5;
             Assert.AreEqual(expected, actual);
         }
@@ -18,8 +18,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Length2()
         {
-            var list = FC.NewFList(5);
-            var actual = FC.Length(list);
+            var list = FL.NewFList(5);
+            var actual = FL.Length(list);
             var expected = 1;
             Assert.AreEqual(expected, actual);
         }
@@ -27,8 +27,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Length3()
         {
-            var list = FC.EmptyList<int>();
-            var actual = FC.Length(list);
+            var list = FL.EmptyList<int>();
+            var actual = FL.Length(list);
             var expected = 0;
             Assert.AreEqual(expected, actual);
         }
