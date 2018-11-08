@@ -9,54 +9,54 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Drop1()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Drop(1, list);
-            var expected = FL.NewFList(2, 3, 4, 5);
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Drop(1, list);
+            var expected = FList.New(2, 3, 4, 5);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Drop2()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Drop(4, list);
-            var expected = FL.NewFList(5);
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Drop(4, list);
+            var expected = FList.New(5);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Drop3()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Drop(5, list);
-            var expected = FL.EmptyList<int>();
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Drop(5, list);
+            var expected = FList.Empty<int>();
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Drop4()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Drop(0, list);
-            var expected = FL.NewFList(1, 2, 3, 4, 5);
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Drop(0, list);
+            var expected = FList.New(1, 2, 3, 4, 5);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Drop5()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Drop(6, list);
-            var expected = FL.EmptyList<int>();
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Drop(6, list);
+            var expected = FList.Empty<int>();
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Drop6()
         {
-            var list = FL.EmptyList<int>();
-            var actual = FL.Drop(1, list);
-            var expected = FL.EmptyList<int>();
+            var list = FList.Empty<int>();
+            var actual = FList.Drop(1, list);
+            var expected = FList.Empty<int>();
             Assert.AreEqual(expected, actual);
         }
     }

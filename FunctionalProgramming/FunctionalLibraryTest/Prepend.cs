@@ -9,18 +9,18 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Prepend1()
         {
-            var list = FL.NewFList(1, 2, 3);
-            var actual = FL.Prepend(4, list);
-            var expected = FL.NewFList(4, 1, 2, 3);
+            var list = FList.New(1, 2, 3);
+            var actual = FList.Prepend(4, list);
+            var expected = FList.New(4, 1, 2, 3);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Prepend2()
         {
-            var list = FL.NewFList(1);
-            var actual = FL.Prepend(4, list);
-            var expected = FL.NewFList(4, 1);
+            var list = FList.New(1);
+            var actual = FList.Prepend(4, list);
+            var expected = FList.New(4, 1);
             Assert.AreEqual(expected, actual);
         }
 
@@ -28,9 +28,9 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Prepend3()
         {
-            var list = FL.EmptyList<int>();
-            var actual = FL.Prepend(4, list);
-            var expected = FL.NewFList(4);
+            var list = FList.Empty<int>();
+            var actual = FList.Prepend(4, list);
+            var expected = FList.New(4);
             Assert.AreEqual(expected, actual);
         }
 

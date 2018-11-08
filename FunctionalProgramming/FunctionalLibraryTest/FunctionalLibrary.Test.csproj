@@ -51,6 +51,7 @@
     <Compile Include="Append.cs" />
     <Compile Include="FoldR.cs" />
     <Compile Include="Elem.cs" />
+    <Compile Include="RemoveAll.cs" />
     <Compile Include="Reverse.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="Tail.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Length.cs" />
     <Compile Include="Take.cs" />
     <Compile Include="Skip.cs" />
-    <Compile Include="Remove.cs" />
+    <Compile Include="RemoveFirst.cs" />
     <Compile Include="Prepend.cs" />
     <Compile Include="FoldL.cs" />
     <Compile Include="Map.cs" />

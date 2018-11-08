@@ -8,24 +8,24 @@ namespace FunctionalLibrary
         // Creates a new list that is empty
         internal FList()
         {
-            IsEmpty = true;
+            Empty = true;
         }
         // Creates a new list containing value and a reference to tail
-        // Accessed only by FList functions.  Use FList.Cons in application code
+        // Accessed only by FList functions.  Use FList.New in application code
         internal FList(T head, FList<T> tail)
         {
-            IsEmpty = false;
+            Empty = false;
             Head = head;
             Tail = tail;
         }
-        internal bool IsEmpty { get; private set; }
+        internal bool Empty { get; private set; }
         internal T Head { get; private set; }
         internal FList<T> Tail { get; private set; }
 
         public override string ToString()
         {
-            return IsEmpty ? "" :
-                Tail.IsEmpty ?
+            return Empty ? "" :
+                Tail.Empty ?
                     Head.ToString() :
                      Head + ", " + Tail;
         }
@@ -34,7 +34,7 @@ namespace FunctionalLibrary
         {
             return !(obj is FList<T>) ?
                 false :
-                (this.IsEmpty && (obj as FList<T>).IsEmpty) ||
+                (Empty && (obj as FList<T>).Empty) ||
                     (Head.Equals((obj as FList<T>).Head) && Tail.Equals((obj as FList<T>).Tail));
         }
         public override int GetHashCode()

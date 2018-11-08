@@ -9,36 +9,36 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Tail1()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Tail(list);
-            var expected = FL.NewFList(2, 3, 4,5);
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Tail(list);
+            var expected = FList.New(2, 3, 4,5);
             Assert.AreEqual(expected, actual);
         }
 
         public void Tail2()
         {
-            var list = FL.NewFList(1, 2);
-            var actual = FL.Tail(list);
-            var expected = FL.NewFList(2);
+            var list = FList.New(1, 2);
+            var actual = FList.Tail(list);
+            var expected = FList.New(2);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Tail3()
         {
-            var list = FL.NewFList(5);
-            var actual = FL.Tail(list);
-            var expected = FL.EmptyList<int>();
+            var list = FList.New(5);
+            var actual = FList.Tail(list);
+            var expected = FList.Empty<int>();
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Tail4()
         {
-            var list = FL.EmptyList<int>();
+            var list = FList.Empty<int>();
             try
             {
-                var actual = FL.Tail(list);
+                var actual = FList.Tail(list);
                 Assert.Fail("EmptyListException NOT thrown");
             }
             catch (EmptyListException)

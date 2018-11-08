@@ -9,8 +9,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Last1()
         {
-            var list = FL.NewFList(1, 2, 3,4,5);
-            var actual = FL.Last(list);
+            var list = FList.New(1, 2, 3,4,5);
+            var actual = FList.Last(list);
             var expected = 5;
             Assert.AreEqual(expected, actual);
         }
@@ -18,8 +18,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Last2()
         {
-            var list = FL.NewFList(1);
-            var actual = FL.Last(list);
+            var list = FList.New(1);
+            var actual = FList.Last(list);
             var expected = 1;
             Assert.AreEqual(expected, actual);
         }

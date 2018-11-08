@@ -9,8 +9,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Head1()
         {
-            var list = FL.NewFList(1, 2, 3, 4, 5);
-            var actual = FL.Head(list);
+            var list = FList.New(1, 2, 3, 4, 5);
+            var actual = FList.Head(list);
             var expected = 1;
             Assert.AreEqual(expected, actual);
         }
@@ -18,8 +18,8 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Head2()
         {
-            var list = FL.NewFList(5);
-            var actual = FL.Head(list);
+            var list = FList.New(5);
+            var actual = FList.Head(list);
             var expected = 5;
             Assert.AreEqual(expected, actual);
         }
@@ -27,10 +27,10 @@ namespace FunctionalLibraryTest
         [TestMethod]
         public void Head3()
         {
-            var list = FL.EmptyList<int>();
+            var list = FList.Empty<int>();
             try
             {
-                var actual = FL.Head(list);
+                var actual = FList.Head(list);
                 Assert.Fail("EmptyListException NOT thrown");
             }
             catch (EmptyListException)

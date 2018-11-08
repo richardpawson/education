@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FunctionalLibrary
 {
     // Static class that provides functions relating to FLists
-    public static class FL
+    public static class FList
     {
         #region Constructing lists
         /// <summary>
@@ -15,14 +12,14 @@ namespace FunctionalLibrary
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static FList<T> EmptyList<T>()
+        public static FList<T> Empty<T>()
         {
             return new FList<T>();
         }
         /// <summary>
-        /// Construct a list from a head and tail. If head param is null return the Tail only
+        /// Construct a list from a head and tail. If head param is null returns the Tail only
         /// </summary>
-        public static FList<T> NewFList<T>(T head, FList<T> tail)
+        public static FList<T> New<T>(T head, FList<T> tail)
         {
             return head == null?
                 tail
@@ -31,23 +28,23 @@ namespace FunctionalLibrary
         /// <summary>
         /// Construct a list from a head only
         /// </summary>
-        public static FList<T> NewFList<T>(T head)
+        public static FList<T> New<T>(T head)
         {
             return head == null ?
-                EmptyList<T>()
-                : new FList<T>(head, EmptyList<T>());
+                Empty<T>()
+                : new FList<T>(head, Empty<T>());
         }
 
         /// <summary>
         /// Construct a list from a set of values as separate arguments
         /// </summary>
-        public static FList<T> NewFList<T>(params T[] items)
+        public static FList<T> New<T>(params T[] items)
         {
             return items.Length == 0 ?
-                EmptyList<T>()
+                Empty<T>()
                 : items.Length == 1 ?
-                    NewFList<T>(items[0]) :
-                    NewFList(items[0], NewFList(items.Skip(1).ToArray()));
+                    New<T>(items[0]) :
+                    New(items[0], New(items.Skip(1).ToArray()));
         }
         #endregion
 
@@ -55,12 +52,12 @@ namespace FunctionalLibrary
 
         public static bool IsEmpty<T>(FList<T> list)
         {
-            return list.IsEmpty;
+            return list.Empty;
         }
 
         public static int Length<T>(FList<T> list)
         {
-            return list.IsEmpty ?
+            return list.Empty ?
                     0
                     : 1 + Length(Tail(list));
         }
@@ -88,8 +85,8 @@ namespace FunctionalLibrary
         public static FList<T> Init<T>(FList<T> list)
         {
             return IsEmpty(Tail(list)) ?
-                EmptyList<T>()
-                : NewFList(Head(list), Init(Tail(list)));
+                Empty<T>()
+                : New(Head(list), Init(Tail(list)));
         }
 
 
@@ -99,7 +96,7 @@ namespace FunctionalLibrary
         //Returne true if the list contains an element equal to the first argument
         public static bool Elem<T>( T elem,  FList<T> list)
         {
-            return list.IsEmpty ?
+            return list.Empty ?
                 false
                 : list.Head.Equals(elem) ?
                     true
@@ -121,19 +118,29 @@ namespace FunctionalLibrary
         /// </summary>
         public static FList<T> Append<T>(FList<T> inputList, FList<T> toAppend)
         {
-            return inputList.IsEmpty ?
+            return inputList.Empty ?
                 toAppend
-                : NewFList(inputList.Head, Append(Tail(inputList), toAppend));
+                : New(inputList.Head, Append(Tail(inputList), toAppend));
         }
 
-        // Remove item from list, wherever it is located,  multiple times if necessary
+        // Remove first occurrence of item (if any) from list
         public static FList<T> RemoveFirst<T>(T item, FList<T> list)
         {
-            return list.IsEmpty ?
+            return list.Empty ?
                 list
                 : Head(list).Equals(item) ?
                     Tail( list)
-                    : NewFList(Head(list), FL.RemoveFirst(item, Tail(list)));
+                    : New(Head(list), FList.RemoveFirst(item, Tail(list)));
+        }
+
+        //Remove all occurrences of item from list
+        public static FList<T> RemoveAll<T>(T item, FList<T> list)
+        {
+            return list.Empty ?
+                list
+                : Head(list).Equals(item) ?
+                    RemoveAll(item, Tail(list))
+                    : New(Head(list), FList.RemoveAll(item, Tail(list)));
         }
 
         public static FList<T> Drop<T>(int number, FList<T> list)
@@ -148,17 +155,17 @@ namespace FunctionalLibrary
         public static FList<T> Take<T>(int n, FList<T> list)
         {
             return n <= 0 || IsEmpty(list) ?
-                FL.EmptyList<T>()
+                FList.Empty<T>()
                 : n == 1 ?
-                    FL.NewFList(Head(list))
-                    : FL.NewFList(Head(list), Take(n - 1, Tail(list)));
+                    FList.New(Head(list))
+                    : FList.New(Head(list), Take(n - 1, Tail(list)));
         }
 
         public static FList<T> Reverse<T>( FList<T> list)
         {
             return IsEmpty(list) ?
                 list
-                : FL.NewFList(Last(list), Reverse(Init(list)));
+                : FList.New(Last(list), Reverse(Init(list)));
         }
         #endregion
 
@@ -170,23 +177,23 @@ namespace FunctionalLibrary
 
         public static FList<T> Filter<T>(Func<T, bool> func, FList<T> list)
         {
-            return list.IsEmpty ?
+            return list.Empty ?
                 list
                 : func(list.Head) ?
-                        NewFList(Head(list), Filter(func, Tail(list))) :
+                        New(Head(list), Filter(func, Tail(list))) :
                         Filter(func, Tail(list));
         }
 
         public static FList<U> Map<T, U>(Func<T, U> f, FList<T> list)
         {
             return IsEmpty(list) ?
-                      EmptyList<U>()               
+                      Empty<U>()               
                         :IsEmpty(Tail(list)) ?
                         f(list.Head) != null ?
-                            NewFList<U>(f(list.Head))
-                            : EmptyList<U>()
+                            New<U>(f(list.Head))
+                            : Empty<U>()
                         : f(list.Head) != null ?
-                            NewFList<U>(f(list.Head), Map(f, list.Tail))
+                            New<U>(f(list.Head), Map(f, list.Tail))
                             : Map(f, list.Tail);
         }
 
@@ -201,9 +208,9 @@ namespace FunctionalLibrary
 
         public static T FoldR<T>( Func<T, T, T> f, T start, FList<T> list)
         {
-            return list.IsEmpty ?
+            return list.Empty ?
                 start
-                : list.Tail.IsEmpty ?
+                : list.Tail.Empty ?
                     f(list.Head, start)
                     : FoldR(f, f(list.Head, start), list.Tail);
         }
