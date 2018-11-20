@@ -1,6 +1,6 @@
 ﻿using FAB.DataFixture;
 using FAB.Model;
-using FunctionalLibrary;
+using Quadrivia.FunctionalLibrary;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
@@ -91,7 +91,7 @@ namespace FAB.WinFormsUI
         private void button3_Click(object sender, EventArgs e)
         {
             var ships = Ships.UnplacedShips5();
-            Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(Board.Size, ships, new RandomResult());
+            Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(Board.Size, ships, FRandom.SeedFromClock(DateTime.Now));
             DrawBoard();
         }
 

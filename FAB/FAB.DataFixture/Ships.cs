@@ -1,5 +1,5 @@
 ﻿using FAB.Model;
-using FunctionalLibrary;
+using Quadrivia.FunctionalLibrary;
 using System.Collections.Immutable;
 
 namespace FAB.DataFixture
@@ -10,7 +10,7 @@ namespace FAB.DataFixture
         // GameBoard with this set, you would call RandomiseShipPlacement() on it.
         public static FList<Ship> UnplacedShips5()
         {
-             return FList.Cons(
+             return FList.New(
                 new Ship(ShipFunctions.AircraftCarrier,5),
                 new Ship(ShipFunctions.Battleship, 4),
                 new Ship(ShipFunctions.Submarine, 3),
@@ -20,7 +20,7 @@ namespace FAB.DataFixture
         }
         public static FList<Ship> UnplacedShips4()
         {
-            return FList.Cons(
+            return FList.New(
                 new Ship(ShipFunctions.PatrolBoat, 2),
                 new Ship(ShipFunctions.PatrolBoat, 2),
                 new Ship(ShipFunctions.PatrolBoat, 2),
@@ -32,7 +32,7 @@ namespace FAB.DataFixture
         //Contains only two small ships.  Intent is for testing a complete game scenario.
         public static FList<Ship> SmallTestGame()
         {
-            return FList.Cons(
+            return FList.New(
                 new Ship(ShipFunctions.Minesweeper, 1,  new Location(2, 3), Orientations.Horizontal),
                 new Ship(ShipFunctions.Frigate, 2, new Location(4, 5), Orientations.Vertical)
             );

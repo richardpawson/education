@@ -1,4 +1,4 @@
-﻿using FunctionalLibrary;
+﻿using Quadrivia.FunctionalLibrary;
 using System.Collections.Immutable;
 
 namespace FAB.Model

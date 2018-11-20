@@ -1,4 +1,4 @@
-﻿using FunctionalLibrary;
+﻿using Quadrivia.FunctionalLibrary;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace FAB.Model
 
         public static bool allSunk(FList<Ship> ships)
         {
-            return !ships.Any(ship => !ship.isSunk());
+            return !FList.Any(ship => !ship.isSunk(), ships);
         }
 
         public static GameBoard checkSquareAndRecordOutcome(this GameBoard board, Location loc, bool aggregate = false)
@@ -25,17 +25,17 @@ namespace FAB.Model
 
         private static bool HitSomething(GameBoard board, Location loc)
         {
-            return board.Ships.Map(s => s.fireAt(loc).Item2).Reduce((a, b) => a | b);
+            return FList.FoldL((a, b) => a | b, false, FList.Map(s => s.fireAt(loc).Item2, board.Ships));
         }
-
+        //TODO: Check use of FoldL vs FoldR here and above
         private static string MessagesAfterFiring(GameBoard board, Location loc)
         {
-            return board.Ships.Map(s => s.fireAt(loc).Item3).Reduce((a, b) => a + b);
+            return FList.FoldL((a, b) => a + b, "",FList.Map(s => s.fireAt(loc).Item3, board.Ships));
         }
 
         private static FList<Ship> ShipsAfterFiring(GameBoard board, Location loc)
         {
-            return board.Ships.Map(s => s.fireAt(loc).Item1);
+            return FList.Map(s => s.fireAt(loc).Item1, board.Ships);
         }
 
         private static string AddMissMsg(GameBoard board, Location loc, bool aggregate, string newMessages)
@@ -50,16 +50,16 @@ namespace FAB.Model
 
         public static GameBoard checkSquaresAndRecordOutcome(this GameBoard board, FList<Location> locs)
         {
-            return locs.Count() == 1 ?
-                checkSquareAndRecordOutcome(board, locs.Head, true)
-                : checkSquaresAndRecordOutcome(checkSquareAndRecordOutcome(board, locs.Head, true), locs.Remove(locs.Head));
+            return FList.Length(locs) == 1 ?
+                checkSquareAndRecordOutcome(board, FList.Head(locs), true)
+                : checkSquaresAndRecordOutcome(checkSquareAndRecordOutcome(board, FList.Head(locs), true), FList.RemoveFirst(FList.Head(locs), locs));
         }
 
         public static bool isValidPosition(int boardSize, FList<Ship> existingShips, Ship shipToBePlaced)
         {
             return !shipWouldFitWithinBoard(boardSize, shipToBePlaced) ?
                  false
-                 : !existingShips.Any(s => s.intersects(shipToBePlaced));
+                 : !FList.Any(s => s.intersects(shipToBePlaced), existingShips);
         }
 
         public static FList<Location> locationsThatShipWouldOccupy(Location loc, Orientations orient, int locsToAdd)
@@ -67,8 +67,8 @@ namespace FAB.Model
             return locsToAdd == 0 ?
                  FList.Empty<Location>()
                  : orient == Orientations.Horizontal ?
-                         locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1).Prepend(loc)
-                         : locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1).Prepend(loc);
+                         locationsThatShipWouldOccupy(loc.Add(1, 0), orient, locsToAdd - 1)
+                         : FList.Prepend(loc,locationsThatShipWouldOccupy(loc.Add(0, 1), orient, locsToAdd - 1));
         }
 
         public static bool shipWouldFitWithinBoard(int boardSize, Ship ship)
@@ -87,44 +87,44 @@ namespace FAB.Model
 
         public static SquareValues readSquare(this GameBoard board, Location loc)
         {
-            return board.Ships.Any(s => s.isHitInLocation(loc)) ?
+            return FList.Any(s => s.isHitInLocation(loc), board.Ships) ?
                 SquareValues.Hit
                 : board.Misses.Contains(loc) ?
                     SquareValues.Miss
                     : SquareValues.Empty;
         }
 
-        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, FList<Ship> shipsToBePlaced, RandomResult random)
+        public static GameBoard createBoardWithShipsPlacedRandomly(int boardSize, FList<Ship> shipsToBePlaced, FRandom random)
         {
             return new GameBoard(
                 boardSize,
-                locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random).Map(r => r.Item1),
-                locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random).Map(r => r.Item2).Reduce((r, s) => r + s),
+                FList.Map(r => r.Item1,locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random)),
+                FList.FoldL((r, s) => r + s, "", FList.Map(r => r.Item2,locateShipsRandomly(boardSize, shipsToBePlaced, FList.Empty<Ship>(), random))),
                 ImmutableHashSet.Create<Location>()
             );
         }
 
-        public static FList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, FList<Ship> shipsToBePlaced, FList<Ship> shipsAlreadyPlaced, RandomResult random)
+        public static FList<Tuple<Ship, string>> locateShipsRandomly(int boardSize, FList<Ship> shipsToBePlaced, FList<Ship> shipsAlreadyPlaced, FRandom random)
         {
-            return shipsToBePlaced.Count() == 0 ?
+            return FList.Length(shipsToBePlaced)== 0 ?
                 FList.Empty<Tuple<Ship, string>>()
-                : FList.Cons(
+                : FList.New(
                     Tuple.Create(
-                        locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item1,
-                        locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item2
+                        locateShipRandomly(boardSize, shipsAlreadyPlaced, FList.Head(shipsToBePlaced), random).Item1,
+                        locateShipRandomly(boardSize, shipsAlreadyPlaced, FList.Head(shipsToBePlaced), random).Item2
                     ),
                     locateShipsRandomly(
                         boardSize,
-                        shipsToBePlaced.Remove(shipsToBePlaced.Head),
-                        shipsAlreadyPlaced.Prepend(
-                            locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item1),
-                        locateShipRandomly(boardSize, shipsAlreadyPlaced, shipsToBePlaced.Head, random).Item3
+                        FList.RemoveFirst(FList.Head(shipsToBePlaced), shipsToBePlaced),
+                        FList.Prepend(
+                            locateShipRandomly(boardSize, shipsAlreadyPlaced, FList.Head(shipsToBePlaced), random).Item1, shipsAlreadyPlaced),
+                        locateShipRandomly(boardSize, shipsAlreadyPlaced, FList.Head(shipsToBePlaced), random).Item3
                     )
                 );
         }
 
-        public static Tuple<Ship, string, RandomResult> locateShipRandomly(
-            int boardSize, FList<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
+        public static Tuple<Ship, string, FRandom> locateShipRandomly(
+            int boardSize, FList<Ship> shipsAlreadyLocated, Ship shipToBeLocated, FRandom random)
         {
             return Tuple.Create(
                 shipToBeLocated.setPosition(
@@ -134,7 +134,7 @@ namespace FAB.Model
                 getValidRandomPosition(boardSize, shipsAlreadyLocated, shipToBeLocated, random).Item3);
         }
 
-        public static Tuple<Location, Orientations, RandomResult> getValidRandomPosition(int boardSize, FList<Ship> shipsAlreadyLocated, Ship shipToBeLocated, RandomResult random)
+        public static Tuple<Location, Orientations, FRandom> getValidRandomPosition(int boardSize, FList<Ship> shipsAlreadyLocated, Ship shipToBeLocated, FRandom random)
         {
             return isValidPosition(
                     boardSize,
@@ -151,12 +151,12 @@ namespace FAB.Model
                   );
         }
 
-        public static Tuple<Location, Orientations, RandomResult> getRandomPosition(int boardSize, RandomResult random)
+        public static Tuple<Location, Orientations, FRandom> getRandomPosition(int boardSize, FRandom random)
         {
             return Tuple.Create(
-                new Location(random.Next(0, boardSize).Number, random.Next(0, boardSize).Next(0, boardSize).Number),
-                (Orientations)random.Next(0, boardSize).Next(0, boardSize).Next(0, 2).Number,
-                random.Next(0, boardSize).Next(0, boardSize).Next(0, 2));
+                new Location(FRandom.Skip(0, random, 0, boardSize).Number, FRandom.Skip(1, random, 0, boardSize).Number),
+                (Orientations)FRandom.Skip(2, random, 0, 2).Number,
+                FRandom.Skip(2, random, 0, 2)); //Deliberately uses same as the last call -  this contains the next seed.
         }
 
         public static Location Add(this Location loc, int colInc, int rowInc)

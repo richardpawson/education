@@ -1,7 +1,7 @@
 ﻿using System;
 using FAB.DataFixture;
 using FAB.Model;
-using FunctionalLibrary;
+using Quadrivia.FunctionalLibrary;
 using System.Collections.Immutable;
 
 namespace FAB.ConsoleUI
@@ -21,7 +21,7 @@ namespace FAB.ConsoleUI
                 if (MenuOption == 1)
                 {
                     var ships = Ships.UnplacedShips5();
-                    Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, ships, new RandomResult());
+                    Board = GameBoardFunctions.createBoardWithShipsPlacedRandomly(10, ships, FRandom.SeedFromClock(DateTime.Now));
                 }
                 if (MenuOption == 2)
                 {

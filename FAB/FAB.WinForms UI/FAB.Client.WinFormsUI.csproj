@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Quadrivia.FunctionalLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quadrivia.FunctionalLibrary.2.1.0\lib\net452\Quadrivia.FunctionalLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -86,10 +89,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FunctionalProgramming\FunctionalLibrary.CSharp\FunctionalLibrary.csproj">
-      <Project>{7f308878-fd25-41ba-84be-d96d6334b48f}</Project>
-      <Name>FunctionalLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FAB.DataFixture\FAB.Test.DataFixture.csproj">
       <Project>{7ced0f0c-4586-43e8-93f1-2abc0ab82f4b}</Project>
       <Name>FAB.Test.DataFixture</Name>

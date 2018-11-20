@@ -1,4 +1,4 @@
-﻿using FunctionalLibrary;
+﻿using Quadrivia.FunctionalLibrary;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -99,7 +99,7 @@ namespace FAB.Model
 
         public static FList<Ship> TrainingGame()
         {
-            return FList.Cons(
+            return FList.New(
                 new Ship(AircraftCarrier, 5, new Location(1, 8), Orientations.Horizontal),
                 new Ship(Battleship, 4, new Location(8, 1), Orientations.Vertical),
                 new Ship(Submarine, 3, new Location(7, 6), Orientations.Vertical),

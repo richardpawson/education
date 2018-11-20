@@ -13,10 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAB.Client.WinFormsUI", "FA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAB.Client.Console", "FAB.ConsoleUI\FAB.Client.Console.csproj", "{3927F33C-FFCB-4AC1-829F-E47546B14E43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalLibrary.Test", "..\FunctionalProgramming\FunctionalLibraryTest\FunctionalLibrary.Test.csproj", "{4D1C12F8-2D62-45A2-9FED-199CB57C19CF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalLibrary", "..\FunctionalProgramming\FunctionalLibrary.CSharp\FunctionalLibrary.csproj", "{7F308878-FD25-41BA-84BE-D96D6334B48F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,16 +39,11 @@ Global
 		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3927F33C-FFCB-4AC1-829F-E47546B14E43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D1C12F8-2D62-45A2-9FED-199CB57C19CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D1C12F8-2D62-45A2-9FED-199CB57C19CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D1C12F8-2D62-45A2-9FED-199CB57C19CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D1C12F8-2D62-45A2-9FED-199CB57C19CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F308878-FD25-41BA-84BE-D96D6334B48F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F308878-FD25-41BA-84BE-D96D6334B48F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F308878-FD25-41BA-84BE-D96D6334B48F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F308878-FD25-41BA-84BE-D96D6334B48F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36A4F47D-FC7C-4D37-923D-03F09C04CA07}
 	EndGlobalSection
 EndGlobal
