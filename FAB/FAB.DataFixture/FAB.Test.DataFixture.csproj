@@ -7,8 +7,8 @@
     <ProjectGuid>{7CED0F0C-4586-43E8-93F1-2ABC0AB82F4B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Boom.DataFixture</RootNamespace>
-    <AssemblyName>Boom.DataFixture</AssemblyName>
+    <RootNamespace>Quadrivia.FAB</RootNamespace>
+    <AssemblyName>Quadrivia.FAB.Test.DataFixture</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

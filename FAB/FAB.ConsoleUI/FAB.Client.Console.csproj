@@ -7,11 +7,12 @@
     <ProjectGuid>{3927F33C-FFCB-4AC1-829F-E47546B14E43}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Boom.ConsoleUI</RootNamespace>
-    <AssemblyName>Boom.ConsoleUI</AssemblyName>
+    <RootNamespace>Quadrivia.FAB</RootNamespace>
+    <AssemblyName>Quadrivia.FAB.Client.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>

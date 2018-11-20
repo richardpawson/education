@@ -7,8 +7,8 @@
     <ProjectGuid>{AD9DEA29-4E95-4773-84F6-55243C946B8A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FAB.Model</RootNamespace>
-    <AssemblyName>FAB.Model</AssemblyName>
+    <RootNamespace>Quadrivia.FAB</RootNamespace>
+    <AssemblyName>Quadrivia.FAB.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

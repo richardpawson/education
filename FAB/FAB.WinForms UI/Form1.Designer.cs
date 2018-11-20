@@ -1,4 +1,4 @@
-﻿namespace FAB.WinFormsUI
+﻿namespace Quadrivia.FAB
 {
     partial class Form1
     {

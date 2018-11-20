@@ -1,10 +1,8 @@
 ﻿using System;
-using FAB.DataFixture;
-using FAB.Model;
 using Quadrivia.FunctionalLibrary;
 using System.Collections.Immutable;
 
-namespace FAB.ConsoleUI
+namespace Quadrivia.FAB
 {
     public class Program
     {

@@ -1,7 +1,4 @@
-﻿using Quadrivia.FunctionalLibrary;
-using System.Collections.Immutable;
-
-namespace FAB.Model
+﻿namespace Quadrivia.FAB
 { 
     public enum Orientations
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace FAB.WinFormsUI
+namespace Quadrivia.FAB
 {
     static class Program
     {

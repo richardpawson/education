@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FAB.Model;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Boom.Test
+namespace Quadrivia.FAB
 {
     [TestClass]
     public class GameBoardFunctionsTest

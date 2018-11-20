@@ -7,8 +7,8 @@
     <ProjectGuid>{35A6F6D0-C88F-4FE8-B151-3EF42BF1ABB7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Boom.WinFormsUI</RootNamespace>
-    <AssemblyName>Boom.WinFormsUI</AssemblyName>
+    <RootNamespace>Quadrivia.FAB</RootNamespace>
+    <AssemblyName>Quadrivia.FAB.Cient.WinForms</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

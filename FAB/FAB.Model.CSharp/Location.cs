@@ -1,4 +1,4 @@
-﻿namespace FAB.Model
+﻿namespace Quadrivia.FAB
 {
     public class Location
     {

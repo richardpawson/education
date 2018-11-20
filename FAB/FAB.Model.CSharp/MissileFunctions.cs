@@ -1,8 +1,7 @@
 ﻿using Quadrivia.FunctionalLibrary;
-using System.Collections.Immutable;
 using System.Linq;
 
-namespace FAB.Model
+namespace Quadrivia.FAB
 {
     public class MissileFunctions
     {

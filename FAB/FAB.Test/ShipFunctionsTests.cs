@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FAB.Model;
 
-namespace Boom.Test
+namespace Quadrivia.FAB
 {
     [TestClass]
     public class ShipFunctionsTests

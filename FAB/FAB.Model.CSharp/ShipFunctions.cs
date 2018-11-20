@@ -1,9 +1,7 @@
 ﻿using Quadrivia.FunctionalLibrary;
 using System;
-using System.Collections.Immutable;
-using System.Linq;
 
-namespace FAB.Model
+namespace Quadrivia.FAB
 {
     public static class ShipFunctions
     {

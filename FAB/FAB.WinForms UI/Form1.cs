@@ -1,12 +1,10 @@
-﻿using FAB.DataFixture;
-using FAB.Model;
-using Quadrivia.FunctionalLibrary;
+﻿using Quadrivia.FunctionalLibrary;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace FAB.WinFormsUI
+namespace Quadrivia.FAB
 {
     public partial class Form1 : Form
     {

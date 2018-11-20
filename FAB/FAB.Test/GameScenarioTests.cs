@@ -1,12 +1,9 @@
-﻿
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FAB.DataFixture;
-using FAB.Model;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Quadrivia.FunctionalLibrary;
 using System.Collections.Immutable;
 
-namespace FAB.Test
+namespace Quadrivia.FAB
 {
     [TestClass]
     public class GameScenarioTests

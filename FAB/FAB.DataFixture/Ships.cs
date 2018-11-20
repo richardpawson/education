@@ -1,8 +1,6 @@
-﻿using FAB.Model;
-using Quadrivia.FunctionalLibrary;
-using System.Collections.Immutable;
+﻿using Quadrivia.FunctionalLibrary;
 
-namespace FAB.DataFixture
+namespace Quadrivia.FAB
 {
     public static class Ships
     {
