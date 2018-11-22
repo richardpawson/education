@@ -1,25 +1,20 @@
-﻿using FunctionalLibrary;
+﻿using Quadrivia.FunctionalLibrary;
+using System;
 
 namespace CSharpRomanNumerals
 {
     public static class Convertor
     {
-
-
-        public static string Roman(int d)
+        public static string Roman(int n)
         {
-            return RomanUsingSymbols(d,
-                FList.Cons<int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1),
-                FList.Cons<string>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"));
+            var units = FList.New(U("M", 1000), U("CM", 900), U("D", 500), U("CD", 400), U("C", 100), U("XC", 90), U("L", 50), U("XL", 40), U("X", 10), U("IX", 9), U("V", 5), U("IV", 4), U("I", 1));
+            var usable = FList.Filter(u => u.Item2 <= n,units);
+            return n == 0 ? "" : FList.Head(usable).Item1 + Roman(n - FList.Head(usable).Item2);          
         }
 
-        private static string RomanUsingSymbols(int d, FList<int> ns, FList<string> xs)
+        private static Tuple<string, int> U(string s, int n)
         {
-            return ns.IsEmpty ?
-                 "" :
-                 d >= ns.Head ?
-                   xs.Head + RomanUsingSymbols(d - ns.Head, ns, xs) :
-                   RomanUsingSymbols(d, ns.Tail, xs.Tail);
+            return Tuple.Create(s, n);
         }
     }
 }

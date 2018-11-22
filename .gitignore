@@ -21,3 +21,5 @@ Snake/~$ory plan.docx
 *.ide
 *.ide-shm
 *.ide-wal
+/Roman Numerals/RomanNumeralsC#/packages/Quadrivia.FunctionalLibrary.2.1.0/lib/net452
+/Roman Numerals/RomanNumeralsC#/packages/Quadrivia.FunctionalLibrary.2.1.0
