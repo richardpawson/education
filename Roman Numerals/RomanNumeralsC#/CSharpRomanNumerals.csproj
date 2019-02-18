@@ -54,9 +54,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Convertor1.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsingFunctionalProgramming.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
