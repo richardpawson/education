@@ -48,8 +48,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBinarySearchTree.cs" />
     <Compile Include="BinarySearchTree.cs" />
-    <Compile Include="UnitTests.cs" />
+    <Compile Include="NonBalancingBST.cs" />
+    <Compile Include="SelfBalancingBST.cs" />
+    <Compile Include="TestNonBalancingBST.cs" />
+    <Compile Include="TestSelfBalancingBST.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

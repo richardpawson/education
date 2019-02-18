@@ -3,26 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class BinarySearchTree {
+public class SelfBalancingBST 
+{
     protected string Root { get; set; }  //Initially hard-wired to string type
 
-    protected BinarySearchTree LeftChild { get; set; }
+    protected SelfBalancingBST LeftChild { get; set; }
 
-    protected BinarySearchTree RightChild { get; set; }
+    protected SelfBalancingBST RightChild { get; set; }
 
     public int Depth { get; protected set; }
 
-    public BinarySearchTree(string root) //Constructor
+    public SelfBalancingBST(string root) //Constructor
     {
         Root = root;
         Depth = 1;
     }
 
-    public BinarySearchTree(string root, BinarySearchTree left, BinarySearchTree right) : this(root)
+    public SelfBalancingBST(string root, SelfBalancingBST left, SelfBalancingBST right) : this(root)
     {
         LeftChild = left;
         RightChild = right;
-        Depth = 1 + Math.Max(left is null? 0 : left.Depth, right is null ? 0 : right.Depth);
+        CalculateDepth();
+    }
+
+    private void CalculateDepth()
+    {
+        Depth = 1 + Math.Max(LeftChild is null ? 0 : LeftChild.Depth, RightChild is null ? 0 : RightChild.Depth);
     }
 
     public override string ToString() //Helps with debugging to see the root value
@@ -34,7 +40,7 @@ public class BinarySearchTree {
     {
         string s = Root + "\n";
         var sb = new StringBuilder(indent + 1);
-        for (int i = 0; i < indent; i++)
+        for (int i = 0; i <= indent; i++)
         {
             sb.Append("  ");
         }
@@ -57,46 +63,44 @@ public class BinarySearchTree {
                (RightChild != null && RightChild.Contains(soughtValue));
     }
 
-    //Returns true if addition has increased tree depth
-    public virtual bool Add(string newValue)
+    public virtual void Add(string newValue)
     {
-        bool depthIncreased = false;
-        if (newValue is null) return false;  //Don't add null values
+        if (newValue is null) return;  //Don't add null values
         if (newValue.CompareTo(Root) >= 0)
         {
-            depthIncreased |= AddToRightChild(newValue);
+             AddToRightChild(newValue);
         }
         else
         {
-            depthIncreased |= AddToLeftChild(newValue);
+            AddToLeftChild(newValue);
         }
-        if (depthIncreased) Depth += 1;
-        return depthIncreased;
+        CalculateDepth();
+        RebalanceIfNecessary();
     }
 
-    private bool AddToLeftChild(string newValue)
+    private void AddToLeftChild(string newValue)
     {
         if (LeftChild is null)
         {
-            LeftChild = new BinarySearchTree(newValue);
-            return RightChild is null;  //Depth has been increased
+            LeftChild = new SelfBalancingBST(newValue);
+            if (RightChild is null) Depth += 1;
         }
         else
         {
-            return LeftChild.Add(newValue);
+            LeftChild.Add(newValue);
         }
     }
 
-    private bool AddToRightChild(string newValue)
+    private void AddToRightChild(string newValue)
     {
         if (RightChild is null)
         {
-            RightChild = new BinarySearchTree(newValue);
-            return LeftChild is null;  //Depth has been increased
+            RightChild = new SelfBalancingBST(newValue);
+            if (LeftChild is null) Depth += 1;
         }
         else
         {
-            return RightChild.Add(newValue);
+            RightChild.Add(newValue);
         }
     }
 
@@ -106,9 +110,9 @@ public class BinarySearchTree {
     public List<string> TraverseBreadthFirst()
     {
         var visited = new List<string>();
-        var queue = new Queue<BinarySearchTree>();
+        var queue = new Queue<SelfBalancingBST>();
         queue.Enqueue(this);
-        BinarySearchTree visiting = null;
+        SelfBalancingBST visiting = null;
         while (queue.Count > 0)
         {
             visiting = queue.Dequeue();
@@ -188,14 +192,24 @@ public class BinarySearchTree {
         else if (LeftChild != null && LeftChild.Contains(value))
         {
             LeftChild.Remove(value);
+            if (LeftChild.Root is null)
+            {
+                LeftChild = null;
+            }
         }
         else if (RightChild != null && RightChild.Contains(value))
         {
             RightChild.Remove(value);
+            if (RightChild.Root is null)
+            {
+                RightChild = null;
+            }
         }
+        CalculateDepth();
+        RebalanceIfNecessary();
     }
 
-    private void PushAllChildrenOntoStack(Stack<string> stack, BinarySearchTree tree)
+    private void PushAllChildrenOntoStack(Stack<string> stack, SelfBalancingBST tree)
     {
         if (tree != null)
         {
@@ -203,6 +217,61 @@ public class BinarySearchTree {
             PushAllChildrenOntoStack(stack, tree.LeftChild);
             PushAllChildrenOntoStack(stack, tree.RightChild);
         }
+    }
+    #endregion
+
+
+    #region Re-balancing
+    public int Balance()
+    {
+        return (RightChild is null ? 0 : RightChild.Depth) - (LeftChild is null ? 0 : LeftChild.Depth);
+    }
+
+    //Returns true if did rebalance
+    private void RebalanceIfNecessary()
+    {
+        if (Balance() < -1)
+        {
+            RebalanceLeftHeavy();
+        }
+        else if (Balance() > 1)
+        {
+            RebalanceRightHeavy();
+        }
+    }
+
+    private void RebalanceRightHeavy()
+    {
+        if (RightChild.Balance() < 0)
+        {
+            RightChild.RotateRight();
+        }
+        RotateLeft();
+    }
+
+    private void RebalanceLeftHeavy()
+    {
+        if (LeftChild.Balance() > 0)
+        {
+            LeftChild.RotateLeft();
+        }
+        RotateRight();
+    }
+
+    private void RotateRight()
+    {
+        RightChild = new SelfBalancingBST(Root, LeftChild.RightChild, RightChild);
+        Root = LeftChild.Root;
+        LeftChild = LeftChild.LeftChild;
+        CalculateDepth();
+    }
+
+    private void RotateLeft()
+    {
+        LeftChild = new SelfBalancingBST(Root, LeftChild, RightChild.LeftChild);
+        Root = RightChild.Root;
+        RightChild = RightChild.RightChild;
+        CalculateDepth();
     }
     #endregion
 }
