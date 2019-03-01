@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public interface IBinarySearchTree
+public interface IBinarySearchTree<T> where T: IComparable
 {
 
      string Summary(int indent = 0);
 
-    bool Contains(string soughtValue);
+    bool Contains(T soughtValue);
 
-    void Add(string newValue);
+    void Add(T newValue);
 
     #region Traverse
     //Returns a List of the string values in the tree, as traversed.
@@ -24,5 +24,5 @@ public interface IBinarySearchTree
     List<string> TraverseDepthFirstPostOrder();
     #endregion
 
-    void Remove(string value);
+    void Remove(T value);
 }
