@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="BinarySearchTests.cs" />
     <Compile Include="BubbleSortTests.cs" />
-    <Compile Include="HeathcoteMergeSortTests.cs" />
     <Compile Include="LinearSearchTests.cs" />
     <Compile Include="MergeSortTests.cs" />
     <Compile Include="SearchingAlgorithms.cs" />

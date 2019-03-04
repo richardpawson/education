@@ -6,24 +6,26 @@ namespace SortingTestbed
 {
     public static class SortAlgorithms
     {
-        //In-place sort
-        //You can use the pseudo-code in Heathcote p2C:\education\Sorting and Searching algorithms\LinearSearchTests.cs38
-        //It should be an 'in-place' sort
+        //This is an 'in-place' sort -  it modifies the input list, so nothing returned.
         public static void BubbleSort(int[] list)
         {
             throw new NotImplementedException();
         }
 
-        //As defined in Heathcote p240
-        //Is this in-place or 'out-of-place'
-        public static void HeathcoteMergeSort(List<int> mergeList)
+
+        //Using a recursive approach. This is an 'out of place' sort
+        //Make use of the MergeOrderedLists function (to be implemented) below
+        public static List<int> MergeSort(List<int> mergeList)
         {
             throw new NotImplementedException();
         }
 
-        //Using an elegant recursive approach
-        //Definitely not 'in-place'.
-        public static List<int> MergeSort(List<int> mergeList)
+        //Creates a single list (ordered low-to-high) from two input lists, each ordered low-to-high.
+        //Note that the input lists may be of differing lengths, and either, or both, may be empty.
+        //
+        //You will need to implement this function and call it within MergeSort.
+        //It has been made public here so that it can be tested separately.  It might also have other uses.
+        public static List<int> MergeOrderedLists(List<int> left, List<int> right)
         {
             throw new NotImplementedException();
         }

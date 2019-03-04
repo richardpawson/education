@@ -9,7 +9,7 @@ namespace SortingTestbed
     public class MergeSortTests
     {
         [TestMethod]
-        public void Merge10()
+        public void MergeSort10()
         {
             var input = TestHelpers.GenerateRandomisedArray(10).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -17,7 +17,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge11()
+        public void MergeSort11()
         {
             var input = TestHelpers.GenerateRandomisedArray(11).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -25,7 +25,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge5()
+        public void MergeSort5()
         {
             var input = TestHelpers.GenerateRandomisedArray(5).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -33,7 +33,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge4()
+        public void MergeSort4()
         {
             var input = new List<int> { 2, 0, 3, 1 };
             var actual = SortAlgorithms.MergeSort(input);
@@ -41,7 +41,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge3()
+        public void MergeSort3()
         {
             var input = TestHelpers.GenerateRandomisedArray(3).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -49,7 +49,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge2()
+        public void MergeSort2()
         {
             var input = TestHelpers.GenerateRandomisedArray(2).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -57,7 +57,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge1()
+        public void MergeSort1()
         {
             var input = TestHelpers.GenerateRandomisedArray(1).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -65,7 +65,7 @@ namespace SortingTestbed
             TestHelpers.AssertListsAreIdentical(expected, actual);
         }
         [TestMethod]
-        public void Merge0()
+        public void MergeSort0()
         {
             var input = TestHelpers.GenerateRandomisedArray(0).ToList();
             var actual = SortAlgorithms.MergeSort(input);
@@ -90,5 +90,66 @@ namespace SortingTestbed
         //    var expected = new List<int> { 2,3 };
         //    CollectionAssert.AreEqual(expected, result);
         //}
+
+
+        [TestMethod] 
+        public void Merge1()
+        {
+            var left = new List<int> { 4, 11, 17 };
+            var right = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var expected = new List<int> { 0, 3, 4, 5, 7, 11, 11, 13, 17, 18, 20 };
+            var result = SortAlgorithms.MergeOrderedLists(left, right);
+            TestHelpers.AssertArraysAreIdentical(expected.ToArray(), result.ToArray());
+        }
+
+        [TestMethod]
+        public void Merge2()
+        {
+            var right = new List<int> { 4, 11, 17 };
+            var left = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var expected = new List<int> { 0, 3, 4, 5, 7, 11, 11, 13, 17, 18, 20 };
+            var result = SortAlgorithms.MergeOrderedLists(left, right);
+            TestHelpers.AssertArraysAreIdentical(expected.ToArray(), result.ToArray());
+        }
+
+        [TestMethod]
+        public void Merge3()
+        {
+            var right = new List<int> { 6 };
+            var left = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var expected = new List<int> { 0, 3, 5, 6,7, 11, 13, 18, 20 };
+            var result = SortAlgorithms.MergeOrderedLists(left, right);
+            TestHelpers.AssertArraysAreIdentical(expected.ToArray(), result.ToArray());
+        }
+
+        [TestMethod]
+        public void Merge4()
+        {
+            var right = new List<int> {};
+            var left = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var expected = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var result = SortAlgorithms.MergeOrderedLists(left, right);
+            TestHelpers.AssertArraysAreIdentical(expected.ToArray(), result.ToArray());
+        }
+
+        [TestMethod]
+        public void Merge5()
+        {
+            var left = new List<int> { };
+            var right = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var expected = new List<int> { 0, 3, 5, 7, 11, 13, 18, 20 };
+            var result = SortAlgorithms.MergeOrderedLists(left, right);
+            TestHelpers.AssertArraysAreIdentical(expected.ToArray(), result.ToArray());
+        }
+
+        [TestMethod]
+        public void Merge6()
+        {
+            var left = new List<int> { };
+            var right = new List<int> {};
+            var expected = new List<int> { };
+            var result = SortAlgorithms.MergeOrderedLists(left, right);
+            TestHelpers.AssertArraysAreIdentical(expected.ToArray(), result.ToArray());
+        }
     }
 }
