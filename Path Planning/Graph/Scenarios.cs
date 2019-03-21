@@ -10,20 +10,26 @@ namespace Graph
         public static List<Scenario> AllScenarios()
         {
             var list = new List<Scenario>();
+            list.Add(Empty());
             list.Add(Simple());
             list.Add(RockyField());
-            list.Add(Mondrian());
+            list.Add(Fences());
             return list;
+        }
+
+        private static Scenario Empty()
+        {
+            var g = new GridGraph(GridSize);
+            var s = new Scenario("Empty", g, new Point(0, 0), new Point(0,0));
+            return s;
         }
 
 
         private static Scenario Simple()
         {
             var g = new GridGraph(GridSize);
-           // g.SetBlock(new Point(3, 4), new Point(9, 10), false);
             g.SetBlock(new Point(10,20), new Point(30, 20), false);
             g.SetBlock(new Point(20, 10), new Point(20,30), false);
-            //g.SetBlock(new Point(30, 35), new Point(37, 38), false);
             var s = new Scenario("Simple", g, new Point(15, 15), new Point(25, 25));
             return s;
         }
@@ -48,7 +54,7 @@ namespace Graph
         }
 
 
-        private static Scenario Mondrian()
+        private static Scenario Fences()
         {
             var start = new Point(0, 0);
             var destination = new Point(39, 39);
@@ -72,7 +78,7 @@ namespace Graph
             }
             g.SetBlock(start, start, true);
             g.SetBlock(destination, destination, true);
-            var s = new Scenario("Mondrian", g, start, destination);
+            var s = new Scenario("Fences", g, start, destination);
             return s;
         }
 

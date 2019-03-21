@@ -23,18 +23,17 @@ namespace PathPlanning
         public Form1()
         {
             InitializeComponent();
-            graphics = Grid.CreateGraphics();
+                 graphics = Grid.CreateGraphics();
             StartButton.Enabled = false;
+            ScenarioSelector.DataSource = Scenarios.AllScenarios();
+            // algorithmSelector.DataSource = new Algorithms[] {Algorithms.Dijkstra, Algorithms.Optimistic, Algorithms.AStar};
+            algorithmSelector.DataSource = Enum.GetValues(typeof(Algorithms)).Cast<Algorithms>();
+
         }
 
         private int GridDrawSize()
         {
             return (scenario.Graph.GridSize) * squareSize;
-        }
-
-        private void Grid_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void ScenarioSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -77,7 +76,7 @@ namespace PathPlanning
         {
             int col = square.X;
             int row = square.Y;
-            var pen = new Pen(Color.White);
+            var pen = new Pen(Color.Black);
             graphics.DrawRectangle(pen, col * squareSize, row * squareSize, squareSize, squareSize);
             if (brush != null)
             {
@@ -124,6 +123,7 @@ namespace PathPlanning
                 DrawSquare(currentNode, new SolidBrush(Color.LightBlue));
                 Thread.Sleep((int)Speed.Value);
             }
+            count++; //For the destination
             visitedCount.Text = count.ToString(); ;
             return graph.RetraceRoute(destination, source, via);
         }

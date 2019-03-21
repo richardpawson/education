@@ -192,19 +192,5 @@ namespace Graph {
             }
             return result;
         }
-
-        //Calculates total cost of specified route of nodes visited, by adding values of the edges.
-        //Assume the route provided is valid (i.e. an edge exists between each pair of nodes).
-        //So if it is not a valid route an error may occur.
-        public double TotalCostOfRoute(List<int> nodesFollowed)
-        {
-            throw new NotImplementedException();
-            //double result = 0;
-            //for (int i = 0; i < nodesFollowed.Count() - 1; i++)
-            //{
-            //    result += FindEdge(nodesFollowed[i], nodesFollowed[i + 1]).Value;
-            //}
-            //return result;
-        }
     }
 }
