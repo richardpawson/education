@@ -16,7 +16,8 @@ using System.Drawing;
 //map of US cities that you used for your paper tests. The node numbers can be checked
 //against the Cities enum below i.e. Chicago = 0, SanDiego = 7. 
 
-namespace Graph {
+namespace PathPlanning
+{
 
     public class GridGraph
     {
@@ -41,7 +42,8 @@ namespace Graph {
                     if (add)
                     {
                         Nodes.Add(p);
-                    } else
+                    }
+                    else
                     {
                         Nodes.Remove(p);
                     }
@@ -57,15 +59,34 @@ namespace Graph {
 
         private bool EdgeExists(Point p1, Point p2)
         {
-            return NodeExists(p1) && NodeExists(p2) && !p1.Equals(p2) && Math.Abs(p1.X - p2.X) <= 1 && Math.Abs(p1.Y - p2.Y) <= 1;
+            return NodeExists(p1) && NodeExists(p2) && !p1.Equals(p2) && (PointsAreAdjacentOrthogonally(p1, p2) || PointsAreAdjacentDiagonally(p1, p2));
+        }
+
+        private bool PointsAreAdjacentDiagonally(Point p1, Point p2)
+        {
+            return Math.Abs(p1.X - p2.X) == 1 && Math.Abs(p1.Y - p2.Y) == 1;
+        }
+
+        private bool PointsAreAdjacentOrthogonally(Point p1, Point p2)
+        {
+            return Math.Abs(p1.X - p2.X) == 1 && (p1.Y == p2.Y) || Math.Abs(p1.Y - p2.Y) == 1 && (p1.X == p2.X);
         }
 
         public double? FindEdge(Point p1, Point p2)
         {
             if (EdgeExists(p1, p2))
             {
-                return 1;
-            } else
+                if (PointsAreAdjacentDiagonally(p1, p2))
+                {
+                    return Math.Sqrt(2);
+                }
+                else
+                {
+                    return 1;
+                }
+
+            }
+            else
             {
                 return null;
             }
@@ -74,7 +95,15 @@ namespace Graph {
         //Returns a list of nodes that can be reached from the specified node
         public List<Point> Neighbours(Point p)
         {
-            var list = new List<Point>() { new Point(p.X - 1, p.Y), new Point(p.X, p.Y - 1), new Point(p.X + 1, p.Y), new Point(p.X, p.Y + 1) };
+            var list = new List<Point>() {
+                new Point(p.X, p.Y-1),
+                new Point(p.X+1, p.Y-1),
+                new Point(p.X+1, p.Y),
+                new Point(p.X+1, p.Y+1),
+                new Point(p.X, p.Y+1),
+                new Point(p.X-1, p.Y+1),
+                new Point(p.X-1, p.Y),
+                new Point(p.X-1, p.Y-1) };
             return list.Where(n => NodeExists(n)).ToList();
         }
 
@@ -93,8 +122,8 @@ namespace Graph {
             while (currentNode != destination)
             {
                 visited[currentNode] = true;
-                UpdateCostAndViaOfEachNeighbourIfApplicable(costFromSource, via, currentNode, destination, alg);
-                currentNode = LowestCostUnvisitedNode(visited, costFromSource);
+                UpdateCostAndViaOfEachNeighbourIfApplicable(costFromSource, via, currentNode, destination);
+                currentNode = NextNodeToVisit(currentNode, visited, costFromSource, destination, alg);
                 if (costFromSource[currentNode] == double.PositiveInfinity)
                 {
                     throw new Exception("Cannot reach destination -  graph is 'disconnected'");
@@ -133,28 +162,15 @@ namespace Graph {
             return dict;
         }
 
-        public void UpdateCostAndViaOfEachNeighbourIfApplicable(Dictionary<Point, double> costFromSource, Dictionary<Point, Point?> via, Point currentNode, Point destination, Algorithms alg)
+        public void UpdateCostAndViaOfEachNeighbourIfApplicable(Dictionary<Point, double> costFromSource, Dictionary<Point, Point?> via, Point currentNode, Point destination)
         {
             foreach (var neighbour in Neighbours(currentNode))
             {
-                double newCost = 0;
-                switch (alg)
-                {
-                    case Algorithms.Dijkstra:
-                        newCost = costFromSource[currentNode] + FindEdge(currentNode, neighbour).Value;
-                        break;
-                    case Algorithms.Optimistic:
-                        newCost = EstimatedCostToDestination(neighbour, destination);
-                        break;
-                    case Algorithms.AStar:
-                        newCost = costFromSource[currentNode] + FindEdge(currentNode, neighbour).Value + EstimatedCostToDestination(neighbour, destination);
-                        break;
-                    default:
-                        break;
-                }
+                double newCost = costFromSource[currentNode] + FindEdge(currentNode, neighbour).Value;
+
                 if (newCost < costFromSource[neighbour])
                 {
-                    costFromSource[neighbour] = newCost;
+                    costFromSource[neighbour] = newCost; //Wrong -  don't update cost to estimate -  update to actual. Use estimate to choose the lowest cost unvisited node only. 
                     via[neighbour] = currentNode;
                 }
             }
@@ -165,18 +181,39 @@ namespace Graph {
             return Math.Sqrt(Math.Pow(current.X - destination.X, 2) + Math.Pow(current.Y - destination.Y, 2));
         }
 
-        public Point LowestCostUnvisitedNode(Dictionary<Point, bool> visited, Dictionary<Point, double> cost)
+        public Point NextNodeToVisit(Point currentNode, Dictionary<Point, bool> visited, Dictionary<Point, double> costFromSource, Point destination, Algorithms alg)
         {
-            double? lowestCostSoFar = null;
+            var lowestCostSoFar = double.PositiveInfinity;
             Point lowestCostNode = Nodes.First();
-            foreach (Point p in Nodes)
+            var possibilities = Nodes.Where(n => !visited[n] && costFromSource[n] < double.PositiveInfinity);
+            if (possibilities.Count() ==0)
             {
-                if (!visited[p] && (lowestCostSoFar == null || cost[p] < lowestCostSoFar))
+                throw new Exception("The graph is disconnected -  there are no routes from start to destination.");
+            }
+            foreach (Point p in possibilities)
+            {
+                double cost = 0;
+                switch (alg)
                 {
-                    lowestCostSoFar = cost[p];
+                    case Algorithms.Dijkstra:
+                        cost = costFromSource[p];
+                        break;
+                    case Algorithms.Optimistic:
+                        cost = EstimatedCostToDestination(p, destination);
+                        break;
+                    case Algorithms.AStar:
+                        cost = costFromSource[p] + EstimatedCostToDestination(p, destination);
+                        break;
+                    default:
+                        break;
+                }
+                if (cost < lowestCostSoFar)
+                {
+                    lowestCostSoFar = cost;
                     lowestCostNode = p;
                 }
             }
+
             return lowestCostNode;
         }
 
@@ -189,6 +226,18 @@ namespace Graph {
                 var previous = via[currentNode];
                 result.Insert(0, previous.Value);
                 currentNode = previous.Value;
+            }
+            return result;
+        }
+
+        public double SumOfEdges(List<Point> route)
+        {
+            double result = 0;
+            int step = 0;
+            while (step < route.Count - 1)
+            {
+                result += FindEdge(route[step], route[step + 1]).Value;
+                step++;
             }
             return result;
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Graph
+namespace PathPlanning
 {
     public static class Scenarios
     {

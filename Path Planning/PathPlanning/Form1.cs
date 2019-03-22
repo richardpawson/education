@@ -1,6 +1,4 @@
-﻿
-using Graph;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -26,9 +24,7 @@ namespace PathPlanning
                  graphics = Grid.CreateGraphics();
             StartButton.Enabled = false;
             ScenarioSelector.DataSource = Scenarios.AllScenarios();
-            // algorithmSelector.DataSource = new Algorithms[] {Algorithms.Dijkstra, Algorithms.Optimistic, Algorithms.AStar};
             algorithmSelector.DataSource = Enum.GetValues(typeof(Algorithms)).Cast<Algorithms>();
-
         }
 
         private int GridDrawSize()
@@ -92,7 +88,6 @@ namespace PathPlanning
                 DrawSquare(p, new SolidBrush(Color.Yellow));
             }
             DrawStartAndFinish();
-            pathLength.Text = route.Count.ToString();
         }
 
         private List<Scenario> ScenarioList()
@@ -100,6 +95,8 @@ namespace PathPlanning
             return Scenarios.AllScenarios();
         }
 
+        //This function duplicates the ShortestPath method on the GridGraph, but the reason for this is
+        //to allow the behaviour to interact with the display, showing cells as they are visited.
         private List<Point> ShortestPath(Scenario s)
         {
             var source = s.Start;
@@ -118,14 +115,16 @@ namespace PathPlanning
             {
                 visited[currentNode] = true;
                 count++;
-                graph.UpdateCostAndViaOfEachNeighbourIfApplicable(costFromSource, via, currentNode, destination, (Algorithms)algorithmSelector.SelectedValue);
-                currentNode = graph.LowestCostUnvisitedNode(visited, costFromSource);
+                graph.UpdateCostAndViaOfEachNeighbourIfApplicable(costFromSource, via, currentNode, destination);
+                currentNode = graph.NextNodeToVisit(currentNode, visited, costFromSource, destination, (Algorithms)algorithmSelector.SelectedValue);
                 DrawSquare(currentNode, new SolidBrush(Color.LightBlue));
                 Thread.Sleep((int)Speed.Value);
             }
             count++; //For the destination
-            visitedCount.Text = count.ToString(); ;
-            return graph.RetraceRoute(destination, source, via);
+            visitedCount.Text = count.ToString();
+            var route =  graph.RetraceRoute(destination, source, via);
+            pathLength.Text = Math.Round(graph.SumOfEdges(route), 2).ToString();
+            return route;
         }
 
         private void resetButton_Click(object sender, EventArgs e)
@@ -133,6 +132,12 @@ namespace PathPlanning
             DrawScenario();
             visitedCount.Clear();
             pathLength.Clear();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+                TopMost = true;
+                WindowState = FormWindowState.Maximized;
         }
     }
 }
