@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace PathPlanning
+namespace Pathfinder
 {
     public partial class Form1 : Form
     {

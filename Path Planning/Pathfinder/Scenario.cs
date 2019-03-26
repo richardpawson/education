@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace PathPlanning
+namespace Pathfinder
 {
     /// <summary>
     /// Holds a specific graph, with start and destination, and with a scenario name.

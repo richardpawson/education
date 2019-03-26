@@ -1,4 +1,4 @@
-﻿namespace PathPlanning
+﻿namespace Pathfinder
 {
     partial class Form1
     {
@@ -175,7 +175,7 @@
             this.Controls.Add(this.ScenarioSelector);
             this.Controls.Add(this.Grid);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Pathfinder";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Speed)).EndInit();

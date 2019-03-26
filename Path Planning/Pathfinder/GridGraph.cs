@@ -3,20 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 
-//Below is a Graph class that has several methods implemented, but two unimplemented ones:
-// -  ShortestPath
-// -  LowestCostUnvisitedNode (a private helper method to be called by the first)
-// - 
-//Your task is to implement both methods until all three of the unit tests pass.
-//The algorithm has been specified in some detail in comments.
-//Don't delete the comments!  Write code in-front or beneath them as appropriate
-
-//If your tests don't pass:  DEBUG them until they do! i.e. trace them through
-//Note that the unit tests set up a standard test graph that is identical to the 
-//map of US cities that you used for your paper tests. The node numbers can be checked
-//against the Cities enum below i.e. Chicago = 0, SanDiego = 7. 
-
-namespace PathPlanning
+namespace Pathfinder
 {
 
     public class GridGraph

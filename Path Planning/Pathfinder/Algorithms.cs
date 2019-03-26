@@ -1,4 +1,4 @@
-﻿namespace PathPlanning
+﻿namespace Pathfinder
 {
     public enum Algorithms
     {
